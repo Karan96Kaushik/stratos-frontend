@@ -9,7 +9,12 @@ const MainNavbar = (props) => (
   >
     <Toolbar sx={{ height: 64 }}>
       <RouterLink to="/">
-        <Logo />
+        <Logo style={
+					{
+						height: 40,
+						width: 40
+					}
+				}/>
       </RouterLink>
     </Toolbar>
   </AppBar>
