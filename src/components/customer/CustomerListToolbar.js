@@ -7,7 +7,9 @@ import {
   InputAdornment,
   SvgIcon
 } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { Search as SearchIcon } from 'react-feather';
+import AddCustomer from './AddCustomer'
 
 const CustomerListToolbar = (props) => (
   <Box {...props}>
@@ -23,12 +25,7 @@ const CustomerListToolbar = (props) => (
       <Button sx={{ mx: 1 }}>
         Export
       </Button>
-      <Button
-        color="primary"
-        variant="contained"
-      >
-        Add customer
-      </Button>
+      <AddCustomer />
     </Box>
     <Box sx={{ mt: 3 }}>
       <Card>
