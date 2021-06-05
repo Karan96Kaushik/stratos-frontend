@@ -15,6 +15,8 @@ import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import {LoginContext} from "../myContext"
 import {useLocation} from 'react-router-dom'
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -22,12 +24,14 @@ const Login = () => {
     const loginState = useContext(LoginContext)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
     const location = useLocation();
 
     let forgot = false;
     let touched = false;
-    let isSubmitting = false;
     let handleBlur = () => {};
     let handleChange = () => {};
     let values = {}
@@ -35,9 +39,12 @@ const Login = () => {
     if (location.pathname == "/login/forgot") 
         forgot = true
 
-
-    
-
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setError("")
+    };
 
     const handleSubmit = async (e) => {
         try { 
@@ -54,7 +61,7 @@ const Login = () => {
                     token: resp.data.token
                 }
 
-                await localStorage.setItem("kiraaStore", JSON.stringify(userLogin))
+                await localStorage.setItem("tmsStore", JSON.stringify(userLogin))
                 await loginState.setLogin(userLogin)
                 // history.push('/');
                 navigate('/app/dashboard', {replace: true});
@@ -130,7 +137,7 @@ const Login = () => {
                             {py: 2}
                         }>
                             <Button color="primary"
-                                disabled={isSubmitting}
+                                disabled={loading}
                                 fullWidth
                                 size="large"
                                 type="submit"
@@ -139,7 +146,13 @@ const Login = () => {
                             </Button>
                         </Box>
                     </form>
+                    {error.length ? (<Alert severity="error">{error}</Alert>) : ""}
+		    		{message.length ? (<Alert severity="info">{message}</Alert>) : ""}
 
+                    <Snackbar open={Boolean(error.length)} autoHideDuration={6000} onClose={handleClose}>
+                        <Alert severity="error" hidden={false}>{error}</Alert>
+                    </Snackbar>
+			
                 </Container>
             </Box>
         </>

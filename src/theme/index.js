@@ -25,6 +25,7 @@ const darkTheme = {
     palette: {
         background: {
             default: '#004D40',
+            primary: '#004D40',
             paper: '#00695C'
         },
         primary: {
@@ -40,6 +41,6 @@ const darkTheme = {
     typography
 };
 
-const theme = createMuiTheme(lightTheme);
+const theme = createMuiTheme(darkTheme);
 
 export default theme;

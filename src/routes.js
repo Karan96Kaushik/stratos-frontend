@@ -10,7 +10,7 @@ import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 
-const routes = (isLoggedIn) => ([
+const routes = (isLoggedIn) => [
   {
     path: 'app',
     element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
@@ -34,6 +34,6 @@ const routes = (isLoggedIn) => ([
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }
-]);
+];
 
 export default routes;
