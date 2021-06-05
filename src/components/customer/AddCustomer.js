@@ -2,15 +2,17 @@ import React from 'react';
 import {
     TextField, Button,
     Select, InputLabel, Dialog, DialogTitle, 
-    DialogContent, DialogActions, Hidden
+    DialogContent, DialogActions, Hidden, Snackbar
 } from '@material-ui/core';
 import {authorizedReq} from '../../utils/request'
 import { LoginContext } from "../../myContext"
+import { useSnackbar } from 'material-ui-snackbar-provider'
 
-export default function AddCustomer({ unitRows, loadData }) {
+export default function AddCustomer({ loadData }) {
     const [open, setOpen] = React.useState(false);
 	const [FormData, setFormData] = React.useState({})
 	const loginState = React.useContext(LoginContext)
+    const snackbar = useSnackbar()
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -21,7 +23,10 @@ export default function AddCustomer({ unitRows, loadData }) {
             await authorizedReq({route:"/api/clients/add", data:FormData, creds:loginState.loginState, method:"post"})
             setOpen(false);
             setFormData({})
-            // loadData()
+            snackbar.showMessage(
+                'Successfully added client!',
+            )
+            loadData()
 
         } catch (err) {
             console.error(err)
@@ -52,14 +57,14 @@ export default function AddCustomer({ unitRows, loadData }) {
 				Add Client
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-				<DialogTitle id="form-dialog-title">Add Tenant</DialogTitle>
+				<DialogTitle id="form-dialog-title">Add Client</DialogTitle>
 				<DialogContent>
 					<Select
 						native
 						label="Select Client Type"
 						id="clientType"
 						onChange={(value) => handleOnchange(value)}
-                        style={{width: "100%"}}
+                        style={{width: "100%", height: "30px", marginBottom: "5px", marginTop: "5px"}}
 					>
 						<option value="">Select Client Type</option>
 						<option value="project">Project</option>
@@ -84,8 +89,9 @@ export default function AddCustomer({ unitRows, loadData }) {
                         label="Select Type"
                         id="type"
                         onChange={(value) => handleOnchange(value)}
-                        style={{width: "100%"}}
+                        style={{width: "100%", height: "30px", marginBottom: "5px", marginTop: "5px"}}
                     >
+                        <option value="">Select</option>
                         <option value="individual">Individual</option>
                         <option value="other">Other than Individual</option>
                     </Select>}

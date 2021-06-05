@@ -41,6 +41,7 @@
     "install": "^0.13.0",
     "lodash": "^4.17.19",
     "material-ui-phone-number": "^2.2.6",
+    "material-ui-snackbar-provider": "^1.4.0",
     "moment": "^2.27.0",
     "npm": "^7.7.4",
     "nprogress": "^0.2.0",
@@ -54,6 +55,7 @@
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "^4.0.0",
+    "react-virtualized": "^9.22.3",
     "uuid": "^8.3.0",
     "yup": "^0.29.3"
   },

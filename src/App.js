@@ -7,6 +7,7 @@ import theme from 'src/theme';
 import routes from 'src/routes';
 import { LoginContext } from "./myContext"
 import React, { Component, useContext, useState, useEffect } from 'react';
+import { SnackbarProvider } from 'material-ui-snackbar-provider'
 
 const App = () => {
 
@@ -21,12 +22,14 @@ const App = () => {
 	const routing = useRoutes(routes(loginState?.isLoggedIn));
 
 	return (
+		<SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
 		<LoginContext.Provider value={{ loginState, setLogin }}>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
 				{routing}
 			</ThemeProvider>
 		</LoginContext.Provider>
+		</SnackbarProvider>
 	);
 };
 
