@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import taskFields from '../../statics/taskFields';
 
 const useRowStyles = makeStyles({
 	root: {
@@ -24,19 +25,15 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-	const { row } = props;
+	const { row, type } = props;
 	const [open, setOpen] = React.useState(false);
 	const classes = useRowStyles();
 
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
-
-				<TableCell component="th" scope="row" align="left">{row.userName}</TableCell>
-				<TableCell align="left">{row.email}</TableCell>
-				<TableCell align="left">{row.phone}</TableCell>
-				<TableCell align="left">{row.designation}</TableCell>
-				<TableCell align="left">{row.startDate}</TableCell>
+				{taskFields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{taskFields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
 				<TableCell>
 					<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
 						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -82,24 +79,22 @@ function Row(props) {
 	);
 }
 
-export default function CollapsibleTable({rows}) {
-	console.log(rows)
+export default function CollapsibleTable({data}) {
+	const {rows, type} = data;
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
-						<TableCell align="left">Name</TableCell>
-						<TableCell align="left">Email</TableCell>
-						<TableCell align="left">Mobile</TableCell>
-						<TableCell align="left">Designation</TableCell>
-						<TableCell align="left">Start Date</TableCell>
+						{taskFields[type]?.texts.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						{taskFields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						
 						<TableCell align="left"></TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{rows.map((row) => (
-						<Row key={row.userName} row={row} />
+						<Row key={row.userName} row={row} type={type} />
 					))}
 				</TableBody>
 			</Table>
