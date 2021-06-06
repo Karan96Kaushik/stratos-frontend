@@ -19,12 +19,12 @@ const CustomerListToolbar = (props) => (
 				justifyContent: 'flex-end'
 			}}
 		>
-			<Button>
+			{/* <Button>
 				Import
       		</Button>
 			<Button sx={{ mx: 1 }}>
 				Export
-      		</Button>
+      		</Button> */}
 			<AddCustomer loadData={props.loadData}/>
 		</Box>
 		<Box sx={{ mt: 3 }}>

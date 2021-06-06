@@ -13,8 +13,10 @@ const CustomerList = () => {
 	const loginState = React.useContext(LoginContext)
     const [rows, setRows] = React.useState([])
 	const [tab, setTab] = React.useState(-1);
+	const lastArgs = React.useRef();
 
-    const loadData = (args) => {
+    const loadData = (args=lastArgs.current) => {
+		lastArgs.current = args
         authorizedReq({ route: "/api/clients/", creds: loginState.loginState, data:{...args}, method: 'get' })
             .then(data => setRows(data))
     }

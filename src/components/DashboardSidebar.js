@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -22,12 +22,7 @@ import {
 	Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
-
-const user = {
-	avatar: '/static/images/avatars/avatar_6.png',
-	jobTitle: 'Senior Developer',
-	name: 'Katarina Smith'
-};
+import {LoginContext} from "../myContext"
 
 const items = [
 	{
@@ -36,19 +31,24 @@ const items = [
 		title: 'Dashboard'
 	},
 	{
-		href: '/app/customers',
+		href: '/app/clients',
 		icon: UsersIcon,
-		title: 'Customers'
+		title: 'Clients'
 	},
 	{
-		href: '/app/products',
-		icon: ShoppingBagIcon,
-		title: 'Products'
+		href: '/app/tasks',
+		icon: UsersIcon,
+		title: 'Tasks'
 	},
 	{
-		href: '/app/account',
+		href: '/app/leads',
+		icon: UsersIcon,
+		title: 'Leads'
+	},
+	{
+		href: '/app/members',
 		icon: UserIcon,
-		title: 'Account'
+		title: 'Members'
 	},
 	{
 		href: '/app/settings',
@@ -56,24 +56,15 @@ const items = [
 		title: 'Settings'
 	},
 	{
-		href: '/login',
-		icon: LockIcon,
-		title: 'Login'
+		href: '/app/products',
+		icon: ShoppingBagIcon,
+		title: 'Products'
 	},
-	{
-		href: '/register',
-		icon: UserPlusIcon,
-		title: 'Register'
-	},
-	{
-		href: '/404',
-		icon: AlertCircleIcon,
-		title: 'Error'
-	}
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
+    const loginContext = useContext(LoginContext)
 
 	useEffect(() => {
 		if (openMobile && onMobileClose) {
@@ -97,31 +88,21 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					p: 2
 				}}
 			>
-				<Avatar
-					component={RouterLink}
-					src={user.avatar}
-					sx={{
-						cursor: 'pointer',
-						width: 64,
-						height: 64
-					}}
-					to="/app/account"
-				/>
 				<Typography
 					color="textPrimary"
 					variant="h5"
 				>
-					{user.name}
+					{loginContext.loginState.userName}
 				</Typography>
 				<Typography
 					color="textSecondary"
 					variant="body2"
 				>
-					{user.jobTitle}
+					{loginContext.loginState.designation + ' | ' + loginContext.loginState.department}
 				</Typography>
 			</Box>
 			<Divider />
-			<Box sx={{ p: 2 }}>
+			<Box sx={{p:2}}>
 				<List>
 					{items.map((item) => (
 						<NavItem

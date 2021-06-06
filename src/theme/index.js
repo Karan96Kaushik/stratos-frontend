@@ -41,6 +41,6 @@ const darkTheme = {
     typography
 };
 
-const theme = createMuiTheme(darkTheme);
+const theme = createMuiTheme(0 ? darkTheme : lightTheme);
 
 export default theme;

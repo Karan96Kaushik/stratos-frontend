@@ -14,10 +14,6 @@ export default function AddCustomer({ loadData }) {
 	const loginState = React.useContext(LoginContext)
     const snackbar = useSnackbar()
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
 	const handleSubmit = async () => {
         try {
             await authorizedReq({route:"/api/clients/add", data:FormData, creds:loginState.loginState, method:"post"})
@@ -53,24 +49,27 @@ export default function AddCustomer({ loadData }) {
 
 	return (
 		<div>
-			<Button variant="contained" color="primary" onClick={handleClickOpen}>
+			<Button variant="contained" color="primary" onClick={() => setOpen(true)}>
 				Add Client
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">Add Client</DialogTitle>
 				<DialogContent>
-					<Select
-						native
-						label="Select Client Type"
-						id="clientType"
-						onChange={(value) => handleOnchange(value)}
-                        style={{width: "100%", height: "30px", marginBottom: "5px", marginTop: "5px"}}
-					>
+
+                    <TextField
+                        fullWidth
+                        label="Select Client Type"
+                        id="clientType"
+                        onChange={(value) => handleOnchange(value)}
+                        select
+                        SelectProps={{ native: true }}
+                        variant="outlined"
+                    >
 						<option value="">Select Client Type</option>
 						<option value="project">Project</option>
                         <option value="agent">Agent</option>
                         <option value="litigation">Litigation</option>
-					</Select>
+                    </TextField>
 
                     {FormData.clientType == 'project' && 
                     <TextField
@@ -84,17 +83,19 @@ export default function AddCustomer({ loadData }) {
 					/>}
 
                     {(FormData.clientType == 'agent' || FormData.clientType == 'litigation') && 
-                    <Select
-                        native
+                    <TextField
+                        fullWidth
                         label="Select Type"
                         id="type"
                         onChange={(value) => handleOnchange(value)}
-                        style={{width: "100%", height: "30px", marginBottom: "5px", marginTop: "5px"}}
+                        select
+                        SelectProps={{ native: true }}
+                        variant="outlined"
                     >
-                        <option value="">Select</option>
-                        <option value="individual">Individual</option>
-                        <option value="other">Other than Individual</option>
-                    </Select>}
+                        <option key="" value="">Select</option>
+                        <option key="ind" value="individual">Individual</option>
+                        <option key="oth" value="other">Other than Individual</option>
+                    </TextField>}
 
 					<TextField
 						margin="dense"

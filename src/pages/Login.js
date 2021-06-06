@@ -33,8 +33,6 @@ const Login = () => {
     let forgot = false;
     let touched = false;
     let handleBlur = () => {};
-    let handleChange = () => {};
-    let values = {}
 
     if (location.pathname == "/login/forgot") 
         forgot = true
