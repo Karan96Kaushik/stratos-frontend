@@ -32,8 +32,23 @@ const CustomerListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box>
-							<Grid container spacing={3}>
-								<Grid item md={6} xs={6}>
+							<Grid container spacing={1}>
+								<Grid item md={6} xs={12}>
+									<TextField fullWidth label="Select Service" id="serviceType"
+										onChange={props.handleChange}
+										required
+										select
+										SelectProps={{native: true}}
+										variant="outlined">
+										<option/> {
+										Object.keys(taskFields).map((option) => (
+											<option key={option}
+												value={option}>
+												{taskFields[option]?.name}</option>
+										))
+									} </TextField>
+								</Grid>
+								<Grid item md={6} xs={12}>
 									<TextField fullWidth
 										InputProps={{
 												startAdornment: (
@@ -48,21 +63,6 @@ const CustomerListToolbar = (props) => {
 										onChange={props.handleChange}
 										id={'search'}
 										variant="outlined"/>
-								</Grid>
-								<Grid item md={6} xs={6}>
-									<TextField fullWidth label="Select Service" id="serviceType"
-										onChange={props.handleChange}
-										required
-										select
-										SelectProps={{native: true}}
-										variant="outlined">
-										<option/> {
-										Object.keys(taskFields).map((option) => (
-											<option key={option}
-												value={option}>
-												{taskFields[option]?.name}</option>
-										))
-									} </TextField>
 								</Grid>
 							</Grid>
 						</Box>

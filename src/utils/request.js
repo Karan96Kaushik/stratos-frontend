@@ -5,7 +5,7 @@ import { LoginContext } from "../myContext"
 const authorizedReq = async (request) => {
 
     try {
-        // console.log('submitting formValues', request);
+        console.log('submitting formValues', request);
         let resp = await axios({
             method:request.method,
             url: request.route, 
@@ -21,7 +21,7 @@ const authorizedReq = async (request) => {
     }
     catch (err) {
         console.error(err)
-        console.log("REQUEST ERROR", err.response.data)
+        console.log("REQUEST ERROR", err?.response?.data)
         throw new Error(err)
         // await localStorage.setItem("kiraaStore", JSON.stringify({}))
         // await loginState.setLogin({})

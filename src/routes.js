@@ -6,6 +6,8 @@ import MembersAdd from 'src/pages/MembersAdd';
 import MembersList from 'src/pages/MembersList';
 import TasksList from 'src/pages/TasksList';
 import TasksAdd from 'src/pages/TasksAdd';
+import ClientList from 'src/pages/ClientList';
+import ClientAdd from 'src/pages/ClientAdd';
 import CustomerList from 'src/pages/CustomerList';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
@@ -20,11 +22,18 @@ const routes = (isLoggedIn) => [
 		element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
 		children: [
 			{ path: 'account', element: <Account /> },
-			{ path: 'clients', element: <CustomerList /> },
+			// { path: 'clients', element: <CustomerList /> },
 			{ path: 'leads', element: <CustomerList /> },
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
+			{
+				path: 'clients',
+				children: [
+					{ path: '/', element: <ClientList /> },
+					{ path: 'add', element: <ClientAdd /> }
+				]
+			},
 			{
 				path: 'members',
 				children: [
