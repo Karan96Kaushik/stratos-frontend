@@ -6,7 +6,8 @@ import {
 	CardContent,
 	TextField,
 	InputAdornment,
-	SvgIcon
+	SvgIcon,
+	IconButton
 } from '@material-ui/core';
 import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
@@ -45,8 +46,8 @@ const CustomerListToolbar = (props) => {
 											<option key={option}
 												value={option}>
 												{clientFields[option]?.name}</option>
-										))
-									} </TextField>
+										))} 
+									</TextField>
 								</Grid>
 								<Grid item md={4} xs={6}>
 									<TextField fullWidth label="Select Type" id="clientType"
@@ -60,31 +61,28 @@ const CustomerListToolbar = (props) => {
 											<option key={option}
 												value={option}>
 												{clientFields[option]?.name}</option>
-										))
-									} </TextField>
+										))} 
+									</TextField>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									{/* <Grid container spacing={0}>
-										<Grid item md={10} xs={10}> */}
-											<TextField fullWidth
-												InputProps={{
-														endAdornment: (
-															<InputAdornment position="start" style={{padding:0, margin:0}} onClick={props.goSearch}>
-																<SvgIcon fontSize="small" color="action">
-																	<SearchIcon/>
-																</SvgIcon>
-															</InputAdornment>
-														)
-													}}
-												placeholder="Search Clients"
-												onChange={props.handleChange}
-												id={'search'}
-												variant="outlined"/>
-										{/* </Grid> */}
-										{/* <Grid item md={2} xs={2}>
-											<Button variant="contained">Search</Button>
-										</Grid> */}
-									{/* </Grid> */}
+									<TextField fullWidth
+										InputProps={{
+												endAdornment: (
+													<InputAdornment position="start" style={{padding:0, margin:0}} onClick={props.goSearch}>
+														<Button
+															variant="contained"
+															color="primary"
+															style={{margin:0}}
+														>
+															<SearchIcon style={{padding:0}} />
+														</Button>
+													</InputAdornment>
+												)
+											}}
+										placeholder="Search"
+										onChange={props.handleChange}
+										id={'search'}
+										variant="outlined"/>
 								</Grid>
 								
 							</Grid>

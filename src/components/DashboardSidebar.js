@@ -31,6 +31,11 @@ const items = [
 		title: 'Dashboard'
 	},
 	{
+		href: '/app/members',
+		icon: UserIcon,
+		title: 'Members'
+	},
+	{
 		href: '/app/clients',
 		icon: UsersIcon,
 		title: 'Clients'
@@ -46,9 +51,19 @@ const items = [
 		title: 'Leads'
 	},
 	{
-		href: '/app/members',
-		icon: UserIcon,
-		title: 'Members'
+		href: '/app/quotations',
+		icon: UsersIcon,
+		title: 'Quotation'
+	},
+	{
+		href: '/app/invoices',
+		icon: UsersIcon,
+		title: 'Invoices'
+	},
+	{
+		href: '/app/accounts',
+		icon: UsersIcon,
+		title: 'Accounts'
 	},
 	{
 		href: '/app/settings',

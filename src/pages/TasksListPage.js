@@ -10,10 +10,11 @@ const CustomerList = () => {
 
 	const loginState = React.useContext(LoginContext)
     const [data, setData] = React.useState({type: '', rows:[]})
-
-    const loadData = (args={}) => {
-        authorizedReq({ route: "/api/tasks/", creds: loginState.loginState, data:{...args}, method: 'get' })
-            .then(data => setData({type: args.serviceType, rows: data}))
+    const args = React.useRef({})
+	
+	const goSearch = () => {
+        authorizedReq({ route: "/api/tasks/search", creds: loginState.loginState, data:{serviceType: args.current.serviceType}, method: 'get' })
+            .then(_data => setData({type: args.current.serviceType, rows: _data}))
     }
 
 	const handleChange = (event) => {
@@ -22,7 +23,8 @@ const CustomerList = () => {
 				setData({type: '', rows:[]})
 				return
 			}
-			loadData({serviceType: event.target.value})
+			args.current[event.target.id] = event.target.value
+			goSearch()
 		}
 	}
 	
@@ -36,7 +38,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskListToolbar loadData={loadData} handleChange={handleChange} />
+				<TaskListToolbar searchinfo={args} handleChange={handleChange} goSearch={goSearch} />
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<TaskList data={data} />				

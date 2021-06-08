@@ -11,31 +11,20 @@ const CustomerList = () => {
 	const loginState = React.useContext(LoginContext)
     const [data, setData] = React.useState({type: '', rows:[]})
     const args = React.useRef({})
-	console.info("DATA", data)
-
-    const loadData = (args={}) => {
-        authorizedReq({ route: "/api/clients/", creds: loginState.loginState, data:{...args}, method: 'get' })
-            .then(data => setData({type: args.clientType, rows: data}))
-            // .catch(err => console.info(err))
-    }
-
+	
 	const goSearch = () => {
-		console.info("ARGS", args.current)
-        authorizedReq({ route: "/api/clients/", creds: loginState.loginState, data:{clientType: args.current.clientType}, method: 'get' })
+        authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data:{clientType: args.current.clientType}, method: 'get' })
             .then(_data => setData({type: args.current.clientType, rows: _data}))
     }
 
 	const handleChange = (event) => {
 		if(event.target.id == 'clientType'){
-			// if(event.target.value == '')
-			// 	setData({type: '', rows:[]})
-			// else 
-				setData({type: event.target.value, rows:[]})
-			// loadData({serviceType: event.target.value})
+			setData({type: event.target.value, rows:[]})
 		}
 		args.current[event.target.id] = event.target.value 	
 	}
 	
+
 	return (<>
 		<Helmet>
 			<title>Clients | TMS</title>
@@ -46,7 +35,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<ClientListToolbar loadData={loadData} handleChange={handleChange} goSearch={goSearch}/>
+				<ClientListToolbar searchInfo={args} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<ClientList data={data} />				

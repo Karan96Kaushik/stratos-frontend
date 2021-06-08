@@ -89,7 +89,6 @@ export default function CollapsibleTable({data}) {
 					<TableRow>
 						{clientFields[type]?.texts.map(field => <TableCell align="left">{field.label}</TableCell>)}
 						{clientFields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
-						
 						<TableCell align="left"></TableCell>
 					</TableRow>
 				</TableHead>

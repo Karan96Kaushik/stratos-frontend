@@ -5,7 +5,7 @@ import { LoginContext } from "../myContext"
 const authorizedReq = async (request) => {
 
     try {
-        console.log('submitting formValues', request);
+        // console.log('submitting formValues', request);
         let resp = await axios({
             method:request.method,
             url: request.route, 
@@ -16,7 +16,7 @@ const authorizedReq = async (request) => {
             params:{...request.data},
         })
         
-        console.log(resp)
+        // console.log(resp)
         return resp.data
     }
     catch (err) {
