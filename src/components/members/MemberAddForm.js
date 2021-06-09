@@ -1,69 +1,86 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	Divider,
-	Grid,
-	TextField
+	Box, Button, Card, CardContent,
+	CardHeader,	Divider, Grid,
+	TextField, Input, ListItemText, MenuItem, 
+	Checkbox, Select, FormControl, makeStyles, 
+	InputLabel
 } from '@material-ui/core';
 import {LoginContext} from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import {authorizedReq} from '../../utils/request'
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useLocation} from 'react-router-dom';
+import {
+	memberFields, 
+	pagePermissionFields,
+	servicePermissionFields,
+} from '../../statics/memberFields';
 
-const states = [
-	{
-	  value: 'alabama',
-	  label: 'Alabama'
+const useStyles = makeStyles((theme) => ({
+	formControl: {
+		margin: theme.spacing(1)
 	},
-	{
-	  value: 'new-york',
-	  label: 'New York'
+	chips: {
+		display: 'flex',
+		flexWrap: 'wrap'
 	},
-	{
-	  value: 'san-francisco',
-	  label: 'San Francisco'
+	chip: {
+		margin: 2
+	},
+	noLabel: {
+		marginTop: theme.spacing(3)
 	}
-  ];
+}));
 
-const fields = [
-	{label:"Name", id:"userName"},
-	{label:"Email", id:"email"},
-	{label:"Password", id:"password"},
-	{label:"Mobile", id:"phone"},
-	{label:"Designation", id:"designation"},
-	{label:"Department", id:"department"},
-	{label:"Address", id:"address"},
-	{label:"Emergency Contact", id:"emergencyContact"},
-	{label:"Blood Group", id:"bloodGroup"},
-	{label:"Start Date", id:"startDate"},
-]
 
 const MemberAddForm = (props) => {
-    const navigate = useNavigate();
-
+	const navigate = useNavigate();
+  	const classes = useStyles();
 	const [values, setValues] = useState({});
-	const loginState = useContext(LoginContext)
-    const snackbar = useSnackbar()
+	const loginState = useContext(LoginContext);
+	const snackbar = useSnackbar();
+	const location = useLocation();
 
+    let isEdit = false;
+
+    if (location.pathname.includes("edit")) {
+		isEdit = true
+		let memberID = location.pathname.split("/").pop()
+		useEffect(async () => {
+			let data = await authorizedReq({route:"/api/members/", data:{_id:memberID}, creds:loginState.loginState, method:"get"})
+			data = data[0]
+			
+			data.pagePermissions = pagePermissionFields.map(val => data.permissions.page.includes(val.toLowerCase().replace(" ", "")) ? val : null )
+			data.servicePermissions = servicePermissionFields.map(val => data.permissions.service.includes(val.toLowerCase().replace(" ", "")) ? val : null )
+
+			data.pagePermissions = data.pagePermissions.filter(Boolean)
+			data.servicePermissions = data.servicePermissions.filter(Boolean)
+
+			setValues(data)
+		}, [])
+	}
+		
 	const handleSubmit = async () => {
-        try {
-            await authorizedReq({route:"/api/members/add", data:values, creds:loginState.loginState, method:"post"})
-            snackbar.showMessage(
-                'Successfully added member!',
-            )
-			navigate('/app/members');
-        } catch (err) {
+		try {
+			console.info("/api/members/" + (!isEdit ? "add" : "update"))
+			await authorizedReq({
+				route:"/api/members/" + (!isEdit ? "add" : "update"), 
+				data:values, 
+				creds:loginState.loginState, 
+				method:"post"
+			})
 			snackbar.showMessage(
-                "Error: " + err,
-            )
-            console.error(err)
-        }
-        
-    };
+				'Successfully added member!',
+			)
+			navigate('/app/members');
+		} catch (err) {
+			snackbar.showMessage(
+				"Error: " + err,
+			)
+			console.error(err)
+		}
+		
+	};
 
 	const handleChange = (event) => {
 		setValues({
@@ -80,55 +97,62 @@ const MemberAddForm = (props) => {
 		>
 			<Card>
 				<CardHeader
-					title="New Member"
+					title={isEdit ? "Edit Member" : "New Member"}
 					subheader=""
 				/>
 				<Divider />
 				<CardContent>
-					<Grid
-						container
-						spacing={3}
-					>
-						{fields.map((field) => (<Grid
-								item
-								md={6}
-								xs={12}
-							>
-								<TextField
-									fullWidth
+					<Grid container spacing={3}>
+						{memberFields.texts.map((field) => (!field.hideEdit || !isEdit) ? (<Grid item md={6} xs={12}>
+								<TextField fullWidth
+									select={field.options?.length}
 									label={field.label}
+									defaultValue={!isEdit ? "" : field.default ?? " "}
 									id={field.id}
+									type={field.type ?? "text"}
 									onChange={handleChange}
-									required
-									value={values.firstName}
+									value={values?.[field.id]}
 									variant="outlined"
 								/>
-							</Grid>))}
-						<Grid
-							item
-							md={6}
-							xs={12}
-						>
-							<TextField
+							</Grid>): <></>)}
+						<Grid item md={12} xs={12}>
+							<FormControl fullWidth className={classes.formControl}>	
+							<InputLabel id="pagePermissions">Page Permissions</InputLabel>
+							<Select 
+								multiple 
 								fullWidth
-								label="Select State"
-								name="state"
-								onChange={handleChange}
-								required
-								select
-								SelectProps={{ native: true }}
-								value={values.state}
-								variant="outlined"
-							>
-								{states.map((option) => (
-									<option
-										key={option.value}
-										value={option.value}
-									>
-										{option.label}
-									</option>
+								id="pagePermissions" value={values?.pagePermissions || []}
+								onChange={(e) => setValues({...values, pagePermissions:e.target.value})}
+								input={<Input />} renderValue={(selected) => selected.join(', ')}
+								>
+								{pagePermissionFields.map((name) => (
+									<MenuItem key={name} value={name}>
+										<Checkbox checked={(values?.pagePermissions ?? []).indexOf(name) > -1} />
+										<ListItemText primary={name} />
+									</MenuItem>
 								))}
-							</TextField>
+							</Select>
+							</FormControl>
+						</Grid>
+						<Grid item md={12} xs={12}>
+							<FormControl fullWidth className={classes.formControl}>	
+							<InputLabel fullWidth id="servicePermissions">Service Permissions</InputLabel>
+							<Select multiple fullWidth
+								id="servicePermissions"
+								value={values?.servicePermissions || []}
+								onChange={(e) => setValues({...values, servicePermissions:e.target.value})}
+								input={<Input />}
+								placeholder="Services Permissions"
+								renderValue={(selected) => selected.join(', ')}
+								>
+								{servicePermissionFields.map((name) => (
+									<MenuItem key={name} value={name}>
+										<Checkbox checked={(values?.servicePermissions ?? []).indexOf(name) > -1} />
+										<ListItemText primary={name} />
+									</MenuItem>
+								))}
+							</Select>
+							</FormControl>
 						</Grid>
 					</Grid>
 				</CardContent>

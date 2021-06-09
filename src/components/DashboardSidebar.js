@@ -16,20 +16,26 @@ import {
 	BarChart as BarChartIcon,
 	Lock as LockIcon,
 	Settings as SettingsIcon,
+	CheckSquare as CheckSquareIcon,
+	Flag as FlagIcon,
+	Mail as MailIcon,
+	FileText as FileTextIcon,
+	DollarSign as DollarSignIcon,
 	ShoppingBag as ShoppingBagIcon,
 	User as UserIcon,
 	UserPlus as UserPlusIcon,
-	Users as UsersIcon
+	Users as UsersIcon,
+	DollarSign
 } from 'react-feather';
 import NavItem from './NavItem';
 import {LoginContext} from "../myContext"
 
 const items = [
-	{
-		href: '/app/dashboard',
-		icon: BarChartIcon,
-		title: 'Dashboard'
-	},
+	// {
+	// 	href: '/app/dashboard',
+	// 	icon: BarChartIcon,
+	// 	title: 'Dashboard'
+	// },
 	{
 		href: '/app/members',
 		icon: UserIcon,
@@ -42,27 +48,27 @@ const items = [
 	},
 	{
 		href: '/app/tasks',
-		icon: UsersIcon,
+		icon: CheckSquareIcon,
 		title: 'Tasks'
 	},
 	{
 		href: '/app/leads',
-		icon: UsersIcon,
+		icon: FlagIcon,
 		title: 'Leads'
 	},
 	{
 		href: '/app/quotations',
-		icon: UsersIcon,
-		title: 'Quotation'
+		icon: MailIcon,
+		title: 'Quotations'
 	},
 	{
 		href: '/app/invoices',
-		icon: UsersIcon,
+		icon: FileTextIcon,
 		title: 'Invoices'
 	},
 	{
 		href: '/app/accounts',
-		icon: UsersIcon,
+		icon: DollarSignIcon,
 		title: 'Accounts'
 	},
 	{

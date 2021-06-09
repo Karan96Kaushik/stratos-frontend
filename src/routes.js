@@ -38,7 +38,8 @@ const routes = (isLoggedIn) => [
 				path: 'members',
 				children: [
 					{ path: '/', element: <MembersList /> },
-					{ path: 'add', element: <MembersAdd /> }
+					{ path: 'add', element: <MembersAdd /> },
+					{ path: 'edit/:id', element: <MembersAdd /> }
 				]
 			},
 			{

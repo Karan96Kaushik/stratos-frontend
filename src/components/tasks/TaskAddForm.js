@@ -52,7 +52,7 @@ const TaskAddForm = (props) => {
 			setType(event.target.value)
 		} else if (event.target.id == 'client' && values?.client?.length > 2) {
 			getClients()
-		} else if (event.target.id == 'clientID') {
+		} else if (event.target.id == '_clientID') {
 			let client = clientRows.find(c => c._id == event.target.value)
 			others.clientName = client.name
 		}
@@ -122,7 +122,7 @@ const TaskAddForm = (props) => {
 										<TextField
 											fullWidth
 											label="Select Client"
-											id="clientID"
+											id="_clientID"
 											onChange={handleChange}
 											required
 											select
@@ -135,7 +135,7 @@ const TaskAddForm = (props) => {
 													key={option._id}
 													value={option._id}
 												>
-													{(option.clientID ?? option.name) + ` (${option._id})`}
+													{(option.clientID ?? option.name) + ` (${option.name})`}
 												</option>
 											))}
 										</TextField>

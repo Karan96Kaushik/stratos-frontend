@@ -32,6 +32,7 @@ function Row(props) {
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
+				{taskFields[type]?.texts?.length ? <TableCell align="left">{row.taskID}</TableCell> : <></>}
 				{taskFields[type]?.texts?.length ? <TableCell align="left">{row.clientName}</TableCell> : <></>}
 				{taskFields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
 				{taskFields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
@@ -87,6 +88,7 @@ export default function CollapsibleTable({data}) {
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
+						{taskFields[type]?.texts?.length ? <TableCell align="left">Task ID</TableCell> : <></>}
 						{taskFields[type]?.texts?.length ? <TableCell align="left">Client Name</TableCell> : <></>}
 						{taskFields[type]?.texts.map(field => <TableCell align="left">{field.label}</TableCell>)}
 						{taskFields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
