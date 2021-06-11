@@ -62,7 +62,7 @@ const MemberAddForm = (props) => {
 		
 	const handleSubmit = async () => {
 		try {
-			console.info("/api/members/" + (!isEdit ? "add" : "update"))
+			// console.info("/api/members/" + (!isEdit ? "add" : "update"))
 			await authorizedReq({
 				route:"/api/members/" + (!isEdit ? "add" : "update"), 
 				data:values, 

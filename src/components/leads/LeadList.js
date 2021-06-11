@@ -9,7 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
-import {Link, useQuery} from "react-router-dom"
+import {Link} from "react-router-dom"
+import leadFields from '../../statics/leadFields';
 
 const useRowStyles = makeStyles({
 	root: {
@@ -20,19 +21,16 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-	const { row } = props;
+	const { row, type } = props;
 	const classes = useRowStyles();
-
+	
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
-
-				<TableCell component="th" scope="row" align="left">{row.memberID}</TableCell>
-				<TableCell component="th" scope="row" align="left">{row.userName}</TableCell>
-				<TableCell align="left">{row.email}</TableCell>
-				<TableCell align="left">{row.phone}</TableCell>
-				<TableCell align="left">{row.designation}</TableCell>
-				<TableCell align="left">{row.startDate}</TableCell>
+				{leadFields[type]?.texts?.length ? <TableCell align="left">{row.leadID}</TableCell> : <></>}
+				{leadFields[type]?.texts?.length ? <TableCell align="left">{row.memberID}</TableCell> : <></>}
+				{leadFields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{leadFields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
 				<TableCell>
 					<Link to={"edit/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
@@ -45,25 +43,25 @@ function Row(props) {
 	);
 }
 
-export default function CollapsibleTable({rows}) {
-	console.log(rows)
+export default function CollapsibleTable({data, search}) {
+	const {rows} = data;
+	const {leadType:type} = search;
+
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
-						<TableCell align="left">Member ID</TableCell>
-						<TableCell align="left">Name</TableCell>
-						<TableCell align="left">Email</TableCell>
-						<TableCell align="left">Mobile</TableCell>
-						<TableCell align="left">Designation</TableCell>
-						<TableCell align="left">Start Date</TableCell>
+						{leadFields[type]?.texts?.length ? <TableCell align="left">Lead ID</TableCell> : <></>}
+						{leadFields[type]?.texts?.length ? <TableCell align="left">Member ID</TableCell> : <></>}
+						{leadFields[type]?.texts.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						{leadFields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
 						<TableCell align="left"></TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{rows.map((row) => (
-						<Row key={row.userName} row={row} />
+						<Row key={row.userName} row={row} type={type} />
 					))}
 				</TableBody>
 			</Table>

@@ -6,12 +6,11 @@ import {
 	CardContent,
 	TextField,
 	InputAdornment,
-	SvgIcon,
-	IconButton
+	SvgIcon
 } from '@material-ui/core';
 import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
-import clientFields from '../../statics/clientFields';
+import leadFields from '../../statics/leadFields';
 
 const CustomerListToolbar = (props) => {
 
@@ -23,9 +22,9 @@ const CustomerListToolbar = (props) => {
 					justifyContent: 'flex-end'
 				}
 			}>
-				<Link to="/app/clients/add">
+				<Link to="/app/leads/add">
 					<Button sx={{mx: 1}} variant="contained">
-						Add Client
+						Add Lead
 					</Button>
 				</Link>
 			</Box>
@@ -34,43 +33,49 @@ const CustomerListToolbar = (props) => {
 					<CardContent>
 						<Box>
 							<Grid container spacing={1}>
-								<Grid item md={4} xs={12}>
-									<TextField fullWidth label="Select Type" id="clientType"
+								<Grid item md={4} xs={6}>
+									<TextField fullWidth label="Select Lead Type" 
+										id="leadType"
 										onChange={props.handleChange}
 										required
 										select
 										SelectProps={{native: true}}
-										value={props.searchInfo.current.clientType ?? " "}
+										value={props.searchInfo["leadType"]}
 										variant="outlined">
 										<option/> {
-										Object.keys(clientFields).map((option) => (
+										Object.keys(leadFields).map((option) => (
 											<option key={option}
 												value={option}>
-												{clientFields[option]?.name}</option>
-										))} 
-									</TextField>
+												{leadFields[option]?.name}</option>
+										))
+									} </TextField>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<TextField fullWidth label="Search Field" id="searchType"
-										onChange={props.handleChange}
+									<TextField
+										fullWidth
+										label="Select Search Field"
+										id="type"
+										value={props.searchInfo["type"]}
+										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
 										select
-										value={props.searchInfo.current.searchType ?? " "}
-										SelectProps={{native: true}}
-										variant="outlined">
-										<option/> 
-										{(["ID", "Name"]).map((option) => (
-											<option key={option}
-												value={option}>
-												{option}
+										SelectProps={{ native: true }}
+										variant="outlined"
+									>
+										{([["",""],["Lead ID", "leadID"], ["Name", "name"]]).map((option) => (
+											<option
+												key={option[0]}
+												value={option[1]}
+											>
+												{option[0]}
 											</option>
-										))} 
+										))}
 									</TextField>
 								</Grid>
 								<Grid item md={4} xs={6}>
 									<TextField fullWidth
 										InputProps={{
 												endAdornment: (
-													<InputAdornment position="start" style={{padding:0, margin:0}} onClick={props.goSearch}>
+													<InputAdornment position="end" onClick={props.goSearch}>
 														<Button
 															variant="contained"
 															color="primary"
@@ -81,12 +86,13 @@ const CustomerListToolbar = (props) => {
 													</InputAdornment>
 												)
 											}}
+										value={props.searchInfo["text"]}
 										placeholder="Search"
-										onChange={props.handleChange}
-										id={'search'}
-										variant="outlined"/>
+										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
+										id={'text'}
+										variant="outlined"
+									/>
 								</Grid>
-								
 							</Grid>
 						</Box>
 					</CardContent>

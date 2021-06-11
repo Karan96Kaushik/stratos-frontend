@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, Fragment } from 'react';
+import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
@@ -20,8 +20,22 @@ const TaskAddForm = (props) => {
 	const [clientRows, setClientRows] = useState([]);
 	const [type, setType] = useState("");
 	const [open, setOpen] = useState(false);
+	
+    let isEdit = false;
 
 	const searchInfo = useRef({})
+
+	if (location.pathname.includes("edit")) {
+		isEdit = true
+		let taskID = location.pathname.split("/").pop()
+		useEffect(async () => {
+			let data = await authorizedReq({route:"/api/tasks/", data:{_id:taskID}, creds:loginState.loginState, method:"get"})
+			data = data[0]
+			
+			setType(data.serviceType)
+			setValues(data)
+		}, [])
+	}
 
 	const getClients = async () => {
 		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {[searchInfo.current.type]: searchInfo.current.value}, method: 'get' })
@@ -31,7 +45,12 @@ const TaskAddForm = (props) => {
 
 	const handleSubmit = async () => {
 		try {
-			await authorizedReq({ route: "/api/tasks/add", data: values, creds: loginState.loginState, method: "post" })
+			await authorizedReq({
+				route:"/api/tasks/" + (!isEdit ? "add" : "update"), 
+				data:values, 
+				creds:loginState.loginState, 
+				method:"post"
+			})
 			snackbar.showMessage(
 				'Successfully added task!',
 			)
@@ -62,6 +81,7 @@ const TaskAddForm = (props) => {
 			...others,
 			[event.target.id]: event.target.value || event.target.checked
 		});
+
 	};
 
 	return (
@@ -153,7 +173,7 @@ const TaskAddForm = (props) => {
 							</DialogActions>
 						</Dialog>
 
-						<Grid item md={6} xs={12}>
+						{!isEdit && (<Grid item md={6} xs={12}>
 							<TextField
 								fullWidth
 								label={"Select Client"}
@@ -163,7 +183,7 @@ const TaskAddForm = (props) => {
 								value={values.clientName ?? " "}
 								variant="outlined"
 							/>
-						</Grid>
+						</Grid>)}
 
 						<Grid item md={12} xs={12}>
 							<TextField
@@ -172,6 +192,9 @@ const TaskAddForm = (props) => {
 								id="serviceType"
 								onChange={handleChange}
 								required
+								defaultValue={!isEdit?"":Object.keys(taskFields)[0]}
+								disabled={isEdit}
+								value={values.serviceType}
 								select
 								SelectProps={{ native: true }}
 								variant="outlined"
@@ -188,26 +211,35 @@ const TaskAddForm = (props) => {
 							</TextField>
 						</Grid>
 
-
 						{taskFields[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
+									select={field.options?.length}
+									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
 									id={field.id}
 									onChange={handleChange}
-									required
-									value={values.firstName}
+									value={values[field.id]}
 									variant="outlined"
-								/>
+								>
+									{(field.options ?? []).map((option) => (
+										<option
+											key={option}
+											value={option}
+										>
+											{option}
+										</option>
+									))}
+								</TextField>
 							</Grid>))}
 
 						{taskFields[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
-										checked={values[field.id]}
+										checked={values[field.id] ? true : false}
 										onChange={handleChange}
 										id={field.id}
 										color="primary"
