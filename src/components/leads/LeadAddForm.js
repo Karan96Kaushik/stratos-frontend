@@ -24,9 +24,7 @@ const TaskAddForm = (props) => {
 		isEdit = true
 		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/leads/search", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			data = data[0]
-			
+			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
 			setType(data.leadType)
 			setValues(data)
 		}, [])

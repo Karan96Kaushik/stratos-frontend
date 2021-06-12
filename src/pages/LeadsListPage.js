@@ -8,6 +8,7 @@ import { LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import leadFields from '../statics/leadFields';
+import GeneralList from '../components/GeneralList'
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -101,7 +102,18 @@ const CustomerList = () => {
 				<LeadListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
-						<LeadList extraFields={extraFields} type={search.leadType} fields={leadFields} data={data} search={search} handleChange={handleChange} page={page} rowsPerPage={rowsPerPage} setPage={setPage} setRowsPerPage={setRowsPerPage} />				
+						<GeneralList
+							extraFields={extraFields} 
+							type={search.leadType} 
+							fields={leadFields} 
+							data={data} 
+							search={search} 
+							handleChange={handleChange} 
+							page={page} 
+							rowsPerPage={rowsPerPage} 
+							setPage={setPage} 
+							setRowsPerPage={setRowsPerPage}
+						/>				
 					</Paper>
 				</Box>
 			</Container>
