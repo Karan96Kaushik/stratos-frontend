@@ -7,6 +7,7 @@ import {authorizedReq} from '../utils/request'
 import { LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
+import leadFields from '../statics/leadFields';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -33,9 +34,12 @@ const CustomerList = () => {
     const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
-	
+
 	const query = useQuery();
-	const [search, setSearch] = useState({...query})
+
+	const [page, setPage] = useState(parseInt(query.page) || 1);
+	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 2);
+	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
 	useEffect(() => {
 		if(Object.keys(query).length) {
@@ -43,10 +47,17 @@ const CustomerList = () => {
 		}
 	}, [])
 
-	const goSearch = () => {
-		console.log(search)
+	useEffect(async () => {
+		setSearch({...search, page, rowsPerPage})
+	}, [page, rowsPerPage])
+
+	useEffect(async () => {
+		navigate("/app/leads?" + serialize(search));
+		goSearch("PG");
+	}, [search])
+
+	const goSearch = (rmk) => {
 		loadData()
-		navigate("/app/leads?" + serialize(search))
     }
 
 	const loadData = async () => {
@@ -57,7 +68,7 @@ const CustomerList = () => {
 				data:{...search}, 
 				method: 'get'
 			})
-			setData({type: search.leadType, rows: _data})
+			setData({rows:_data})
 
 		} catch (err) {
 			snackbar.showMessage(err.message)
@@ -65,12 +76,17 @@ const CustomerList = () => {
     }
 
 	const handleChange = (event) => {
-		if(event.target.id == 'leadType'){
+		if (event.target.id == 'leadType'){
 			setData({rows:[]})
-			setSearch({[event.target.id]: event.target.value, type:"", text:""})
+			setPage(1)
+			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		}
 	}
 	
+	const extraFields = [
+		{name:"Lead ID", id: "leadID"},
+		{name:"memberID", id: "memberID"},
+	]
 
 	return (<>
 		<Helmet>
@@ -85,7 +101,7 @@ const CustomerList = () => {
 				<LeadListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
-						<LeadList data={data} search={search} />				
+						<LeadList extraFields={extraFields} type={search.leadType} fields={leadFields} data={data} search={search} handleChange={handleChange} page={page} rowsPerPage={rowsPerPage} setPage={setPage} setRowsPerPage={setRowsPerPage} />				
 					</Paper>
 				</Box>
 			</Container>
