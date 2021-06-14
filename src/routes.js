@@ -8,7 +8,7 @@ import TasksList from 'src/pages/TaskListPage2';
 import TasksAdd from 'src/pages/TasksAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
-import ClientList from 'src/pages/ClientListPage';
+import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
 import CustomerList from 'src/pages/CustomerList';
 import Dashboard from 'src/pages/Dashboard';
