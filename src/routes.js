@@ -4,7 +4,7 @@ import MainLayout from 'src/components/MainLayout';
 import Account from 'src/pages/Account';
 import MembersAdd from 'src/pages/MembersAdd';
 import MembersList from 'src/pages/MembersListPage';
-import TasksList from 'src/pages/TasksListPage';
+import TasksList from 'src/pages/TaskListPage2';
 import TasksAdd from 'src/pages/TasksAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
@@ -70,7 +70,7 @@ const routes = (isLoggedIn) => [
 			{ path: 'login', element: <Login /> },
 			{ path: 'register', element: <Register /> },
 			{ path: '404', element: <NotFound /> },
-			{ path: '/', element: <Navigate to="/app/dashboard" /> },
+			{ path: '/', element: <Navigate to="/app/members" /> },
 			{ path: '*', element: <Navigate to="/404" /> }
 		]
 	}

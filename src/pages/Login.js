@@ -62,7 +62,7 @@ const Login = () => {
                 await localStorage.setItem("tmsStore", JSON.stringify(userLogin))
                 await loginState.setLogin(userLogin)
                 // history.push('/');
-                navigate('/app/dashboard', {replace: true});
+                navigate('/', {replace: true});
 
             } else { // console.log()
                 setLoading(false)

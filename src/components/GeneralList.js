@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
+// import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import {Link} from "react-router-dom"
@@ -27,7 +27,6 @@ const useRowStyles = makeStyles({
 });
 
 function Row({ row, type, fields, extraFields }) {
-	console.log(extraFields)
 	const classes = useRowStyles();
 
 	return (
@@ -50,8 +49,11 @@ function Row({ row, type, fields, extraFields }) {
 
 const useStyles1 = makeStyles((theme) => ({
 	root: {
-		flexShrink: 0,
-		marginLeft: 0,
+		// flexShrink: 1,
+		// marginLeft: 0,
+		display:"flex",
+		flex:1,
+		flexDirection:"row",
 	},
 }));
 
@@ -77,32 +79,34 @@ function TablePaginationActions(props) {
 	const handleLastPageButtonClick = (event) => {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
 	};
+
+	console.log(count)
   
 	return (
 	  <div className={classes.root}>
 		<IconButton
 		  onClick={handleFirstPageButtonClick}
-		  disabled={page === 0}
+		  disabled={page === 1}
 		  aria-label="first page"
 		>
-		  {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+		  <FirstPageIcon />
 		</IconButton>
 		<IconButton onClick={handleBackButtonClick} disabled={page === 1} aria-label="previous page">
-		  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+			<KeyboardArrowLeft />
 		</IconButton>
 		<IconButton
 		  onClick={handleNextButtonClick}
-		  disabled={false && page >= Math.ceil(count / rowsPerPage) - 1}
+		  disabled={count < rowsPerPage}
 		  aria-label="next page"
 		>
-		  {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+			<KeyboardArrowRight />
 		</IconButton>
 		<IconButton
 		  onClick={handleLastPageButtonClick}
 		  disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 		  aria-label="last page"
 		>
-		  {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+			<LastPageIcon />
 		</IconButton>
 	  </div>
 	);
@@ -143,18 +147,14 @@ export default function CollapsibleTable({extraFields, fields, data, page, setPa
 				</TableBody>
 				<TableFooter>
 					<TableRow>
-						<TablePagination
-							rowsPerPageOptions={[2, 25, 50, 100]}
+						<TablePaginationActions
+							rowsPerPageOptions={[25, 50, 100]}
 							colSpan={0}
 							count={rows.length}
 							rowsPerPage={rowsPerPage}
 							page={page}
-							SelectProps={{
-								inputProps: { 'aria-label': 'rows per page' },
-								native: true,
-							}}
 							onPageChange={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
+							onRowsPerPageChange={handleChangeRowsPerPage}
 							ActionsComponent={TablePaginationActions}
 						/>
 					</TableRow>

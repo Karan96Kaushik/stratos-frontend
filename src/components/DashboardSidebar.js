@@ -56,31 +56,31 @@ const items = [
 		icon: FlagIcon,
 		title: 'Leads'
 	},
-	{
-		href: '/app/quotations',
-		icon: MailIcon,
-		title: 'Quotations'
-	},
-	{
-		href: '/app/invoices',
-		icon: FileTextIcon,
-		title: 'Invoices'
-	},
-	{
-		href: '/app/accounts',
-		icon: DollarSignIcon,
-		title: 'Accounts'
-	},
-	{
-		href: '/app/settings',
-		icon: SettingsIcon,
-		title: 'Settings'
-	},
-	{
-		href: '/app/products',
-		icon: ShoppingBagIcon,
-		title: 'Products'
-	},
+	// {
+	// 	href: '/app/quotations',
+	// 	icon: MailIcon,
+	// 	title: 'Quotations'
+	// },
+	// {
+	// 	href: '/app/invoices',
+	// 	icon: FileTextIcon,
+	// 	title: 'Invoices'
+	// },
+	// {
+	// 	href: '/app/accounts',
+	// 	icon: DollarSignIcon,
+	// 	title: 'Accounts'
+	// },
+	// {
+	// 	href: '/app/settings',
+	// 	icon: SettingsIcon,
+	// 	title: 'Settings'
+	// },
+	// {
+	// 	href: '/app/products',
+	// 	icon: ShoppingBagIcon,
+	// 	title: 'Products'
+	// },
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {

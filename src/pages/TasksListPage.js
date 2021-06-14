@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import TaskListToolbar from 'src/components/tasks/TaskListToolbar';
-import TaskList from 'src/components/tasks/TaskList';
+import TaskList from 'src/components/tasks/TaskList2';
 import {authorizedReq} from '../utils/request'
 import { LoginContext } from "../myContext"
 

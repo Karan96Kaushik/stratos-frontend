@@ -28,7 +28,7 @@ const actions = [
 ]
 
 export default {
-    agentRegistration: {
+    "Agent Registration": {
         name:"Agent Registration",
         texts:[
             {label:"Priority", id:"priority", type:"number"},
@@ -43,7 +43,7 @@ export default {
             {label:"ITR", id:"itr"},
         ]
     },
-    projectRegistration: {
+    "Project Registration": {
         name:"Project Registration",
         texts:[
             {label:"Priority", id:"priority", type:"number"},

@@ -32,18 +32,21 @@ const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
     const [data, setData] = useState({type: '', rows:[]})
-    const args = useRef({})
+    // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 
 	const query = useQuery();
+	if(query.rowsPerPage)
+		if(!([25,50,100].includes(query.rowsPerPage)))
+			query.rowsPerPage = 25
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
-	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 2);
+	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
 	useEffect(() => {
-		if(Object.keys(query).length) {
+		if(query.leadType) {
 			loadData()
 		}
 	}, [])
@@ -54,7 +57,8 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		navigate("/app/leads?" + serialize(search));
-		goSearch("PG");
+		if(search.leadType)
+			goSearch("PG");
 	}, [search])
 
 	const goSearch = (rmk) => {

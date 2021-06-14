@@ -116,10 +116,10 @@ const TaskAddForm = (props) => {
 									variant="outlined"
 								>
 									{(field.options ?? []).map((option) => (
-									<option key={option[0] ?? option}
-										value={option[0] ?? option}>
-										{option[1] ?? option}
-									</option>
+										<option key={option}
+											value={option}>
+											{option}
+										</option>
 									))}
 								</TextField>
 							</Grid>))}
