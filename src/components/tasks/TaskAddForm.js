@@ -38,7 +38,7 @@ const TaskAddForm = (props) => {
 	}
 
 	const getClients = async () => {
-		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {[searchInfo.current.type]: searchInfo.current.value}, method: 'get' })
+		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo.current}, method: 'get' })
 		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 		setClientRows(response)
 	};
@@ -52,12 +52,12 @@ const TaskAddForm = (props) => {
 				method:"post"
 			})
 			snackbar.showMessage(
-				'Successfully added task!',
+				`Successfully ${!isEdit ? "added" : "updated"} task!`,
 			)
 			navigate('/app/tasks');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err,
+				"Error: " + err?.response?.data ?? err,
 			)
 			console.error(err)
 		}
@@ -123,8 +123,8 @@ const TaskAddForm = (props) => {
 											fullWidth
 											label="Search Client"
 											id="search"
-											onChange={({target}) => {searchInfo.current.value = target.value}}
-											value={searchInfo.current.value}
+											onChange={({target}) => {searchInfo.current.text = target.value}}
+											value={searchInfo.current.text}
 											variant="outlined"
 										/>
 									</Grid>

@@ -1,6 +1,6 @@
 import {Helmet} from 'react-helmet';
 import {Box, Container, Grid} from '@material-ui/core';
-import ClientAddForm from 'src/components/clients/ClientAddForm';
+import ClientAddForm from 'src/components/clients/ClientAddForm2';
 
 const Account = () => (
 	<>

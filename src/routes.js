@@ -25,7 +25,6 @@ const routes = (isLoggedIn) => [
 		children: [
 			{ path: 'account', element: <Account /> },
 			// { path: 'clients', element: <CustomerList /> },
-			{ path: 'leads', element: <CustomerList /> },
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
@@ -33,7 +32,8 @@ const routes = (isLoggedIn) => [
 				path: 'clients',
 				children: [
 					{ path: '/', element: <ClientList /> },
-					{ path: 'add', element: <ClientAdd /> }
+					{ path: 'add', element: <ClientAdd /> },
+					{ path: 'edit/:id', element: <ClientAdd /> }
 				]
 			},
 			{

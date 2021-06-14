@@ -70,12 +70,12 @@ const MemberAddForm = (props) => {
 				method:"post"
 			})
 			snackbar.showMessage(
-				'Successfully added member!',
+				`Successfully ${!isEdit ? "added" : "updated"} member!`,
 			)
 			navigate('/app/members');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err,
+				"Error: " + err?.response?.data ?? err,
 			)
 			console.error(err)
 		}

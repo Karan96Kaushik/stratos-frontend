@@ -80,7 +80,7 @@ function TablePaginationActions(props) {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
 	};
 
-	console.log(count)
+	// console.log(count)
   
 	return (
 	  <div className={classes.root}>

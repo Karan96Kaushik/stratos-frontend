@@ -39,12 +39,12 @@ const TaskAddForm = (props) => {
 				method:"post"
 			})
 			snackbar.showMessage(
-				'Successfully added lead!',
+				`Successfully ${!isEdit ? "added" : "updated"} lead!`,
 			)
 			navigate('/app/leads');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err,
+				"Error: " + err?.response?.data ?? err,
 			)
 			console.error(err)
 		}

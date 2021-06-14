@@ -75,7 +75,9 @@ const CustomerList = () => {
 			setData({rows:_data})
 
 		} catch (err) {
-			snackbar.showMessage(err.message)
+			snackbar.showMessage(
+				"Error: " + err?.response?.data ?? err,
+			)
 		}
     }
 
