@@ -2,7 +2,7 @@ export default {
     project: {
         name:"Project",
         texts:[
-            {label:"Name", id:"name"},
+            {label:"Name", id:"name", isRequired:true},
             {label:"Promoter", id:"promoter"},
             {label:"Loaction", id:"location"},
             {label:"Plot No", id:"plotNum"},

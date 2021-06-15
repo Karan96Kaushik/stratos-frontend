@@ -9,7 +9,7 @@ export default {
     developer: {
         name:"Developer",
         texts:[
-            {label:"Name", id:"name"},
+            {label:"Name", id:"name", isRequired:true},
             {label:"Project Name", id:"projectName"},
             {label:"Location", id:"location"},
             {label:"Plot No", id:"plotNum"},

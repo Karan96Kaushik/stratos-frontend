@@ -43,8 +43,30 @@ const TaskAddForm = (props) => {
 		setClientRows(response)
 	};
 
+	const [errors, setErrors] = useState({});
+	const validateForm = () => {
+		let errFields = []
+		let foundErrs = {}
+		let errorFlag = false
+
+		if(!Object.keys(values).length)
+			throw new Error("Incomplete Form")
+		taskFields[type].texts.map(field => {
+			if(field.isRequired && !values[field.id]){
+				errFields.push(field.label)
+				foundErrs[field.id] = true
+				errorFlag = true
+			}
+		})
+		console.debug(foundErrs)
+		setErrors(foundErrs)
+		if(errorFlag)
+			throw new Error(errFields.join(", "))
+	}
+
 	const handleSubmit = async () => {
 		try {
+			validateForm()
 			await authorizedReq({
 				route:"/api/tasks/" + (!isEdit ? "add" : "update"), 
 				data:values, 
@@ -57,7 +79,7 @@ const TaskAddForm = (props) => {
 			navigate('/app/tasks');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err?.response?.data ?? err,
+				"Error: " + (err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}
@@ -180,6 +202,7 @@ const TaskAddForm = (props) => {
 								id="clientName"
 								onClick={() => setOpen(true)}
 								required
+								error={errors.clientName}
 								value={values.clientName ?? " "}
 								variant="outlined"
 							/>
@@ -192,6 +215,7 @@ const TaskAddForm = (props) => {
 								id="serviceType"
 								onChange={handleChange}
 								required
+								error={errors.serviceType}
 								defaultValue={!isEdit?"":Object.keys(taskFields)[0]}
 								disabled={isEdit}
 								value={values.serviceType}
@@ -219,6 +243,8 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
+									required={field.isRequired}
+									error={errors[field.id]}
 									id={field.id}
 									onChange={handleChange}
 									value={values[field.id]}

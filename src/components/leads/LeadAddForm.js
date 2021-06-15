@@ -20,6 +20,27 @@ const TaskAddForm = (props) => {
 	
     let isEdit = false;
 
+	const [errors, setErrors] = useState({});
+	const validateForm = () => {
+		let errFields = []
+		let foundErrs = {}
+		let errorFlag = false
+
+		if(!Object.keys(values).length)
+			throw new Error("Incomplete Form")
+		leadFields[type].texts.map(field => {
+			if(field.isRequired && !values[field.id]){
+				errFields.push(field.label)
+				foundErrs[field.id] = true
+				errorFlag = true
+			}
+		})
+		console.debug(foundErrs)
+		setErrors(foundErrs)
+		if(errorFlag)
+			throw new Error(errFields.join(", "))
+	}
+
 	if (location.pathname.includes("edit")) {
 		isEdit = true
 		let leadID = location.pathname.split("/").pop()
@@ -32,6 +53,7 @@ const TaskAddForm = (props) => {
 
 	const handleSubmit = async () => {
 		try {
+			validateForm()
 			await authorizedReq({
 				route:"/api/leads/" + (!isEdit ? "add" : "update"), 
 				data:values, 
@@ -44,7 +66,7 @@ const TaskAddForm = (props) => {
 			navigate('/app/leads');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err?.response?.data ?? err,
+				"Error: " + (err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}
@@ -83,6 +105,7 @@ const TaskAddForm = (props) => {
 								id="leadType"
 								onChange={handleChange}
 								required
+								error={errors.leadType}
 								defaultValue={!isEdit ? "":Object.keys(leadFields)[0]}
 								disabled={isEdit}
 								value={values.leadType}
@@ -111,6 +134,8 @@ const TaskAddForm = (props) => {
 									label={field.label}
 									type={field.type ?? 'text'}
 									id={field.id}
+									required={field.isRequired}
+									error={errors[field.id]}
 									onChange={handleChange}
 									value={values[field.id] ?? ''}
 									variant="outlined"
