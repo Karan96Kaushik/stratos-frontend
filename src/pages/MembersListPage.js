@@ -16,9 +16,11 @@ const CustomerList = () => {
     const loadData = () => {
         authorizedReq({ route: "/api/members/", creds: loginState.loginState, data:{}, method: 'get' })
             .then(data => setRows(data))
-			.catch(() => {
+			.catch((err) => {
+				console.debug(err)
+				console.debug(err?.response?.data, err.message)
 				snackbar.showMessage(
-					"Error: " + err?.response?.data ?? err,
+					err?.response?.data ?? err.message ?? err,
 				)
 			})
     }

@@ -79,7 +79,7 @@ const TaskAddForm = (props) => {
 			navigate('/app/tasks');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + (err?.response?.data ?? err.message ?? err),
+				(err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}

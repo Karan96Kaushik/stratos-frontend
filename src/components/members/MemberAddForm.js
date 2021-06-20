@@ -75,7 +75,7 @@ const MemberAddForm = (props) => {
 			navigate('/app/members');
 		} catch (err) {
 			snackbar.showMessage(
-				"Error: " + err?.response?.data ?? err,
+				err?.response?.data ?? err,
 			)
 			console.error(err)
 		}
