@@ -59,10 +59,30 @@ const MemberAddForm = (props) => {
 			setValues(data)
 		}, [])
 	}
-		
+	
+	const [errors, setErrors] = useState({});
+	const validateForm = () => {
+		let errFields = []
+		let foundErrs = {}
+		let errorFlag = false
+
+		if(!Object.keys(values).length)
+			throw new Error("Incomplete Form")
+		clientFields[type].texts.map(field => {
+			if(field.isRequired && !values[field.id]){
+				errFields.push(field.label)
+				foundErrs[field.id] = true
+				errorFlag = true
+			}
+		})
+		setErrors(foundErrs)
+		if(errorFlag)
+			throw new Error(errFields.join(", "))
+	}
+
 	const handleSubmit = async () => {
 		try {
-			// console.info("/api/members/" + (!isEdit ? "add" : "update"))
+			validateForm()
 			await authorizedReq({
 				route:"/api/members/" + (!isEdit ? "add" : "update"), 
 				data:values, 
@@ -75,7 +95,7 @@ const MemberAddForm = (props) => {
 			navigate('/app/members');
 		} catch (err) {
 			snackbar.showMessage(
-				err?.response?.data ?? err,
+				String(err?.response?.data ?? err),
 			)
 			console.error(err)
 		}
@@ -109,6 +129,8 @@ const MemberAddForm = (props) => {
 									label={field.label}
 									defaultValue={!isEdit ? "" : field.default ?? " "}
 									id={field.id}
+									required={field.isRequired}
+									error={errors[field.id]}
 									type={field.type ?? "text"}
 									onChange={handleChange}
 									value={values?.[field.id]}

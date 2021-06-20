@@ -58,7 +58,6 @@ const TaskAddForm = (props) => {
 				errorFlag = true
 			}
 		})
-		console.debug(foundErrs)
 		setErrors(foundErrs)
 		if(errorFlag)
 			throw new Error(errFields.join(", "))

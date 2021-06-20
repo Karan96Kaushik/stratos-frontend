@@ -76,7 +76,7 @@ const CustomerList = () => {
 
 		} catch (err) {
 			snackbar.showMessage(
-				err?.response?.data ?? err,
+				String(err?.response?.data ?? err.message ?? err),
 			)
 		}
     }
