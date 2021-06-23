@@ -21,10 +21,10 @@ if ('serviceWorker' in navigator) {
     );
   });
   
-  export function soda () {
+  function soda () {
     console.log("SODA")
   }
   
-  export function register () {
+  function register () {
     console.log("regsoda")
   }

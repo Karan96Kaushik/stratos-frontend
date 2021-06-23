@@ -23,7 +23,7 @@ const TaskAddForm = (props) => {
 	
     let isEdit = false;
 
-	const searchInfo = useRef({})
+	const [searchInfo, setSearchInfo] = useState({type:""});
 
 	if (location.pathname.includes("edit")) {
 		isEdit = true
@@ -38,7 +38,7 @@ const TaskAddForm = (props) => {
 	}
 
 	const getClients = async () => {
-		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo.current}, method: 'get' })
+		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo}, method: 'get' })
 		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 		setClientRows(response)
 	};
@@ -123,7 +123,7 @@ const TaskAddForm = (props) => {
 										<TextField
 											fullWidth
 											label="Select Client Search"
-											onChange={({target}) => {searchInfo.current.type = target.value}}
+											onChange={({target}) => {setSearchInfo({...searchInfo, type:target.value})}}
 											select
 											SelectProps={{ native: true }}
 											variant="outlined"
@@ -144,8 +144,8 @@ const TaskAddForm = (props) => {
 											fullWidth
 											label="Search Client"
 											id="search"
-											onChange={({target}) => {searchInfo.current.text = target.value}}
-											value={searchInfo.current.text}
+											onChange={({target}) => {setSearchInfo({...searchInfo, text:target.value})}}
+											value={searchInfo.text}
 											variant="outlined"
 										/>
 									</Grid>
@@ -242,6 +242,7 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
+									InputLabelProps={{ shrink: true }}
 									required={field.isRequired}
 									error={errors[field.id]}
 									id={field.id}

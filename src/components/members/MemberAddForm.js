@@ -68,7 +68,7 @@ const MemberAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		clientFields[type].texts.map(field => {
+		memberFields.texts.map(field => {
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true
@@ -128,6 +128,7 @@ const MemberAddForm = (props) => {
 									select={field.options?.length}
 									label={field.label}
 									defaultValue={!isEdit ? "" : field.default ?? " "}
+									InputLabelProps={{ shrink: field.type == "date" ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}

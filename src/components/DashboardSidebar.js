@@ -25,7 +25,7 @@ import {
 	User as UserIcon,
 	UserPlus as UserPlusIcon,
 	Users as UsersIcon,
-	DollarSign
+	ArrowDownCircle
 } from 'react-feather';
 import NavItem from './NavItem';
 import {LoginContext} from "../myContext"
@@ -56,6 +56,14 @@ const items = [
 		icon: FlagIcon,
 		title: 'Leads'
 	},
+	
+	// {
+	// 	// href:"#",
+	// 	onClick: () => {console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);},
+	// 	icon: ArrowDownCircle,
+	// 	title: 'Install'
+	// },
+
 	// {
 	// 	href: '/app/quotations',
 	// 	icon: MailIcon,
@@ -128,6 +136,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					{items.map((item) => (
 						<NavItem
 							href={item.href}
+							onClick={item.onClick ?? (() => {console.debug(item.href)})}
 							key={item.title}
 							title={item.title}
 							icon={item.icon}

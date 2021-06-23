@@ -1,16 +1,18 @@
+import taskFields from "./taskFields"
+
 const memberFields = {
         texts:[
-            {label:"Name", id:"userName"},
-            {label:"Email", id:"email"},
-            {label:"Password", id:"password", hideEdit:true},
-            {label:"Mobile", id:"phone"},
-            {label:"Designation", id:"designation"},
-            {label:"Department", id:"department"},
-            {label:"Address", id:"address"},
-            {label:"Emergency Contact", id:"emergencyContact"},
-            {label:"Blood Group", id:"bloodGroup"},
-            {label:"Start Date", id:"startDate", type:"date", default:new Date().toISOString().split("T")[0]},
-            {label:"End Date", id:"startDate", type:"date"},
+            {label:"Name", id:"userName", isRequired:true},
+            {label:"Email", id:"email", isRequired:true},
+            {label:"Password", id:"password", hideEdit:true, isRequired:true},
+            {label:"Mobile", id:"phone", isRequired:true},
+            {label:"Designation", id:"designation", isRequired:true},
+            {label:"Department", id:"department", isRequired:true},
+            {label:"Address", id:"address", isRequired:true},
+            {label:"Emergency Contact", id:"emergencyContact", isRequired:true},
+            {label:"Blood Group", id:"bloodGroup", isRequired:true},
+            {label:"Start Date", id:"startDate", type:"date", isRequired:true},
+            {label:"End Date", id:"endDate", type:"date"},
             {label:"Remarks", id:"remarks"},
         ],
         checkboxes:[
@@ -26,10 +28,7 @@ const pagePermissionFields = [
     "Leads W",
 ]
 
-const servicePermissionFields = [
-    "Agent Registration",
-    "Project Registration",
-]
+const servicePermissionFields = Object.keys(taskFields)
 
 export {
     pagePermissionFields,

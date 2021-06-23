@@ -132,6 +132,7 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
+									InputLabelProps={{ shrink: field.type == "date" ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}

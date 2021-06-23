@@ -16,12 +16,12 @@ export default {
             {label:"Plot Area", id:"plotArea"},
             {label:"RERA Cert No", id:"certNum"},
             {label:"Service Type", id:"serviceType", options:services},
-            {label:"Mobile", id:"mobile"},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Office", id:"office"},
             {label:"Email", id:"email"},
             {label:"Quote Amount", id:"quoteAmount", type:"number"},
 
-            {label:"Lead Rating", id:"leadRating", options: [1,2,3,4,5], type:"number"},
+            {label:"Lead Rating", id:"leadRating", options: [1,2,3,4,5], type:"number", isRequired:true},
             {label:"Lead Source", id:"leadSource", options:["","Whatsapp","Inbound Calls","Existing Customer","Reference","Outbound Calls","Website","Enquiries","Others"]},
             {label:"Lead Responsibility", id:"leadResponsibility"},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
@@ -35,8 +35,8 @@ export default {
     agent: {
         name:"Agent",
         texts:[
-            {label:"Name", id:"name"},
-            {label:"Mobile", id:"mobile"},
+            {label:"Name", id:"name", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
 
             {label:"Other Services", id:"service", options:["Training", "Legal Documents", "Others"]},
@@ -58,12 +58,12 @@ export default {
     litigation: {
         name:"Litigation",
         texts:[
-            {label:"Name", id:"name"},
-            {label:"Mobile", id:"mobile"},
+            {label:"Name", id:"name", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
             
-            {label:"Type", id:"type", options:["Complainant", "Respondant"]},
-            {label:"Category", id:"category", options:["Developer", "Buyer"]},
+            {label:"Type", id:"type", options:["Complainant", "Respondant"], isRequired:true},
+            {label:"Category", id:"category", options:["Developer", "Buyer"], isRequired:true},
             {label:"Service", id:"service", options:["Package","Indivudal Service","Retainer Service"]},
             {label:"Breif Service Required", id:"breifService"},
             {label:"Breif Case", id:"breifCase"},
