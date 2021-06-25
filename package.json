@@ -2,7 +2,7 @@
   "name": "tms",
   "author": "DeviasIO",
   "licence": "MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "scripts": {
     "start": "react-scripts start",
