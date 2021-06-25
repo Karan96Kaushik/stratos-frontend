@@ -64,16 +64,16 @@ const items = [
 	// 	title: 'Install'
 	// },
 
-	// {
-	// 	href: '/app/quotations',
-	// 	icon: MailIcon,
-	// 	title: 'Quotations'
-	// },
-	// {
-	// 	href: '/app/invoices',
-	// 	icon: FileTextIcon,
-	// 	title: 'Invoices'
-	// },
+	{
+		href: '/app/quotations',
+		icon: MailIcon,
+		title: 'Quotations'
+	},
+	{
+		href: '/app/invoices',
+		icon: FileTextIcon,
+		title: 'Invoices'
+	},
 	// {
 	// 	href: '/app/accounts',
 	// 	icon: DollarSignIcon,

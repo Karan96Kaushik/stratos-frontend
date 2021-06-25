@@ -8,6 +8,10 @@ import TasksList from 'src/pages/TaskListPage2';
 import TasksAdd from 'src/pages/TasksAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
+import InvoiceListPage from 'src/pages/InvoiceListPage';
+import InvoiceAdd from 'src/pages/InvoiceAdd';
+import QuotationListPage from 'src/pages/QuotationListPage';
+import QuotationAdd from 'src/pages/QuotationAdd';
 import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
 import CustomerList from 'src/pages/CustomerList';
@@ -58,6 +62,22 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <LeadsListPage /> },
 					{ path: 'add', element: <LeadsAdd /> },
 					{ path: 'edit/:id', element: <LeadsAdd /> },
+				]
+			},
+			{
+				path: 'invoices',
+				children: [
+					{ path: '/', element: <InvoiceListPage /> },
+					{ path: 'add', element: <InvoiceAdd /> },
+					{ path: 'edit/:id', element: <InvoiceAdd /> },
+				]
+			},
+			{
+				path: 'quotations',
+				children: [
+					{ path: '/', element: <QuotationListPage /> },
+					{ path: 'add', element: <QuotationAdd /> },
+					{ path: 'edit/:id', element: <QuotationAdd /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }

@@ -1,12 +1,12 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import LeadListToolbar from 'src/components/tasks/TaskListToolbar2';
+import LeadListToolbar from 'src/components/invoices/InvoiceListToolbar';
 import {authorizedReq} from '../utils/request'
 import { LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import taskFields from '../statics/taskFields';
+import invoiceFields from '../statics/invoiceFields';
 import GeneralList from '../components/GeneralList'
 
 function useQuery() {
@@ -45,7 +45,7 @@ const CustomerList = () => {
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
 	useEffect(() => {
-		if(query.serviceType) {
+		if(query.leadType) {
 			loadData()
 		}
 	}, [])
@@ -55,8 +55,8 @@ const CustomerList = () => {
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
-		navigate("/app/tasks?" + serialize(search));
-		if(search.serviceType)
+		navigate("/app/invoices?" + serialize(search));
+		if(search.leadType)
 			goSearch("PG");
 	}, [search])
 
@@ -67,7 +67,7 @@ const CustomerList = () => {
 	const loadData = async () => {
 		try{
 			const _data = await authorizedReq({
-				route: "/api/tasks/search", 
+				route: "/api/invoices/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
 				method: 'get'
@@ -76,13 +76,13 @@ const CustomerList = () => {
 
 		} catch (err) {
 			snackbar.showMessage(
-				String(err.message ?? err?.response?.data ?? err),
+				err?.response?.data ?? err.message ?? err,
 			)
 		}
     }
 
 	const handleChange = (event) => {
-		if (event.target.id == 'serviceType'){
+		if (event.target.id == 'leadType'){
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
@@ -90,13 +90,13 @@ const CustomerList = () => {
 	}
 	
 	const extraFields = [
-		{name:"Task ID", id: "taskID"},
-		{name:"Client Name", id: "clientName"},
+		{name:"Lead ID", id: "leadID"},
+		{name:"memberID", id: "memberID"},
 	]
 
 	return (<>
 		<Helmet>
-			<title>Tasks | TMS</title>
+			<title>Leads | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -109,8 +109,8 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.serviceType} 
-							fields={taskFields} 
+							type={search.leadType} 
+							fields={invoiceFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
