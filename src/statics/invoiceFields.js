@@ -9,11 +9,15 @@ const froms = [
 ] 
 
 const invoiceFields = {
+    all: {
         texts:[
             {label:"Invoice From", id:"from", options:froms, isRequired:true},
             {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
             {label:"Date", id:"date", type:"date"},
             {label:"GST Num", id:"gstNum", options:["", "None", "27AAFFO8457Q1ZB"]},
+            {label:"Project Name", id:"projectName", isRequired:true},
+            {label:"PAN Card No", id:"panNum"},
+            {label:"Particulars", id:"particulars"},
             {label:"Bill To", id:"billTo"},
             {label:"Client Addr", id:"clientAddress"},
             {label:"Client GST", id:"clientGST"},
@@ -26,5 +30,6 @@ const invoiceFields = {
         checkboxes:[
         ]
     }
+}
 
 export default invoiceFields

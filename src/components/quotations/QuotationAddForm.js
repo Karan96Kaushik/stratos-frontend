@@ -16,7 +16,6 @@ const TaskAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 
 	const [values, setValues] = useState({});
-	const [type, setType] = useState("");
 	
     let isEdit = false;
 
@@ -28,7 +27,7 @@ const TaskAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		quotationFields.texts.map(field => {
+		quotationFields.all.texts.map(field => {
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true
@@ -42,10 +41,9 @@ const TaskAddForm = (props) => {
 
 	if (location.pathname.includes("edit")) {
 		isEdit = true
-		let leadID = location.pathname.split("/").pop()
+		let quotationID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/quotations/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			setType(data.leadType)
+			let data = await authorizedReq({route:"/api/quotations/", data:{_id:quotationID}, creds:loginState.loginState, method:"get"})
 			setValues(data)
 		}, [])
 	}
@@ -60,7 +58,7 @@ const TaskAddForm = (props) => {
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isEdit ? "added" : "updated"} lead!`,
+				`Successfully ${!isEdit ? "added" : "updated"} quotation!`,
 			)
 			navigate('/app/quotations');
 		} catch (err) {
@@ -92,7 +90,7 @@ const TaskAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{quotationFields?.texts.map((field) => (
+						{quotationFields?.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -117,7 +115,7 @@ const TaskAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						{quotationFields?.checkboxes.map((field) => (
+						{quotationFields?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox

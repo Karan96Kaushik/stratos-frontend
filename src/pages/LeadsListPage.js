@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import LeadListToolbar from 'src/components/leads/LeadListToolbar';
 import {authorizedReq} from '../utils/request'
-import { LoginContext } from "../myContext"
+import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import leadFields from '../statics/leadFields';
@@ -30,6 +30,7 @@ const serialize = function(obj) {
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
+	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
@@ -66,6 +67,7 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/leads/search", 
 				creds: loginState.loginState, 
@@ -79,7 +81,8 @@ const CustomerList = () => {
 				err?.response?.data ?? err.message ?? err,
 			)
 		}
-    }
+		setLoading({...loading, isActive:false})
+	}
 
 	const handleChange = (event) => {
 		if (event.target.id == 'leadType'){
@@ -91,7 +94,8 @@ const CustomerList = () => {
 	
 	const extraFields = [
 		{name:"Lead ID", id: "leadID"},
-		{name:"memberID", id: "memberID"},
+		{name:"Member ID", id: "memberID"},
+		{name:"Date", id: "createdTime"},
 	]
 
 	return (<>

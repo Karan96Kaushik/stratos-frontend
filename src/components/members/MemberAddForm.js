@@ -50,11 +50,8 @@ const MemberAddForm = (props) => {
 			let data = await authorizedReq({route:"/api/members/", data:{_id:memberID}, creds:loginState.loginState, method:"get"})
 			data = data[0]
 			
-			data.pagePermissions = pagePermissionFields.map(val => data.permissions.page.includes(val.toLowerCase().replace(" ", "")) ? val : null )
-			data.servicePermissions = servicePermissionFields.map(val => data.permissions.service.includes(val.toLowerCase().replace(" ", "")) ? val : null )
-
-			data.pagePermissions = data.pagePermissions.filter(Boolean)
-			data.servicePermissions = data.servicePermissions.filter(Boolean)
+			data.pagePermissions = pagePermissionFields.filter(val => data.permissions.page.includes(val))
+			data.servicePermissions = servicePermissionFields.filter(val => data.permissions.service.includes(val))
 
 			setValues(data)
 		}, [])
@@ -69,6 +66,8 @@ const MemberAddForm = (props) => {
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
 		memberFields.texts.map(field => {
+			if(isEdit && field.id == 'password')
+				return
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true

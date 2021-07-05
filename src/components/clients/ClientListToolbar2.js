@@ -11,7 +11,6 @@ import {
 import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import clientFields from 'src/statics/clientFields';
-import leadFields from '../../statics/leadFields';
 
 const CustomerListToolbar = (props) => {
 
@@ -33,7 +32,7 @@ const CustomerListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box>
-							<Grid container spacing={1}>
+							<Grid container spacing={3}>
 								<Grid item md={4} xs={6}>
 									<TextField fullWidth label="Select Client Type" 
 										id="clientType"
@@ -42,7 +41,7 @@ const CustomerListToolbar = (props) => {
 										select
 										SelectProps={{native: true}}
 										value={props.searchInfo["clientType"]}
-										variant="outlined">
+										variant="standard">
 										<option/> {
 										Object.keys(clientFields).map((option) => (
 											<option key={option}
@@ -60,7 +59,7 @@ const CustomerListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
 										select
 										SelectProps={{ native: true }}
-										variant="outlined"
+										variant="standard"
 									>
 										{([["",""],["Client ID", "clientID"], ["Name", "name"]]).map((option) => (
 											<option
@@ -72,27 +71,27 @@ const CustomerListToolbar = (props) => {
 										))}
 									</TextField>
 								</Grid>
+
 								<Grid item md={4} xs={6}>
-									<TextField fullWidth
-										InputProps={{
-												endAdornment: (
-													<InputAdornment position="end" onClick={props.goSearch}>
-														<Button
-															variant="contained"
-															color="primary"
-															style={{margin:0}}
-														>
-															<SearchIcon style={{padding:0}} />
-														</Button>
-													</InputAdornment>
-												)
-											}}
+									<TextField
+										fullWidth
+										label="Phrase"
+										id="text"
 										value={props.searchInfo["text"]}
-										placeholder="Search"
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
-										id={'text'}
-										variant="outlined"
+										variant="standard"
 									/>
+								</Grid>
+
+								<Grid item md={4} xs={12}>
+									<Button
+										fullWidth
+										variant="contained"
+										color="primary"
+										style={{margin:0, padding:10}}
+									>
+										Search <SearchIcon style={{padding:0}} />
+									</Button>
 								</Grid>
 							</Grid>
 						</Box>

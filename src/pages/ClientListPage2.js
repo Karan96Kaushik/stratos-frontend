@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import ClientListToolbar from 'src/components/clients/ClientListToolbar2';
 import {authorizedReq} from '../utils/request'
-import { LoginContext } from "../myContext"
+import { LoginContext,LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import clientFields from '../statics/clientFields';
@@ -28,9 +28,10 @@ const serialize = function(obj) {
   }
 
 const CustomerList = () => {
-
+	console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);
 	const loginState = useContext(LoginContext)
-    const [data, setData] = useState({type: '', rows:[]})
+	const {loading, setLoading} = useContext(LoadingContext)
+	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
@@ -66,6 +67,7 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/clients/search", 
 				creds: loginState.loginState, 
@@ -79,7 +81,8 @@ const CustomerList = () => {
 				String(err?.response?.data ?? err.message ?? err),
 			)
 		}
-    }
+		setLoading({...loading, isActive:false})
+	}
 
 	const handleChange = (event) => {
 		if (event.target.id == 'clientType'){

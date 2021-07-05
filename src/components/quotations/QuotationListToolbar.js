@@ -32,8 +32,8 @@ const CustomerListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box>
-							<Grid container spacing={1}>
-								<Grid item md={6} xs={6}>
+							<Grid container spacing={2}>
+								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
 										label="Select Search Field"
@@ -42,9 +42,9 @@ const CustomerListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
 										select
 										SelectProps={{ native: true }}
-										variant="filled"
+										variant="standard"
 									>
-										{([["",""],["Quote ID", "quoteID"], ["Name", "name"]]).map((option) => (
+										{([["",""],["Quotation ID", "quotationID"], ["Name", "name"]]).map((option) => (
 											<option
 												key={option[0]}
 												value={option[1]}
@@ -55,28 +55,28 @@ const CustomerListToolbar = (props) => {
 									</TextField>
 								</Grid>
 
-								<Grid item md={6} xs={6}>
-									<TextField fullWidth
-										InputProps={{
-												endAdornment: (
-													<InputAdornment position="end" onClick={props.goSearch}>
-														<Button
-															variant="contained"
-															color="primary"
-															style={{margin:0}}
-														>
-															<SearchIcon style={{padding:0}} />
-														</Button>
-													</InputAdornment>
-												)
-											}}
+								<Grid item md={4} xs={6}>
+									<TextField
+										fullWidth
+										label="Phrase"
+										id="text"
 										value={props.searchInfo["text"]}
-										placeholder="Search"
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
-										id={'text'}
-										variant="filled"
+										variant="standard"
 									/>
 								</Grid>
+
+								<Grid item md={4} xs={12}>
+									<Button
+										fullWidth
+										variant="contained"
+										color="primary"
+										style={{margin:0, padding:10}}
+									>
+										Search  <SearchIcon style={{padding:0}} />
+									</Button>
+								</Grid>
+
 							</Grid>
 						</Box>
 					</CardContent>

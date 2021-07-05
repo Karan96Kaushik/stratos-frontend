@@ -46,7 +46,6 @@ function Row(props) {
 }
 
 export default function CollapsibleTable({rows}) {
-	console.log(rows)
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">

@@ -4,5 +4,9 @@ const NavBarContext = React.createContext(true);
 const LoginContext = React.createContext({
     isLoggedIn:false
 });
+const LoadingContext = React.createContext({
+    isActive:false,
+    text: false
+});
 
-export { NavBarContext, LoginContext };
+export { NavBarContext, LoginContext, LoadingContext };

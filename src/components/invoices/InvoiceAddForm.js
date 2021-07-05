@@ -16,7 +16,6 @@ const TaskAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 
 	const [values, setValues] = useState({});
-	const [type, setType] = useState("");
 	
     let isEdit = false;
 
@@ -28,7 +27,7 @@ const TaskAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		invoiceFields[type].texts.map(field => {
+		invoiceFields.all.texts.map(field => {
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true
@@ -42,10 +41,9 @@ const TaskAddForm = (props) => {
 
 	if (location.pathname.includes("edit")) {
 		isEdit = true
-		let leadID = location.pathname.split("/").pop()
+		let invoiceID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			setType(data.leadType)
+			let data = await authorizedReq({route:"/api/invoices/", data:{_id:invoiceID}, creds:loginState.loginState, method:"get"})
 			setValues(data)
 		}, [])
 	}
@@ -54,18 +52,18 @@ const TaskAddForm = (props) => {
 		try {
 			validateForm()
 			await authorizedReq({
-				route:"/api/leads/" + (!isEdit ? "add" : "update"), 
+				route:"/api/invoices/" + (!isEdit ? "add" : "update"), 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isEdit ? "added" : "updated"} lead!`,
+				`Successfully ${!isEdit ? "added" : "updated"} invoice!`,
 			)
 			navigate('/app/invoices');
 		} catch (err) {
 			snackbar.showMessage(
-				String(err.message ?? err?.response?.data ?? err),
+				(err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}
@@ -73,11 +71,6 @@ const TaskAddForm = (props) => {
 	};
 
 	const handleChange = (event) => {
-
-		if (event.target.id == 'leadType') {
-			setType(event.target.value)
-		} 
-
 		setValues({
 			...values,
 			// ...others,
@@ -97,7 +90,7 @@ const TaskAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{invoiceFields?.texts.map((field) => (
+						{invoiceFields?.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -122,7 +115,7 @@ const TaskAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						{invoiceFields?.checkboxes.map((field) => (
+						{invoiceFields?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox

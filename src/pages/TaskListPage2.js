@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import LeadListToolbar from 'src/components/tasks/TaskListToolbar2';
 import {authorizedReq} from '../utils/request'
-import { LoginContext } from "../myContext"
+import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import taskFields from '../statics/taskFields';
@@ -30,7 +30,9 @@ const serialize = function(obj) {
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
-    const [data, setData] = useState({type: '', rows:[]})
+	const {loading, setLoading} = useContext(LoadingContext)
+
+	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
@@ -66,6 +68,7 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/search", 
 				creds: loginState.loginState, 
@@ -79,7 +82,8 @@ const CustomerList = () => {
 				String(err.message ?? err?.response?.data ?? err),
 			)
 		}
-    }
+		setLoading({...loading, isActive:false})
+	}
 
 	const handleChange = (event) => {
 		if (event.target.id == 'serviceType'){
@@ -92,6 +96,7 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Task ID", id: "taskID"},
 		{name:"Client Name", id: "clientName"},
+		{name:"Date", id: "createdTime"},
 	]
 
 	return (<>

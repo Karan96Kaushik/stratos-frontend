@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import QuotationListToolbar from 'src/components/quotations/QuotationListToolbar';
 import {authorizedReq} from '../utils/request'
-import { LoginContext } from "../myContext"
+import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import quotationFields from '../statics/quotationFields';
@@ -30,6 +30,7 @@ const serialize = function(obj) {
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
+	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
@@ -42,12 +43,10 @@ const CustomerList = () => {
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
-	const [search, setSearch] = useState({...query, page, rowsPerPage})
+	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
 
 	useEffect(() => {
-		if(query.leadType) {
-			loadData()
-		}
+		loadData()
 	}, [])
 
 	useEffect(async () => {
@@ -56,7 +55,7 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		navigate("/app/quotations?" + serialize(search));
-		if(search.leadType)
+		if(search.text == "" || search.text.length > 4)
 			goSearch("PG");
 	}, [search])
 
@@ -66,6 +65,7 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/quotations/search", 
 				creds: loginState.loginState, 
@@ -79,19 +79,21 @@ const CustomerList = () => {
 				err?.response?.data ?? err.message ?? err,
 			)
 		}
-    }
+		setLoading({...loading, isActive:false})
+	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'leadType'){
+		// if (event.target.id == 'leadType'){
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		}
+		// }
 	}
 	
 	const extraFields = [
-		{name:"Lead ID", id: "leadID"},
-		{name:"memberID", id: "memberID"},
+		{name:"Quotation ID", id: "quotationID"},
+		{name:"Member ID", id: "memberID"},
+		{name:"Date", id: "createdTime"},
 	]
 
 	return (<>
@@ -109,7 +111,7 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.leadType} 
+							type={"all"} 
 							fields={quotationFields} 
 							data={data} 
 							search={search} 

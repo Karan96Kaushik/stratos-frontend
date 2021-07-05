@@ -1,10 +1,14 @@
 import taskFields from "./taskFields"
 
-const status = ["None" , "On hold" , "Pricing issue" , "Undecisive" , "Converted" , "Confirmed"]
+const status = ["None" , "On hold" , "Pricing issue" , "Undecisive" , "Converted" , "Confirmed", "Not Interested"]
+const serviceTypes = Object.keys(taskFields)
+serviceTypes.unshift("")
+serviceTypes.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D')
 
-const invoiceFields = {
+const quotationFields = {
+    "all": {
         texts:[
-            {label:"Service Type", id:"serviceType", options:Object.keys(taskFields), isRequired:true},
+            {label:"Service Type", id:"serviceType", options:serviceTypes, isRequired:true},
             {label:"Department", id:"dept", options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
             {label:"Client Name", id:"clientName", isRequired:true},
             {label:"Related Project Name", id:"relatedProject"},
@@ -18,5 +22,6 @@ const invoiceFields = {
         checkboxes:[
         ]
     }
+}
 
-export default invoiceFields
+export default quotationFields

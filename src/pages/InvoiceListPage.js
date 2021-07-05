@@ -1,9 +1,9 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import LeadListToolbar from 'src/components/invoices/InvoiceListToolbar';
+import InvoiceListToolbar from 'src/components/invoices/InvoiceListToolbar';
 import {authorizedReq} from '../utils/request'
-import { LoginContext } from "../myContext"
+import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import invoiceFields from '../statics/invoiceFields';
@@ -30,6 +30,7 @@ const serialize = function(obj) {
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
+	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
@@ -42,12 +43,10 @@ const CustomerList = () => {
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
-	const [search, setSearch] = useState({...query, page, rowsPerPage})
+	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
 
 	useEffect(() => {
-		if(query.leadType) {
-			loadData()
-		}
+		loadData()
 	}, [])
 
 	useEffect(async () => {
@@ -56,7 +55,7 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		navigate("/app/invoices?" + serialize(search));
-		if(search.leadType)
+		if(search?.text == "" || search.text.length > 4)
 			goSearch("PG");
 	}, [search])
 
@@ -66,6 +65,7 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/invoices/search", 
 				creds: loginState.loginState, 
@@ -79,24 +79,25 @@ const CustomerList = () => {
 				err?.response?.data ?? err.message ?? err,
 			)
 		}
-    }
+		setLoading({...loading, isActive:false})
+	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'leadType'){
+		// if (event.target.id == 'leadType'){
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		}
+		// }
 	}
 	
 	const extraFields = [
-		{name:"Lead ID", id: "leadID"},
-		{name:"memberID", id: "memberID"},
+		{name:"Invoice ID", id: "invoiceID"},
+		{name:"Member ID", id: "memberID"},
 	]
 
 	return (<>
 		<Helmet>
-			<title>Leads | TMS</title>
+			<title>Invoices | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -104,12 +105,12 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<LeadListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<InvoiceListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.leadType} 
+							type={"all"} 
 							fields={invoiceFields} 
 							data={data} 
 							search={search} 
