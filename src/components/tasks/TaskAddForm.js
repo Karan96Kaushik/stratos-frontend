@@ -2,7 +2,7 @@ import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel,
+	Checkbox, FormControlLabel, Autocomplete,
 	DialogActions, DialogContent, Dialog, DialogTitle
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
@@ -19,11 +19,26 @@ const TaskAddForm = (props) => {
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
 	const [type, setType] = useState("");
-	const [open, setOpen] = useState(false);
+
+	const handleChangeClient = ({target}) => {
+		if(target?.value?.length > 3) {
+			setSearchInfo({...searchInfo, text: target.value})
+		}
+		if(target?.value?.length == 0) {
+			setClientRows([])
+		}
+	}
 	
     let isEdit = false;
 
-	const [searchInfo, setSearchInfo] = useState({type:""});
+	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
+
+	useEffect(async () => {
+		if(searchInfo.text.length > 3)
+			getClients()
+		if(searchInfo.text.length == 0)
+			setClientRows([])
+	}, [searchInfo])
 
 	if (location.pathname.includes("edit")) {
 		isEdit = true
@@ -38,9 +53,17 @@ const TaskAddForm = (props) => {
 	}
 
 	const getClients = async () => {
-		let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo}, method: 'get' })
+		try {
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'get' })
+			setClientRows(response)
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting clients - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
 		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
-		setClientRows(response)
 	};
 
 	const [errors, setErrors] = useState({});
@@ -93,8 +116,7 @@ const TaskAddForm = (props) => {
 		} else if (event.target.id == 'client' && values?.client?.length > 2) {
 			getClients()
 		} else if (event.target.id == '_clientID') {
-			let client = clientRows.find(c => c._id == event.target.value)
-			others.clientName = client.name
+			others.clientName = event.target.name
 		}
 
 		setValues({
@@ -115,95 +137,15 @@ const TaskAddForm = (props) => {
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
-						<Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-dialog-title">
-							<DialogTitle id="form-dialog-title">Select Client</DialogTitle>
-							<DialogContent>
-								<Grid container spacing={1}>
-									<Grid item md={12} xs={12}>
-										<TextField
-											fullWidth
-											label="Select Client Search"
-											onChange={({target}) => {setSearchInfo({...searchInfo, type:target.value})}}
-											select
-											SelectProps={{ native: true }}
-											variant="outlined"
-										>
-											<option />
-											{([["ID", "clientID"], ["Project/Client Name", "name"]]).map((option) => (
-												<option
-													key={option[0]}
-													value={option[1]}
-												>
-													{option[0]}
-												</option>
-											))}
-										</TextField>
-									</Grid>
-									<Grid item md={12} xs={12}>
-										<TextField
-											fullWidth
-											label="Search Client"
-											id="search"
-											onChange={({target}) => {setSearchInfo({...searchInfo, text:target.value})}}
-											value={searchInfo.text}
-											variant="outlined"
-										/>
-									</Grid>
-									<Grid item md={12} xs={12}>
-										<Button
-											fullWidth
-											label="Search Client"
-											onClick={getClients}
-											variant="contained"
-										>
-											Search
-											</Button>
-									</Grid>
-									<Grid item md={12} xs={12}>
-										<TextField
-											fullWidth
-											label="Select Client"
-											id="_clientID"
-											onChange={handleChange}
-											required
-											select
-											SelectProps={{ native: true }}
-											variant="outlined"
-										>
-											<option />
-											{clientRows.map((option) => (
-												<option
-													key={option._id}
-													value={option._id}
-												>
-													{(option.clientID ?? option.name) + ` (${option.name})`}
-												</option>
-											))}
-										</TextField>
-									</Grid>
-								</Grid>
-
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={() => {setOpen(false)}} color="primary">
-									Cancel
-								</Button>
-								<Button onClick={() => {setOpen(false)}} color="primary">
-									Select
-								</Button>
-							</DialogActions>
-						</Dialog>
-
 						{!isEdit && (<Grid item md={6} xs={12}>
-							<TextField
+							<Autocomplete
+								id="_clientID"
+								options={clientRows}
+								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
+								onInputChange={handleChangeClient}
+								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name}})}
 								fullWidth
-								label={"Select Client"}
-								id="clientName"
-								onClick={() => setOpen(true)}
-								required
-								error={errors.clientName}
-								value={values.clientName ?? " "}
-								variant="outlined"
+								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
 						</Grid>)}
 
