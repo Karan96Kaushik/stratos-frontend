@@ -50,7 +50,7 @@ const CustomerListToolbar = (props) => {
 										))
 									} </TextField>
 								</Grid>
-								<Grid item md={4} xs={6}>
+								{/* <Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
 										label="Select Search Field"
@@ -70,22 +70,22 @@ const CustomerListToolbar = (props) => {
 											</option>
 										))}
 									</TextField>
-								</Grid>
+								</Grid> */}
 								<Grid item md={4} xs={6}>
 									<TextField fullWidth
-										InputProps={{
-												endAdornment: (
-													<InputAdornment position="end" onClick={props.goSearch}>
-														<Button
-															variant="contained"
-															color="primary"
-															style={{margin:0}}
-														>
-															<SearchIcon style={{padding:0}} />
-														</Button>
-													</InputAdornment>
-												)
-											}}
+										// InputProps={{
+										// 		endAdornment: (
+										// 			<InputAdornment position="end" onClick={props.goSearch}>
+										// 				<Button
+										// 					variant="contained"
+										// 					color="primary"
+										// 					style={{margin:0}}
+										// 				>
+										// 					<SearchIcon style={{padding:0}} />
+										// 				</Button>
+										// 			</InputAdornment>
+										// 		)
+										// 	}}
 										value={props.searchInfo["text"]}
 										placeholder="Search"
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}

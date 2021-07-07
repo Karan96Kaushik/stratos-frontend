@@ -53,7 +53,7 @@ export default function CollapsibleTable({rows}) {
 					<TableRow>
 						<TableCell align="left">Member ID</TableCell>
 						<TableCell align="left">Name</TableCell>
-						<TableCell align="left">Email</TableCell>
+						<TableCell align="left">Username</TableCell>
 						<TableCell align="left">Mobile</TableCell>
 						<TableCell align="left">Designation</TableCell>
 						<TableCell align="left">Start Date</TableCell>

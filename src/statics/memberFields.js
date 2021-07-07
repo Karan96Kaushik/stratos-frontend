@@ -3,8 +3,8 @@ import taskFields from "./taskFields"
 const memberFields = {
         texts:[
             {label:"Name", id:"userName", isRequired:true},
-            {label:"Email", id:"email", isRequired:true},
-            {label:"Password", id:"password", hideEdit:true, isRequired:true},
+            {label:"Username", id:"email", isRequired:true},
+            {label:"Password", id:"password", hideEdit:false, isRequired:true},
             {label:"Mobile", id:"phone", isRequired:true},
             {label:"Designation", id:"designation", isRequired:true},
             {label:"Department", id:"department", isRequired:true},

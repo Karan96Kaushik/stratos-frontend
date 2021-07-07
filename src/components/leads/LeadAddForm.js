@@ -72,6 +72,32 @@ const TaskAddForm = (props) => {
 
 	};
 
+	const handleDelete = async () => {
+		try {
+			const resp = confirm("Are you sure you want to delete this entry?")
+			console.log(resp)
+			if(!resp)
+				return
+			let taskID = location.pathname.split("/").pop()
+			await authorizedReq({
+				route:"/api/leads/", 
+				data:{_id:taskID}, 
+				creds:loginState.loginState, 
+				method:"delete"
+			})
+			snackbar.showMessage(
+				`Successfully deleted lead!`,
+			)
+			navigate('/app/leads');
+		} catch (err) {
+			snackbar.showMessage(
+				(err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+
+	};
+
 	const handleChange = (event) => {
 
 		if (event.target.id == 'leadType') {
@@ -168,6 +194,11 @@ const TaskAddForm = (props) => {
 					<Button color="primary" variant="contained" onClick={handleSubmit}>
 						Save details
 					</Button>
+					{
+						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+							Delete entry
+						</Button>)
+					}
 				</Box>
 			</Card>
 		</form>

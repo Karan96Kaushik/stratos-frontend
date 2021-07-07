@@ -110,13 +110,12 @@ const Login = () => {
                             helperText={
                                 touched.email && errors.email
                             }
-                            label="Email Address"
+                            label="Username"
                             margin="normal"
                             name="email"
                             onBlur={handleBlur}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            type="email"
                             variant="outlined"/>
                         <TextField error={Boolean(touched.password && errors.password)}
                             fullWidth
