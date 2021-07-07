@@ -23,6 +23,7 @@ export default {
             {label:"Reference", id:"reference"},
             {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate"},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
             {label:"Extension", id:"extension"},

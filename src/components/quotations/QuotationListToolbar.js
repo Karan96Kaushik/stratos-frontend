@@ -33,7 +33,7 @@ const CustomerListToolbar = (props) => {
 					<CardContent>
 						<Box>
 							<Grid container spacing={2}>
-								<Grid item md={4} xs={6}>
+								{/* <Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
 										label="Select Search Field"
@@ -53,12 +53,12 @@ const CustomerListToolbar = (props) => {
 											</option>
 										))}
 									</TextField>
-								</Grid>
+								</Grid> */}
 
 								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
-										label="Phrase"
+										label="Search"
 										id="text"
 										value={props.searchInfo["text"]}
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
@@ -66,7 +66,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 
-								<Grid item md={4} xs={12}>
+								{/* <Grid item md={4} xs={12}>
 									<Button
 										fullWidth
 										variant="contained"
@@ -75,7 +75,7 @@ const CustomerListToolbar = (props) => {
 									>
 										Search  <SearchIcon style={{padding:0}} />
 									</Button>
-								</Grid>
+								</Grid> */}
 
 							</Grid>
 						</Box>

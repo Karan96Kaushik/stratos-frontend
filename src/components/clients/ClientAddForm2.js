@@ -2,11 +2,12 @@ import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel,
+	Checkbox, FormControlLabel, List, ListItem,
+	Typography, Link
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import { authorizedReq } from '../../utils/request'
+import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import clientFields from '../../statics/clientFields';
 
@@ -45,7 +46,6 @@ const TaskAddForm = (props) => {
 				errorFlag = true
 			}
 		})
-		console.debug(foundErrs)
 		setErrors(foundErrs)
 		if(errorFlag)
 			throw new Error(errFields.join(", "))
@@ -65,7 +65,6 @@ const TaskAddForm = (props) => {
 			)
 			navigate('/app/clients');
 		} catch (err) {
-			console.debug(err, err.message)
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
 			)
@@ -74,19 +73,95 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleChange = (event) => {
+	const handleDelete = async () => {
+		try {
+			const resp = confirm("Are you sure you want to delete this entry?")
+			console.log(resp)
+			if(!resp)
+				return
+			let taskID = location.pathname.split("/").pop()
+			await authorizedReq({
+				route:"/api/clients/", 
+				data:{_id:taskID}, 
+				creds:loginState.loginState, 
+				method:"delete"
+			})
+			snackbar.showMessage(
+				`Successfully deleted client!`,
+			)
+			navigate('/app/clients');
+		} catch (err) {
+			snackbar.showMessage(
+				(err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
 
-		if (event.target.id == 'clientType') {
+	};
+
+	const handleChange = async (event) => {
+		let others = {}
+		if (event.target.id == 'files') {
+			// console.log(event.target.files.length)
+			others = {docs:[]}
+
+			let allFiles = []
+			let len = (event.target.files.length)
+			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
+			console.log(filesClone)
+			for (let i=0; i < len; i++)
+				allFiles.push(filesClone[i])
+
+			// console.log(allFiles)
+			for (let i=0; i < len; i++) {
+				let file = allFiles[i]
+				let fileData = file
+	
+				fileData = new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.onloadend = () => {
+					const base64String = reader.result
+						.replace("data:", "")
+						.replace(/^.+,/, "");
+				
+					resolve(base64String)
+					// console.log(base64String);
+					};
+					reader.readAsDataURL(fileData);
+				})
+	
+				fileData = await fileData
+				// console.log(file.name, others.docs.length, len, i)
+	
+				others.docs.push({name:file.name, data:fileData})
+			}
+			// event.target.files = allFiles
+			console.log(event.target.files, allFiles)
+			event.target.id = "ignore"
+				
+		} else if (event.target.id == 'clientType') {
 			setType(event.target.value)
 		} 
 
+		// console.log(others)
 		setValues({
 			...values,
-			// ...others,
-			[event.target.id]: event.target.value ?? event.target.checked
+			...others,
+			[event.target.id]: event.target.value ?? event.target.checked,
 		});
 
 	};
+
+	const downloadFile = ({target}) => {
+		const fileName = target.textContent
+		authorizedDownloadLink({
+			route:"/api/clients/files", 
+			data:{fileName}, 
+			creds:loginState.loginState, 
+			method:"post"
+		}, fileName.split("/")[1])
+
+	}
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
@@ -133,11 +208,13 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
+									inputProps={{ multiple: true }}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file") ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}
 									onChange={handleChange}
-									value={values[field.id] ?? ''}
+									value={field.id != "files" ? values[field.id] ?? '' : undefined}
 									variant="outlined"
 								>
 									{(field.options ?? []).map((option) => (
@@ -161,6 +238,17 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+							<Grid item md={6} xs={12}>
+								{isEdit && values?.files && <List>
+										{values?.files?.map((file) => (<ListItem>
+											<Link style={{cursor:'pointer'}} onClick={downloadFile} file={file}>
+												<Typography>{file}</Typography>
+											</Link>
+											</ListItem>))}
+									</List>
+								}
+							</Grid>
 					</Grid>
 				</CardContent>
 				<Divider />
@@ -168,6 +256,11 @@ const TaskAddForm = (props) => {
 					<Button color="primary" variant="contained" onClick={handleSubmit}>
 						Save details
 					</Button>
+					{
+						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+							Delete entry
+						</Button>)
+					}
 				</Box>
 			</Card>
 		</form>

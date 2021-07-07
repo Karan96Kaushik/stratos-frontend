@@ -36,47 +36,13 @@ const CustomerListToolbar = (props) => {
 								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
-										label="Select Search Field"
-										id="type"
-										value={props.searchInfo["type"]}
-										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
-										select
-										SelectProps={{ native: true }}
-										variant="standard"
-									>
-										{([["",""],["Invoice ID", "invoiceID"], ["Name", "name"]]).map((option) => (
-											<option
-												key={option[0]}
-												value={option[1]}
-											>
-												{option[0]}
-											</option>
-										))}
-									</TextField>
-								</Grid>
-
-								<Grid item md={4} xs={6}>
-									<TextField
-										fullWidth
-										label="Phrase"
+										label="Search"
 										id="text"
 										value={props.searchInfo["text"]}
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
 								</Grid>
-
-								<Grid item md={4} xs={12}>
-									<Button
-										fullWidth
-										variant="contained"
-										color="primary"
-										style={{margin:0, padding:10}}
-									>
-										Search  <SearchIcon style={{padding:0}} />
-									</Button>
-								</Grid>
-
 							</Grid>
 						</Box>
 					</CardContent>

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import {Typography} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -112,8 +113,9 @@ function TablePaginationActions(props) {
 	);
   }
 
-export default function CollapsibleTable({extraFields, fields, data, page, setPage, setRowsPerPage, rowsPerPage, type}) {
+export default function CollapsibleTable({extraFields, fields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState}) {
 	const {rows} = data;
+	// const [] = useState({id:'createdTime', direction:-1})
 
 	const handleChangePage = (event, newPage) => {
 	  setPage(newPage);
@@ -124,13 +126,37 @@ export default function CollapsibleTable({extraFields, fields, data, page, setPa
 	  setPage(1);
 	};
 
+	const setSort = (event) => {
+		let direction = null;
+		let sortId = event.target.attributes?.name?.nodeValue
+
+		if(sortId != sortState.sortID)
+			direction = -1
+		else
+			if(sortState.sortDir == -1)
+				direction = 1
+			if(!sortState.sortDir)
+				direction = -1
+
+		setSortState({sortID: sortId, sortDir: direction})
+	}
+
+	const sortColor = (id) => {
+		if(sortState.sortID == id)
+			if(sortState.sortDir == 1)
+				return "secondary"
+			else if (sortState.sortDir == -1)
+				return "primary"
+		return "text"
+	}
+ 
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
-						{(fields[type]?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell align="left">{field.name}</TableCell>)) : <></>}
-						{fields[type]?.texts.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						{(fields[type]?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
+						{fields[type]?.texts.map(field => <TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
 						{fields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
 						<TableCell align="left"></TableCell>
 					</TableRow>

@@ -24,7 +24,7 @@ const CustomerListToolbar = (props) => {
 				}
 			}>
 				<Link to="/app/tasks/add">
-					<Button sx={{mx: 1}} variant="contained">
+					<Button sx={{mx: 1}} variant="standard">
 						Add Task
 					</Button>
 				</Link>
@@ -42,7 +42,7 @@ const CustomerListToolbar = (props) => {
 										select
 										SelectProps={{native: true}}
 										value={props.searchInfo["serviceType"]}
-										variant="outlined">
+										variant="standard">
 										<option/> {
 										Object.keys(taskFields).map((option) => (
 											<option key={option}
@@ -51,47 +51,14 @@ const CustomerListToolbar = (props) => {
 										))
 									} </TextField>
 								</Grid>
-								{/* <Grid item md={4} xs={6}>
+								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
-										label="Select Search Field"
-										id="type"
-										value={props.searchInfo["type"]}
-										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
-										select
-										SelectProps={{ native: true }}
-										variant="outlined"
-									>
-										{([["",""],["Task ID", "taskID"], ["Client Name", "clientName"]]).map((option) => (
-											<option
-												key={option[0]}
-												value={option[1]}
-											>
-												{option[0]}
-											</option>
-										))}
-									</TextField>
-								</Grid> */}
-								<Grid item md={4} xs={6}>
-									<TextField fullWidth
-										// InputProps={{
-										// 		endAdornment: (
-										// 			<InputAdornment position="end" onClick={props.goSearch}>
-										// 				<Button
-										// 					variant="contained"
-										// 					color="primary"
-										// 					style={{margin:0}}
-										// 				>
-										// 					<SearchIcon style={{padding:0}} />
-										// 				</Button>
-										// 			</InputAdornment>
-										// 		)
-										// 	}}
+										label="Search"
+										id="text"
 										value={props.searchInfo["text"]}
-										placeholder="Search"
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
-										id={'text'}
-										variant="outlined"
+										variant="standard"
 									/>
 								</Grid>
 							</Grid>

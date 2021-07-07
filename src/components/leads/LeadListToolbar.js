@@ -23,7 +23,7 @@ const CustomerListToolbar = (props) => {
 				}
 			}>
 				<Link to="/app/leads/add">
-					<Button sx={{mx: 1}} variant="contained">
+					<Button sx={{mx: 1}} variant="standard">
 						Add Lead
 					</Button>
 				</Link>
@@ -41,7 +41,7 @@ const CustomerListToolbar = (props) => {
 										select
 										SelectProps={{native: true}}
 										value={props.searchInfo["leadType"]}
-										variant="outlined">
+										variant="standard">
 										<option/> {
 										Object.keys(leadFields).map((option) => (
 											<option key={option}
@@ -72,25 +72,13 @@ const CustomerListToolbar = (props) => {
 									</TextField>
 								</Grid> */}
 								<Grid item md={4} xs={6}>
-									<TextField fullWidth
-										// InputProps={{
-										// 		endAdornment: (
-										// 			<InputAdornment position="end" onClick={props.goSearch}>
-										// 				<Button
-										// 					variant="contained"
-										// 					color="primary"
-										// 					style={{margin:0}}
-										// 				>
-										// 					<SearchIcon style={{padding:0}} />
-										// 				</Button>
-										// 			</InputAdornment>
-										// 		)
-										// 	}}
+									<TextField
+										fullWidth
+										label="Search"
+										id="text"
 										value={props.searchInfo["text"]}
-										placeholder="Search"
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
-										id={'text'}
-										variant="outlined"
+										variant="standard"
 									/>
 								</Grid>
 							</Grid>

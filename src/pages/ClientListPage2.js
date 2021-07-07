@@ -35,6 +35,7 @@ const CustomerList = () => {
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
+	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -43,7 +44,7 @@ const CustomerList = () => {
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
-	const [search, setSearch] = useState({...query, page, rowsPerPage})
+	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
 
 	useEffect(() => {
 		if(query.clientType) {
@@ -52,12 +53,23 @@ const CustomerList = () => {
 	}, [])
 
 	useEffect(async () => {
-		setSearch({...search, page, rowsPerPage})
+		setSearch({...search, page, rowsPerPage, ...sortState})
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
+		if(!sortState.sortDir) {
+			setSortState({sortID:'createdTime', sortDir:-1})
+			return
+		}
+		if(page != 1)
+			setPage(1)
+		else
+			setSearch({...search, ...sortState})
+	}, [sortState])
+
+	useEffect(async () => {
 		navigate("/app/clients?" + serialize(search));
-		if(search.clientType)
+		if((search.text == "" || search.text.length > 2) && search.clientType)
 			goSearch("PG");
 	}, [search])
 
@@ -93,6 +105,7 @@ const CustomerList = () => {
 	}
 	
 	const extraFields = [
+		{name:"Date", id: "createdTime"},
 		{name:"Client ID", id: "clientID"},
 	]
 
@@ -120,6 +133,8 @@ const CustomerList = () => {
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
+							setSortState={setSortState}
+							sortState={sortState}
 						/>				
 					</Paper>
 				</Box>

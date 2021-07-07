@@ -26,7 +26,7 @@ const CustomerListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box sx={{ maxWidth: 500 }}>
-							<TextField
+							{/* <TextField
 								fullWidth
 								InputProps={{
 									startAdornment: (
@@ -42,7 +42,7 @@ const CustomerListToolbar = (props) => {
 								}}
 								placeholder="Search member"
 								variant="outlined"
-							/>
+							/> */}
 						</Box>
 					</CardContent>
 				</Card>
