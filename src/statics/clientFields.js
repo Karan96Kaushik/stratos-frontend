@@ -4,7 +4,7 @@ export default {
         texts:[
             {label:"Name", id:"name", isRequired:true},
             {label:"Promoter", id:"promoter"},
-            {label:"Loaction", id:"location"},
+            {label:"Location", id:"location"},
             {label:"Plot No", id:"plotNum"},
             {label:"Plot Area", id:"plotArea"},
             {label:"Total Units", id:"totalUnits", type:"number"},
@@ -44,6 +44,7 @@ export default {
             {label:"Email", id:"email"},
             {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate"},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]
@@ -62,6 +63,7 @@ export default {
             {label:"Email", id:"email"},
             {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate"},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
             {label:"Pro Bono", id:"proBono"},

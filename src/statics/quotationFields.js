@@ -18,6 +18,7 @@ const quotationFields = {
             {label:"Quotation Amount", id:"quotationAmount"},
             {label:"Remarks", id:"remarks"},
             {label:"Status", id:"status", options: status},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]

@@ -14,6 +14,7 @@ const memberFields = {
             {label:"Start Date", id:"startDate", type:"date", isRequired:true},
             {label:"End Date", id:"endDate", type:"date"},
             {label:"Remarks", id:"remarks"},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]

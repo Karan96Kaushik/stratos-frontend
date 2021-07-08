@@ -16,7 +16,7 @@ const CustomerList = () => {
 
     const loadData = () => {
 		setLoading({...loading, isActive:true})
-        authorizedReq({ route: "/api/members/", creds: loginState.loginState, data:{}, method: 'get' })
+        authorizedReq({ route: "/api/members/search", creds: loginState.loginState, data:{}, method: 'get' })
             .then(data => {
 				setRows(data)
 				setLoading({...loading, isActive:false})

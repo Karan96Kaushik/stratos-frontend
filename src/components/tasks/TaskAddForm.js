@@ -3,11 +3,12 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
 	Checkbox, FormControlLabel, Autocomplete,
-	DialogActions, DialogContent, Dialog, DialogTitle
+	DialogActions, DialogContent, Dialog, DialogTitle,
+	List, ListItem, Typography, Link
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import { authorizedReq } from '../../utils/request'
+import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import taskFields from '../../statics/taskFields';
 
@@ -45,8 +46,7 @@ const TaskAddForm = (props) => {
 		let taskID = location.pathname.split("/").pop()
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/tasks/", data:{_id:taskID}, creds:loginState.loginState, method:"get"})
-			data = data[0]
-			
+			// data = data[0]
 			setType(data.serviceType)
 			setValues(data)
 		}, [])
@@ -134,8 +134,41 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleChange = (event) => {
-		let others = {};
+	const handleChange = async (event) => {
+		let others = {}
+		if (event.target.id == 'files') {
+			// console.log(event.target.files.length)
+			others = {docs:[]}
+
+			let allFiles = []
+			let len = (event.target.files.length)
+			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
+			for (let i=0; i < len; i++)
+				allFiles.push(filesClone[i])
+
+			// console.log(allFiles)
+			for (let i=0; i < len; i++) {
+				let file = allFiles[i]
+				let fileData = file
+	
+				fileData = new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.onloadend = () => {
+					const base64String = reader.result
+						.replace("data:", "")
+						.replace(/^.+,/, "");
+				
+					resolve(base64String)
+					};
+					reader.readAsDataURL(fileData);
+				})
+	
+				fileData = await fileData
+				others.docs.push({name:file.name, data:fileData})
+			}
+			event.target.id = "ignore"
+				
+		}
 
 		if (event.target.id == 'serviceType') {
 			setType(event.target.value)
@@ -153,6 +186,17 @@ const TaskAddForm = (props) => {
 
 	};
 
+	const downloadFile = ({target}) => {
+		const fileName = target.textContent
+		authorizedDownloadLink({
+			route:"/api/files", 
+			data:{fileName}, 
+			creds:loginState.loginState, 
+			method:"post"
+		}, fileName.split("/")[1])
+
+	}
+	
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
@@ -210,12 +254,13 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
-									InputLabelProps={{ shrink: true }}
+									inputProps={field.type == "file" ? { multiple: true } : {}}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 									required={field.isRequired}
 									error={errors[field.id]}
 									id={field.id}
 									onChange={handleChange}
-									value={values[field.id]}
+									value={field.id != "files" ? values[field.id] ?? '' : undefined}
 									variant="outlined"
 								>
 									{(field.options ?? []).map((option) => (
@@ -241,6 +286,16 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+						<Grid item md={6} xs={12}>
+							{isEdit && values?.files && <List>
+									{values?.files?.map((file) => (<ListItem>
+										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
+											<Typography >{file}</Typography>
+										</Link>
+										</ListItem>))}
+								</List>
+							}
+						</Grid>
 					</Grid>
 				</CardContent>
 				<Divider />

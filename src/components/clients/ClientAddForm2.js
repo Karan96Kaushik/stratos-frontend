@@ -155,7 +155,7 @@ const TaskAddForm = (props) => {
 	const downloadFile = ({target}) => {
 		const fileName = target.textContent
 		authorizedDownloadLink({
-			route:"/api/clients/files", 
+			route:"/api/files", 
 			data:{fileName}, 
 			creds:loginState.loginState, 
 			method:"post"
@@ -242,8 +242,8 @@ const TaskAddForm = (props) => {
 							<Grid item md={6} xs={12}>
 								{isEdit && values?.files && <List>
 										{values?.files?.map((file) => (<ListItem>
-											<Link style={{cursor:'pointer'}} onClick={downloadFile} file={file}>
-												<Typography>{file}</Typography>
+											<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
+												<Typography >{file}</Typography>
 											</Link>
 											</ListItem>))}
 									</List>

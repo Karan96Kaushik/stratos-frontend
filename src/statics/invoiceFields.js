@@ -26,6 +26,7 @@ const invoiceFields = {
             {label:"Total Amount", id:"totalAmount", type:"number"},
             {label:"Paid Amount", id:"paidAmount", type:"number"},
             {label:"Balance Amount", id:"balanceAmount", type:"number"},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]

@@ -35,6 +35,7 @@ let commonTextFields = [
     {label:"Notes", id:"notes"},
     {label:"Bill Amount", id:"billAmount", type:"number"},
     {label:"GST", id:"gst", type:"number"},
+    {label:"Files", id:"files", type:"file"},
 ]
 
 export default {

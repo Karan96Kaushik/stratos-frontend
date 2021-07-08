@@ -33,6 +33,7 @@ export default {
             {label:"Remarks", id:"remarks"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Status", id: "status", options: statusOptions},
+            {label:"Files", id:"files", type:"file"},
 
         ],
         checkboxes:[
@@ -57,6 +58,7 @@ export default {
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Remarks", id:"remarks"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
+            {label:"Files", id:"files", type:"file"},
 
         ],
         checkboxes:[
@@ -83,6 +85,7 @@ export default {
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Remarks", id:"remarks"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
+            {label:"Files", id:"files", type:"file"},
 
         ],
         checkboxes:[

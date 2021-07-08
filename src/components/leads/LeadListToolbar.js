@@ -23,7 +23,7 @@ const CustomerListToolbar = (props) => {
 				}
 			}>
 				<Link to="/app/leads/add">
-					<Button sx={{mx: 1}} variant="standard">
+					<Button sx={{mx: 1}} variant="contained">
 						Add Lead
 					</Button>
 				</Link>
