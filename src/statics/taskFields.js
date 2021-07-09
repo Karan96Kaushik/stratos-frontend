@@ -72,7 +72,7 @@ export default {
     "Extension": {
         name:"Extension",
         texts:[
-            {label:"Under Section", id:"section", options:["Section 6", "Section 7(3)"]},
+            {label:"Under Section", id:"section", options:["", "Section 6", "Section 7(3)"]},
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
             ...commonTextFields,
@@ -204,7 +204,7 @@ export default {
     "Litigation": {
         name:"Litigation",
         texts:[
-            {label:"Client Type", id:"clientType", options:["Developer", "Agent", "Litigation"]},
+            {label:"Client Type", id:"clientType", options:["", "Developer", "Agent", "Litigation"]},
             {label:"Username", id:"username"},
             {label:"Password", id:"password"},
             {label:"Respondent Name", id:"respondentName"},

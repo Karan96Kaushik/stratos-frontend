@@ -31,6 +31,8 @@ const pagePermissionFields = [
     "Quotations W",
     "Invoices R",
     "Invoices W",
+    "Tasks R",
+    "Tasks W",
 ]
 
 const servicePermissionFields = Object.keys(taskFields)

@@ -1,7 +1,7 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import LeadListToolbar from 'src/components/tasks/TaskListToolbar2';
+import TaskListToolbar from 'src/components/tasks/TaskListToolbar2';
 import {authorizedReq} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
@@ -121,7 +121,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<LeadListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

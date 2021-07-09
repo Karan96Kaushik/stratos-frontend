@@ -24,7 +24,7 @@ const CustomerListToolbar = (props) => {
 				}
 			}>
 				<Link to="/app/tasks/add">
-					<Button sx={{mx: 1}} variant="standard">
+					<Button sx={{mx: 1}} variant="contained">
 						Add Task
 					</Button>
 				</Link>
