@@ -5,13 +5,10 @@ import {
 	Card,
 	CardContent,
 	TextField,
-	InputAdornment,
-	SvgIcon
 } from '@material-ui/core';
-import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import taskFields from 'src/statics/taskFields';
-import leadFields from '../../statics/leadFields';
+import Filters from '../FiltersDialog'
 
 const CustomerListToolbar = (props) => {
 
@@ -60,6 +57,9 @@ const CustomerListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
+								</Grid>
+								<Grid item md={4} xs={6}>
+									<Filters fields={taskFields} setSearch={props.setSearch} search={props.searchInfo}/>
 								</Grid>
 							</Grid>
 						</Box>
