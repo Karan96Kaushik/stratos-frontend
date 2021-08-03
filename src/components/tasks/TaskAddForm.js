@@ -11,6 +11,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import taskFields from '../../statics/taskFields';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -196,6 +197,10 @@ const TaskAddForm = (props) => {
 		}, fileName.split("/")[1])
 
 	}
+
+	const filterOptions = createFilterOptions({
+		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
+	  });
 	
 	return (
 		<form {...props} autoComplete="off" noValidate >
@@ -215,6 +220,7 @@ const TaskAddForm = (props) => {
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name}})}
 								fullWidth
+								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
 						</Grid>)}
