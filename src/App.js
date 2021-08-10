@@ -9,6 +9,7 @@ import { LoginContext, LoadingContext } from "./myContext"
 import React, { Component, useContext, useState, useEffect } from 'react';
 import { SnackbarProvider } from 'material-ui-snackbar-provider'
 import LoadingOverlay from 'react-loading-overlay';
+import { authorizedLogin } from './utils/request';
  
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
 	let dataStore;
 	dataStore = JSON.parse(localStorage.getItem("tmsStore"))
 	if(!dataStore) {
+		console.log("NO DATASTORE")
 		dataStore = { isLoggedIn: false }
 		localStorage.setItem("tmsStore", JSON.stringify(dataStore))
 	}
@@ -24,6 +26,25 @@ const App = () => {
 		isActive:false,
 		text: ""
 	})
+
+	useEffect(() => {
+		if(loginState?.isLoggedIn) {
+			console.log("APP RESTARTED, REFRESHING token")
+			// Refresh the token on application load
+			authorizedLogin(loginState).then((resp) => {
+				if(resp.isLoggedIn)
+					setLogin(loginState)
+			})
+			// Continously check refresh token
+			setInterval(async () => {
+				if(+new Date - loginState.loginTime > 1000*15) {
+					let resp = await authorizedLogin(loginState)
+					if(resp.isLoggedIn)
+						setLogin(loginState)
+				}
+			}, 5000);
+		}
+	}, [])
 
 	const routing = useRoutes(routes(loginState?.isLoggedIn));
 

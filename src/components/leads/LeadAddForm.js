@@ -2,18 +2,43 @@ import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel, Link, List, ListItem, Typography
+	Checkbox, FormControlLabel, Link, List, ListItem, Typography,
+	Select, FormControl, makeStyles, 
+	InputLabel, Input, MenuItem, ListItemText
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
+import taskFields from "../../statics/taskFields"
+
+let services = Object.keys(taskFields).map(a => (taskFields[a].name))
+// let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
+services.unshift("")
+services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D')
+
+const useStyles = makeStyles((theme) => ({
+	formControl: {
+		margin: theme.spacing(1)
+	},
+	chips: {
+		display: 'flex',
+		flexWrap: 'wrap'
+	},
+	chip: {
+		margin: 2
+	},
+	noLabel: {
+		marginTop: theme.spacing(3)
+	}
+}));
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
+	const classes = useStyles();
 
 	const [values, setValues] = useState({});
 	const [type, setType] = useState("");
@@ -226,6 +251,26 @@ const TaskAddForm = (props) => {
 									))}
 								</TextField>
 							</Grid>))}
+						
+						<Grid item md={12} xs={12}>
+							<FormControl fullWidth className={classes.formControl}>	
+							<InputLabel id="serviceType">Service Type</InputLabel>
+							<Select 
+								multiple 
+								fullWidth
+								id="serviceType" value={values?.serviceType || []}
+								onChange={(e) => setValues({...values, serviceType:e.target.value})}
+								input={<Input />} renderValue={(selected) => selected.join(', ')}
+								>
+								{services.map((name) => (
+									<MenuItem key={name} value={name}>
+										<Checkbox checked={(values?.serviceType ?? []).indexOf(name) > -1} />
+										<ListItemText primary={name} />
+									</MenuItem>
+								))}
+							</Select>
+							</FormControl>
+						</Grid>
 
 						{leadFields[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -239,6 +284,8 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>

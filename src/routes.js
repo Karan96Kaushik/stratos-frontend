@@ -87,7 +87,7 @@ const routes = (isLoggedIn) => [
 		path: '/',
 		element: <MainLayout />,
 		children: [
-			{ path: 'login', element: <Login /> },
+			{ path: 'login', element: isLoggedIn ? <Navigate to="/" /> : <Login /> },
 			{ path: 'register', element: <Register /> },
 			{ path: '404', element: <NotFound /> },
 			{ path: '/', element: <Navigate to="/app/members" /> },

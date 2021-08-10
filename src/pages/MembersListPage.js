@@ -24,6 +24,7 @@ const CustomerList = () => {
 			.catch((err) => {
 				console.debug(err)
 				console.debug(err?.response?.data, err.message)
+				setLoading({...loading, isActive:false})
 				snackbar.showMessage(
 					err?.response?.data ?? err.message ?? err,
 				)

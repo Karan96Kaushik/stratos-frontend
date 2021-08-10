@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 // import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import ViewAgenda from '@material-ui/icons/ViewAgenda';
 import Edit from '@material-ui/icons/Edit';
 import {Link} from "react-router-dom"
 
@@ -29,13 +30,26 @@ const useRowStyles = makeStyles({
 
 function Row({ row, type, fields, extraFields }) {
 	const classes = useRowStyles();
+	// Filter out the ones not hidden in table view
+	if(type.length)
+		fields[type].texts = fields[type]?.texts.filter(val => !val.isHidden)
 
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
+				{/* Mount Extra Fields - fileds that are not entered by user */}
 				{(fields[type]?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
+				{/* Mount Main Fields - enterd by user */}
 				{fields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{/* Mount Checkboxes */}
 				{fields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
+				<TableCell>
+					<Link to={"view/" + row._id}>
+						<IconButton aria-label="expand row" size="small">
+							<ViewAgenda />
+						</IconButton>
+					</Link>
+				</TableCell>
 				<TableCell>
 					<Link to={"edit/" + row._id}>
 						<IconButton aria-label="expand row" size="small">

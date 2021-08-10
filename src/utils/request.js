@@ -94,4 +94,42 @@ const authorizedDownloadLink = async (request, fileName) => {
         
 };
 
-export {authorizedReq, authorizedDownload, authorizedDownloadLink}
+const authorizedLogin = async (request) => {
+
+    try {
+
+        console.debug(request)
+
+        let options = {
+            method:"post",
+            url: "/api/refresh", 
+            headers:{
+                "x-authentication": request.token
+            }
+        }
+
+        let resp = await axios(options)
+
+        resp = {
+            isLoggedIn: true,
+            loginTime: + new Date(),
+            ... resp.data.user,
+            token: resp.data.token
+        }
+
+        localStorage.setItem("tmsStore", JSON.stringify(resp))
+        return resp
+    }
+    catch (err) {
+        console.error(err)
+        console.debug("REFRESH Error", err?.response?.data ?? err?.response ?? err)
+        throw new Error(err?.response?.data || err)
+    }
+};
+
+export {
+    authorizedReq, 
+    authorizedDownload, 
+    authorizedDownloadLink, 
+    authorizedLogin
+}
