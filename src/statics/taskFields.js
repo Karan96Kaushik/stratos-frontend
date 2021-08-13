@@ -5,7 +5,10 @@ const statuses = [
     "In Progress", 
     "On Hold", 
     "Awaiting Documents from client", 
-    "Awaiting Accounts", 
+    "Awaiting Accounts Confirmation",
+] 
+
+const statusSet1 = [
     "Completed", 
     "Desk 1", 
     "Desk 2", 
@@ -14,7 +17,23 @@ const statuses = [
     "Accepted - 4", 
     "Under Scrutiny", 
     "Certificate Generated"
-] 
+]
+
+const statusSet2 = [
+    "For Certification",  "Completed" 
+]
+
+const statusSet3 = [
+    "Awaiting Hearing Date", "Hearing Date Schedule" 
+]
+
+const statusSet4 = [
+    "Notice Sent", "Period Completed", "Reply Received", "Completed" 
+]
+
+const statusSet5 = [
+    "Appointment Done", "Completed" 
+]
 
 const actions = [
     "", 
@@ -31,7 +50,6 @@ let commonTextFields = [
     {label:"Priority", id:"priority", type:"number"},
     {label:"Remarks", id:"remarks"},
     {label:"Deadline", id:"deadline", type:"date"},
-    {label:"Status", id:"status", options:statuses},
     {label:"Notes", id:"notes"},
     {label:"Bill Amount", id:"billAmount", type:"number"},
     {label:"GST", id:"gst", type:"number"},
@@ -43,6 +61,7 @@ export default {
         name:"Agent Registration",
         texts:[
             ...commonTextFields,
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number"},
         ],
         checkboxes:[
@@ -55,6 +74,7 @@ export default {
         name:"Project Registration",
         texts:[
             ...commonTextFields,
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number"},
             {label:"SRO Fees", id:"sroFees", type:"number"},
         ],
@@ -76,6 +96,7 @@ export default {
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
             ...commonTextFields,
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number"},
             {label:"SRO Fees", id:"sroFees", type:"number"},
         ],
@@ -86,6 +107,7 @@ export default {
         name:"Correction",
         texts:[
             {label:"Correction Details", id:"correctionDetails"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             ...commonTextFields,
         ],
         checkboxes:[
@@ -98,6 +120,7 @@ export default {
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Period", id:"period", isRequired:true},
             {label:"CA Assigned", id:"ca"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
         ],
         checkboxes:[
@@ -109,6 +132,7 @@ export default {
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Period", id:"period", isRequired:true},
             {label:"Engineer Assigned", id:"engineer"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
         ],
         checkboxes:[
@@ -123,6 +147,7 @@ export default {
             {label:"Documents to be Uploaded", id:"docsReq"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
         ],
         checkboxes:[
@@ -134,6 +159,7 @@ export default {
             {label:"Architect Assigned", id:"architect"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -145,6 +171,7 @@ export default {
             {label:"CA Assigned", id:"ca"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -156,6 +183,7 @@ export default {
             {label:"Engineer Assigned", id:"engineer"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -166,6 +194,7 @@ export default {
         texts:[
             {label:"Service Requested", id:"serviceReq"},
             {label:"Service Description", id:"serviceDesc"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -184,6 +213,7 @@ export default {
             {label:"Checked By", id:"checkedBy"},
             {label:"Signed By", id:"signedBy"},
             {label:"Date of Certification", id:"dateOfCertification", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -195,7 +225,7 @@ export default {
             {label:"Project Type", id:"projectType"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
-
+            {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -217,7 +247,7 @@ export default {
             {label:"Package Description", id:"packageDesc"},
             {label:"Status", id:"status"},
             {label:"Result", id:"result"},
-
+            {label:"Status", id:"status", options:[...statuses, ...statusSet3]},
             ...commonTextFields
         ],
         checkboxes:[
@@ -243,6 +273,7 @@ export default {
             {label:"Dispatch Date", id:"dispatchDate", type:"date"},
             {label:"Status", id:"status"},
             {label:"Reply Status", id:"replyStatus"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet4]},
 
         ],
         checkboxes:[
@@ -264,6 +295,7 @@ export default {
             {label:"Registration", id:"registration"},
             {label:"DHC Charges", id:"dhcCharges", type:"number"},
             {label:"Total", id:"total", type:"number"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet5]},
         ],
         checkboxes:[
         ]
@@ -274,6 +306,7 @@ export default {
             {label:"Document Type", id:"documentType"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
+            {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
         ],
         checkboxes:[
         ]
@@ -285,6 +318,7 @@ export default {
             {label:"Service Description", id:"serviceDescription"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
+            {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
 
         ],
         checkboxes:[
