@@ -79,6 +79,11 @@ const items = [
 		icon: DollarSignIcon,
 		title: 'Payments'
 	},
+	{
+		href: '/app/taskaccounts',
+		icon: DollarSignIcon,
+		title: 'Task - Accounts'
+	},
 	// {
 	// 	href: '/app/settings',
 	// 	icon: SettingsIcon,

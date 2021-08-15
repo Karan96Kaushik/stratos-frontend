@@ -68,7 +68,7 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		console.log("search updated")
-		navigate("/app/payments?" + serialize(search));
+		navigate("/app/taskaccounts?" + serialize(search));
 		if(search?.text?.length > 3 || search?.text?.length == 0)
 			goSearch();
 	}, [search])
@@ -81,7 +81,7 @@ const CustomerList = () => {
 		try{
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
-				route: "/api/payments/search", 
+				route: "/api/tasks/payments/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
 				method: 'get'
@@ -105,16 +105,31 @@ const CustomerList = () => {
 		// }
 	}
 	
-	const extraFields = [
-		{name:"Date", id: "createdTime"},
-		{name:"Payment ID", id: "paymentID"},
-		{name:"Task ID", id: "taskID"},
-		{name:"Client ID", id: "clientID"},
-	]
+	const extraFields = {
+		"all":{
+			texts:	[
+				{label:"Task Date", id: "createdTime"},
+				{label:"Task ID", id: "taskID"},
+				{label:"Client Name", id: "clientName"},
+				{label:"Status", id: "status"},
+				{label:"Remarks", id: "remarks"},
+				{label:"Bill Amount", id:"billAmount", type:"number"},
+				{label:"GST", id:"gst", type:"number"},
+				{label:"SRO Fees", id:"sroFees", type:"number"},
+				{label:"Government Fees", id:"govtFees", type:"number"},
+				{label:"Received", id:"received", type:"number"},
+				{label:"Total", id:"total", type:"number"},
+				{label:"Balance", id:"balance", type:"number"},
+			// {label:"Files", id:"files", type:"file"},
+			], 
+			checkboxes:[]
+		}
+	}
+
 
 	return (<>
 		<Helmet>
-			<title>Payments | TMS</title>
+			<title>Task Accounts | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -126,9 +141,9 @@ const CustomerList = () => {
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
-							extraFields={extraFields} 
+							extraFields={[]} 
 							type={"all"} 
-							fields={paymentFields} 
+							fields={extraFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
