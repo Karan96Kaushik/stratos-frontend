@@ -98,8 +98,6 @@ const authorizedLogin = async (request) => {
 
     try {
 
-        console.debug(request)
-
         let options = {
             method:"post",
             url: "/api/refresh", 

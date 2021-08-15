@@ -17,7 +17,6 @@ const App = () => {
 	let dataStore;
 	dataStore = JSON.parse(localStorage.getItem("tmsStore"))
 	if(!dataStore) {
-		console.log("NO DATASTORE")
 		dataStore = { isLoggedIn: false }
 		localStorage.setItem("tmsStore", JSON.stringify(dataStore))
 	}
@@ -29,7 +28,6 @@ const App = () => {
 
 	useEffect(() => {
 		if(loginState?.isLoggedIn) {
-			console.log("APP RESTARTED, REFRESHING token")
 			// Refresh the token on application load
 			authorizedLogin(loginState).then((resp) => {
 				if(resp.isLoggedIn)
@@ -42,7 +40,7 @@ const App = () => {
 					if(resp.isLoggedIn)
 						setLogin(loginState)
 				}
-			}, 5000);
+			}, 5*60*1000);
 		}
 	}, [])
 

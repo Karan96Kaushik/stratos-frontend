@@ -74,11 +74,11 @@ const items = [
 		icon: FileTextIcon,
 		title: 'Invoices'
 	},
-	// {
-	// 	href: '/app/accounts',
-	// 	icon: DollarSignIcon,
-	// 	title: 'Accounts'
-	// },
+	{
+		href: '/app/payments',
+		icon: DollarSignIcon,
+		title: 'Payments'
+	},
 	// {
 	// 	href: '/app/settings',
 	// 	icon: SettingsIcon,

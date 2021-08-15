@@ -12,9 +12,10 @@ import InvoiceListPage from 'src/pages/InvoiceListPage';
 import InvoiceAdd from 'src/pages/InvoiceAdd';
 import QuotationListPage from 'src/pages/QuotationListPage';
 import QuotationAdd from 'src/pages/QuotationAdd';
+import PaymentsListPage from 'src/pages/PaymentsListPage';
+import PaymentsAdd from 'src/pages/PaymentsAdd';
 import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
-import CustomerList from 'src/pages/CustomerList';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
 import NotFound from 'src/pages/NotFound';
@@ -78,6 +79,14 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <QuotationListPage /> },
 					{ path: 'add', element: <QuotationAdd /> },
 					{ path: 'edit/:id', element: <QuotationAdd /> },
+				]
+			},
+			{
+				path: 'payments',
+				children: [
+					{ path: '/', element: <PaymentsListPage /> },
+					{ path: 'add', element: <PaymentsAdd /> },
+					{ path: 'edit/:id', element: <PaymentsAdd /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
