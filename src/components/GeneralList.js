@@ -13,6 +13,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import ViewAgenda from '@material-ui/icons/ViewAgenda';
 import Edit from '@material-ui/icons/Edit';
+import Add from '@material-ui/icons/Add';
 import {Link} from "react-router-dom"
 
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -28,7 +29,7 @@ const useRowStyles = makeStyles({
 	},
 });
 
-function Row({ row, type, fields, extraFields }) {
+function Row({ row, type, fields, extraFields, additional }) {
 	const classes = useRowStyles();
 	// Filter out the ones not hidden in table view
 	if(type.length)
@@ -43,13 +44,14 @@ function Row({ row, type, fields, extraFields }) {
 				{fields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
-				<TableCell>
+				{additional?.map(func => (<TableCell>{func(row)}</TableCell>))}
+				{/* <TableCell>
 					<Link to={"view/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
 							<ViewAgenda />
 						</IconButton>
 					</Link>
-				</TableCell>
+				</TableCell> */}
 				<TableCell>
 					<Link to={"edit/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
@@ -127,7 +129,7 @@ function TablePaginationActions(props) {
 	);
   }
 
-export default function CollapsibleTable({extraFields, fields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState}) {
+export default function CollapsibleTable({extraFields, fields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional}) {
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
 
@@ -182,6 +184,7 @@ export default function CollapsibleTable({extraFields, fields, data, page, setPa
 							fields={fields} 
 							row={row} 
 							type={type} 
+							additional={additional}
 						/>
 					))}
 				</TableBody>

@@ -4,10 +4,12 @@ import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import PaymentsListToolbar from 'src/components/payments/PaymentsListToolbar';
 import {authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import paymentFields from '../statics/paymentFields';
 import GeneralList from '../components/GeneralList'
+import { Add } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -126,6 +128,16 @@ const CustomerList = () => {
 		}
 	}
 
+	// Add payment button
+	const renderButton = (val) => {
+		return (				
+			<Link to={`/app/payments/add?taskID=${val.taskID}`}>
+				<IconButton aria-label="expand row" size="small">
+					<Add />
+				</IconButton>
+			</Link>
+		)
+	}
 
 	return (<>
 		<Helmet>
@@ -153,6 +165,7 @@ const CustomerList = () => {
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
+							additional={[renderButton]}
 						/>				
 					</Paper>
 				</Box>

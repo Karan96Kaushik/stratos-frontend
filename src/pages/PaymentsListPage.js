@@ -138,6 +138,7 @@ const CustomerList = () => {
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
+							// additional={additional}
 						/>				
 					</Paper>
 				</Box>

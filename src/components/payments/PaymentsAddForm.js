@@ -10,7 +10,7 @@ import {
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 import paymentFields from '../../statics/paymentFields';
@@ -37,6 +37,15 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+function useQuery() {
+	let entries =  new URLSearchParams(useLocation().search);
+	const result = {}
+	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
+		result[key] = value;
+	}
+	return result;
+}
+
 const PaymentAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
@@ -52,8 +61,10 @@ const PaymentAddForm = (props) => {
 	
     let isEdit = false;
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
+	const query = useQuery();
 
 	const [errors, setErrors] = useState({});
+
 	const validateForm = () => {
 		let errFields = []
 		let foundErrs = {}
@@ -72,6 +83,21 @@ const PaymentAddForm = (props) => {
 		if(errorFlag)
 			throw new Error(errFields.join(", "))
 	}
+
+	useEffect(async () => {
+		if(query.taskID) {
+			try {
+				let res = await authorizedReq({ route: "/api/tasks/payments/search/add", creds: loginState.loginState, data: {taskID: query.taskID}, method: 'get' })
+				setClientRows([{clientID:res.clientID, name: res.clientName}])
+				setTaskRows([{taskID:res.taskID}])
+				setValues({...values, clientID: res.clientID, taskID: res.taskID, _clientID: res._clientID })
+			} catch (err) {
+				snackbar.showMessage(
+					"Error getting tasks - " + (err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
+	},[])
 
 	useEffect(async () => {
 		if(searchInfo.text.length > 3)
@@ -294,6 +320,8 @@ const PaymentAddForm = (props) => {
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
+								value={values.clientID}
+								inputValue={values.clientID}
 								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name}})}
