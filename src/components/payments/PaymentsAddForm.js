@@ -88,8 +88,8 @@ const PaymentAddForm = (props) => {
 		if(query.taskID) {
 			try {
 				let res = await authorizedReq({ route: "/api/tasks/payments/search/add", creds: loginState.loginState, data: {taskID: query.taskID}, method: 'get' })
-				setClientRows([{clientID:res.clientID, name: res.clientName}])
-				setTaskRows([{taskID:res.taskID}])
+				setClientRows([{clientID:res.clientID, name: res.clientName, _id: res._id}])
+				setTaskRows([{taskID:res.taskID, _id: res._id}])
 				setValues({...values, clientID: res.clientID, taskID: res.taskID, _clientID: res._clientID })
 			} catch (err) {
 				snackbar.showMessage(
@@ -117,7 +117,6 @@ const PaymentAddForm = (props) => {
 			)
 			console.error(err)
 		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 	};
 
 	const getTasks = async (_clientID) => {
@@ -131,7 +130,6 @@ const PaymentAddForm = (props) => {
 			)
 			console.error(err)
 		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 	};
 
 	/*
@@ -155,7 +153,6 @@ const PaymentAddForm = (props) => {
 		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/payments/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			// setType(data.leadType)
 			setValues(data)
 		}, [])
 	}
@@ -300,10 +297,6 @@ const PaymentAddForm = (props) => {
 	const filterTaskOptions = createFilterOptions({
 		stringify: option => option.taskID,
 	});
-
-	// const filterInvoiceOptions = createFilterOptions({
-	// 	stringify: option => option.invoiceID,
-	// });
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
