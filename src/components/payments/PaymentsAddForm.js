@@ -1,11 +1,9 @@
-import { useState, useContext, useRef, Fragment, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel, Link, List, ListItem, Typography,
-	Select, FormControl, makeStyles, 
+	Link, List, ListItem, Typography, makeStyles, 
 	Autocomplete,
-	InputLabel, Input, MenuItem, ListItemText
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -52,16 +50,20 @@ const PaymentAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
 
-	const [clientRows, setClientRows] = useState([]);
-	const [taskRows, setTaskRows] = useState([]);
+	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
+	const [taskRows, setTaskRows] = useState([{taskID:"", _id: ""}]);
 	// const [invoiceRows, setInvoiceRows] = useState([]);
+	const [placeholder, setPlaceholder] = useState({
+		task: {taskID:"", _id: ""}, 
+		client: {clientID:"", name: "", _id: ""}
+	});
 
 	const [values, setValues] = useState({});
-	// const [type, setType] = useState("");
 	
+	const query = useQuery();
+
     let isEdit = false;
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
-	const query = useQuery();
 
 	const [errors, setErrors] = useState({});
 
@@ -90,7 +92,16 @@ const PaymentAddForm = (props) => {
 				let res = await authorizedReq({ route: "/api/tasks/payments/search/add", creds: loginState.loginState, data: {taskID: query.taskID}, method: 'get' })
 				setClientRows([{clientID:res.clientID, name: res.clientName, _id: res._id}])
 				setTaskRows([{taskID:res.taskID, _id: res._id}])
-				setValues({...values, clientID: res.clientID, taskID: res.taskID, _clientID: res._clientID })
+				setPlaceholder({
+					client: {clientID:res.clientID, name: res.clientName, _id: res._id}, 
+					task: {taskID:res.taskID, _id: res._id}
+				})
+				setValues({
+					...values, 
+					clientID: res.clientID, 
+					taskID: res.taskID, 
+					_clientID: res._clientID
+				})
 			} catch (err) {
 				snackbar.showMessage(
 					"Error getting tasks - " + (err?.response?.data ?? err.message ?? err),
@@ -157,7 +168,11 @@ const PaymentAddForm = (props) => {
 		}, [])
 	}
 
-	const handleChangeClient = ({target}) => {
+	const handleChangeClient = (e) => {
+		let target = e?.target
+		if(!target)
+			return
+
 		if(target?.value?.length > 3) {
 			setSearchInfo({...searchInfo, text: target.value})
 		}
@@ -255,21 +270,19 @@ const PaymentAddForm = (props) => {
 				
 		}
 
-		if (event.target.id == '_clientID') {
+		else if (event.target.id == '_clientID') {
 			getTasks(event.target.value)
 			others["clientID"] = clientRows.find(val => event.target.value == val._id)
+			setPlaceholder({...placeholder, client:others["clientID"]})
 			others["clientID"] = others["clientID"].clientID
 		}
 
-		if (event.target.id == '_taskID') {
+		else if (event.target.id == '_taskID') {
 			getTasks(event.target.value)
 			others["taskID"] = taskRows.find(val => event.target.value == val._id)
+			setPlaceholder({...placeholder, task:others["taskID"]})
 			others["taskID"] = others["taskID"].taskID
 		}
-
-		// if (event.target.id == '_taskID') {
-		// 	getInvoices(event.target.value)
-		// }
 
 		setValues({
 			...values,
@@ -294,10 +307,6 @@ const PaymentAddForm = (props) => {
 		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
 	});
 
-	const filterTaskOptions = createFilterOptions({
-		stringify: option => option.taskID,
-	});
-
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
@@ -313,9 +322,8 @@ const PaymentAddForm = (props) => {
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
-								value={values.clientID}
-								inputValue={values.clientID}
-								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
+								value={placeholder.client}
+								getOptionLabel={(row) => row.name.length ? row.name + ` (${row.clientID})` : ""}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name}})}
 								fullWidth
@@ -328,12 +336,13 @@ const PaymentAddForm = (props) => {
 							<Autocomplete
 								id="_taskID"
 								options={taskRows}
+								value={placeholder.task}
 								getOptionLabel={(row) => row.taskID}
 								disabled={(values?._clientID?.length || 0) < 3}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_taskID", value:value._id, name:value.name}})}
 								fullWidth
-								filterOptions={filterTaskOptions}
+								// filterOptions={filterTaskOptions}
 								renderInput={(params) => <TextField {...params} label="Select Task" variant="standard" />}
 							/>
 						</Grid>)}

@@ -21,8 +21,12 @@ const TaskAddForm = (props) => {
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
 	const [type, setType] = useState("");
+	const [placeholder, setPlaceholder] = useState({});
 
-	const handleChangeClient = ({target}) => {
+	const handleChangeClient = (e) => {
+		let target = e?.target
+		if(!target)
+			return
 		if(target?.value?.length > 3) {
 			setSearchInfo({...searchInfo, text: target.value})
 		}
@@ -177,7 +181,10 @@ const TaskAddForm = (props) => {
 			getClients()
 		} else if (event.target.id == '_clientID') {
 			others.clientName = event.target.name
+			// let client = clientRows.find(val => String(val._id) == String(event.target.value))
+			// setPlaceholder({...placeholder, client})
 		}
+		console.log("KL:SAKLSA", event.target)
 
 		setValues({
 			...values,
@@ -200,7 +207,7 @@ const TaskAddForm = (props) => {
 
 	const filterOptions = createFilterOptions({
 		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
-	  });
+	});
 	
 	return (
 		<form {...props} autoComplete="off" noValidate >
@@ -216,6 +223,7 @@ const TaskAddForm = (props) => {
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
+								value={placeholder.client}
 								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name}})}

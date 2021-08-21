@@ -20,6 +20,8 @@ const TaskAddForm = (props) => {
 
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
+	const [memberRows, setMemberRows] = useState([{userName:"Select", memberID:"", _id:""}]);
+	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"Select", memberID:"", _id:""});
 	const [type, setType] = useState("");
 
 	const handleChangeClient = ({target}) => {
@@ -31,7 +33,7 @@ const TaskAddForm = (props) => {
 		}
 	}
 	
-    let isEdit = false;
+    let isEdit = location.pathname.includes("edit");
 
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 
@@ -42,16 +44,19 @@ const TaskAddForm = (props) => {
 			setClientRows([])
 	}, [searchInfo])
 
-	if (location.pathname.includes("edit")) {
-		isEdit = true
-		let taskID = location.pathname.split("/").pop()
-		useEffect(async () => {
+	useEffect(async () => {
+		let members = await getMembers()
+		if (isEdit) {
+			let taskID = location.pathname.split("/").pop()
 			let data = await authorizedReq({route:"/api/tasks/", data:{_id:taskID}, creds:loginState.loginState, method:"get"})
-			// data = data[0]
+
+			members = members.find(val => String(val._id) == String(data._memberID)) 
+			if(members)
+				setMemberPlaceholder(members)
 			setType(data.serviceType)
 			setValues(data)
-		}, [])
-	}
+		}
+	}, [])
 
 	const getClients = async () => {
 		try {
@@ -61,6 +66,21 @@ const TaskAddForm = (props) => {
 		} catch (err) {
 			snackbar.showMessage(
 				"Error getting clients - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
+	};
+
+	const getMembers = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/members/search", creds: loginState.loginState, data: {}, method: 'get' })
+			setMemberRows(response)
+			return response
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}
@@ -177,6 +197,10 @@ const TaskAddForm = (props) => {
 			getClients()
 		} else if (event.target.id == '_clientID') {
 			others.clientName = event.target.name
+		} else if (event.target.id == '_memberID') {
+			others.memberName = event.target.name
+			others.memberID = event.target.memberID
+			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		}
 
 		setValues({
@@ -200,8 +224,8 @@ const TaskAddForm = (props) => {
 
 	const filterOptions = createFilterOptions({
 		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
-	  });
-	
+	});
+
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
@@ -224,6 +248,20 @@ const TaskAddForm = (props) => {
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
 						</Grid>)}
+
+						<Grid item md={6} xs={12}>
+							<Autocomplete
+								id="membersAssigned"
+								// multiple
+								options={memberRows}
+								value={memberPlaceholder}
+								getOptionLabel={(row) => row.userName + ` (${row.memberID})`}
+								// onInputChange={handleChangeClient}
+								onChange={(e,value={}) => handleChange({target:{id:"_memberID", value:value?._id, name:value?.userName, memberID:value?.memberID}})}
+								fullWidth
+								renderInput={(params) => <TextField {...params} label="Member Assigned" variant="standard" />}
+							/>
+						</Grid>
 
 						<Grid item md={12} xs={12}>
 							<TextField
@@ -292,6 +330,7 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>

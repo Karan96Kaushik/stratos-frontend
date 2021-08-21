@@ -47,7 +47,7 @@ const actions = [
 ]
 
 let commonTextFields = [
-    {label:"Priority", id:"priority", type:"number"},
+    {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
     {label:"Remarks", id:"remarks"},
     {label:"Deadline", id:"deadline", type:"date"},
     {label:"Notes", id:"notes"},

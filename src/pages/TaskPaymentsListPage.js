@@ -34,7 +34,6 @@ const CustomerList = () => {
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
-    // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
@@ -69,7 +68,6 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log("search updated")
 		navigate("/app/taskaccounts?" + serialize(search));
 		if(search?.text?.length > 3 || search?.text?.length == 0)
 			goSearch();
@@ -88,7 +86,6 @@ const CustomerList = () => {
 				data:{...search}, 
 				method: 'get'
 			})
-			console.debug("DATA", _data)
 			setData({rows:_data})
 
 		} catch (err) {
@@ -100,11 +97,9 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
-		// if (event.target.id == 'leadType'){
-			setData({rows:[]})
-			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		// }
+		setData({rows:[]})
+		setPage(1)
+		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 	
 	const extraFields = {
