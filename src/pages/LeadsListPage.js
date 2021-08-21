@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import LeadListToolbar from 'src/components/leads/LeadListToolbar';
-import {authorizedReq} from '../utils/request'
+import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -41,6 +41,8 @@ const CustomerList = () => {
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
+	if(!query.leadType)
+		query.leadType = 'developer'
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
@@ -105,6 +107,15 @@ const CustomerList = () => {
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		}
 	}
+
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/leads/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'get'
+		}, "leadsExport-" + search.leadType + ".xlsx")
+	}
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
@@ -122,7 +133,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<LeadListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<LeadListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

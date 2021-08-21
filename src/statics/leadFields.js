@@ -7,8 +7,8 @@ services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D'
 // services.unshift(["", ""])
 
 const leadSourceOptions = ["","Whatsapp","Inbound Calls","Existing Customer","Reference","Outbound Calls","Website","Enquiries", "Commission Agent","Others"]
-const closureStatusOptions = ["","On hold","Pricing issue","Undecisive","Converted","Confirmed", "Not Interested"]
-const statusOptions = ["", "Profile Sent", "Quotation Sent", "Awaiting Response", "Follow up required", "Cold", "Not Interested"]
+const closureStatusOptions = ["","On hold","Pricing issue", "Awaiting Response", "Undecisive", "Converted", "In Progress", "Confirmed", "Not Interested"]
+const statusOptions = ["", "Profile Sent", "Quotation Sent", "Awaiting Response", "Follow up required", "Cold", "Not Interested","Others"]
 
 // Name, Project Name, Mobile No, Lead Rating, Status, Closure Status, Follow Up Date
 export default {

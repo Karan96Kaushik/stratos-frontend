@@ -21,6 +21,9 @@ const CustomerListToolbar = (props) => {
 						Add Member
 				</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{ mt: 3 }}>
 				<Card>

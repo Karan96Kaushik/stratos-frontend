@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import ClientListToolbar from 'src/components/clients/ClientListToolbar2';
-import {authorizedReq} from '../utils/request'
+import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoginContext,LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -103,6 +103,15 @@ const CustomerList = () => {
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		}
 	}
+
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/clients/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'get'
+		}, "clientsExport" + ".xlsx")
+	}
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
@@ -119,7 +128,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<ClientListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<ClientListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

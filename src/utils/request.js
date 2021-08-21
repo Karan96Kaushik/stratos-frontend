@@ -38,15 +38,24 @@ const authorizedReq = async (request) => {
     }
 };
 
+const serialize = function(obj) {
+	var str = [];
+	for (var p in obj)
+	  if (obj.hasOwnProperty(p)) {
+		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	  }
+	return str.join("&");
+}
+
 const authorizedDownload = async (request, fileName) => {
 
-    fetch(request.route, {
+    fetch(request.route + "?" + serialize(request.data), {
             method: request.method,
             headers: {
                 'Content-Type': 'application/json',
                 "x-authentication": request.creds.token
             },
-            body:JSON.stringify({...request.data}),
+            // body:JSON.stringify({...request.data}),
         })
         .then((response) => response.blob())
         .then((blob) => {

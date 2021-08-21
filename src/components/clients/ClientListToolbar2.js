@@ -27,6 +27,9 @@ const CustomerListToolbar = (props) => {
 						Add Client
 					</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -53,7 +56,7 @@ const CustomerListToolbar = (props) => {
 								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
-										label="Phrase"
+										label="Search"
 										id="text"
 										value={props.searchInfo["text"]}
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}

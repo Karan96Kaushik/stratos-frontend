@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import MemberListToolbar from 'src/components/members/MemberListToolbar';
 import MemberList from 'src/components/members/MemberList';
-import {authorizedReq} from '../utils/request'
+import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 
@@ -31,6 +31,15 @@ const CustomerList = () => {
 			})
     }
 
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/members/export", 
+			creds: loginState.loginState, 
+			// data:{...search}, 
+			method: 'get'
+		}, "membersExport" + ".xlsx")
+	}
+
 	React.useEffect(() => {
 		loadData()
 	}, []);
@@ -47,7 +56,7 @@ const CustomerList = () => {
 			}}
 		>
 			<Container maxWidth={false}>
-				<MemberListToolbar loadData={loadData} />
+				<MemberListToolbar handleExport={handleExport} loadData={loadData} />
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<MemberList rows={rows} />				

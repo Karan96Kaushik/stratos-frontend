@@ -45,6 +45,12 @@ const TaskAddForm = (props) => {
 				foundErrs[field.id] = true
 				errorFlag = true
 			}
+
+			if(field.id == "mobile" && (values[field.id].length < 10)){
+				errFields.push(field.label + "is invalid")
+				foundErrs[field.id] = true
+				errorFlag = true
+			}
 		})
 		setErrors(foundErrs)
 		if(errorFlag)
