@@ -20,8 +20,8 @@ const TaskAddForm = (props) => {
 
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
-	const [memberRows, setMemberRows] = useState([{userName:"Select", memberID:"", _id:""}]);
-	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"Select", memberID:"", _id:""});
+	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
+	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 	const [type, setType] = useState("");
 
 	const handleChangeClient = ({target}) => {
@@ -119,7 +119,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} task!`,
 			)
-			navigate('/app/tasks');
+			navigate('/app/tasks?' + 'serviceType=' + values?.serviceType );
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -255,7 +255,7 @@ const TaskAddForm = (props) => {
 								// multiple
 								options={memberRows}
 								value={memberPlaceholder}
-								getOptionLabel={(row) => row.userName + ` (${row.memberID})`}
+								getOptionLabel={(row) => row.userName?.length ? row.userName + ` (${row.memberID})` : ''}
 								// onInputChange={handleChangeClient}
 								onChange={(e,value={}) => handleChange({target:{id:"_memberID", value:value?._id, name:value?.userName, memberID:value?.memberID}})}
 								fullWidth

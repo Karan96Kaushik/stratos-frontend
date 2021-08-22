@@ -1,15 +1,17 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import PaymentsListToolbar from 'src/components/payments/PaymentsListToolbar';
+import TaskPaymentsListToolbar from 'src/components/tasks/TaskPaymentsListToolbar';
 import {authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import paymentFields from '../statics/paymentFields';
+import {allStatuses, allTasks} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import { Add } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
+
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -68,8 +70,11 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		navigate("/app/taskaccounts?" + serialize(search));
-		if(search?.text?.length > 3 || search?.text?.length == 0)
+		console.log(search)
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/taskaccounts?" + serialize(queryParams));
+		if(search?.text?.length > 3 || search?.text?.length == 0 || !search?.text)
 			goSearch();
 	}, [search])
 
@@ -84,7 +89,7 @@ const CustomerList = () => {
 				route: "/api/tasks/payments/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
@@ -107,8 +112,9 @@ const CustomerList = () => {
 			texts:	[
 				{label:"Task Date", id: "createdTime"},
 				{label:"Task ID", id: "taskID"},
+				{label:"Type", id: "serviceType", options:["",...allTasks]},
 				{label:"Client Name", id: "clientName"},
-				{label:"Status", id: "status"},
+				{label:"Status", id: "status", options:[...allStatuses]},
 				{label:"Remarks", id: "remarks"},
 				{label:"Bill Amount", id:"billAmount", type:"number"},
 				{label:"GST", id:"gst", type:"number"},
@@ -144,7 +150,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PaymentsListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskPaymentsListToolbar fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

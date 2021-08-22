@@ -5,12 +5,11 @@ import {
 	Card,
 	CardContent,
 	TextField,
-	InputAdornment,
-	SvgIcon
 } from '@material-ui/core';
 import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import clientFields from 'src/statics/clientFields';
+import Filters from '../FiltersDialog'
 
 const CustomerListToolbar = (props) => {
 
@@ -63,6 +62,9 @@ const CustomerListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
+								{/* <Grid item item md={4} xs={6}>
+									<Filters search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["clientType"]} fields={clientFields}/>
+								</Grid> */}
 							</Grid>
 						</Box>
 					</CardContent>

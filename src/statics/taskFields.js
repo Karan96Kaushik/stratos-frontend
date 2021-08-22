@@ -51,18 +51,20 @@ let commonTextFields = [
     {label:"Remarks", id:"remarks"},
     {label:"Deadline", id:"deadline", type:"date"},
     {label:"Notes", id:"notes"},
-    {label:"Bill Amount", id:"billAmount", type:"number"},
-    {label:"GST", id:"gst", type:"number"},
-    {label:"Files", id:"files", type:"file"},
+    {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
+    {label:"GST", id:"gst", type:"number", isHidden:true},
+    {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 
-export default {
+let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])
+
+const taskFields = {
     "Agent Registration": {
         name:"Agent Registration",
         texts:[
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
-            {label:"Government Fees", id:"govtFees", type:"number"},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
         ],
         checkboxes:[
             {label:"Letterhead", id:"letterHead"},
@@ -75,8 +77,8 @@ export default {
         texts:[
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
-            {label:"Government Fees", id:"govtFees", type:"number"},
-            {label:"SRO Fees", id:"sroFees", type:"number"},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            {label:"SRO Fees", id:"sroFees", type:"number", isHidden:true},
         ],
         checkboxes:[
             {label:"Form 3", id:"form3"},
@@ -97,8 +99,8 @@ export default {
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
-            {label:"Government Fees", id:"govtFees", type:"number"},
-            {label:"SRO Fees", id:"sroFees", type:"number"},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            {label:"SRO Fees", id:"sroFees", type:"number", isHidden:true},
         ],
         checkboxes:[
         ]
@@ -325,3 +327,7 @@ export default {
         ]
     },
 }
+
+const allTasks = Object.keys(taskFields)
+export {allStatuses, allTasks}
+export default taskFields

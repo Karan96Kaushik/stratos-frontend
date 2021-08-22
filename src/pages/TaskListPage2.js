@@ -69,9 +69,11 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		navigate("/app/tasks?" + serialize(search));
-		if(search.serviceType && (search.text == "" || search.text.length > 2))
-			goSearch("PG");
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/tasks?" + serialize(queryParams));
+		if(search.serviceType && (search.text == "" || search.text?.length > 2 || !search?.text))
+			goSearch();
 	}, [search])
 
 	const goSearch = (rmk) => {
@@ -85,7 +87,7 @@ const CustomerList = () => {
 				route: "/api/tasks/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
