@@ -7,6 +7,7 @@ import { LoginContext,LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import clientFields from '../statics/clientFields';
+import {allClients} from '../statics/clientFields';
 import GeneralList from '../components/GeneralList'
 
 function useQuery() {
@@ -47,9 +48,9 @@ const CustomerList = () => {
 	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
 
 	useEffect(() => {
-		if(query.clientType) {
+		// if(query.clientType) {
 			loadData()
-		}
+		// }
 	}, [])
 
 	useEffect(async () => {
@@ -69,7 +70,7 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		navigate("/app/clients?" + serialize(search));
-		if((search.text == "" || search.text.length > 2) && search.clientType)
+		if((search.text == "" || search.text.length > 2 || !search.text))
 			goSearch("PG");
 	}, [search])
 
@@ -79,11 +80,15 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			let others = {}
+			if(!search.clientType)
+				others.searchAll = true
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/clients/search", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...search, ...others}, 
 				method: 'get'
 			})
 			setData({rows:_data})
@@ -135,6 +140,7 @@ const CustomerList = () => {
 							extraFields={extraFields} 
 							type={search.clientType} 
 							fields={clientFields} 
+							defaultFields={allClients} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 

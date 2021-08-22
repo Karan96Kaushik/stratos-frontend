@@ -29,21 +29,25 @@ const useRowStyles = makeStyles({
 	},
 });
 
-function Row({ row, type, fields, extraFields, additional }) {
+function Row({ row, type, fields, extraFields, additional, defaultFields }) {
 	const classes = useRowStyles();
 	// Filter out the ones not hidden in table view
-	if(type.length)
-		fields[type].texts = fields[type]?.texts.filter(val => !val.isHidden)
+
+	let fieldsShow = fields[type]
+	if(!type && defaultFields)
+		fieldsShow = defaultFields
+	if(type?.length)
+		fieldsShow.texts = fieldsShow?.texts.filter(val => !val.isHidden)
 
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
-				{(fields[type]?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
+				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
-				{fields[type]?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{fieldsShow?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
 				{/* Mount Checkboxes */}
-				{fields[type]?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
+				{fieldsShow?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
 				{additional?.map(func => (<TableCell>{func(row)}</TableCell>))}
 				{/* <TableCell>
 					<Link to={"view/" + row._id}>
@@ -129,7 +133,7 @@ function TablePaginationActions(props) {
 	);
   }
 
-export default function CollapsibleTable({extraFields, fields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional}) {
+export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional}) {
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
 
@@ -165,15 +169,19 @@ export default function CollapsibleTable({extraFields, fields, data, page, setPa
 				return "primary"
 		return "text"
 	}
+
+	let fieldsShow = fields[type]
+	if(!type && defaultFields)
+		fieldsShow = defaultFields
  
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
-						{(fields[type]?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
-						{fields[type]?.texts.map(field => <TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
-						{fields[type]?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						{(fieldsShow?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
+						{fieldsShow?.texts.map(field => <TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
+						{fieldsShow?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
 						<TableCell align="left"></TableCell>
 					</TableRow>
 				</TableHead>
@@ -181,6 +189,7 @@ export default function CollapsibleTable({extraFields, fields, data, page, setPa
 					{rows.map((row) => (
 						<Row 
 							extraFields={extraFields} 
+							defaultFields={defaultFields} 
 							fields={fields} 
 							row={row} 
 							type={type} 

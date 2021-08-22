@@ -1,3 +1,19 @@
+const allClients = {
+    texts: [
+        // {label:"Date", id:"createdTime"},
+        {label:"Name", id:"name"},
+        {label:"Client Type", id:"clientType", isRequired:true},
+        {label:"Client ID", id:"clientID", isRequired:true},
+        {label:"UserID", id:"userID"},
+        {label:"password", id:"password"},
+        {label:"Mobile", id:"mobile"},
+        {label:"Email", id:"email"},
+        {label:"Remarks", id:"remarks"},
+    ],
+    checkboxes: []
+}
+
+export {allClients}
 export default {
     project: {
         name:"Project",
@@ -14,7 +30,7 @@ export default {
             {label:"password", id:"password"},
             {label:"RERA Cert No", id:"certNum"},
             {label:"Cert Date", id:"certDate", type:"date"},
-            {label:"Mobile", id:"mobile"},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Office", id:"office"},
             {label:"Email", id:"email"},
             {label:"CA", id:"ca"},
@@ -33,14 +49,14 @@ export default {
         name:"Agent",
         texts:[
             {label:"Agent Name", id:"name"},
-            {label:"Type", id:"type"},
+            {label:"Type", id:"type", isRequired:true},
             {label:"Location", id:"location"},
             {label:"UserID", id:"userID"},
             {label:"password", id:"password"},
             {label:"Due Date", id:"dueDate"},
             {label:"RERA Cert No", id:"certNum"},
             {label:"Cert Date", id:"certDate", type:"date"},
-            {label:"Mobile", id:"mobile"},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
             {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate", type:"date"},
@@ -53,13 +69,13 @@ export default {
         name:"Litigation",
         texts:[
             {label:"Buyer Name", id:"name"},
-            {label:"Type", id:"type"},
+            {label:"Type", id:"type", isRequired:true},
             {label:"Location", id:"location"},
             {label:"UserID", id:"userID"},
             {label:"password", id:"password"},
             {label:"Related Project Name", id:"relatedProject"},
             {label:"Related RERA No", id:"reraNum"},
-            {label:"Mobile", id:"mobile"},
+            {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
             {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate", type:"date"},
