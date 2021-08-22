@@ -15,8 +15,8 @@ const allClients = {
 
 export {allClients}
 export default {
-    project: {
-        name:"Project",
+    Developers: {
+        name:"Developers",
         texts:[
             {label:"Name", id:"name", isRequired:true},
             {label:"Promoter", id:"promoter"},
@@ -45,7 +45,7 @@ export default {
             {label:"Extension", id:"extension"},
         ]
     },
-    agent: {
+    Agents: {
         name:"Agent",
         texts:[
             {label:"Agent Name", id:"name"},
@@ -65,7 +65,7 @@ export default {
         checkboxes:[
         ]
     },
-    litigation: {
+    Litigation: {
         name:"Litigation",
         texts:[
             {label:"Buyer Name", id:"name"},
