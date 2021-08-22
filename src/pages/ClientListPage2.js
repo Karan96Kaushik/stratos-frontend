@@ -109,11 +109,15 @@ const CustomerList = () => {
 		}
 	}
 
-	const handleExport = async (event) => {
+	const handleExport = async () => {
+		let others = {}
+		if(!search.clientType)
+			others.searchAll = true
+
 		await authorizedDownload({
 			route: "/api/clients/export", 
 			creds: loginState.loginState, 
-			data:{...search}, 
+			data:{...search, ...others}, 
 			method: 'get'
 		}, "clientsExport" + ".xlsx")
 	}

@@ -33,14 +33,15 @@ const App = () => {
 				if(resp.isLoggedIn)
 					setLogin(loginState)
 			})
+			
 			// Continously check refresh token
-			setInterval(async () => {
-				if(+new Date - loginState.loginTime > 1000*15) {
-					let resp = await authorizedLogin(loginState)
-					if(resp.isLoggedIn)
-						setLogin(loginState)
-				}
-			}, 5*60*1000);
+			// setInterval(async () => {
+			// 	if(+new Date - loginState.loginTime > 1000*15) {
+			// 		let resp = await authorizedLogin(loginState)
+			// 		if(resp.isLoggedIn)
+			// 			setLogin(loginState)
+			// 	}
+			// }, 5*60*1000);
 		}
 	}, [])
 
