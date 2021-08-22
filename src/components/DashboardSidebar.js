@@ -31,11 +31,11 @@ import NavItem from './NavItem';
 import {LoginContext} from "../myContext"
 
 const items = [
-	// {
-	// 	href: '/app/dashboard',
-	// 	icon: BarChartIcon,
-	// 	title: 'Dashboard'
-	// },
+	{
+		href: '/app/dashboard',
+		icon: BarChartIcon,
+		title: 'Dashboard'
+	},
 	{
 		href: '/app/members',
 		icon: UserIcon,

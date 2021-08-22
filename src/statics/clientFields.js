@@ -3,7 +3,6 @@ const allClients = {
         // {label:"Date", id:"createdTime"},
         {label:"Name", id:"name"},
         {label:"Client Type", id:"clientType", isRequired:true},
-        {label:"Client ID", id:"clientID", isRequired:true},
         {label:"UserID", id:"userID"},
         {label:"password", id:"password"},
         {label:"Mobile", id:"mobile"},

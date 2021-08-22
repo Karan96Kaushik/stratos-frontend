@@ -19,20 +19,21 @@ const Budget = (props) => (
 					</Typography>
 				</Grid>
 				<Grid item>
-					<Avatar sx={{ backgroundColor: red[600], height: 56, width: 56 }}>
-						<MoneyIcon />
+					<Avatar sx={{ backgroundColor: props.iconColor, height: 56, width: 56 }}>
+                        {props.icon}
+						{/* <MoneyIcon /> */}
 					</Avatar>
 				</Grid>
 			</Grid>
-			{/* <Box sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
-				<ArrowDownwardIcon sx={{ color: red[900] }}/>
+			<Box sx={{ pt: 2, display: 'flex', alignItems: 'center' }}>
+				{/* <ArrowDownwardIcon sx={{ color: red[900] }}/> */}
 				<Typography sx={{ color: red[900], mr: 1 }} variant="body2">
-					12%
 				</Typography>
 				<Typography color="textSecondary" variant="caption" >
-					Since last month
+                    {props.body}
+					{/* Since last month */}
 				</Typography>
-			</Box> */}
+			</Box>
 		</CardContent>
 	</Card>
 );
