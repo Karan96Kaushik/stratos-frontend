@@ -49,14 +49,21 @@ const serialize = function(obj) {
 
 const authorizedDownload = async (request, fileName) => {
 
-    fetch(request.route + "?" + serialize(request.data), {
-            method: request.method,
-            headers: {
-                'Content-Type': 'application/json',
-                "x-authentication": request.creds.token
-            },
-            // body:JSON.stringify({...request.data}),
-        })
+    let query = ""
+    let options = {
+        method: request.method,
+        headers: {
+            'Content-Type': 'application/json',
+            "x-authentication": request.creds.token
+        },
+    }
+    
+    if(request.method == 'post')
+        options.body = JSON.stringify({...request.data})
+    else
+        query = "?" + serialize(request.data)
+
+    fetch(request.route + query, options)
         .then((response) => response.blob())
         .then((blob) => {
             // Create blob link to download

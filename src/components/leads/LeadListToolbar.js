@@ -11,6 +11,7 @@ import {
 import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
+import Filters from '../FiltersDialog'
 
 const CustomerListToolbar = (props) => {
 
@@ -83,6 +84,9 @@ const CustomerListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
+								</Grid>
+								<Grid item item md={4} xs={6}>
+									<Filters search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["leadType"]} fields={leadFields}/>
 								</Grid>
 							</Grid>
 						</Box>

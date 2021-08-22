@@ -72,9 +72,11 @@ const CustomerList = () => {
 
 	useEffect(async () => {
 		console.log("search updated")
-		navigate("/app/leads?" + serialize(search));
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/leads?" + serialize(queryParams));
 		if(search.leadType)
-			goSearch("PG");
+			goSearch();
 	}, [search])
 
 	const goSearch = (rmk) => {
@@ -88,7 +90,7 @@ const CustomerList = () => {
 				route: "/api/leads/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
@@ -113,7 +115,7 @@ const CustomerList = () => {
 			route: "/api/leads/export", 
 			creds: loginState.loginState, 
 			data:{...search}, 
-			method: 'get'
+			method: 'post'
 		}, "leadsExport-" + search.leadType + ".xlsx")
 	}
 	
