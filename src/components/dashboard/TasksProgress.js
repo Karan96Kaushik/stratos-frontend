@@ -15,7 +15,7 @@ const TasksProgress = (props) => (
 					TASKS PROGRESS
 				</Typography>
 				<Typography color="textPrimary" variant="h3" >
-					{props.percent}% 
+					{props.percent ? parseInt(props.percent) + "%" : ""} 
 				</Typography>
 				<Typography color="textSecondary" variant="caption" style={{ paddingLeft: 5 }} >
 					completed
@@ -29,7 +29,7 @@ const TasksProgress = (props) => (
 			</Grid>
 		</Grid>
 		<Box sx={{ pt: 3 }}>
-			<LinearProgress value={props.percent} variant="determinate" />
+			<LinearProgress value={parseInt(props.percent)} variant="determinate" />
 		</Box>
 	</CardContent>
 	</Card>

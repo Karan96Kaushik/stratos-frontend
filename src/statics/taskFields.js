@@ -274,6 +274,10 @@ const taskFields = {
     "Hourly Package": {
         name:"Hourly Package",
         texts:[
+            {label:"Total Hours", id:"totalHours", type:"number"},
+            {label:"Utilised Hours", id:"utilisedHours", type:"number"},
+            {label:"Task Done", id:"task"},
+            {label:"Summary", id:"summary"},
             {label:"Bill Amount", id:"billAmount", type:"number"},
             {label:"GST", id:"gst", type:"number"},,
             ...commonTextFieldsEnd,
