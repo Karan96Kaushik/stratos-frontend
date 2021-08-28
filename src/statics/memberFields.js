@@ -1,15 +1,21 @@
 import taskFields from "./taskFields"
 
+const validateMobile = (val="") => {
+    if(val.length < 10)
+        return true
+    return false
+}
+
 const memberFields = {
         texts:[
             {label:"Name", id:"userName", isRequired:true},
             {label:"Username", id:"email", isRequired:true},
             {label:"Password", id:"password", hideEdit:false, isRequired:true},
-            {label:"Mobile", id:"phone", isRequired:true},
+            {label:"Mobile", id:"phone", isRequired:true, validation:[validateMobile]},
             {label:"Designation", id:"designation", isRequired:true},
             {label:"Department", id:"department", isRequired:true},
             {label:"Address", id:"address", isRequired:true},
-            {label:"Emergency Contact", id:"emergencyContact", isRequired:true},
+            {label:"Emergency Contact", id:"emergencyContact", isRequired:true, validation:[validateMobile]},
             {label:"Blood Group", id:"bloodGroup", isRequired:true},
             {label:"Start Date", id:"startDate", type:"date", isRequired:true},
             {label:"End Date", id:"endDate", type:"date"},

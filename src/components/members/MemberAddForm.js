@@ -66,7 +66,25 @@ const MemberAddForm = (props) => {
 		memberFields.texts.map(field => {
 			if(isEdit && field.id == 'password')
 				return
-			if(field.isRequired && !values[field.id]){
+				
+			let isInvalid = false
+
+			console.log(field.label, (
+				(field.validation ?? [])
+					.map(validator => validator(values[field.id]))
+					.find(v => v)
+			))
+
+			if(field.isRequired && !values[field.id])
+				isInvalid = true
+			else if ((
+				(field.validation ?? [])
+					.map(validator => validator(values[field.id]))
+					.find(v => v)
+			))
+				isInvalid = true
+
+			if(isInvalid) {
 				errFields.push(field.label)
 				foundErrs[field.id] = true
 				errorFlag = true

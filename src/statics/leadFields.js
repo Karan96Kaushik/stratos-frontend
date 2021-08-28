@@ -1,5 +1,11 @@
 import taskFields from "./taskFields"
 
+const validateMobile = (val="") => {
+    if(val.length < 10)
+        return true
+    return false
+}
+
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
 services.unshift("")
@@ -23,7 +29,7 @@ export default {
             {label:"Plot Area", id:"plotArea", isHidden:true},
             {label:"RERA Cert No", id:"certNum", isHidden:true},
             // {label:"Service Type", id:"serviceType", options:services, isHidden:true},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Office", id:"office", isHidden:true},
             {label:"Email", id:"email", isHidden:true},
             {label:"Quote Remark (Short Answer)", id:"quoteAmount", isHidden:true},
@@ -45,7 +51,7 @@ export default {
         name:"Agent",
         texts:[
             {label:"Name", id:"name", isRequired:true},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email", isHidden:true},
 
             {label:"Other Services", id:"service", options:["","Training", "Legal Documents", "Others"], isHidden:true},
@@ -70,7 +76,7 @@ export default {
         name:"Litigation",
         texts:[
             {label:"Name", id:"name", isRequired:true},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email", isHidden:true},
             
             {label:"Type", id:"type", options:["","Complainant", "Respondant"], isRequired:true, isHidden:true},

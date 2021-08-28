@@ -181,15 +181,12 @@ const TaskAddForm = (props) => {
 			getClients()
 		} else if (event.target.id == '_clientID') {
 			others.clientName = event.target.name
-			// let client = clientRows.find(val => String(val._id) == String(event.target.value))
-			// setPlaceholder({...placeholder, client})
 		}
-		console.log("KL:SAKLSA", event.target)
 
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.value || event.target.checked
+			[event.target.id]: event.target.value ?? event.target.checked
 		});
 
 	};

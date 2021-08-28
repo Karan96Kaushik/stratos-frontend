@@ -202,11 +202,16 @@ const TaskAddForm = (props) => {
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		}
+		//  else if (["remarks", "notes"].includes(event.target.id)) {
+		// 	others.memberName = event.target.name
+		// 	others.memberID = event.target.memberID
+		// 	setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
+		// }
 
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.value || event.target.checked
+			[event.target.id]: event.target.value ?? event.target.checked ?? ""
 		});
 
 	};

@@ -40,14 +40,19 @@ const TaskAddForm = (props) => {
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
 		clientFields[type].texts.map(field => {
-			if(field.isRequired && !values[field.id]){
-				errFields.push(field.label)
-				foundErrs[field.id] = true
-				errorFlag = true
-			}
+			let isInvalid = false
 
-			if(field.id == "mobile" && (values[field.id]?.length < 10)) {
-				errFields.push(field.label + " entry is invalid")
+			if(field.isRequired && !values[field.id])
+				isInvalid = true
+			else if ((
+				(field.validation ?? [])
+					.map(validator => validator(values[field.id]))
+					.find(v => v)
+			))
+				isInvalid = true
+
+			if(isInvalid) {
+				errFields.push(field.label)
 				foundErrs[field.id] = true
 				errorFlag = true
 			}

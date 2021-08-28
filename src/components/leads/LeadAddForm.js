@@ -53,12 +53,25 @@ const TaskAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
+
 		leadFields[type].texts.map(field => {
-			if(field.isRequired && !values[field.id]){
+			let isInvalid = false
+
+			if(field.isRequired && !values[field.id])
+				isInvalid = true
+			else if ((
+				(field.validation ?? [])
+					.map(validator => validator(values[field.id]))
+					.find(v => v)
+			))
+				isInvalid = true
+				
+			if(isInvalid) {
 				errFields.push(field.label)
 				foundErrs[field.id] = true
 				errorFlag = true
 			}
+
 		})
 		setErrors(foundErrs)
 		if(errorFlag)
@@ -171,7 +184,7 @@ const TaskAddForm = (props) => {
 		setValues({
 			...values,
 			...others,
-			[event.target.id ?? event.target.name]: event.target.value ?? event.target.checked
+			[event.target.id ?? event.target.name]: event.target.value ?? event.target.checked ?? ""
 		});
 
 	};

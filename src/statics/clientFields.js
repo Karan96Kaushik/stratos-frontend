@@ -1,3 +1,9 @@
+const validateMobile = (val="") => {
+    if(val.length < 10)
+        return true
+    return false
+}
+
 const allClients = {
     texts: [
         // {label:"Date", id:"createdTime"},
@@ -29,7 +35,7 @@ export default {
             {label:"password", id:"password"},
             {label:"RERA Cert No", id:"certNum"},
             {label:"Cert Date", id:"certDate", type:"date"},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Office", id:"office"},
             {label:"Email", id:"email"},
             {label:"CA", id:"ca"},
@@ -55,7 +61,7 @@ export default {
             {label:"Due Date", id:"dueDate"},
             {label:"RERA Cert No", id:"certNum"},
             {label:"Cert Date", id:"certDate", type:"date"},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
@@ -74,7 +80,7 @@ export default {
             {label:"password", id:"password"},
             {label:"Related Project Name", id:"relatedProject"},
             {label:"Related RERA No", id:"reraNum"},
-            {label:"Mobile", id:"mobile", isRequired:true},
+            {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
