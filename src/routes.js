@@ -31,7 +31,6 @@ const routes = (isLoggedIn) => [
 		element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
 		children: [
 			{ path: 'account', element: <Account /> },
-			// { path: 'clients', element: <CustomerList /> },
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
@@ -108,7 +107,7 @@ const routes = (isLoggedIn) => [
 			{ path: 'login', element: isLoggedIn ? <Navigate to="/" /> : <Login /> },
 			{ path: 'register', element: <Register /> },
 			{ path: '404', element: <NotFound /> },
-			{ path: '/', element: <Navigate to="/app/members" /> },
+			{ path: '/', element: <Navigate to="/app/dashboard" /> },
 			{ path: '*', element: <Navigate to="/404" /> }
 		]
 	}

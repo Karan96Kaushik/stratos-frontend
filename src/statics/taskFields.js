@@ -48,12 +48,15 @@ const actions = [
 
 let commonTextFields = [
     {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
-    {label:"Remarks", id:"remarks"},
     {label:"Deadline", id:"deadline", type:"date"},
-    {label:"Notes", id:"notes"},
     {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
     {label:"GST", id:"gst", type:"number", isHidden:true},
     {label:"Files", id:"files", type:"file", isHidden:true},
+]
+
+let commonTextFieldsEnd = [
+    {label:"Remarks", id:"remarks"},
+    {label:"Notes", id:"notes"},
 ]
 
 let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])
@@ -65,6 +68,7 @@ const taskFields = {
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
             {label:"Letterhead", id:"letterHead"},
@@ -79,6 +83,7 @@ const taskFields = {
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             {label:"SRO Fees", id:"sroFees", type:"number", isHidden:true},
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
             {label:"Form 3", id:"form3"},
@@ -101,6 +106,7 @@ const taskFields = {
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             {label:"SRO Fees", id:"sroFees", type:"number", isHidden:true},
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -111,6 +117,7 @@ const taskFields = {
             {label:"Correction Details", id:"correctionDetails"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
             {label:"Consent Required", id:"consentReq"},
@@ -124,6 +131,7 @@ const taskFields = {
             {label:"CA Assigned", id:"ca"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -136,6 +144,7 @@ const taskFields = {
             {label:"Engineer Assigned", id:"engineer"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -151,6 +160,7 @@ const taskFields = {
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -162,7 +172,8 @@ const taskFields = {
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -170,11 +181,12 @@ const taskFields = {
     "Form 2": {
         name:"Form 2",
         texts:[
-            {label:"CA Assigned", id:"ca"},
+            {label:"Engineer Assigned", id:"engineer"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -182,11 +194,12 @@ const taskFields = {
     "Form 3": {
         name:"Form 3",
         texts:[
-            {label:"Engineer Assigned", id:"engineer"},
+            {label:"CA Assigned", id:"ca"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -216,7 +229,8 @@ const taskFields = {
             {label:"Signed By", id:"signedBy"},
             {label:"Date of Certification", id:"dateOfCertification", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -228,7 +242,8 @@ const taskFields = {
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -250,7 +265,8 @@ const taskFields = {
             {label:"Status", id:"status"},
             {label:"Result", id:"result"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet3]},
-            ...commonTextFields
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -259,7 +275,8 @@ const taskFields = {
         name:"Hourly Package",
         texts:[
             {label:"Bill Amount", id:"billAmount", type:"number"},
-            {label:"GST", id:"gst", type:"number"},
+            {label:"GST", id:"gst", type:"number"},,
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -276,7 +293,7 @@ const taskFields = {
             {label:"Status", id:"status"},
             {label:"Reply Status", id:"replyStatus"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet4]},
-
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -298,6 +315,7 @@ const taskFields = {
             {label:"DHC Charges", id:"dhcCharges", type:"number"},
             {label:"Total", id:"total", type:"number"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet5]},
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -309,6 +327,7 @@ const taskFields = {
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]
@@ -321,7 +340,7 @@ const taskFields = {
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
-
+            ...commonTextFieldsEnd,
         ],
         checkboxes:[
         ]

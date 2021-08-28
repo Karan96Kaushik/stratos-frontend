@@ -48,9 +48,9 @@ const CustomerList = () => {
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
 	useEffect(() => {
-		if(query.serviceType) {
+		// if(query.serviceType) {
 			loadData()
-		}
+		// }
 	}, [])
 
 	useEffect(async () => {
@@ -82,11 +82,15 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			let others = {}
+			if(!search.serviceType)
+				others.searchAll = true
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/search", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...search, ...others}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -114,6 +118,15 @@ const CustomerList = () => {
 		{name:"Member Assigned", id: "memberName"},
 	]
 
+	const defaultFields = {
+		texts:[
+			{label:"Type", id: "serviceType"},
+			{label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+			{label:"Deadline", id:"deadline", type:"date"},
+		],
+		checkboxes:[]
+	}
+
 	return (<>
 		<Helmet>
 			<title>Tasks | TMS</title>
@@ -131,6 +144,7 @@ const CustomerList = () => {
 							extraFields={extraFields} 
 							type={search.serviceType} 
 							fields={taskFields} 
+							defaultFields={defaultFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 

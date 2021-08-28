@@ -36,9 +36,9 @@ export default {
             {label:"Engineer", id:"engineer"},
             {label:"Architect", id:"architect"},
             {label:"Reference", id:"reference"},
-            {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
+            {label:"Remarks", id:"remarks"},
         ],
         checkboxes:[
             {label:"Extension", id:"extension"},
@@ -57,9 +57,9 @@ export default {
             {label:"Cert Date", id:"certDate", type:"date"},
             {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
-            {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
+            {label:"Remarks", id:"remarks"},
         ],
         checkboxes:[
         ]
@@ -76,9 +76,9 @@ export default {
             {label:"Related RERA No", id:"reraNum"},
             {label:"Mobile", id:"mobile", isRequired:true},
             {label:"Email", id:"email"},
-            {label:"Remarks", id:"remarks"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
+            {label:"Remarks", id:"remarks"},
         ],
         checkboxes:[
             {label:"Pro Bono", id:"proBono"},

@@ -32,10 +32,10 @@ export default {
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:true},
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:true},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
-            {label:"Remarks", id:"remarks", isHidden:true},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Status", id: "status", options: statusOptions},
             {label:"Files", id:"files", type:"file", isHidden:true},
+            {label:"Remarks", id:"remarks", isHidden:true},
 
         ],
         checkboxes:[
@@ -58,9 +58,9 @@ export default {
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:true},
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:true},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
-            {label:"Remarks", id:"remarks", isHidden:true},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file", isHidden:true},
+            {label:"Remarks", id:"remarks", isHidden:true},
 
         ],
         checkboxes:[
@@ -86,9 +86,9 @@ export default {
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:true},
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:true},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
-            {label:"Remarks", id:"remarks", isHidden:true},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file", isHidden:true},
+            {label:"Remarks", id:"remarks", isHidden:true},
 
         ],
         checkboxes:[
