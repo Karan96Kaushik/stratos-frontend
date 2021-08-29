@@ -13,7 +13,7 @@ const invoiceFields = {
         texts:[
             {label:"Invoice From", id:"from", options:froms, isRequired:true},
             {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
-            {label:"Date", id:"date", type:"date"},
+            {label:"Invoice Date", id:"date", type:"date"},
             {label:"GST Num", id:"gstNum", options:["", "None", "27AAFFO8457Q1ZB"]},
             {label:"Project Name", id:"projectName", isRequired:true},
             {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "CPAPK0273E"]},

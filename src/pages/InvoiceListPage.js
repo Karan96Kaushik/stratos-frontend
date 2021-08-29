@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import InvoiceListToolbar from 'src/components/invoices/InvoiceListToolbar';
-import {authorizedReq} from '../utils/request'
+import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -66,7 +66,9 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		navigate("/app/invoices?" + serialize(search));
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/invoices?" + serialize(queryParams));
 		if(search?.text == "" || search.text.length > 2)
 			goSearch("PG");
 	}, [search])
@@ -82,7 +84,7 @@ const CustomerList = () => {
 				route: "/api/invoices/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
@@ -101,6 +103,15 @@ const CustomerList = () => {
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		// }
 	}
+
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/invoices/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'post'
+		}, "invoicesExport" + ".xlsx")
+	}
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
@@ -118,7 +129,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<InvoiceListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<InvoiceListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

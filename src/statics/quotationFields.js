@@ -1,6 +1,6 @@
 import taskFields from "./taskFields"
 
-const status = ["None" , "On hold" , "Pricing issue" , "Undecisive" , "Converted" , "Confirmed", "Not Interested"]
+const status = ["", "None" , "On hold" , "Pricing issue" , "Undecisive" , "Converted" , "Confirmed", "Not Interested"]
 const serviceTypes = Object.keys(taskFields)
 serviceTypes.unshift("")
 serviceTypes.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D')

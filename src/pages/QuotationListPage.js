@@ -2,9 +2,9 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import QuotationListToolbar from 'src/components/quotations/QuotationListToolbar';
-import {authorizedReq} from '../utils/request'
+import { authorizedReq, authorizedDownload } from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
-import {useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import quotationFields from '../statics/quotationFields';
 import GeneralList from '../components/GeneralList'
@@ -66,7 +66,9 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		navigate("/app/quotations?" + serialize(search));
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/quotations?" + serialize(queryParams));
 		if(search.text == "" || search.text.length > 2)
 			goSearch("PG");
 	}, [search])
@@ -82,7 +84,7 @@ const CustomerList = () => {
 				route: "/api/quotations/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
@@ -95,11 +97,18 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
-		// if (event.target.id == 'leadType'){
-			setData({rows:[]})
-			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		// }
+		setData({rows:[]})
+		setPage(1)
+		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
+	}
+
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/quotations/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'post'
+		}, "quotationsExport" + ".xlsx")
 	}
 	
 	const extraFields = [
@@ -119,7 +128,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<QuotationListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<QuotationListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

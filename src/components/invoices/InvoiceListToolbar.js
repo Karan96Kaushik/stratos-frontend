@@ -5,12 +5,10 @@ import {
 	Card,
 	CardContent,
 	TextField,
-	InputAdornment,
-	SvgIcon
 } from '@material-ui/core';
-import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import invoiceFields from '../../statics/invoiceFields';
+import FiltersDialog from '../FiltersDialog';
 
 const CustomerListToolbar = (props) => {
 
@@ -27,6 +25,9 @@ const CustomerListToolbar = (props) => {
 						Add Invoice
 					</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -42,6 +43,9 @@ const CustomerListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
+								</Grid>
+								<Grid item item md={4} xs={6}>
+									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={invoiceFields}/>
 								</Grid>
 							</Grid>
 						</Box>

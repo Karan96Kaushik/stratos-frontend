@@ -39,9 +39,10 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		let eSplit = (e.target.id ?? e.target.name).split("-")
 
 		if(eSplit[1]) {
+			change[eSplit[0]] = values[eSplit[0]]
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
-			change[eSplit[0]][eSplit[1]] = e.target.value ?? e.target.checked
+			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
 		} else {
 			change = {[e.target.id ?? e.target.name]: e.target.value ?? e.target.checked}
 		}
@@ -142,9 +143,9 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										inputProps={field.type == "file" ? { multiple: true } : {}}
 										InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 										required={field.isRequired}
-										id={field.id + "-0"}
+										id={field.id + "-1"}
 										onChange={handleChange}
-										value={field.id != "files" ? values[field.id]?.[0] ?? '' : undefined}
+										value={field.id != "files" ? values[field.id]?.[1] ?? '' : undefined}
 										variant="outlined"
 									>
 										{(field.options ?? []).map((option) => (
@@ -167,9 +168,9 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										inputProps={field.type == "file" ? { multiple: true } : {}}
 										InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 										required={field.isRequired}
-										id={field.id + "-1"}
+										id={field.id + "-0"}
 										onChange={handleChange}
-										value={field.id != "files" ? values[field.id]?.[1] ?? '' : undefined}
+										value={field.id != "files" ? values[field.id]?.[0] ?? '' : undefined}
 										variant="outlined"
 									>
 										{(field.options ?? []).map((option) => (

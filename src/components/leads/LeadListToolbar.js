@@ -5,10 +5,7 @@ import {
 	Card,
 	CardContent,
 	TextField,
-	InputAdornment,
-	SvgIcon
 } from '@material-ui/core';
-import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
 import Filters from '../FiltersDialog'

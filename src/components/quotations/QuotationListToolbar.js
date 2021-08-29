@@ -5,12 +5,10 @@ import {
 	Card,
 	CardContent,
 	TextField,
-	InputAdornment,
-	SvgIcon
 } from '@material-ui/core';
-import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
-import invoiceFields from '../../statics/invoiceFields';
+import quotationFields from 'src/statics/quotationFields';
+import FiltersDialog from '../FiltersDialog';
 
 const CustomerListToolbar = (props) => {
 
@@ -27,34 +25,15 @@ const CustomerListToolbar = (props) => {
 						Add Quotation
 					</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
 					<CardContent>
 						<Box>
 							<Grid container spacing={2}>
-								{/* <Grid item md={4} xs={6}>
-									<TextField
-										fullWidth
-										label="Select Search Field"
-										id="type"
-										value={props.searchInfo["type"]}
-										onChange={({target}) => props.setSearch({...props.searchInfo, type:target.value})}
-										select
-										SelectProps={{ native: true }}
-										variant="standard"
-									>
-										{([["",""],["Quotation ID", "quotationID"], ["Name", "name"]]).map((option) => (
-											<option
-												key={option[0]}
-												value={option[1]}
-											>
-												{option[0]}
-											</option>
-										))}
-									</TextField>
-								</Grid> */}
-
 								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
@@ -65,18 +44,9 @@ const CustomerListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-
-								{/* <Grid item md={4} xs={12}>
-									<Button
-										fullWidth
-										variant="contained"
-										color="primary"
-										style={{margin:0, padding:10}}
-									>
-										Search  <SearchIcon style={{padding:0}} />
-									</Button>
-								</Grid> */}
-
+								<Grid item item md={4} xs={6}>
+									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={quotationFields}/>
+								</Grid>
 							</Grid>
 						</Box>
 					</CardContent>
