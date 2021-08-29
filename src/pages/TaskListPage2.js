@@ -101,20 +101,22 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
-			let others = {}
-			if(!search?.serviceType?.length)
+			let others = {...search}
+			others.filters = {...others.filters}
+
+			if(!others?.serviceType?.length)
 				others.searchAll = true
 
-			if(search.filters && search.filters.memberName) {
-				search.filters._memberID = memberRows.find(m => search.filters.memberName == m.userName + ` (${m.memberID})`)._id
-				delete search.filters.memberName
+			if(others.filters && others.filters.memberName) {
+				others.filters._memberID = memberRows.find(m => others.filters.memberName == m.userName + ` (${m.memberID})`)._id
+				delete others.filters.memberName
 			}
 
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/search", 
 				creds: loginState.loginState, 
-				data:{...search, ...others}, 
+				data:{...others}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -165,7 +167,7 @@ const CustomerList = () => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} />
+			<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} titleID={"taskID"} />
 		)
 	}
 

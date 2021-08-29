@@ -7,27 +7,25 @@ import {
     TableRow, Table, TableHead,
     TableFooter
 } from '@material-ui/core';
-import { PanoramaFishEye } from '@material-ui/icons';
+import { Description, FindInPage, PanoramaFishEye, ViewAgendaRounded, Visibility } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		margin:20,
-		padding:10,
+        marginTop:20,
+        marginBottom:20,
 	},
     title: {
         fontWeight:1000
 	},
 }));
 
-export default function FiltersDialog({ data, fields, otherFields, typeField }) {
+export default function ViewDialog({ data, fields, otherFields, typeField, titleID }) {
 	const [open, setOpen] = React.useState(false)
 	const classes = useStyles();
 
     fields = fields[data[typeField]]
-
-    console.log("VIEW", fields)
 
 	const handleClose = () => {
 		setOpen(false);
@@ -36,7 +34,7 @@ export default function FiltersDialog({ data, fields, otherFields, typeField }) 
 	return (
 		<div>
             <IconButton aria-label="expand row" size="small" onClick={() => setOpen(true)}>
-                <PanoramaFishEye />
+                <Description />
             </IconButton>
 			<Dialog
 				fullWidth={true}
@@ -44,12 +42,15 @@ export default function FiltersDialog({ data, fields, otherFields, typeField }) 
 				open={open} 
 				onClose={handleClose} 
 				aria-labelledby="form-dialog-title">
-					
-				<DialogTitle id="form-dialog-title">{"View Data"}</DialogTitle>
-				<DialogContent className={classes.root}>
-					<Grid container spacing={3}>
+				<DialogTitle id="form-dialog-title">
+                    <Typography variant="h4">
+                        {data[titleID]}
+                    </Typography>
+                </DialogTitle>
+				<DialogContent>
+
                     <TableContainer component={Paper}>
-                        <Table>
+                        <Table className={classes.root}>
                             <TableHead>
                                 <TableRow>
                                 </TableRow>
@@ -57,7 +58,7 @@ export default function FiltersDialog({ data, fields, otherFields, typeField }) 
                             <TableBody>
                                     {otherFields && otherFields?.map(field => !field.isHidden ? (
                                         <TableRow>
-                                            <TableCell className={classes.title} align="left"><Typography variant="h5">{field.name}</Typography></TableCell>
+                                            <TableCell align="left"><Typography variant="h5">{field.name}</Typography></TableCell>
                                             <TableCell align="left">{data[field.id]}</TableCell>
                                         </TableRow>   
                                     ) : <></>)}
@@ -82,8 +83,6 @@ export default function FiltersDialog({ data, fields, otherFields, typeField }) 
                         </Table>
                     </TableContainer>
                 
-					</Grid>
-
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">

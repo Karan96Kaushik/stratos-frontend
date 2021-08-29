@@ -38,10 +38,9 @@ const CustomerListToolbar = (props) => {
 						<Box>
 							<Grid container spacing={1}>
 								<Grid item md={4} xs={6}>
-									<TextField fullWidth label="Select Lead Type" 
+									<TextField fullWidth label="Select Type" 
 										id="leadType"
 										onChange={props.handleChange}
-										required
 										select
 										SelectProps={{native: true}}
 										value={props.searchInfo["leadType"]}
