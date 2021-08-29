@@ -59,7 +59,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<Filters type={props.searchInfo["serviceType"]} fields={taskFields} setSearch={props.setSearch} search={props.searchInfo}/>
+									<Filters type={props.searchInfo["serviceType"]} commonFilters={props.commonFilters} fields={taskFields} setSearch={props.setSearch} search={props.searchInfo}/>
 								</Grid>
 							</Grid>
 						</Box>

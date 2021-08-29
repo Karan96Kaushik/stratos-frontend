@@ -6,8 +6,9 @@ import {authorizedReq} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import taskFields from '../statics/taskFields';
+import taskFields, { allStatuses } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from '../components/ViewDialog'
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -31,6 +32,7 @@ const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
+	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 
 	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
@@ -48,9 +50,8 @@ const CustomerList = () => {
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
 	useEffect(() => {
-		// if(query.serviceType) {
-			loadData()
-		// }
+		loadData()
+		getMembers()
 	}, [])
 
 	useEffect(async () => {
@@ -72,7 +73,7 @@ const CustomerList = () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/tasks?" + serialize(queryParams));
-		if(search.serviceType && (search.text == "" || search.text?.length > 2 || !search?.text))
+		if(search.text == "" || search.text?.length > 2 || !search?.text)
 			goSearch();
 	}, [search])
 
@@ -80,11 +81,34 @@ const CustomerList = () => {
 		loadData()
     }
 
+	const getMembers = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/members/search", creds: loginState.loginState, data: {}, method: 'get' })
+			response = [
+				{},
+				...response
+			]
+			setMemberRows(response)
+			return response
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+	};
+
 	const loadData = async () => {
 		try{
 			let others = {}
-			if(!search.serviceType)
+			if(!search?.serviceType?.length)
 				others.searchAll = true
+
+			if(search.filters && search.filters.memberName) {
+				search.filters._memberID = memberRows.find(m => search.filters.memberName == m.userName + ` (${m.memberID})`)._id
+				delete search.filters.memberName
+			}
 
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
@@ -121,10 +145,28 @@ const CustomerList = () => {
 	const defaultFields = {
 		texts:[
 			{label:"Type", id: "serviceType"},
-			{label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+			{label:"Status", id: "status", options: allStatuses},
+			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]},
 			{label:"Deadline", id:"deadline", type:"date"},
 		],
 		checkboxes:[]
+	}
+
+	const commonFilters = {texts :[
+		{label:"Member Assigned", id: "memberName", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+	]}
+
+	if(!search.serviceType)
+		commonFilters.texts.push(
+			{label:"Status", id: "status", options: allStatuses},
+			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]}
+		)
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} />
+		)
 	}
 
 	return (<>
@@ -137,12 +179,12 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskListToolbar commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.serviceType} 
+							type={null}//{search.serviceType} 
 							fields={taskFields} 
 							defaultFields={defaultFields} 
 							data={data} 
@@ -153,6 +195,7 @@ const CustomerList = () => {
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
+							additional={[renderViewButton]}
 							sortState={sortState}
 						/>				
 					</Paper>

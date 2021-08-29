@@ -352,5 +352,8 @@ const taskFields = {
 }
 
 const allTasks = Object.keys(taskFields)
+
+allStatuses = [...allStatuses]
+
 export {allStatuses, allTasks}
 export default taskFields

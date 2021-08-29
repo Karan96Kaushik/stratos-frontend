@@ -114,7 +114,7 @@ const CustomerList = () => {
 				{label:"Task ID", id: "taskID"},
 				{label:"Type", id: "serviceType", options:["",...allTasks]},
 				{label:"Client Name", id: "clientName"},
-				{label:"Status", id: "status", options:[...allStatuses]},
+				{label:"Status", id: "status", options:allStatuses},
 				{label:"Remarks", id: "remarks"},
 				{label:"Bill Amount", id:"billAmount", type:"number"},
 				{label:"GST", id:"gst", type:"number"},

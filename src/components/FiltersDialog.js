@@ -5,7 +5,7 @@ import {
 	DialogContent, DialogActions
 } from '@material-ui/core';
 
-export default function FiltersDialog({ search, setSearch, fields, type }) {
+export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
 	const [values, setValues] = React.useState({})
 	const [open, setOpen] = React.useState(false)
 	let isEdit = false
@@ -59,10 +59,45 @@ export default function FiltersDialog({ search, setSearch, fields, type }) {
 			<Button variant="contained" color="primary" onClick={() => setOpen(true)}>
 				Filter
 			</Button>
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+			<Dialog
+				fullWidth={true}
+				maxWidth={'md'}
+				open={open} 
+				onClose={handleClose} 
+				aria-labelledby="form-dialog-title">
+					
 				<DialogTitle id="form-dialog-title">Filters</DialogTitle>
 				<DialogContent>
 					<Grid container spacing={3}>
+
+					{commonFilters?.texts.map((field) => (field?.options?.length &&
+							<>
+								<Grid item md={6} xs={12}>
+									<TextField
+										fullWidth
+										select={field.options?.length}
+										SelectProps={{ native: true }}
+										label={field.label}
+										type={field.type ?? 'text'}
+										inputProps={field.type == "file" ? { multiple: true } : {}}
+										InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+										// required={field.isRequired}
+										id={field.id}
+										onChange={handleChange}
+										value={field.id != "files" ? values[field.id] ?? '' : undefined}
+										variant="outlined"
+									>
+										{(field.options ?? []).map((option) => (
+											<option
+												key={option}
+												value={option}
+											>
+												{option}
+											</option>
+										))}
+									</TextField>
+								</Grid>
+							</>))}
 
 						{fields[type]?.texts.map((field) => (field?.options?.length &&
 							<>
