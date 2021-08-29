@@ -116,7 +116,7 @@ const TaskAddForm = (props) => {
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.value ?? event.target.checked ?? ""
+			[event.target.id]: event.target.type == 'text' ? event.target.value : event.target.checked
 		});
 
 	};

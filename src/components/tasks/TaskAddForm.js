@@ -197,21 +197,17 @@ const TaskAddForm = (props) => {
 			getClients()
 		} else if (event.target.id == '_clientID') {
 			others.clientName = event.target.name
+			others.clientID = event.target.clientID
 		} else if (event.target.id == '_memberID') {
 			others.memberName = event.target.name
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		}
-		//  else if (["remarks", "notes"].includes(event.target.id)) {
-		// 	others.memberName = event.target.name
-		// 	others.memberID = event.target.memberID
-		// 	setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
-		// }
-
+		
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.value ?? event.target.checked ?? ""
+			[event.target.id]: event.target.type == 'text' ? event.target.value : event.target.checked
 		});
 
 	};
@@ -247,7 +243,7 @@ const TaskAddForm = (props) => {
 								options={clientRows}
 								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
 								onInputChange={handleChangeClient}
-								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name}})}
+								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name, clientID: value.clientID}})}
 								fullWidth
 								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}

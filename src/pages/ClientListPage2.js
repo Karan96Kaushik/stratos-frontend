@@ -9,6 +9,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import clientFields from '../statics/clientFields';
 import {allClients} from '../statics/clientFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from 'src/components/ViewDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -127,6 +128,13 @@ const CustomerList = () => {
 		{name:"Client ID", id: "clientID"},
 	]
 
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={clientFields} otherFields={extraFields} typeField={'clientType'} titleID={"clientID"} />
+		)
+	}
+
 	return (<>
 		<Helmet>
 			<title>Clients | TMS</title>
@@ -142,7 +150,7 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.clientType} 
+							type={null}//{search.clientType} 
 							fields={clientFields} 
 							defaultFields={allClients} 
 							data={data} 
@@ -150,6 +158,7 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							rowsPerPage={rowsPerPage} 
+							additional={[renderViewButton]}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}

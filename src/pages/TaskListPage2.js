@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import TaskListToolbar from 'src/components/tasks/TaskListToolbar2';
-import {authorizedReq} from '../utils/request'
+import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -136,6 +136,33 @@ const CustomerList = () => {
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		}
 	}
+
+	const handleExport = async () => {
+		try {
+			let others = {...search}
+			others.filters = {...others.filters}
+	
+			if(!others?.serviceType?.length)
+				others.searchAll = true
+	
+			if(others.filters && others.filters.memberName) {
+				others.filters._memberID = memberRows.find(m => others.filters.memberName == m.userName + ` (${m.memberID})`)._id
+				delete others.filters.memberName
+			}
+	
+			await authorizedDownload({
+				route: "/api/tasks/export", 
+				creds: loginState.loginState, 
+				data:{...others}, 
+				method: 'post'
+			}, "tasksExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err.message ?? err?.response?.data ?? err),
+			)
+		}
+	}
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
@@ -181,7 +208,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskListToolbar commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskListToolbar  handleExport={handleExport} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

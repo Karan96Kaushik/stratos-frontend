@@ -9,11 +9,11 @@ const allClients = {
         // {label:"Date", id:"createdTime"},
         {label:"Name", id:"name"},
         {label:"Client Type", id:"clientType", isRequired:true},
-        {label:"UserID", id:"userID"},
-        {label:"password", id:"password"},
+        // {label:"UserID", id:"userID"},
+        // {label:"password", id:"password"},
         {label:"Mobile", id:"mobile"},
         {label:"Email", id:"email"},
-        {label:"Remarks", id:"remarks"},
+        // {label:"Remarks", id:"remarks"},
     ],
     checkboxes: []
 }
