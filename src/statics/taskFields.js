@@ -154,7 +154,7 @@ const taskFields = {
         texts:[
             {label:"Work Status", id:"workStatus"},
             {label:"Booked Flats", id:"bookedFlats", type:"number"},
-            {label:"Chabges to be Made", id:"changesReq"},
+            {label:"Changes to be Made", id:"changesReq"},
             {label:"Documents to be Uploaded", id:"docsReq"},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},

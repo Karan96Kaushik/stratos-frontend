@@ -6,7 +6,7 @@ import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import paymentFields from '../statics/paymentFields';
+// import paymentFields from '../statics/paymentFields';
 import {allStatuses, allTasks} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import { Add } from '@material-ui/icons';

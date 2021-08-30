@@ -203,11 +203,11 @@ const TaskAddForm = (props) => {
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		}
-		
+
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.type == 'text' ? event.target.value : event.target.checked
+			[event.target.id]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
 		});
 
 	};
