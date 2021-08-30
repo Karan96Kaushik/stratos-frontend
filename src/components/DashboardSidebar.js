@@ -177,7 +177,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					variant="persistent"
 					PaperProps={{
 						sx: {
-							width: 256,
+							width: "auto",
 							top: 64,
 							height: 'calc(100% - 64px)'
 						}
