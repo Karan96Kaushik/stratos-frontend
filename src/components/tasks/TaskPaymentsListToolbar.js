@@ -20,6 +20,9 @@ const PaymentsListToolbar = (props) => {
 						Add Payment
 					</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>

@@ -3,6 +3,8 @@ import {
 	CardContent, TextField, InputAdornment,
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import paymentFields from 'src/statics/paymentFields';
+import FiltersDialog from '../FiltersDialog';
 
 const PaymentsListToolbar = (props) => {
 
@@ -19,6 +21,9 @@ const PaymentsListToolbar = (props) => {
 						Add Payment
 					</Button>
 				</Link>
+				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+					Export
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -34,6 +39,9 @@ const PaymentsListToolbar = (props) => {
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
+								</Grid>
+								<Grid item item md={4} xs={6}>
+									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={paymentFields}/>
 								</Grid>
 							</Grid>
 						</Box>

@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import PaymentsListToolbar from 'src/components/payments/PaymentsListToolbar';
-import {authorizedReq} from '../utils/request'
+import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -67,9 +67,11 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log("search updated")
-		navigate("/app/payments?" + serialize(search));
-		if(search?.text?.length > 3 || search?.text?.length == 0)
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+
+		navigate("/app/payments?" + serialize(queryParams));
+		if(search?.text?.length > 3 || search?.text?.length == 0 || !search?.text)
 			goSearch();
 	}, [search])
 
@@ -84,9 +86,8 @@ const CustomerList = () => {
 				route: "/api/payments/search", 
 				creds: loginState.loginState, 
 				data:{...search}, 
-				method: 'get'
+				method: 'post'
 			})
-			console.debug("DATA", _data)
 			setData({rows:_data})
 
 		} catch (err) {
@@ -98,11 +99,18 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
-		// if (event.target.id == 'leadType'){
-			setData({rows:[]})
-			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		// }
+		setData({rows:[]})
+		setPage(1)
+		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
+	}
+
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/payments/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'post'
+		}, "paymentsExport" + ".xlsx")
 	}
 	
 	const extraFields = [
@@ -122,7 +130,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PaymentsListToolbar searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<PaymentsListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

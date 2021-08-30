@@ -2,7 +2,7 @@ import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import TaskPaymentsListToolbar from 'src/components/tasks/TaskPaymentsListToolbar';
-import {authorizedReq} from '../utils/request'
+import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -129,6 +129,15 @@ const CustomerList = () => {
 		}
 	}
 
+	const handleExport = async (event) => {
+		await authorizedDownload({
+			route: "/api/tasks/payments/export", 
+			creds: loginState.loginState, 
+			data:{...search}, 
+			method: 'post'
+		}, "taskPaymentsExport" + ".xlsx")
+	}
+
 	// Add payment button
 	const renderButton = (val) => {
 		return (				
@@ -150,7 +159,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskPaymentsListToolbar fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskPaymentsListToolbar handleExport={handleExport} fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

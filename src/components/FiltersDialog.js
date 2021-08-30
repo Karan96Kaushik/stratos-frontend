@@ -31,7 +31,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 
 	};
 
-	console.log("FILTER", values)
+	// console.log("FILTER", search)
 
 	const handleChange = (e) => {
 		let change = {}
