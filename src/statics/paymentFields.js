@@ -5,10 +5,10 @@ const modeOptions = [
 export default {
     all: {
         texts: [
-            {label:"Invoice ID", id:"invoiceID", isRequired:true},
+            {label:"Invoice ID", id:"invoiceID"},
             {label:"Received Amount", id:"receivedAmount", type:"number", isRequired:true},
             {label:"Mode", id:"mode", options:modeOptions, isRequired:true},
-            {label:"Remarks", id:"remarks", isRequired:true},
+            {label:"Remarks", id:"remarks"},
         ],
         checkboxes: []
     }

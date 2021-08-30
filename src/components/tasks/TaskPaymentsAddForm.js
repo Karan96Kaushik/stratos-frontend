@@ -103,7 +103,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} task!`,
 			)
-			navigate('/app/tasks');
+			navigate('/app/taskaccounts');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -186,7 +186,7 @@ const TaskAddForm = (props) => {
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.type == 'text' ? event.target.value : event.target.checked
+			[event.target.id]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
 		});
 
 	};

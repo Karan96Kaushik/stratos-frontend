@@ -8,7 +8,7 @@ serviceTypes.push('Consultation', 'Package A', 'Package B', 'Package C', 'Packag
 const quotationFields = {
     "all": {
         texts:[
-            {label:"Service Type", id:"serviceType", options:serviceTypes, isRequired:true},
+            // {label:"Service Type", id:"serviceType", options:serviceTypes, isRequired:true},
             {label:"Department", id:"dept", options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
             {label:"Client Name", id:"clientName", isRequired:true},
             {label:"Related Project Name", id:"relatedProject"},

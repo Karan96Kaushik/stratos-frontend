@@ -83,7 +83,7 @@ const CustomerList = () => {
 
 	const getMembers = async () => {
 		try {
-			let response = await authorizedReq({ route: "/api/members/search", creds: loginState.loginState, data: {}, method: 'get' })
+			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
 			response = [
 				{},
 				...response

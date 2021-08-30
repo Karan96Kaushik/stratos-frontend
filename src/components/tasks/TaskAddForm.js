@@ -3,7 +3,6 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
 	Checkbox, FormControlLabel, Autocomplete,
-	DialogActions, DialogContent, Dialog, DialogTitle,
 	List, ListItem, Typography, Link
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
@@ -74,7 +73,7 @@ const TaskAddForm = (props) => {
 
 	const getMembers = async () => {
 		try {
-			let response = await authorizedReq({ route: "/api/members/search", creds: loginState.loginState, data: {}, method: 'get' })
+			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
 			setMemberRows(response)
 			return response
 

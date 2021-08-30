@@ -26,9 +26,9 @@ const CustomerListToolbar = (props) => {
 						Add Client
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				{/* <Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
 					Export
-				</Button>
+				</Button> */}
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>

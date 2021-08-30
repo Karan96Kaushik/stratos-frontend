@@ -116,6 +116,7 @@ const CustomerList = () => {
 		{name:"Quotation ID", id: "quotationID"},
 		{name:"Member ID", id: "memberID"},
 		{name:"Member Name", id: "addedBy"},
+		{name:"Services", id: "serviceType"},
 	]
 
 	return (<>
