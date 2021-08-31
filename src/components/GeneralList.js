@@ -194,8 +194,9 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 						/>
 					))}
 				</TableBody>
-				<TableFooter>
-					<TableRow>
+				</Table>
+				{/* <TableFooter> */}
+					{/* <TableRow> */}
 						<TablePaginationActions
 							rowsPerPageOptions={[25, 50, 100]}
 							colSpan={0}
@@ -206,9 +207,8 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 							onRowsPerPageChange={handleChangeRowsPerPage}
 							ActionsComponent={TablePaginationActions}
 						/>
-					</TableRow>
-					</TableFooter>
-			</Table>
+					{/* </TableRow> */}
+					{/* </TableFooter> */}
 		</TableContainer>
 	);
 }
