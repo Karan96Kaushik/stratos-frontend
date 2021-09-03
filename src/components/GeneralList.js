@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
+import _ from 'lodash';
 import {Link} from "react-router-dom"
 
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -30,7 +31,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields }) {
 	const classes = useRowStyles();
 	// Filter out the ones not hidden in table view
 
-	let fieldsShow = fields[type]
+	let fieldsShow = _.merge({}, fields[type])
 	if(!type && defaultFields)
 		fieldsShow = defaultFields
 	if(type?.length)

@@ -16,7 +16,8 @@ const leadSourceOptions = ["","Whatsapp","Inbound Calls","Existing Customer","Re
 const closureStatusOptions = ["","On hold","Pricing issue", "Awaiting Response", "Undecisive", "Converted", "In Progress", "Confirmed", "Not Interested"]
 const statusOptions = ["", "Profile Sent", "Quotation Sent", "Awaiting Response", "Follow up required", "Cold", "Not Interested","Others"]
 
-// Name, Project Name, Mobile No, Lead Rating, Status, Closure Status, Follow Up Date
+// Project Location 	Project Plot Area 	Quoted Amount 	RERA Number 	Mobile Number 	Office Number 	Email ID 	Lead Rating (Multiple Option - 1/2/3/4/5)	Lead Source (Whatsapp/ Inbound Calls/ Existing Customer/ Reference/ Outbound Calls/ Website / Enquiries / Others)		Lead Responsibility 	Status (Multiple option - Profile Sent / Quotation Sent / Awaiting response/ Follow up require 	Follow up date 	Remarks 
+
 export default {
     developer: {
         name:"Developer",

@@ -16,7 +16,7 @@ import taskFields from "../../statics/taskFields"
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
 services.unshift("")
-services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D')
+services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
 
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -197,7 +197,6 @@ const TaskAddForm = (props) => {
 			creds:loginState.loginState, 
 			method:"post"
 		}, fileName.split("/")[1])
-
 	}
 
 	return (

@@ -8,6 +8,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "npm run build && zip -r dist.zip build && scp dist.zip Pandora:/home/ubuntu/tms/ && ssh Pandora -t \"cd tms && rm -r build/ && unzip dist.zip\"",
+    "deployprod": "npm run build && zip -r dist.zip build && scp dist.zip tms:/home/ubuntu/tms/ && ssh tms -t \"cd tms && rm -r build/ && unzip dist.zip\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
