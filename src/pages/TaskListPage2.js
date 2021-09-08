@@ -174,6 +174,7 @@ const CustomerList = () => {
 	const defaultFields = {
 		texts:[
 			{label:"Type", id: "serviceType"},
+			{label:"Promoter", id: "promoter"},
 			{label:"Status", id: "status", options: allStatuses},
 			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]},
 			{label:"Deadline", id:"deadline", type:"date"},

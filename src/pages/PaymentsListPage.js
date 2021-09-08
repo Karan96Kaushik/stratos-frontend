@@ -71,7 +71,7 @@ const CustomerList = () => {
 		delete queryParams.filters
 
 		navigate("/app/payments?" + serialize(queryParams));
-		if(search?.text?.length > 3 || search?.text?.length == 0 || !search?.text)
+		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
 			goSearch();
 	}, [search])
 
@@ -118,6 +118,8 @@ const CustomerList = () => {
 		{name:"Payment ID", id: "paymentID"},
 		{name:"Task ID", id: "taskID"},
 		{name:"Client ID", id: "clientID"},
+		{name:"Client Name", id: "clientName"},
+		{name:"Promoter", id: "promoter"},
 	]
 
 	return (<>

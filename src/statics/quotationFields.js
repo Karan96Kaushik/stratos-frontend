@@ -25,4 +25,21 @@ const quotationFields = {
     }
 }
 
+const allQuotes = {
+    texts: [
+        {label:"Department", id:"dept", options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
+        {label:"Client Name", id:"clientName", isRequired:true},
+        {label:"Related Project Name", id:"relatedProject"},
+        // {label:"Lead ID", id:"leadID"},
+        // {label:"Quotation Valid Till", id:"quoteValid", type:"date"},
+        {label:"Quotation Desc", id:"quotationDesc"},
+        {label:"Quotation Amount", id:"quotationAmount"},
+        {label:"Status", id:"status", options: status},
+        // {label:"Files", id:"files", type:"file"},
+        // {label:"Remarks", id:"remarks"},
+    ],
+    checkboxes: []
+}
+
+export {allQuotes}
 export default quotationFields

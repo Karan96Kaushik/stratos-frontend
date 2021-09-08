@@ -6,7 +6,7 @@ import { authorizedReq, authorizedDownload } from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import quotationFields from '../statics/quotationFields';
+import quotationFields, {allQuotes} from '../statics/quotationFields';
 import GeneralList from '../components/GeneralList'
 
 function useQuery() {
@@ -114,8 +114,8 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Quotation ID", id: "quotationID"},
-		{name:"Member ID", id: "memberID"},
-		{name:"Member Name", id: "addedBy"},
+		// {name:"Member ID", id: "memberID"},
+		{name:"Member Name", id: "memberName"},
 		{name:"Services", id: "serviceType"},
 	]
 
@@ -134,8 +134,9 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={"all"} 
+							type={null} 
 							fields={quotationFields} 
+							defaultFields={allQuotes}
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 

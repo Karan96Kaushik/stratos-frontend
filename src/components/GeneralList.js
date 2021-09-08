@@ -168,10 +168,13 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 		return "text"
 	}
 
-	let fieldsShow = fields[type]
+	let fieldsShow = _.merge({}, fields[type])
 	if(!type && defaultFields)
 		fieldsShow = defaultFields
- 
+	if(type?.length)
+		fieldsShow.texts = fieldsShow?.texts.filter(val => !val.isHidden)
+	
+	// console.log(fields[type], fieldsShow)
 	return (
 		<TableContainer component={Paper}>
 			<Table aria-label="collapsible table">

@@ -11,11 +11,13 @@ import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import taskFields from '../../statics/taskFields';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import * as _ from 'lodash'
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
+	let taskFieldsCopy = _.merge({}, taskFields)
 
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
@@ -24,7 +26,7 @@ const TaskAddForm = (props) => {
 	const [type, setType] = useState("");
 
 	const handleChangeClient = ({target}) => {
-		if(target?.value?.length > 3) {
+		if(target?.value?.length > 2) {
 			setSearchInfo({...searchInfo, text: target.value})
 		}
 		if(target?.value?.length == 0) {
@@ -34,10 +36,17 @@ const TaskAddForm = (props) => {
 	
     let isEdit = location.pathname.includes("edit");
 
+	if(isEdit && type) {
+		// filter out option to edit some fields
+		taskFieldsCopy[type].texts = taskFieldsCopy[type]?.texts.filter(
+			f => !(["gst", "billAmount", "govtFees", "sroFees"].includes(f.id))
+		)
+	}
+
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 
 	useEffect(async () => {
-		if(searchInfo.text.length > 3)
+		if(searchInfo.text.length > 2)
 			getClients()
 		if(searchInfo.text.length == 0)
 			setClientRows([])
@@ -59,7 +68,7 @@ const TaskAddForm = (props) => {
 
 	const getClients = async () => {
 		try {
-			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'get' })
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'post' })
 			setClientRows(response)
 
 		} catch (err) {
@@ -94,7 +103,7 @@ const TaskAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		taskFields[type].texts.map(field => {
+		taskFieldsCopy[type].texts.map(field => {
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true
@@ -195,8 +204,11 @@ const TaskAddForm = (props) => {
 		} else if (event.target.id == 'client' && values?.client?.length > 2) {
 			getClients()
 		} else if (event.target.id == '_clientID') {
-			others.clientName = event.target.name
-			others.clientID = event.target.clientID
+			let client = clientRows.find(val => String(val._id) == event.target.value)
+			console.info(client)
+			others.clientName = client.name
+			others.clientID = client.clientID
+			others.promoter = client.promoter
 		} else if (event.target.id == '_memberID') {
 			others.memberName = event.target.name
 			others.memberID = event.target.memberID
@@ -271,7 +283,7 @@ const TaskAddForm = (props) => {
 								onChange={handleChange}
 								required
 								error={errors.serviceType}
-								defaultValue={!isEdit?"":Object.keys(taskFields)[0]}
+								defaultValue={!isEdit?"":Object.keys(taskFieldsCopy)[0]}
 								disabled={isEdit}
 								value={values.serviceType}
 								select
@@ -279,18 +291,18 @@ const TaskAddForm = (props) => {
 								variant="outlined"
 							>
 								<option />
-								{Object.keys(taskFields).map((option) => (
+								{Object.keys(taskFieldsCopy).map((option) => (
 									<option
 										key={option}
 										value={option}
 									>
-										{taskFields[option]?.name}
+										{taskFieldsCopy[option]?.name}
 									</option>
 								))}
 							</TextField>
 						</Grid>
 
-						{taskFields[type]?.texts.map((field) => (
+						{taskFieldsCopy[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -318,7 +330,7 @@ const TaskAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						{taskFields[type]?.checkboxes.map((field) => (
+						{taskFieldsCopy[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox

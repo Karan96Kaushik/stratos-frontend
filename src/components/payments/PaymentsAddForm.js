@@ -119,7 +119,7 @@ const PaymentAddForm = (props) => {
 
 	const getClients = async () => {
 		try {
-			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'get' })
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'post' })
 			setClientRows(response)
 
 		} catch (err) {
@@ -270,18 +270,21 @@ const PaymentAddForm = (props) => {
 				
 		}
 
-		else if (event.target.id == '_clientID') {
+		else if (event.target.id == '_clientID' && event.target.value) {
 			getTasks(event.target.value)
 			others["clientID"] = clientRows.find(val => event.target.value == val._id)
-			setPlaceholder({...placeholder, client:others["clientID"]})
+			setPlaceholder({client:others["clientID"]})
 			others["clientID"] = others["clientID"].clientID
 		}
 
-		else if (event.target.id == '_taskID') {
+		else if (event.target.id == '_taskID' && event.target.value) {
 			getTasks(event.target.value)
-			others["taskID"] = taskRows.find(val => event.target.value == val._id)
+			let task = taskRows.find(val => event.target.value == val._id)
+			console.info(task)
 			setPlaceholder({...placeholder, task:others["taskID"]})
-			others["taskID"] = others["taskID"].taskID
+			others["promoter"] = task.promoter
+			others["clientName"] = task.clientName
+			others["taskID"] = task.taskID
 		}
 
 		setValues({
@@ -337,10 +340,10 @@ const PaymentAddForm = (props) => {
 								id="_taskID"
 								options={taskRows}
 								value={placeholder.task}
-								getOptionLabel={(row) => row.taskID}
+								getOptionLabel={(row) => row.taskID + (row.billAmount ? ` - ₹${row.billAmount}` : "")}
 								disabled={(values?._clientID?.length || 0) < 3}
 								onInputChange={handleChangeClient}
-								onChange={(e,value) => handleChange({target:{id:"_taskID", value:value._id, name:value.name}})}
+								onChange={(e,value) => handleChange({target:{id:"_taskID", value:value?._id, name:value?.name}})}
 								fullWidth
 								// filterOptions={filterTaskOptions}
 								renderInput={(params) => <TextField {...params} label="Select Task" variant="standard" />}

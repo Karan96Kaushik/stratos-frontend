@@ -61,9 +61,9 @@ const CustomerListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-								{/* <Grid item item md={4} xs={6}>
-									<Filters search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["clientType"]} fields={clientFields}/>
-								</Grid> */}
+								<Grid item item md={4} xs={6}>
+									<Filters search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["clientType"] ?? "all"} fields={clientFields}/>
+								</Grid>
 							</Grid>
 						</Box>
 					</CardContent>

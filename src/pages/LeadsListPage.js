@@ -120,7 +120,7 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Lead ID", id: "leadID"},
-		{name:"Member ID", id: "memberID"},
+		{name:"Member Assigned", id: "memberName"},
 	]
 
 	return (<>

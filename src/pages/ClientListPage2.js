@@ -90,7 +90,7 @@ const CustomerList = () => {
 				route: "/api/clients/search", 
 				creds: loginState.loginState, 
 				data:{...search, ...others}, 
-				method: 'get'
+				method: 'post'
 			})
 			setData({rows:_data})
 
@@ -119,7 +119,7 @@ const CustomerList = () => {
 			route: "/api/clients/export", 
 			creds: loginState.loginState, 
 			data:{...search, ...others}, 
-			method: 'get'
+			method: 'post'
 		}, "clientsExport" + ".xlsx")
 	}
 	

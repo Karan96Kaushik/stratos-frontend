@@ -20,7 +20,7 @@ const statusSet1 = [
 ]
 
 const statusSet2 = [
-    "For Certification",  "Completed" 
+    "For Certification",  "Completed", "Uploaded"
 ]
 
 const statusSet3 = [
@@ -28,7 +28,7 @@ const statusSet3 = [
 ]
 
 const statusSet4 = [
-    "Notice Sent", "Period Completed", "Reply Received", "Completed" 
+    "Notice Sent", "Period Completed", "Reply Received", "Closed for order", "Order received", "Completed" 
 ]
 
 const statusSet5 = [
@@ -49,17 +49,20 @@ const actions = [
 let commonTextFields = [
     {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
     {label:"Deadline", id:"deadline", type:"date"},
-    {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
-    {label:"GST", id:"gst", type:"number", isHidden:true},
-    {label:"Files", id:"files", type:"file", isHidden:true},
+    // {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 
 let commonTextFieldsEnd = [
+    {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
+    {label:"GST", id:"gst", type:"number", isHidden:true},
     {label:"Remarks", id:"remarks"},
     {label:"Notes", id:"notes"},
+    {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 
 let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])
+
+//4. Fields - In services (form 1,2,3,5,2A, Updation , other technical) - In status , add last option as uploaded
 
 const taskFields = {
     "Agent Registration": {
@@ -210,7 +213,10 @@ const taskFields = {
             {label:"Service Requested", id:"serviceReq"},
             {label:"Service Description", id:"serviceDesc"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
-            ...commonTextFields
+            ...commonTextFields,
+            {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
+            {label:"GST", id:"gst", type:"number", isHidden:true},
+            {label:"Files", id:"files", type:"file", isHidden:true},
         ],
         checkboxes:[
         ]
@@ -228,6 +234,7 @@ const taskFields = {
             {label:"Checked By", id:"checkedBy"},
             {label:"Signed By", id:"signedBy"},
             {label:"Date of Certification", id:"dateOfCertification", type:"date"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
             ...commonTextFieldsEnd,
@@ -241,6 +248,7 @@ const taskFields = {
             {label:"Project Type", id:"projectType"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
             ...commonTextFields,
             ...commonTextFieldsEnd,
@@ -259,9 +267,10 @@ const taskFields = {
             {label:"Court", id:"court"},
             {label:"Project Name", id:"projectName"},
             {label:"RERA Number", id:"reraNumber"},
-            {label:"Complaint", id:"complaint"},
+            {label:"Complaint Number", id:"complaint"},
             {label:"Hearing Date", id:"hearingDate", type:"date"},
             {label:"Package Description", id:"packageDesc"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status"},
             {label:"Result", id:"result"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet3]},
@@ -278,8 +287,6 @@ const taskFields = {
             {label:"Utilised Hours", id:"utilisedHours", type:"number"},
             {label:"Task Done", id:"task"},
             {label:"Summary", id:"summary"},
-            {label:"Bill Amount", id:"billAmount", type:"number"},
-            {label:"GST", id:"gst", type:"number"},,
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
@@ -294,7 +301,7 @@ const taskFields = {
             {label:"RERA Number", id:"reraNumber"},
             {label:"Case Brief", id:"caseBrief"},
             {label:"Dispatch Date", id:"dispatchDate", type:"date"},
-            {label:"Status", id:"status"},
+            {label:"Manhours", id:"manhours"},
             {label:"Reply Status", id:"replyStatus"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet4]},
             ...commonTextFieldsEnd,
@@ -318,6 +325,7 @@ const taskFields = {
             {label:"Registration", id:"registration"},
             {label:"DHC Charges", id:"dhcCharges", type:"number"},
             {label:"Total", id:"total", type:"number"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet5]},
             ...commonTextFieldsEnd,
         ],
@@ -330,6 +338,7 @@ const taskFields = {
             {label:"Document Type", id:"documentType"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
             ...commonTextFieldsEnd,
         ],
@@ -343,6 +352,7 @@ const taskFields = {
             {label:"Service Description", id:"serviceDescription"},
             {label:"Prepared By", id:"preparedBy"},
             {label:"Checked By", id:"checkedBy"},
+            {label:"Manhours", id:"manhours"},
             {label:"Status", id:"status", options:[...statuses, ...["Completed"]]},
             ...commonTextFieldsEnd,
         ],

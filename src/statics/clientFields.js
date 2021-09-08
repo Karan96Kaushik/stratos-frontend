@@ -9,6 +9,7 @@ const allClients = {
         // {label:"Date", id:"createdTime"},
         {label:"Name", id:"name"},
         {label:"Client Type", id:"clientType", isRequired:true},
+        {label:"Promoter", id:"promoter"},
         {label:"UserID", id:"userID"},
         {label:"Password", id:"password"},
         {label:"Completion Date", id:"completionDate", type:"date"},
@@ -21,6 +22,11 @@ const allClients = {
 
 export {allClients}
 export default {
+    all: {
+        texts: [
+            {label:"Completion Date", id:"completionDate", type:"date"},
+        ]
+    },
     Developers: {
         name:"Developers",
         texts:[
@@ -83,7 +89,7 @@ export default {
             {label:"Related RERA No", id:"reraNum"},
             {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email"},
-            {label:"Completion Date", id:"completionDate", type:"date"},
+            {label:"Hearing Date", id:"completionDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
             {label:"Remarks", id:"remarks"},
         ],

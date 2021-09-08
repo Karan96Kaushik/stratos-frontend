@@ -9,9 +9,14 @@ import {
 import {Link} from 'react-router-dom';
 import quotationFields from 'src/statics/quotationFields';
 import FiltersDialog from '../FiltersDialog';
+import * as _ from "lodash"
 
 const CustomerListToolbar = (props) => {
 
+	let filterFields = _.merge({}, quotationFields)
+
+	filterFields.all.texts = filterFields.all.texts.filter(val => val.id != "quoteValid")
+	
 	return (
 		<Box {...props}>
 			<Box sx={
@@ -45,7 +50,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={quotationFields}/>
+									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={filterFields}/>
 								</Grid>
 							</Grid>
 						</Box>
