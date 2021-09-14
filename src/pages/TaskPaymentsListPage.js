@@ -11,6 +11,8 @@ import {allStatuses, allTasks} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import { Add } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
+import ViewDialog from 'src/components/ViewDialog';
+import paymentFields from 'src/statics/paymentFields';
 
 
 function useQuery() {
@@ -107,27 +109,50 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 	
-	const extraFields = {
-		"all":{
-			texts:	[
+	const extraFields = []
+
+	const otherFields = [
+		{name:"Task Date", id: "createdTime"},
+		{name:"Task ID", id: "taskID"},
+		{name:"Type", id: "serviceType", options:["",...allTasks]},
+		{name:"Client Name", id: "clientName"},
+		{name:"Status", id: "status", options:allStatuses},
+		{name:"Promoter", id: "promoter"},
+		{name:"Remarks", id: "remarks"},
+		{name:"Bill Amount", id:"billAmount", type:"number"},
+		{name:"GST", id:"gst", type:"number"},
+		{name:"SRO Fees", id:"sroFees", type:"number"},
+		{name:"Government Fees", id:"govtFees", type:"number"},
+		{name:"Total", id:"total", type:"number"},
+		{name:"Received", id:"received", type:"number"},
+		{name:"Balance", id:"balance", type:"number"},
+	]
+
+	const defaultFields = {
+			texts:[
 				{label:"Task Date", id: "createdTime"},
 				{label:"Task ID", id: "taskID"},
 				{label:"Type", id: "serviceType", options:["",...allTasks]},
 				{label:"Client Name", id: "clientName"},
-				{label:"Status", id: "status", options:allStatuses},
 				{label:"Promoter", id: "promoter"},
+				{label:"Status", id: "status", options:allStatuses},
 				// {label:"Remarks", id: "remarks"},
-				{label:"Bill Amount", id:"billAmount", type:"number"},
-				{label:"GST", id:"gst", type:"number"},
-				{label:"SRO Fees", id:"sroFees", type:"number"},
-				{label:"Government Fees", id:"govtFees", type:"number"},
+				// {label:"Bill Amount", id:"billAmount", type:"number"},
+				// {label:"GST", id:"gst", type:"number"},
+				// {label:"SRO Fees", id:"sroFees", type:"number"},
+				// {label:"Government Fees", id:"govtFees", type:"number"},
 				{label:"Total", id:"total", type:"number"},
 				{label:"Received", id:"received", type:"number"},
 				{label:"Balance", id:"balance", type:"number"},
-			// {label:"Files", id:"files", type:"file"},
-			], 
+			],
 			checkboxes:[]
-		}
+	}
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={defaultFields} otherFields={otherFields} typeField={null}/>
+		)
 	}
 
 	const handleExport = async (event) => {
@@ -164,9 +189,10 @@ const CustomerList = () => {
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
-							extraFields={[]} 
-							type={"all"} 
-							fields={extraFields} 
+							extraFields={extraFields} 
+							defaultFields={defaultFields} 
+							type={null} 
+							fields={{}} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
@@ -176,7 +202,7 @@ const CustomerList = () => {
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
-							additional={[renderButton]}
+							additional={[renderViewButton, renderButton]}
 						/>				
 					</Paper>
 				</Box>

@@ -10,6 +10,7 @@ import clientFields from '../statics/clientFields';
 import {allClients} from '../statics/clientFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
+import PasswordDialog from 'src/components/passwordDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -110,17 +111,25 @@ const CustomerList = () => {
 		}
 	}
 
-	const handleExport = async () => {
-		let others = {}
-		if(!search.clientType)
-			others.searchAll = true
+	const handleExport = async (password) => {
+		try {
+			let others = {}
+			if(!search.clientType)
+				others.searchAll = true
+	
+			await authorizedDownload({
+				route: "/api/clients/export", 
+				creds: loginState.loginState, 
+				data:{...search, ...others, password}, 
+				method: 'post'
+			}, "clientsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 
-		await authorizedDownload({
-			route: "/api/clients/export", 
-			creds: loginState.loginState, 
-			data:{...search, ...others}, 
-			method: 'post'
-		}, "clientsExport" + ".xlsx")
 	}
 	
 	const extraFields = [

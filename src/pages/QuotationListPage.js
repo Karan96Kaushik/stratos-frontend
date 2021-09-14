@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import quotationFields, {allQuotes} from '../statics/quotationFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from 'src/components/ViewDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -119,6 +120,22 @@ const CustomerList = () => {
 		{name:"Services", id: "serviceType"},
 	]
 
+	const defaultFields = {
+		texts:[
+            {label:"Department", id:"dept", options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
+            {label:"Client Name", id:"clientName", isRequired:true},
+            {label:"Related Project Name", id:"relatedProject"},
+            {label:"Status", id:"status"},
+            {label:"Quotation Amount", id:"quotationAmount"},
+		],
+		checkboxes:[]
+	}
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={quotationFields} otherFields={extraFields} typeField={null}/>
+		)
+	}
 	return (<>
 		<Helmet>
 			<title>Quotations | TMS</title>
@@ -141,6 +158,8 @@ const CustomerList = () => {
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
+							additional={[renderViewButton]}
+							defaultFields={defaultFields} 
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}

@@ -8,6 +8,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import invoiceFields from '../statics/invoiceFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from 'src/components/ViewDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -116,8 +117,27 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Invoice ID", id: "invoiceID"},
-		{name:"Member ID", id: "memberID"},
+		// {name:"Member ID", id: "memberID"},
 	]
+
+	const defaultFields = {
+		texts:[
+            {label:"Invoice Date", id:"date", type:"date"},
+            {label:"Project Name", id:"projectName", isRequired:true},
+            {label:"Bill To", id:"billTo"},
+            {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
+            {label:"Total Amount", id:"totalAmount", type:"number"},
+            {label:"Balance Amount", id:"balanceAmount", type:"number"},
+		],
+		checkboxes:[]
+	}
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={invoiceFields} otherFields={extraFields} typeField={null}/>
+		)
+	}
 
 	return (<>
 		<Helmet>
@@ -134,12 +154,14 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={"all"} 
+							type={null} 
 							fields={invoiceFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
+							defaultFields={defaultFields} 
+							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}

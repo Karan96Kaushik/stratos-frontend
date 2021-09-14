@@ -10,10 +10,19 @@ import {Search as SearchIcon} from 'react-feather';
 import {Link} from 'react-router-dom';
 import clientFields from 'src/statics/clientFields';
 import Filters from '../FiltersDialog'
+import PasswordDialog from '../passwordDialog';
+import React from 'react';
 
 const CustomerListToolbar = (props) => {
+	const [open, setOpen] = React.useState(false)
+
+	const getExport = async () => {
+		setOpen(true)
+	}
 
 	return (
+		<>
+		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
 		<Box {...props}>
 			<Box sx={
 				{
@@ -26,9 +35,9 @@ const CustomerListToolbar = (props) => {
 						Add Client
 					</Button>
 				</Link>
-				{/* <Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
-				</Button> */}
+				</Button>
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -70,6 +79,7 @@ const CustomerListToolbar = (props) => {
 				</Card>
 			</Box>
 		</Box>
+		</>
 	)
 };
 

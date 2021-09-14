@@ -47,7 +47,7 @@ const serialize = function(obj) {
 	return str.join("&");
 }
 
-const authorizedDownload = async (request, fileName) => {
+const authorizedDownload = (request, fileName) =>  new Promise((resolve, reject) => {
 
     let query = ""
     let options = {
@@ -64,6 +64,13 @@ const authorizedDownload = async (request, fileName) => {
         query = "?" + serialize(request.data)
 
     fetch(request.route + query, options)
+        .then(async (data) => {
+            if(!data.ok) {
+                let error = await data.text()
+                throw new Error(error)
+            }
+            return data
+        })
         .then((response) => response.blob())
         .then((blob) => {
             // Create blob link to download
@@ -81,8 +88,12 @@ const authorizedDownload = async (request, fileName) => {
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
+            resolve()
+        })
+        .catch(err => {
+            reject(err)
         });
-};
+});
 
 const authorizedDownloadLink = async (request, fileName) => {
     try{

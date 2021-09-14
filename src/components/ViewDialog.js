@@ -25,7 +25,10 @@ export default function ViewDialog({ data, fields, otherFields, typeField, title
 	const [open, setOpen] = React.useState(false)
 	const classes = useStyles();
 
-    fields = fields[data[typeField]]
+    if(!typeField)
+        fields = fields["all"]
+    else
+        fields = fields[data[typeField]]
 
 	const handleClose = () => {
 		setOpen(false);

@@ -8,6 +8,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import leadFields from '../statics/leadFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from 'src/components/ViewDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -121,7 +122,24 @@ const CustomerList = () => {
 		{name:"Date", id: "createdTime"},
 		{name:"Lead ID", id: "leadID"},
 		{name:"Member Assigned", id: "memberName"},
+		{name:"Type", id: "leadType"},
 	]
+
+	const defaultFields = {
+		texts:[
+            {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
+			{label:"Status", id: "status"},
+		],
+		checkboxes:[]
+	}
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={leadFields} otherFields={extraFields} typeField={'leadType'}/>
+		)
+	}
+	
 
 	return (<>
 		<Helmet>
@@ -138,12 +156,14 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={search.leadType} 
+							type={null}//search.leadType} 
 							fields={leadFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
+							defaultFields={defaultFields} 
+							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
