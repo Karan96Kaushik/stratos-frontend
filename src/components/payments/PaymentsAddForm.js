@@ -108,6 +108,26 @@ const PaymentAddForm = (props) => {
 				)
 			}
 		}
+
+		if(query.clientID) {
+			try {
+				let res = await authorizedReq({ route: "/api/clients/payments/search/add", creds: loginState.loginState, data: {clientID: query.clientID}, method: 'get' })
+				getTasks(res._id)
+				setClientRows([{clientID:res.clientID, name: res.name, _id: res._id}])
+				setPlaceholder({
+					client: {clientID:res.clientID, name: res.name, _id: res._id}, 
+				})
+				setValues({
+					...values, 
+					clientID: res.clientID, 
+					_clientID: res._id
+				})
+			} catch (err) {
+				snackbar.showMessage(
+					"Error getting client - " + (err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
 	},[])
 
 	useEffect(async () => {

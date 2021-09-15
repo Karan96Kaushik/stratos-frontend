@@ -108,9 +108,8 @@ const CustomerList = () => {
 			await authorizedDownload({
 				route: "/api/quotations/export", 
 				creds: loginState.loginState, 
-				data:{...search}, 
-				method: 'post',
-				password
+				data:{...search, password}, 
+				method: 'post'
 			}, "quotationsExport" + ".xlsx")
 		}
 		catch (err) {

@@ -84,6 +84,11 @@ const items = [
 		icon: DollarSignIcon,
 		title: 'Task - Accounts'
 	},
+	{
+		href: '/app/clientaccounts',
+		icon: DollarSignIcon,
+		title: 'Client - Accounts'
+	},
 	// {
 	// 	href: '/app/settings',
 	// 	icon: SettingsIcon,

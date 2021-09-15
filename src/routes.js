@@ -14,6 +14,7 @@ import QuotationListPage from 'src/pages/QuotationListPage';
 import QuotationAdd from 'src/pages/QuotationAdd';
 import PaymentsListPage from 'src/pages/PaymentsListPage';
 import TaskPaymentsListPage from 'src/pages/TaskPaymentsListPage';
+import ClientPaymentsListPage from 'src/pages/ClientPaymentsListPage';
 import TaskPaymentsAddPage from 'src/pages/TaskPaymentsAddPage';
 import PaymentsAdd from 'src/pages/PaymentsAdd';
 import ClientList from 'src/pages/ClientListPage2';
@@ -95,6 +96,12 @@ const routes = (isLoggedIn) => [
 				children: [
 					{ path: '/', element: <TaskPaymentsListPage /> },
 					{ path: 'edit/:id', element: <TaskPaymentsAddPage /> },
+				]
+			},
+			{
+				path: 'clientaccounts',
+				children: [
+					{ path: '/', element: <ClientPaymentsListPage /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
