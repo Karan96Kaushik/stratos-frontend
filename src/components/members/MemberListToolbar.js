@@ -5,11 +5,18 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import { Link } from 'react-router-dom';
+import PasswordDialog from '../passwordDialog';
+import React from 'react';
 
 const CustomerListToolbar = (props) => {
+	const [open, setOpen] = React.useState(false)
 
+	const getExport = async () => {
+		setOpen(true)
+	}
 	return (
 		<Box {...props}>
+		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
 			<Box
 				sx={{
 					display: 'flex',
@@ -21,7 +28,7 @@ const CustomerListToolbar = (props) => {
 						Add Member
 				</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
 				</Button>
 			</Box>
@@ -29,23 +36,14 @@ const CustomerListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box sx={{ maxWidth: 500 }}>
-							{/* <TextField
+							<TextField
 								fullWidth
-								InputProps={{
-									startAdornment: (
-										<InputAdornment position="start">
-											<SvgIcon
-												fontSize="small"
-												color="action"
-											>
-												<SearchIcon />
-											</SvgIcon>
-										</InputAdornment>
-									)
-								}}
-								placeholder="Search member"
-								variant="outlined"
-							/> */}
+								label="Search"
+								id="text"
+								value={props.searchInfo["text"]}
+								onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
+								variant="standard"
+							/>
 						</Box>
 					</CardContent>
 				</Card>

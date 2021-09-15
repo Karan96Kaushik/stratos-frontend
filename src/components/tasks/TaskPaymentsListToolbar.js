@@ -4,11 +4,18 @@ import {
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import Filters from '../FiltersDialog'
+import PasswordDialog from '../passwordDialog';
+import React from 'react';
 
 const PaymentsListToolbar = (props) => {
+	const [open, setOpen] = React.useState(false)
 
+	const getExport = async () => {
+		setOpen(true)
+	}
 	return (
 		<Box {...props}>
+		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
 			<Box sx={
 				{
 					display: 'flex',
@@ -20,7 +27,7 @@ const PaymentsListToolbar = (props) => {
 						Add Payment
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
 				</Button>
 			</Box>

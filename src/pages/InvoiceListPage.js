@@ -105,13 +105,21 @@ const CustomerList = () => {
 		// }
 	}
 
-	const handleExport = async (event) => {
-		await authorizedDownload({
-			route: "/api/invoices/export", 
-			creds: loginState.loginState, 
-			data:{...search}, 
-			method: 'post'
-		}, "invoicesExport" + ".xlsx")
+	const handleExport = async (password) => {
+		try {
+			await authorizedDownload({
+				route: "/api/invoices/export", 
+				creds: loginState.loginState, 
+				data:{...search}, 
+				method: 'post',
+				password
+			}, "invoicesExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 	
 	const extraFields = [

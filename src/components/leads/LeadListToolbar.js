@@ -9,11 +9,20 @@ import {
 import {Link} from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
 import Filters from '../FiltersDialog'
+import PasswordDialog from '../passwordDialog';
+import React from 'react';
 
 const CustomerListToolbar = (props) => {
 
+	const [open, setOpen] = React.useState(false)
+
+	const getExport = async () => {
+		setOpen(true)
+	}
+
 	return (
 		<Box {...props}>
+		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
 			<Box sx={
 				{
 					display: 'flex',
@@ -25,7 +34,7 @@ const CustomerListToolbar = (props) => {
 						Add Lead
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
 				</Button>
 			</Box>

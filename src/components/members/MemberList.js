@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import {Link, useQuery} from "react-router-dom"
+import ViewDialog from 'src/components/ViewDialog';
+import { memberFields } from 'src/statics/memberFields';
 
 const useRowStyles = makeStyles({
 	root: {
@@ -18,6 +20,13 @@ const useRowStyles = makeStyles({
 		},
 	},
 });
+
+// View button
+const renderViewButton = (val) => {
+	return (				
+		<ViewDialog data={val} fields={memberFields} typeField={null}/>
+	)
+}
 
 function Row(props) {
 	const { row } = props;
@@ -33,6 +42,9 @@ function Row(props) {
 				<TableCell align="left">{row.phone}</TableCell>
 				<TableCell align="left">{row.designation}</TableCell>
 				<TableCell align="left">{row.startDate}</TableCell>
+				<TableCell>
+					{renderViewButton(row)}
+				</TableCell>
 				<TableCell>
 					<Link to={"edit/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
@@ -62,7 +74,7 @@ export default function CollapsibleTable({rows}) {
 				</TableHead>
 				<TableBody>
 					{rows.map((row) => (
-						<Row key={row.userName} row={row} />
+						<Row row={row} />
 					))}
 				</TableBody>
 			</Table>

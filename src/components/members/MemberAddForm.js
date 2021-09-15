@@ -15,6 +15,7 @@ import {
 	pagePermissionFields,
 	servicePermissionFields,
 } from '../../statics/memberFields';
+import * as _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -40,6 +41,9 @@ const MemberAddForm = (props) => {
 	const loginState = useContext(LoginContext);
 	const snackbar = useSnackbar();
 	const location = useLocation();
+	let memberFieldsCopy = _.merge({}, memberFields);
+	console.log(memberFieldsCopy)
+	memberFieldsCopy = memberFieldsCopy.all
 
     let isEdit = false;
 
@@ -63,7 +67,7 @@ const MemberAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		memberFields.texts.map(field => {
+		memberFieldsCopy.texts.map(field => {
 			if(isEdit && field.id == 'password')
 				return
 				
@@ -217,7 +221,7 @@ const MemberAddForm = (props) => {
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
-						{memberFields.texts.map((field) => (!field.hideEdit || !isEdit) ? (<Grid item md={6} xs={12}>
+						{memberFieldsCopy.texts.map((field) => (!field.hideEdit || !isEdit) ? (<Grid item md={6} xs={12}>
 								<TextField fullWidth
 									select={field.options?.length}
 									label={field.label}

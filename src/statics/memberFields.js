@@ -6,7 +6,7 @@ const validateMobile = (val="") => {
     return false
 }
 
-const memberFields = {
+const memberFields = {all:{
         texts:[
             {label:"Name", id:"userName", isRequired:true},
             {label:"Username", id:"email", isRequired:true},
@@ -24,7 +24,7 @@ const memberFields = {
         ],
         checkboxes:[
         ]
-    }
+    }}
 
 const pagePermissionFields = [
     "Members R",

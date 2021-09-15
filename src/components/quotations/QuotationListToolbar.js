@@ -10,8 +10,16 @@ import {Link} from 'react-router-dom';
 import quotationFields from 'src/statics/quotationFields';
 import FiltersDialog from '../FiltersDialog';
 import * as _ from "lodash"
+import PasswordDialog from '../passwordDialog';
+import React from 'react';
 
 const CustomerListToolbar = (props) => {
+
+	const [open, setOpen] = React.useState(false)
+
+	const getExport = async () => {
+		setOpen(true)
+	}
 
 	let filterFields = _.merge({}, quotationFields)
 
@@ -19,6 +27,7 @@ const CustomerListToolbar = (props) => {
 	
 	return (
 		<Box {...props}>
+		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
 			<Box sx={
 				{
 					display: 'flex',
@@ -30,7 +39,7 @@ const CustomerListToolbar = (props) => {
 						Add Quotation
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={props.handleExport}>
+				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
 				</Button>
 			</Box>

@@ -137,7 +137,7 @@ const CustomerList = () => {
 		}
 	}
 
-	const handleExport = async () => {
+	const handleExport = async (password) => {
 		try {
 			let others = {...search}
 			others.filters = {...others.filters}
@@ -154,7 +154,8 @@ const CustomerList = () => {
 				route: "/api/tasks/export", 
 				creds: loginState.loginState, 
 				data:{...others}, 
-				method: 'post'
+				method: 'post',
+				password
 			}, "tasksExport" + ".xlsx")
 		}
 		catch (err) {

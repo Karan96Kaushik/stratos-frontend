@@ -10,7 +10,6 @@ import clientFields from '../statics/clientFields';
 import {allClients} from '../statics/clientFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
-import PasswordDialog from 'src/components/passwordDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);

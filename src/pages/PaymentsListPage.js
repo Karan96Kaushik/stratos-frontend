@@ -8,6 +8,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import paymentFields from '../statics/paymentFields';
 import GeneralList from '../components/GeneralList'
+import ViewDialog from 'src/components/ViewDialog';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -104,13 +105,21 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 
-	const handleExport = async (event) => {
-		await authorizedDownload({
-			route: "/api/payments/export", 
-			creds: loginState.loginState, 
-			data:{...search}, 
-			method: 'post'
-		}, "paymentsExport" + ".xlsx")
+	const handleExport = async (password) => {
+		try {
+			await authorizedDownload({
+				route: "/api/payments/export", 
+				creds: loginState.loginState, 
+				data:{...search}, 
+				method: 'post',
+				password
+			}, "paymentsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 	
 	const extraFields = [
@@ -121,6 +130,24 @@ const CustomerList = () => {
 		{name:"Client Name", id: "clientName"},
 		{name:"Promoter", id: "promoter"},
 	]
+
+	const defaultFields = {
+		texts:[
+            {label:"Payment Date", id:"paymentDate", type:"date"},
+            // {label:"Invoice ID", id:"invoiceID"},
+            {label:"Received Amount", id:"receivedAmount", type:"number", isRequired:true},
+            // {label:"Mode", id:"mode", options:modeOptions, isRequired:true},
+            // {label:"Remarks", id:"remarks"},
+		],
+		checkboxes:[]
+	}
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={paymentFields} otherFields={extraFields} typeField={null}/>
+		)
+	}
 
 	return (<>
 		<Helmet>
@@ -137,12 +164,14 @@ const CustomerList = () => {
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={"all"} 
+							type={null} 
 							fields={paymentFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
+							defaultFields={defaultFields} 
+							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}

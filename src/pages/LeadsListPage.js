@@ -109,13 +109,21 @@ const CustomerList = () => {
 		}
 	}
 
-	const handleExport = async (event) => {
-		await authorizedDownload({
-			route: "/api/leads/export", 
-			creds: loginState.loginState, 
-			data:{...search}, 
-			method: 'post'
-		}, "leadsExport-" + search.leadType + ".xlsx")
+	const handleExport = async (password) => {
+		try {
+			await authorizedDownload({
+				route: "/api/leads/export", 
+				creds: loginState.loginState, 
+				data:{...search}, 
+				method: 'post',
+				password
+			}, "leadsExport-" + search.leadType + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 	
 	const extraFields = [

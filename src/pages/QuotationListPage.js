@@ -103,13 +103,21 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 
-	const handleExport = async (event) => {
-		await authorizedDownload({
-			route: "/api/quotations/export", 
-			creds: loginState.loginState, 
-			data:{...search}, 
-			method: 'post'
-		}, "quotationsExport" + ".xlsx")
+	const handleExport = async (password) => {
+		try {
+			await authorizedDownload({
+				route: "/api/quotations/export", 
+				creds: loginState.loginState, 
+				data:{...search}, 
+				method: 'post',
+				password
+			}, "quotationsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 	
 	const extraFields = [
