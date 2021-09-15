@@ -84,7 +84,7 @@ const CustomerList = () => {
 			const _data = await authorizedReq({
 				route: "/api/invoices/search", 
 				creds: loginState.loginState, 
-				data:{...search, password}, 
+				data:{...search}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -110,9 +110,8 @@ const CustomerList = () => {
 			await authorizedDownload({
 				route: "/api/invoices/export", 
 				creds: loginState.loginState, 
-				data:{...search}, 
-				method: 'post',
-				password
+				data:{...search, password}, 
+				method: 'post'
 			}, "invoicesExport" + ".xlsx")
 		}
 		catch (err) {

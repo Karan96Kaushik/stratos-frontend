@@ -114,7 +114,7 @@ const CustomerList = () => {
 			await authorizedDownload({
 				route: "/api/leads/export", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...search, password}, 
 				method: 'post',
 				password
 			}, "leadsExport-" + search.leadType + ".xlsx")

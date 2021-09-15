@@ -27,9 +27,9 @@ const PaymentsListToolbar = (props) => {
 						Add Payment
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
+				{/* <Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
-				</Button>
+				</Button> */}
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -46,9 +46,9 @@ const PaymentsListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-                                <Grid item md={4} xs={6}>
+                                {/* <Grid item md={4} xs={6}>
 									<Filters type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
-								</Grid>
+								</Grid> */}
 							</Grid>
 						</Box>
 					</CardContent>
