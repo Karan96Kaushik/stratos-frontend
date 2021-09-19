@@ -137,6 +137,7 @@ const CustomerList = () => {
 		texts:[
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
 			{label:"Status", id: "status"},
+            {label:"Closure Status", id:"closureStatus"},
 		],
 		checkboxes:[]
 	}

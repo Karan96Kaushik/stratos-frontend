@@ -133,6 +133,7 @@ const CustomerList = () => {
             {label:"Client Name", id:"clientName", isRequired:true},
             {label:"Related Project Name", id:"relatedProject"},
             {label:"Status", id:"status"},
+            {label:"Closure Status", id:"closureStatus"},
             {label:"Quotation Amount", id:"quotationAmount"},
 		],
 		checkboxes:[]

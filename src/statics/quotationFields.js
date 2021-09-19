@@ -1,5 +1,6 @@
 import taskFields from "./taskFields"
 
+const closureStatusOptions = ["","On hold","Pricing issue", "Awaiting Response", "Undecisive", "Converted", "In Progress", "Confirmed", "Not Interested"]
 const status = ["", "None" , "On hold" , "Pricing issue" , "Undecisive" , "Converted" , "Confirmed", "Not Interested"]
 const serviceTypes = Object.keys(taskFields)
 serviceTypes.unshift("")
@@ -17,6 +18,7 @@ const quotationFields = {
             {label:"Quotation Desc", id:"quotationDesc"},
             {label:"Quotation Amount", id:"quotationAmount"},
             {label:"Status", id:"status", options: status},
+            {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file"},
             {label:"Remarks", id:"remarks"},
         ],

@@ -24,7 +24,7 @@ const statusSet2 = [
 ]
 
 const statusSet3 = [
-    "Awaiting Hearing Date", "Hearing Date Schedule" 
+    "Awaiting Hearing Date", "Hearing Date Schedule", "Closed for order", "Order received"
 ]
 
 const statusSet4 = [
