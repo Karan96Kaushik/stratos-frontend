@@ -1,9 +1,10 @@
 import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
-	Box, Button, Card, CardContent,
-	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel, Autocomplete,
-	List, ListItem, Typography, Link
+	Box, Button, Card, CardContent, Input, InputLabel,
+	CardHeader, Divider, Grid, TextField, Select,
+	Checkbox, FormControlLabel, Autocomplete, MenuItem,
+	List, ListItem, Typography, Link, FormControl,
+	ListItemText
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -213,6 +214,10 @@ const TaskAddForm = (props) => {
 			others.memberName = event.target.name
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
+		} else if (event.target.id == '_membersAssigned') {
+			others.membersAssigned = memberRows.filter(v => event.target.value.includes(v._id))
+			others.membersAssigned = others.membersAssigned.map(v => v.userName)
+			others.membersAssigned = others.membersAssigned.join(", ")
 		}
 
 		setValues({
@@ -262,6 +267,28 @@ const TaskAddForm = (props) => {
 						</Grid>)}
 
 						<Grid item md={6} xs={12}>
+							<FormControl fullWidth>	
+								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
+								<Select 
+									multiple 
+									fullWidth
+									id="_membersAssigned" 
+									value={values?._membersAssigned || []}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned"}})}
+									input={<Input />} 
+									renderValue={(s) => values?.membersAssigned}
+									>
+									{memberRows.map((member) => (
+										<MenuItem key={member.userName} value={member._id}>
+											<Checkbox checked={(values?._membersAssigned ?? []).indexOf(member._id) > -1} />
+											<ListItemText primary={member.userName} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
+
+						{/* <Grid item md={6} xs={12}>
 							<Autocomplete
 								id="membersAssigned"
 								// multiple
@@ -273,7 +300,7 @@ const TaskAddForm = (props) => {
 								fullWidth
 								renderInput={(params) => <TextField {...params} label="Member Assigned" variant="standard" />}
 							/>
-						</Grid>
+						</Grid> */}
 
 						<Grid item md={12} xs={12}>
 							<TextField

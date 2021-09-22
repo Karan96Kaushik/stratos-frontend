@@ -107,9 +107,8 @@ const CustomerList = () => {
 			if(!others?.serviceType?.length)
 				others.searchAll = true
 
-			if(others.filters && others.filters.memberName) {
-				others.filters._memberID = memberRows.find(m => others.filters.memberName == m.userName + ` (${m.memberID})`)._id
-				delete others.filters.memberName
+			if(others.filters && others.filters._membersAssigned) {
+				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
 			}
 
 			setLoading({...loading, isActive:true})
@@ -145,9 +144,8 @@ const CustomerList = () => {
 			if(!others?.serviceType?.length)
 				others.searchAll = true
 	
-			if(others.filters && others.filters.memberName) {
-				others.filters._memberID = memberRows.find(m => others.filters.memberName == m.userName + ` (${m.memberID})`)._id
-				delete others.filters.memberName
+			if(others.filters && others.filters._membersAssigned) {
+				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
 			}
 	
 			await authorizedDownload({
@@ -168,7 +166,7 @@ const CustomerList = () => {
 		{name:"Date", id: "createdTime"},
 		{name:"Task ID", id: "taskID"},
 		{name:"Client Name", id: "clientName"},
-		{name:"Member Assigned", id: "memberName"},
+		{name:"Members Assigned", id: "membersAssigned"},
 	]
 
 	const defaultFields = {
@@ -183,7 +181,7 @@ const CustomerList = () => {
 	}
 
 	const commonFilters = {texts :[
-		{label:"Member Assigned", id: "memberName", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		{label:"Member Assigned", id: "_membersAssigned", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 	]}
 
 	if(!search.serviceType)
