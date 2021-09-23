@@ -5,13 +5,13 @@ import {
 	DialogContent, DialogActions
 } from '@material-ui/core';
 
-export default function PasswordDialog({ handleExport, open, setOpen }) {
+export default function PasswordDialog({ protectedFunction, open, setOpen }) {
 
     const [value, setValue] = React.useState("")
-	const getExport = async () => {
+	const handleSubmit = async () => {
 		try {
 			setOpen(false);
-            handleExport(value)
+            protectedFunction(value)
             setValue("")
 		} catch (err) {
 			console.error(err)
@@ -56,8 +56,8 @@ export default function PasswordDialog({ handleExport, open, setOpen }) {
 					<Button onClick={handleClose} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={getExport} color="primary">
-						Export
+					<Button onClick={handleSubmit} color="primary">
+						Submit
 					</Button>
 				</DialogActions>
 			</Dialog>

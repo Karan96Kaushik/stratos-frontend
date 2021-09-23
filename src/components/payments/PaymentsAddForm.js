@@ -10,9 +10,9 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-
 import paymentFields from '../../statics/paymentFields';
 import taskFields from '../../statics/taskFields';
+import PasswordDialog from '../passwordDialog';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -226,15 +226,17 @@ const PaymentAddForm = (props) => {
 
 	};
 
-	const handleDelete = async () => {
+	const [open, setOpen] = useState(false)
+	const tryDelete = () => {
+		setOpen(true)
+	}
+
+	const handleDelete = async (password) => {
 		try {
-			const resp = confirm("Are you sure you want to delete this entry?")
-			if(!resp)
-				return
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/payments/", 
-				data:{_id:taskID}, 
+				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -335,6 +337,7 @@ const PaymentAddForm = (props) => {
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
+			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
 					title={!isEdit ? "New Payment" : "Edit Payment"}
@@ -431,7 +434,7 @@ const PaymentAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
 						</Button>)
 					}

@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import taskFields from '../../statics/taskFields';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import * as _ from 'lodash'
+import PasswordDialog from '../passwordDialog';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -138,16 +139,18 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleDelete = async () => {
+	const [open, setOpen] = useState(false)
+	const tryDelete = () => {
+		setOpen(true)
+	}
+
+	const handleDelete = async (password) => {
 		try {
-			const resp = confirm("Are you sure you want to delete this entry?")
-			console.log(resp)
-			if(!resp)
-				return
+
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/tasks/", 
-				data:{_id:taskID}, 
+				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -245,6 +248,7 @@ const TaskAddForm = (props) => {
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
+			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
 					title="New Task"
@@ -388,7 +392,7 @@ const TaskAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
 						</Button>)
 					}

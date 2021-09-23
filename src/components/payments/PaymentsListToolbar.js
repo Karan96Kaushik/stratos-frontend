@@ -18,7 +18,7 @@ const PaymentsListToolbar = (props) => {
 
 	return (
 		<Box {...props}>
-		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
+		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
 			<Box sx={
 				{
 					display: 'flex',

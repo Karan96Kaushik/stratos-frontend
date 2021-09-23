@@ -10,6 +10,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import invoiceFields from '../../statics/invoiceFields';
+import PasswordDialog from '../passwordDialog';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -121,21 +122,26 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleDelete = async () => {
+	const [open, setOpen] = useState(false)
+	const tryDelete = () => {
+		setOpen(true)
+	}
+
+	const handleDelete = async (password) => {
 		try {
-			const resp = confirm("Are you sure you want to delete this entry?")
-			console.log(resp)
-			if(!resp)
-				return
+			// const resp = confirm("Are you sure you want to delete this entry?")
+			// console.log(resp)
+			// if(!resp)
+			// 	return
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/invoices/", 
-				data:{_id:taskID}, 
+				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
 			snackbar.showMessage(
-				`Successfully deleted lead!`,
+				`Successfully deleted invoice!`,
 			)
 			navigate('/app/invoices');
 		} catch (err) {
@@ -160,6 +166,7 @@ const TaskAddForm = (props) => {
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
+			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
 					title={!isEdit ? "New Invoice" : "Edit Invoice"}
@@ -225,7 +232,7 @@ const TaskAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
 						</Button>)
 					}

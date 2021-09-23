@@ -16,6 +16,7 @@ import {
 	servicePermissionFields,
 } from '../../statics/memberFields';
 import * as _ from 'lodash';
+import PasswordDialog from '../passwordDialog';
 
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -170,16 +171,17 @@ const MemberAddForm = (props) => {
 		});
 	};
 
-	const handleDelete = async () => {
+	const [open, setOpen] = useState(false)
+	const tryDelete = () => {
+		setOpen(true)
+	}
+
+	const handleDelete = async (password) => {
 		try {
-			const resp = confirm("Are you sure you want to delete this entry?")
-			console.log(resp)
-			if(!resp)
-				return
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/members/", 
-				data:{_id:taskID}, 
+				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -213,6 +215,7 @@ const MemberAddForm = (props) => {
 			noValidate
 			{...props}
 		>
+			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
 					title={isEdit ? "Edit Member" : "New Member"}
@@ -303,7 +306,7 @@ const MemberAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
 						</Button>)
 					}

@@ -12,6 +12,7 @@ import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
 import taskFields from "../../statics/taskFields"
+import PasswordDialog from '../passwordDialog';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -110,18 +111,18 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleDelete = async () => {
+	const [open, setOpen] = useState(false)
+	const tryDelete = () => {
+		setOpen(true)
+	}
 
-		return
+	const handleDelete = async (password) => {
 
 		try {
-			const resp = confirm("Are you sure you want to delete this entry?")
-			if(!resp)
-				return
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/leads/", 
-				data:{_id:taskID}, 
+				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -204,6 +205,7 @@ const TaskAddForm = (props) => {
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
+			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
 					title={!isEdit ? "New Lead" : "Edit Lead"}
@@ -320,9 +322,9 @@ const TaskAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						// isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
-						// 	Delete entry
-						// </Button>)
+						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
+							Delete entry
+						</Button>)
 					}
 				</Box>
 			</Card>

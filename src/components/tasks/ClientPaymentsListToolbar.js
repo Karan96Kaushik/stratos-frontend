@@ -22,7 +22,7 @@ const PaymentsListToolbar = (props) => {
 
 	return (
 		<Box {...props}>
-		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
+		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
 			<Box sx={
 				{
 					display: 'flex',
@@ -53,9 +53,9 @@ const PaymentsListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-                                <Grid item md={4} xs={6}>
+                                {/* <Grid item md={4} xs={6}>
 									<Filters type={"all"} fields={props.fields} commonFilters={commonFilters} setSearch={props.setSearch} search={props.searchInfo}/>
-								</Grid>
+								</Grid> */}
 							</Grid>
 						</Box>
 					</CardContent>
