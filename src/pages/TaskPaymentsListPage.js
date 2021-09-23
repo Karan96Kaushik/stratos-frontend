@@ -127,6 +127,7 @@ const CustomerList = () => {
 		{name:"Total", id:"total", type:"number"},
 		{name:"Received", id:"received", type:"number"},
 		{name:"Balance", id:"balance", type:"number"},
+		{name:"Payment History", id:"payments", type:"array"},
 	]
 
 	const defaultFields = {
