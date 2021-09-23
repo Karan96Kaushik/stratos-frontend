@@ -109,7 +109,8 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 	
-	const extraFields = []
+	const extraFields = [
+	]
 
 	const otherFields = [
 		{name:"Task Date", id: "createdTime"},
@@ -192,7 +193,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskPaymentsListToolbar handleExport={handleExport} fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskPaymentsListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

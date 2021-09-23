@@ -129,6 +129,7 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Lead ID", id: "leadID"},
+		{name:"Name", id: "name"},
 		{name:"Member Assigned", id: "memberName"},
 		{name:"Type", id: "leadType"},
 	]
@@ -136,6 +137,7 @@ const CustomerList = () => {
 	const defaultFields = {
 		texts:[
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
+			{label:"Name", id: "name"},
 			{label:"Status", id: "status"},
             {label:"Closure Status", id:"closureStatus"},
 		],

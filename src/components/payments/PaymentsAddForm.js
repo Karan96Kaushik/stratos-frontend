@@ -100,7 +100,10 @@ const PaymentAddForm = (props) => {
 					...values, 
 					clientID: res.clientID, 
 					taskID: res.taskID, 
-					_clientID: res._clientID
+					_clientID: res._clientID,
+					_taskID: res._taskID,
+					promoter: res.promoter,
+					clientName: res.clientName,
 				})
 			} catch (err) {
 				snackbar.showMessage(

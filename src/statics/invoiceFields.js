@@ -11,6 +11,7 @@ const froms = [
 const invoiceFields = {
     all: {
         texts:[
+            {label:"Invoice ID", id:"invoiceID"},
             {label:"Invoice From", id:"from", options:froms, isRequired:true},
             {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
             {label:"Invoice Date", id:"date", type:"date"},
@@ -23,9 +24,10 @@ const invoiceFields = {
             {label:"Client GST", id:"clientGST"},
             {label:"Total Bill Amount", id:"billAmount", type:"number"},
             {label:"Total Tax Amount", id:"taxAmount", type:"number"},
-            {label:"Total Amount", id:"totalAmount", type:"number"},
+            // {label:"Total Amount", id:"totalAmount", type:"number"},
+            {label:"Govt Fees", id:"govtFees", type:"number"},
             {label:"Paid Amount", id:"paidAmount", type:"number"},
-            {label:"Balance Amount", id:"balanceAmount", type:"number"},
+            // {label:"Balance Amount", id:"balanceAmount", type:"number"},
             {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[

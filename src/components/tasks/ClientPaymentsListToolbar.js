@@ -13,6 +13,13 @@ const PaymentsListToolbar = (props) => {
 	const getExport = async () => {
 		setOpen(true)
 	}
+
+	const commonFilters = {
+		texts: [
+			{label:"Payment Status", id: "paymentStatus", options:["", "Nil", "Pending"]}
+		]
+	}
+
 	return (
 		<Box {...props}>
 		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
@@ -46,9 +53,9 @@ const PaymentsListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-                                {/* <Grid item md={4} xs={6}>
-									<Filters type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
-								</Grid> */}
+                                <Grid item md={4} xs={6}>
+									<Filters type={"all"} fields={props.fields} commonFilters={commonFilters} setSearch={props.setSearch} search={props.searchInfo}/>
+								</Grid>
 							</Grid>
 						</Box>
 					</CardContent>

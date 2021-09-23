@@ -111,6 +111,9 @@ const TaskAddForm = (props) => {
 	};
 
 	const handleDelete = async () => {
+
+		return
+
 		try {
 			const resp = confirm("Are you sure you want to delete this entry?")
 			if(!resp)
@@ -317,9 +320,9 @@ const TaskAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
-							Delete entry
-						</Button>)
+						// isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+						// 	Delete entry
+						// </Button>)
 					}
 				</Box>
 			</Card>

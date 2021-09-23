@@ -13,6 +13,13 @@ const PaymentsListToolbar = (props) => {
 	const getExport = async () => {
 		setOpen(true)
 	}
+
+	const commonFilters = {
+		texts: [
+			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
+			...props.fields.texts
+		]
+	}
 	return (
 		<Box {...props}>
 		<PasswordDialog handleExport={props.handleExport} open={open} setOpen={setOpen} />
@@ -47,7 +54,7 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
                                 <Grid item md={4} xs={6}>
-									<Filters type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
+									<Filters commonFilters={commonFilters} type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
 								</Grid>
 							</Grid>
 						</Box>

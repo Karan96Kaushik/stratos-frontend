@@ -129,7 +129,7 @@ const TaskAddForm = (props) => {
 				return
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
-				route:"/api/leads/", 
+				route:"/api/invoices/", 
 				data:{_id:taskID}, 
 				creds:loginState.loginState, 
 				method:"delete"
@@ -137,7 +137,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully deleted lead!`,
 			)
-			navigate('/app/leads');
+			navigate('/app/invoices');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
