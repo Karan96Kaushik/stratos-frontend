@@ -1,7 +1,7 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import TaskPaymentsListToolbar from 'src/components/tasks/TaskPaymentsListToolbar';
+import ClientPaymentsListToolbar from 'src/components/tasks/ClientPaymentsListToolbar';
 import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
@@ -177,7 +177,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskPaymentsListToolbar handleExport={handleExport} fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<ClientPaymentsListToolbar handleExport={handleExport} fields={extraFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

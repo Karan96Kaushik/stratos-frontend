@@ -17,7 +17,7 @@ const PaymentsListToolbar = (props) => {
 	const commonFilters = {
 		texts: [
 			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
-			...props.fields.texts
+			...props.fields?.texts
 		]
 	}
 	return (
