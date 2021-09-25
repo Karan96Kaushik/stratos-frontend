@@ -13,6 +13,7 @@ import { Add } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import ViewDialog from 'src/components/ViewDialog';
 import paymentFields from 'src/statics/paymentFields';
+import * as _ from "lodash"
 
 
 function useQuery() {
@@ -86,11 +87,22 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			const searchCopy = _.merge({}, search)
+			
+			// Original amount is shown from dynamic calculation
+			// But sorting needs to be done from a denormalised version
+
+			if(searchCopy.sortID == "received")
+				searchCopy.sortID = "receivedAmount"
+
+			else if(searchCopy.sortID == "total")
+				searchCopy.sortID = "totalAmount"
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/payments/search", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...searchCopy}, 
 				method: 'post'
 			})
 			setData({rows:_data})
