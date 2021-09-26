@@ -180,9 +180,14 @@ const CustomerList = () => {
 		checkboxes:[]
 	}
 
-	const commonFilters = {texts :[
-		{label:"Member Assigned", id: "_membersAssigned", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
-	]}
+	const commonFilters = {
+		texts :[
+			{label:"Member Assigned", id: "_membersAssigned", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		],
+		checkboxes:[
+			{label:"Include Archived", id:"archived"}
+		]
+	}
 
 	if(!search.serviceType)
 		commonFilters.texts.push(

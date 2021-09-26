@@ -2,7 +2,8 @@ import React from 'react';
 import {
 	TextField, Button,
 	Dialog, DialogTitle, Grid,
-	DialogContent, DialogActions
+	DialogContent, DialogActions,
+	Checkbox, FormControlLabel
 } from '@material-ui/core';
 
 export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
@@ -43,16 +44,14 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
-		} else {
-			change = {[e.target.id ?? e.target.name]: e.target.value ?? e.target.checked}
 		}
 
 		setValues({
 			...values,
-			...change
+			...change,
+			[e.target.id]: e.target.type != 'checkbox' ? e.target.value : e.target.checked
 		});
 	};
-
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -184,7 +183,19 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
-
+						{commonFilters?.checkboxes.map((field) => (
+							<Grid item md={6} xs={6}>
+								<FormControlLabel
+									control={<Checkbox
+										checked={values[field.id] ? true : false}
+										onChange={handleChange}
+										id={field.id}
+										indeterminate={values.hasOwnProperty(field.id) && !values[field.id]}
+										color="primary"
+									/>}
+									label={field.label}
+								/>
+							</Grid>))}
 					</Grid>
 
 				</DialogContent>

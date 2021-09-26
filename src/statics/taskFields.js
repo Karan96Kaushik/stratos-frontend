@@ -8,6 +8,7 @@ const statuses = [
     "Awaiting Accounts Confirmation",
 ] 
 
+// AR PR EX CO
 const statusSet1 = [
     "Completed", 
     "Desk 1", 
@@ -19,18 +20,25 @@ const statusSet1 = [
     "Certificate Generated"
 ]
 
+// F5 F2A UP F1 F2 F3 OT TC
 const statusSet2 = [
-    "For Certification",  "Completed", "Uploaded"
+    "Awaiting Client Confirmation",
+    "For Certification",  
+    "Completed", 
+    "Uploaded"
 ]
 
+// LT
 const statusSet3 = [
     "Awaiting Hearing Date", "Hearing Date Schedule", "Closed for order", "Order received"
 ]
 
+// LN
 const statusSet4 = [
     "Notice Sent", "Period Completed", "Reply Received", "Closed for order", "Order received", "Completed" 
 ]
 
+// RG
 const statusSet5 = [
     "Appointment Done", "Completed" 
 ]
@@ -60,6 +68,10 @@ let commonTextFieldsEnd = [
     {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 
+let commonCheckboxFields = [
+    {label:"Archived", id:"archived"}
+]
+
 let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])
 
 //4. Fields - In services (form 1,2,3,5,2A, Updation , other technical) - In status , add last option as uploaded
@@ -77,6 +89,7 @@ const taskFields = {
             {label:"Letterhead", id:"letterHead"},
             {label:"Receipt Format", id:"receiptFormat"},
             {label:"ITR", id:"itr"},
+            ...commonCheckboxFields
         ]
     },
     "Project Registration": {
@@ -95,6 +108,7 @@ const taskFields = {
             {label:"Agreement Draft", id:"agreementDraft"},
             {label:"Allotment Letter", id:"allotmentLetter"},
             {label:"SRO", id:"sro"},
+            ...commonCheckboxFields
         ]
     },
 
@@ -112,6 +126,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Correction": {
@@ -124,6 +139,7 @@ const taskFields = {
         ],
         checkboxes:[
             {label:"Consent Required", id:"consentReq"},
+            ...commonCheckboxFields
         ]
     },
     "Form 5 - Audit": {
@@ -137,6 +153,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Form 2A": {
@@ -150,6 +167,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Updation": {
@@ -166,6 +184,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Form 1": {
@@ -179,6 +198,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Form 2": {
@@ -192,6 +212,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Form 3": {
@@ -205,6 +226,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Others - Tech": {
@@ -219,6 +241,7 @@ const taskFields = {
             {label:"Files", id:"files", type:"file", isHidden:true},
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
 
@@ -240,6 +263,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Agreement for Sale Draft": {
@@ -254,6 +278,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Litigation": {
@@ -278,6 +303,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Hourly Package": {
@@ -290,6 +316,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Legal Notice": {
@@ -307,6 +334,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Registration": {
@@ -330,6 +358,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Drafting of Documents": {
@@ -343,6 +372,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
     "Others - Legal": {
@@ -357,6 +387,7 @@ const taskFields = {
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
+            ...commonCheckboxFields
         ]
     },
 }
