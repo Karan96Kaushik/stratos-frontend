@@ -145,17 +145,17 @@ const CustomerList = () => {
 	const handleExport = async (password) => {
 		try {
 			await authorizedDownload({
-			route: "/api/client/payments/export", 
-			creds: loginState.loginState, 
-			data:{...search, password}, 
-			method: 'post'
-		}, "taskPaymentsExport" + ".xlsx")
-	}
-	catch (err) {
-		snackbar.showMessage(
-			String(err?.response?.data ?? err.message ?? err),
-		)
-	}
+				route: "/api/clients/payments/export", 
+				creds: loginState.loginState, 
+				data:{...search, password}, 
+				method: 'post'
+			}, "clientPaymentsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 
 	// Add payment button
