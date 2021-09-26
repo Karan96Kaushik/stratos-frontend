@@ -5,7 +5,7 @@ import ClientAddForm from 'src/components/clients/ClientAddForm2';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Client | Material Kit</title>
+			<title>Add Client | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

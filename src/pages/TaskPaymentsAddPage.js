@@ -5,7 +5,7 @@ import TaskPaymentsAddForm from 'src/components/tasks/TaskPaymentsAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Task | Material Kit</title>
+			<title>Add Task | TMS</title>
 		</Helmet>
 		<Box sx={
 			{

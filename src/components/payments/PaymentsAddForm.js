@@ -142,7 +142,7 @@ const PaymentAddForm = (props) => {
 
 	const getClients = async () => {
 		try {
-			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true}, method: 'post' })
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true, ignorePermissions:true}, method: 'post' })
 			setClientRows(response)
 
 		} catch (err) {

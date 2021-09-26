@@ -109,14 +109,16 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 	
-	const extraFields = []
+	const extraFields = [
+		{name:"Date", id: "createdTime"},
+	]
 
 	const otherFields = [
         {name:"Client Name", id: "name"},
         {name:"Type", id: "clientType"},
-        {name:"Total", id: "total"},
+        {name:"Total", id: "totalAmount"},
         {name:"Task List", id: "taskList"},
-        {name:"Balance", id: "balance"},
+        {name:"Balance", id: "balanceAmount"},
         {name:"Promoter", id:"promoter"},
         {name:"Remarks", id:"remarks"},
 	]
@@ -125,8 +127,8 @@ const CustomerList = () => {
 			texts:[
                 {label:"Client Name", id: "name"},
                 {label:"Type", id: "clientType"},
-                {label:"Total", id: "total"},
-                {label:"Balance", id: "balance"},
+                {label:"Total", id: "totalAmount"},
+                {label:"Balance", id: "balanceAmount"},
                 {label:"Promoter", id:"promoter"},
                 {label:"Remarks", id:"remarks"},
             ],
