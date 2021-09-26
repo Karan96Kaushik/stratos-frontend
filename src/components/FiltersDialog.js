@@ -5,14 +5,29 @@ import {
 	DialogContent, DialogActions,
 	Checkbox, FormControlLabel
 } from '@material-ui/core';
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+	getFilters,
+	updateFilter,
+	selectFilters,
+	updateFilterService
+} from "../store/reducers/filtersSlice";
 
 export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
-	const [values, setValues] = React.useState({})
+	const filters = useSelector(selectFilters)
+
+	const [values, setValues] = React.useState(filters)
 	const [open, setOpen] = React.useState(false)
 	let isEdit = false
 
+	const dispatch = useDispatch()
+
+	console.log(filters)
+
 	const handleApply = async () => {
 		try {
+			dispatch(updateFilterService(values))
 			setOpen(false);
 			setSearch({...search, filters: values})
 		} catch (err) {

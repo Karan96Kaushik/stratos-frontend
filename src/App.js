@@ -10,7 +10,8 @@ import React, { Component, useContext, useState, useEffect } from 'react';
 import { SnackbarProvider } from 'material-ui-snackbar-provider'
 import LoadingOverlay from 'react-loading-overlay';
 import { authorizedLogin } from './utils/request';
- 
+import store from './store/store'
+import { Provider } from "react-redux";
 
 const App = () => {
 
@@ -48,6 +49,7 @@ const App = () => {
 	const routing = useRoutes(routes(loginState?.isLoggedIn));
 
 	return (
+		<Provider store={store}>
 		<SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
 		<LoginContext.Provider value={{ loginState, setLogin }}>
 		<LoadingContext.Provider value={{ loading, setLoading }}>
@@ -70,6 +72,7 @@ const App = () => {
 		</LoadingContext.Provider>
 		</LoginContext.Provider>
 		</SnackbarProvider>
+		</Provider>
 	);
 };
 

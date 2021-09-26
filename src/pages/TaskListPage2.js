@@ -9,6 +9,11 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import taskFields, { allStatuses } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from '../components/ViewDialog'
+import { useSelector } from "react-redux";
+import * as _ from 'lodash';
+import {
+	selectFilters,
+} from "../store/reducers/filtersSlice";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -28,11 +33,13 @@ const serialize = function(obj) {
 	return str.join("&");
   }
 
-const CustomerList = () => {
+const TaskList = () => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
+	console.log(memberRows)
+	const filters = useSelector(selectFilters)
 
 	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
@@ -102,7 +109,7 @@ const CustomerList = () => {
 	const loadData = async () => {
 		try{
 			let others = {...search}
-			others.filters = {...others.filters}
+			others.filters = _.merge({}, filters)
 
 			if(!others?.serviceType?.length)
 				others.searchAll = true
@@ -121,6 +128,7 @@ const CustomerList = () => {
 			setData({rows:_data})
 
 		} catch (err) {
+			console.error(err)
 			snackbar.showMessage(
 				String(err.message ?? err?.response?.data ?? err),
 			)
@@ -139,7 +147,7 @@ const CustomerList = () => {
 	const handleExport = async (password) => {
 		try {
 			let others = {...search}
-			others.filters = {...others.filters}
+			others.filters = _.merge({}, filters)
 	
 			if(!others?.serviceType?.length)
 				others.searchAll = true
@@ -238,4 +246,4 @@ const CustomerList = () => {
 	</>)
 };
 
-export default CustomerList;
+export default TaskList;
