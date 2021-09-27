@@ -51,11 +51,9 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		let eSplit = (e.target.id ?? e.target.name).split("-")
 
 		if(eSplit[1]) {
-			console.log(eSplit)
 			change[eSplit[0]] = values[eSplit[0]]
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
-			console.info(change[eSplit[0]])
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
 		}
 
@@ -71,7 +69,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 
 	return (
 		<div>
-			<Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+			<Button variant={Object.keys(filters).length ? "contained" : "outlined"} color="primary" onClick={() => setOpen(true)}>
 				Filter
 			</Button>
 			<Dialog
