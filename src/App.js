@@ -6,12 +6,14 @@ import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import routes from 'src/routes';
 import { LoginContext, LoadingContext } from "./myContext"
-import React, { Component, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SnackbarProvider } from 'material-ui-snackbar-provider'
 import LoadingOverlay from 'react-loading-overlay';
 import { authorizedLogin } from './utils/request';
-import store from './store/store'
-import { Provider } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+	setMembersService
+} from "./store/reducers/membersSlice";
 
 const App = () => {
 
@@ -26,13 +28,16 @@ const App = () => {
 		isActive:false,
 		text: ""
 	})
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if(loginState?.isLoggedIn) {
 			// Refresh the token on application load
 			authorizedLogin(loginState).then((resp) => {
-				if(resp.isLoggedIn)
+				if(resp.isLoggedIn) {
 					setLogin(loginState)
+					dispatch(setMembersService(resp))
+				}
 			})
 			
 			// Continously check refresh token
@@ -49,7 +54,6 @@ const App = () => {
 	const routing = useRoutes(routes(loginState?.isLoggedIn));
 
 	return (
-		<Provider store={store}>
 		<SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
 		<LoginContext.Provider value={{ loginState, setLogin }}>
 		<LoadingContext.Provider value={{ loading, setLoading }}>
@@ -72,7 +76,6 @@ const App = () => {
 		</LoadingContext.Provider>
 		</LoginContext.Provider>
 		</SnackbarProvider>
-		</Provider>
 	);
 };
 

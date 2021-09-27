@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 import {
 	selectFilters,
 } from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -37,9 +38,10 @@ const TaskList = () => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
-	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	console.log(memberRows)
+	// let [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
+	
 	const filters = useSelector(selectFilters)
+	const memberRows = useSelector(selectMembers)
 
 	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
@@ -58,7 +60,7 @@ const TaskList = () => {
 
 	useEffect(() => {
 		loadData()
-		getMembers()
+		// getMembers()
 	}, [])
 
 	useEffect(async () => {
@@ -88,23 +90,23 @@ const TaskList = () => {
 		loadData()
     }
 
-	const getMembers = async () => {
-		try {
-			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-			response = [
-				{},
-				...response
-			]
-			setMemberRows(response)
-			return response
+	// const getMembers = async () => {
+	// 	try {
+	// 		let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
+	// 		response = [
+	// 			{},
+	// 			...response
+	// 		]
+	// 		setMemberRows(response)
+	// 		return response
 
-		} catch (err) {
-			snackbar.showMessage(
-				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-			)
-			console.error(err)
-		}
-	};
+	// 	} catch (err) {
+	// 		snackbar.showMessage(
+	// 			"Error getting members - " + (err?.response?.data ?? err.message ?? err),
+	// 		)
+	// 		console.error(err)
+	// 	}
+	// };
 
 	const loadData = async () => {
 		try{
@@ -190,7 +192,7 @@ const TaskList = () => {
 
 	const commonFilters = {
 		texts :[
-			{label:"Member Assigned", id: "_membersAssigned", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"}

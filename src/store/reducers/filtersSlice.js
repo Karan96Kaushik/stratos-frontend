@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import * as _ from 'lodash';
 
 export const filtersSlice = createSlice({
     name: 'filters',
@@ -10,8 +11,7 @@ export const filtersSlice = createSlice({
             state.filters = action.payload
         },
         updateFilter:(state,action) => {
-            console.log("updating", state, state.filters, action)
-            state.filters = {...state.filters, ...action.payload}
+            state.filters = _.merge(state.filters, action.payload)
         },
         clearFilters:(state,action) => {
             state.filters = {}
@@ -19,12 +19,21 @@ export const filtersSlice = createSlice({
     }
 })
 
-export const { getFilters, updateFilter } = filtersSlice.actions
-export const updateFilterService = (filter)=>{
+export const { getFilters, updateFilter, clearFilters } = filtersSlice.actions
+export const updateFilterService = (filter, type)=>{
     return async (dispatch, getState)=>{
         try {
-            console.log(filter)
-            dispatch(updateFilter(filter))
+            dispatch(updateFilter({[type]: filter}))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+}
+export const clearFiltersService = (filter)=>{
+    return async (dispatch, getState)=>{
+        try {
+            dispatch(clearFilters())
         }
         catch (err) {
             console.log(err)
@@ -33,5 +42,9 @@ export const updateFilterService = (filter)=>{
 }
 
 export const selectFilters = state => state.filters.filters;
+export const selectFilterFor = (type) => {
+    console.log(type)
+    return ((state) => {console.log("STSTE"); return (state.filters.filters)})
+};
 
 export default filtersSlice.reducer;

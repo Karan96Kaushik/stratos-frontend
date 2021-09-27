@@ -8,14 +8,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-	getFilters,
-	updateFilter,
-	selectFilters,
-	updateFilterService
+	selectFilterFor,
+	updateFilterService,
+	clearFiltersService
 } from "../store/reducers/filtersSlice";
 
 export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
-	const filters = useSelector(selectFilters)
+	const filters = useSelector(selectFilterFor("tasks"))
 
 	const [values, setValues] = React.useState(filters)
 	const [open, setOpen] = React.useState(false)
@@ -27,7 +26,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 
 	const handleApply = async () => {
 		try {
-			dispatch(updateFilterService(values))
+			dispatch(updateFilterService(values, "tasks"))
 			setOpen(false);
 			setSearch({...search, filters: values})
 		} catch (err) {
@@ -41,13 +40,12 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			setOpen(false);
 			setValues({});
 			setSearch({...search, filters: undefined})
+			dispatch(clearFiltersService())
 		} catch (err) {
 			console.error(err)
 		}
 
 	};
-
-	// console.log("FILTER", search)
 
 	const handleChange = (e) => {
 		let change = {}
@@ -198,7 +196,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
-						{commonFilters?.checkboxes.map((field) => (
+						{(commonFilters?.checkboxes ?? []).map((field) => (
 							<Grid item md={6} xs={6}>
 								<FormControlLabel
 									control={<Checkbox
