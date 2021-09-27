@@ -158,6 +158,7 @@ const CustomerList = () => {
 				{label:"Total", id:"total", type:"number"},
 				{label:"Received", id:"received", type:"number"},
 				{label:"Balance", id:"balance", type:"number"},
+				{label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,5]},
 			],
 			checkboxes:[]
 	}
