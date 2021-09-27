@@ -54,7 +54,7 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
                                 <Grid item md={4} xs={6}>
-									<Filters commonFilters={commonFilters} type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
+									<Filters forView="taskaccounts"  commonFilters={commonFilters} type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
 								</Grid>
 							</Grid>
 						</Box>

@@ -9,6 +9,11 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import leadFields from '../statics/leadFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
+import {
+	selectFilterFor,
+} from "../store/reducers/filtersSlice";
+import { useSelector } from "react-redux";
+import * as _ from "lodash"
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -37,6 +42,8 @@ const CustomerList = () => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
+
+	const filters = useSelector(selectFilterFor("leads"))
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -88,7 +95,7 @@ const CustomerList = () => {
 			const _data = await authorizedReq({
 				route: "/api/leads/search", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...search, filters: {...filters}}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -114,7 +121,7 @@ const CustomerList = () => {
 			await authorizedDownload({
 				route: "/api/leads/export", 
 				creds: loginState.loginState, 
-				data:{...search, password}, 
+				data:{...search, password, filters: {...filters}}, 
 				method: 'post',
 				password
 			}, "leadsExport-" + search.leadType + ".xlsx")

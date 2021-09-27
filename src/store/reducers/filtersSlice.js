@@ -14,8 +14,8 @@ export const filtersSlice = createSlice({
             state.filters = _.merge(state.filters, action.payload)
         },
         clearFilters:(state,action) => {
-            state.filters = {}
-        }
+            state.filters[action.payload.type] = {}
+        },
     }
 })
 
@@ -30,10 +30,10 @@ export const updateFilterService = (filter, type)=>{
         }
     }
 }
-export const clearFiltersService = (filter)=>{
+export const clearFiltersService = (type)=>{
     return async (dispatch, getState)=>{
         try {
-            dispatch(clearFilters())
+            dispatch(clearFilters({type}))
         }
         catch (err) {
             console.log(err)
@@ -41,10 +41,13 @@ export const clearFiltersService = (filter)=>{
     }
 }
 
+
+// Gets all filters
 export const selectFilters = state => state.filters.filters;
-export const selectFilterFor = (type) => {
-    console.log(type)
-    return ((state) => {console.log("STSTE"); return (state.filters.filters)})
-};
+
+// Gets filters for the initialised type
+export const selectFilterFor = (type) => (
+    ((state) => (state.filters.filters[type] ?? {}))
+);
 
 export default filtersSlice.reducer;

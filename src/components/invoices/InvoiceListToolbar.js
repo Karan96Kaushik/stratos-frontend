@@ -54,7 +54,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={invoiceFields}/>
+									<FiltersDialog forView="invoices" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={invoiceFields}/>
 								</Grid>
 							</Grid>
 						</Box>

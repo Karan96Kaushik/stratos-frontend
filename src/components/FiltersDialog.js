@@ -13,8 +13,8 @@ import {
 	clearFiltersService
 } from "../store/reducers/filtersSlice";
 
-export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
-	const filters = useSelector(selectFilterFor("tasks"))
+export default function FiltersDialog({ search, setSearch, fields, type, commonFilters, forView }) {
+	const filters = useSelector(selectFilterFor(forView))
 
 	const [values, setValues] = React.useState(filters)
 	const [open, setOpen] = React.useState(false)
@@ -22,13 +22,10 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 
 	const dispatch = useDispatch()
 
-	console.log(filters)
-
 	const handleApply = async () => {
 		try {
-			dispatch(updateFilterService(values, "tasks"))
+			dispatch(updateFilterService(values, forView))
 			setOpen(false);
-			setSearch({...search, filters: values})
 		} catch (err) {
 			console.error(err)
 		}
@@ -39,8 +36,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		try {
 			setOpen(false);
 			setValues({});
-			setSearch({...search, filters: undefined})
-			dispatch(clearFiltersService())
+			dispatch(clearFiltersService(forView))
 		} catch (err) {
 			console.error(err)
 		}
@@ -53,9 +49,11 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		let eSplit = (e.target.id ?? e.target.name).split("-")
 
 		if(eSplit[1]) {
+			console.log(eSplit)
 			change[eSplit[0]] = values[eSplit[0]]
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
+			console.info(change[eSplit[0]])
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
 		}
 

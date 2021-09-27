@@ -10,11 +10,11 @@ import taskFields, { allStatuses } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from '../components/ViewDialog'
 import { useSelector } from "react-redux";
-import * as _ from 'lodash';
 import {
-	selectFilters,
+	selectFilterFor,
 } from "../store/reducers/filtersSlice";
 import { selectMembers } from 'src/store/reducers/membersSlice';
+import * as _ from 'lodash';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -39,15 +39,14 @@ const TaskList = () => {
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 	// let [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	
-	const filters = useSelector(selectFilters)
-	const memberRows = useSelector(selectMembers)
-
 	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
+
+	const filters = useSelector(selectFilterFor("tasks"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)

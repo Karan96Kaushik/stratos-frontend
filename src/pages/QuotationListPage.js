@@ -9,6 +9,11 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import quotationFields, {allQuotes} from '../statics/quotationFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
+import {
+	selectFilterFor,
+} from "../store/reducers/filtersSlice";
+import { useSelector } from "react-redux";
+import * as _ from "lodash";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -37,6 +42,8 @@ const CustomerList = () => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
+
+	const filters = useSelector(selectFilterFor("quotations"))
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -80,11 +87,14 @@ const CustomerList = () => {
 
 	const loadData = async () => {
 		try{
+			let others = {}
+			others.filters = _.merge({}, filters)
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/quotations/search", 
 				creds: loginState.loginState, 
-				data:{...search}, 
+				data:{...search, ...others}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -105,10 +115,13 @@ const CustomerList = () => {
 
 	const handleExport = async (password) => {
 		try {
+			let others = {}
+			others.filters = _.merge({}, filters)
+
 			await authorizedDownload({
 				route: "/api/quotations/export", 
 				creds: loginState.loginState, 
-				data:{...search, password}, 
+				data:{...search, ...others, password}, 
 				method: 'post'
 			}, "quotationsExport" + ".xlsx")
 		}

@@ -216,7 +216,8 @@ const PaymentAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} payment!`,
 			)
-			navigate('/app/payments');
+			navigate(-1);
+			// navigate('/app/payments');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -243,7 +244,8 @@ const PaymentAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully deleted payment!`,
 			)
-			navigate('/app/payments');
+			navigate(-1);
+			// navigate('/app/payments');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
