@@ -9,6 +9,12 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import taskFields, { allStatuses } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from '../components/ViewDialog'
+import { useSelector } from "react-redux";
+import {
+	selectFilterFor,
+} from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
+import * as _ from 'lodash';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -28,17 +34,19 @@ const serialize = function(obj) {
 	return str.join("&");
   }
 
-const CustomerList = () => {
+const TaskList = () => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
-	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-
+	// let [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 	const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
+
+	const filters = useSelector(selectFilterFor("tasks"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -51,7 +59,7 @@ const CustomerList = () => {
 
 	useEffect(() => {
 		loadData()
-		getMembers()
+		// getMembers()
 	}, [])
 
 	useEffect(async () => {
@@ -81,28 +89,28 @@ const CustomerList = () => {
 		loadData()
     }
 
-	const getMembers = async () => {
-		try {
-			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-			response = [
-				{},
-				...response
-			]
-			setMemberRows(response)
-			return response
+	// const getMembers = async () => {
+	// 	try {
+	// 		let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
+	// 		response = [
+	// 			{},
+	// 			...response
+	// 		]
+	// 		setMemberRows(response)
+	// 		return response
 
-		} catch (err) {
-			snackbar.showMessage(
-				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-			)
-			console.error(err)
-		}
-	};
+	// 	} catch (err) {
+	// 		snackbar.showMessage(
+	// 			"Error getting members - " + (err?.response?.data ?? err.message ?? err),
+	// 		)
+	// 		console.error(err)
+	// 	}
+	// };
 
 	const loadData = async () => {
 		try{
 			let others = {...search}
-			others.filters = {...others.filters}
+			others.filters = _.merge({}, filters)
 
 			if(!others?.serviceType?.length)
 				others.searchAll = true
@@ -121,6 +129,7 @@ const CustomerList = () => {
 			setData({rows:_data})
 
 		} catch (err) {
+			console.error(err)
 			snackbar.showMessage(
 				String(err.message ?? err?.response?.data ?? err),
 			)
@@ -139,7 +148,7 @@ const CustomerList = () => {
 	const handleExport = async (password) => {
 		try {
 			let others = {...search}
-			others.filters = {...others.filters}
+			others.filters = _.merge({}, filters)
 	
 			if(!others?.serviceType?.length)
 				others.searchAll = true
@@ -182,7 +191,7 @@ const CustomerList = () => {
 
 	const commonFilters = {
 		texts :[
-			{label:"Member Assigned", id: "_membersAssigned", options: memberRows.map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"}
@@ -238,4 +247,4 @@ const CustomerList = () => {
 	</>)
 };
 
-export default CustomerList;
+export default TaskList;

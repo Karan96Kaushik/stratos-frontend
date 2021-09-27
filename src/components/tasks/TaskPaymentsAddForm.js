@@ -103,7 +103,8 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} task!`,
 			)
-			navigate('/app/taskaccounts');
+			navigate(-1);
+			// navigate('/app/taskaccounts');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -129,7 +130,8 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} task!`,
 			)
-			navigate('/app/tasks');
+			navigate(-1);
+			// navigate('/app/tasks');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),

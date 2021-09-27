@@ -13,8 +13,11 @@ import { Add } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 import ViewDialog from 'src/components/ViewDialog';
 import paymentFields from 'src/statics/paymentFields';
+import {
+	selectFilterFor,
+} from "../store/reducers/filtersSlice";
+import { useSelector } from "react-redux";
 import * as _ from "lodash"
-
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -42,6 +45,8 @@ const CustomerList = () => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
+
+	const filters = useSelector(selectFilterFor("taskaccounts"))
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -88,6 +93,7 @@ const CustomerList = () => {
 	const loadData = async () => {
 		try{
 			const searchCopy = _.merge({}, search)
+			searchCopy.filters = _.merge({}, filters)
 			
 			// Original amount is shown from dynamic calculation
 			// But sorting needs to be done from a denormalised version
@@ -172,18 +178,22 @@ const CustomerList = () => {
 
 	const handleExport = async (password) => {
 		try {
+
+			let others = {}
+			others.filters = _.merge({}, filters)
+
 			await authorizedDownload({
-			route: "/api/tasks/payments/export", 
-			creds: loginState.loginState, 
-			data:{...search, password}, 
-			method: 'post'
-		}, "taskPaymentsExport" + ".xlsx")
-	}
-	catch (err) {
-		snackbar.showMessage(
-			String(err?.response?.data ?? err.message ?? err),
-		)
-	}
+				route: "/api/tasks/payments/export", 
+				creds: loginState.loginState, 
+				data:{...search, ...others, password}, 
+				method: 'post'
+			}, "taskPaymentsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
 	}
 
 	// Add payment button
