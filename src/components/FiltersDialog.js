@@ -5,16 +5,27 @@ import {
 	DialogContent, DialogActions,
 	Checkbox, FormControlLabel
 } from '@material-ui/core';
+import { useDispatch, useSelector } from "react-redux";
 
-export default function FiltersDialog({ search, setSearch, fields, type, commonFilters }) {
-	const [values, setValues] = React.useState({})
+import {
+	selectFilterFor,
+	updateFilterService,
+	clearFiltersService
+} from "../store/reducers/filtersSlice";
+
+export default function FiltersDialog({ search, setSearch, fields, type, commonFilters, forView }) {
+	const filters = useSelector(selectFilterFor(forView))
+
+	const [values, setValues] = React.useState(filters)
 	const [open, setOpen] = React.useState(false)
 	let isEdit = false
 
+	const dispatch = useDispatch()
+
 	const handleApply = async () => {
 		try {
+			dispatch(updateFilterService(values, forView))
 			setOpen(false);
-			setSearch({...search, filters: values})
 		} catch (err) {
 			console.error(err)
 		}
@@ -25,14 +36,12 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		try {
 			setOpen(false);
 			setValues({});
-			setSearch({...search, filters: undefined})
+			dispatch(clearFiltersService(forView))
 		} catch (err) {
 			console.error(err)
 		}
 
 	};
-
-	// console.log("FILTER", search)
 
 	const handleChange = (e) => {
 		let change = {}
@@ -40,9 +49,11 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 		let eSplit = (e.target.id ?? e.target.name).split("-")
 
 		if(eSplit[1]) {
+			console.log(eSplit)
 			change[eSplit[0]] = values[eSplit[0]]
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
+			console.info(change[eSplit[0]])
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
 		}
 

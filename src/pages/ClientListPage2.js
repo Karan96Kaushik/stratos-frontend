@@ -10,6 +10,10 @@ import clientFields from '../statics/clientFields';
 import {allClients} from '../statics/clientFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
+import {
+	selectFilterFor,
+} from "../store/reducers/filtersSlice";
+import { useSelector } from "react-redux";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -30,7 +34,10 @@ const serialize = function(obj) {
   }
 
 const CustomerList = () => {
-	console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);
+	// console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);
+
+	const filters = useSelector(selectFilterFor("clients"))
+
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 	const [data, setData] = useState({type: '', rows:[]})
@@ -82,6 +89,9 @@ const CustomerList = () => {
 	const loadData = async () => {
 		try{
 			let others = {}
+
+			others.filters = _.merge({}, filters)
+
 			if(!search.clientType)
 				others.searchAll = true
 

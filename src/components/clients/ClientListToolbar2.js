@@ -71,7 +71,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<Filters search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["clientType"] ?? "all"} fields={clientFields}/>
+									<Filters forView="clients" search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["clientType"] ?? "all"} fields={clientFields}/>
 								</Grid>
 							</Grid>
 						</Box>

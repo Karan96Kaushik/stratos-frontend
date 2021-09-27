@@ -50,7 +50,7 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={paymentFields}/>
+									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={paymentFields}/>
 								</Grid>
 							</Grid>
 						</Box>
