@@ -183,7 +183,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
-						{commonFilters?.checkboxes.map((field) => (
+						{(commonFilters?.checkboxes ?? []).map((field) => (
 							<Grid item md={6} xs={6}>
 								<FormControlLabel
 									control={<Checkbox
