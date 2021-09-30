@@ -18,6 +18,9 @@ const PaymentsListToolbar = (props) => {
 		texts: [
 			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
 			...props.fields?.texts
+		],
+		checkboxes: [
+			{label:"Include Archived", id: "archived"},
 		]
 	}
 	return (
