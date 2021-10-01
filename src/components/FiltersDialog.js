@@ -12,6 +12,7 @@ import {
 	updateFilterService,
 	clearFiltersService
 } from "../store/reducers/filtersSlice";
+import MultiSelect from './fundamentals/MultiSelect';
 
 export default function FiltersDialog({ search, setSearch, fields, type, commonFilters, forView }) {
 	const filters = useSelector(selectFilterFor(forView))
@@ -46,21 +47,33 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 	};
 
 	const handleChange = (e) => {
+
 		let change = {}
+		console.log(e)
 
+		// for min/max range filters
 		let eSplit = (e.target.id ?? e.target.name).split("-")
-
 		if(eSplit[1]) {
 			change[eSplit[0]] = values[eSplit[0]]
 			if(!change[eSplit[0]])
-				change[eSplit[0]] = []
-			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
+				change[eSplit[0]] = {values:[]}
+			change[eSplit[0]]["values"][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
+			change[eSplit[0]].range = true
+		} 
+		// for multi select filters
+		else if(e.target.multiSelect) {
+			if(!change[e.target.id])
+				change[e.target.id] = {values:[]}
+			change[e.target.id].multiSelect = true
+			change[e.target.id].values = e.target.value
+		}
+		else {
+			change[e.target.id] = e.target.type != 'checkbox' ? e.target.value : e.target.checked
 		}
 
 		setValues({
 			...values,
-			...change,
-			[e.target.id]: e.target.type != 'checkbox' ? e.target.value : e.target.checked
+			...change
 		});
 	};
 	const handleClose = () => {
@@ -82,6 +95,17 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 				<DialogTitle id="form-dialog-title">Filters</DialogTitle>
 				<DialogContent>
 					<Grid container spacing={3}>
+					{fields?.[type]?.texts?.filter(v => v.multiSelect).map(field => 
+						<Grid item md={6} xs={12}>
+							<MultiSelect
+								name={field.type}
+								options={field.options}
+								value={values[field.id]?.values}
+								id={field.id}
+								handleChange={handleChange}
+							/>
+						</Grid>)}
+
 
 					{commonFilters?.texts.map((field) => (field?.options?.length &&
 							<>
@@ -112,7 +136,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 								</Grid>
 							</>))}
 
-						{fields[type]?.texts.map((field) => (field?.options?.length &&
+						{fields[type]?.texts?.filter(v => !v.multiSelect).map((field) => (field?.options?.length &&
 							<>
 								<Grid item md={6} xs={12}>
 									<TextField
