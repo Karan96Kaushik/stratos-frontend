@@ -84,7 +84,7 @@ function TablePaginationActions(props) {
 	const onChangePage = onPageChange
   
 	const handleFirstPageButtonClick = (event) => {
-		onChangePage(event, 0);
+		onChangePage(event, 1);
 	};
   
 	const handleBackButtonClick = (event) => {

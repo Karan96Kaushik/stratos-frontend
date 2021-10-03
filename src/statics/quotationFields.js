@@ -10,15 +10,15 @@ const quotationFields = {
     "all": {
         texts:[
             // {label:"Service Type", id:"serviceType", options:serviceTypes, isRequired:true},
-            {label:"Department", id:"dept", options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
+            {label:"Department", id:"dept", multiSelect:true, options:["", "Tech", "Legal", "CMS", "Retainer"], isRequired:true},
             {label:"Client Name", id:"clientName", isRequired:true},
             {label:"Related Project Name", id:"relatedProject"},
             {label:"Lead ID", id:"leadID"},
             {label:"Quotation Valid Till", id:"quoteValid", type:"date"},
             {label:"Quotation Desc", id:"quotationDesc"},
             {label:"Quotation Amount", id:"quotationAmount"},
-            {label:"Status", id:"status", options: status},
-            {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
+            {label:"Status", id:"status", multiSelect:true, options: status},
+            {label:"Closure Status", id:"closureStatus", multiSelect:true, options:closureStatusOptions},
             {label:"Files", id:"files", type:"file"},
             {label:"Remarks", id:"remarks"},
         ],

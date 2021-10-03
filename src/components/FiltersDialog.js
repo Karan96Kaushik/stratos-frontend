@@ -49,7 +49,6 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 	const handleChange = (e) => {
 
 		let change = {}
-		console.log(e)
 
 		// for min/max range filters
 		let eSplit = (e.target.id ?? e.target.name).split("-")
@@ -61,11 +60,15 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			change[eSplit[0]].range = true
 		} 
 		// for multi select filters
-		else if(e.target.multiSelect) {
+		else if(e.target.multiSelect && e.target.value.length) {
 			if(!change[e.target.id])
 				change[e.target.id] = {values:[]}
 			change[e.target.id].multiSelect = true
 			change[e.target.id].values = e.target.value
+		}
+		// remove filter if all are unselected
+		else if(e.target.multiSelect && !e.target.value.length) {
+			delete values[e.target.id]
 		}
 		else {
 			change[e.target.id] = e.target.type != 'checkbox' ? e.target.value : e.target.checked
@@ -76,9 +79,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			...change
 		});
 	};
-	const handleClose = () => {
-		setOpen(false);
-	};
+	const handleClose = () => { setOpen(false); setValues(filters) }
 
 	return (
 		<div>
@@ -95,19 +96,28 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 				<DialogTitle id="form-dialog-title">Filters</DialogTitle>
 				<DialogContent>
 					<Grid container spacing={3}>
-					{fields?.[type]?.texts?.filter(v => v.multiSelect).map(field => 
-						<Grid item md={6} xs={12}>
-							<MultiSelect
-								name={field.type}
-								options={field.options}
-								value={values[field.id]?.values}
-								id={field.id}
-								handleChange={handleChange}
-							/>
-						</Grid>)}
 
+						{fields?.[type]?.texts?.filter(v => v.multiSelect).map(field => 
+							<Grid item md={6} xs={12}>
+								<MultiSelect
+									name={field.label}
+									options={field.options}
+									value={values[field.id]?.values}
+									id={field.id}
+									handleChange={handleChange}/>
+							</Grid>)}
+						
+						{commonFilters?.texts?.filter(v => v.multiSelect).map(field => 
+							<Grid item md={6} xs={12}>
+								<MultiSelect
+									name={field.label}
+									options={field.options}
+									value={values[field.id]?.values}
+									id={field.id}
+									handleChange={handleChange}/>
+							</Grid>)}
 
-					{commonFilters?.texts.map((field) => (field?.options?.length &&
+						{fields?.[type]?.texts?.filter(v => !v.multiSelect).map((field) => (field?.options?.length &&
 							<>
 								<Grid item md={6} xs={12}>
 									<TextField
@@ -122,13 +132,11 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										id={field.id}
 										onChange={handleChange}
 										value={field.id != "files" ? values[field.id] ?? '' : undefined}
-										variant="outlined"
-									>
+										variant="outlined">
 										{(field.options ?? []).map((option) => (
 											<option
 												key={option}
-												value={option}
-											>
+												value={option}>
 												{option}
 											</option>
 										))}
@@ -136,7 +144,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 								</Grid>
 							</>))}
 
-						{fields[type]?.texts?.filter(v => !v.multiSelect).map((field) => (field?.options?.length &&
+						{commonFilters?.texts.filter(v => !v.multiSelect).map((field) => (field?.options?.length &&
 							<>
 								<Grid item md={6} xs={12}>
 									<TextField
@@ -151,13 +159,11 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										id={field.id}
 										onChange={handleChange}
 										value={field.id != "files" ? values[field.id] ?? '' : undefined}
-										variant="outlined"
-									>
+										variant="outlined">
 										{(field.options ?? []).map((option) => (
 											<option
 												key={option}
-												value={option}
-											>
+												value={option}>
 												{option}
 											</option>
 										))}
@@ -165,7 +171,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 								</Grid>
 							</>))}
 
-						{fields[type]?.texts.map((field) => ('date' == field.type &&
+						{fields?.[type]?.texts.map((field) => ('date' == field.type &&
 							<>
 								<Grid item md={6} xs={12}>
 									<TextField
@@ -179,14 +185,12 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										required={field.isRequired}
 										id={field.id + "-1"}
 										onChange={handleChange}
-										value={field.id != "files" ? values[field.id]?.[1] ?? '' : undefined}
-										variant="outlined"
-									>
+										value={field.id != "files" ? values[field.id]?.values?.[1] ?? '' : undefined}
+										variant="outlined">
 										{(field.options ?? []).map((option) => (
 											<option
 												key={option}
-												value={option}
-											>
+												value={option}>
 												{option}
 											</option>
 										))}
@@ -204,20 +208,19 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										required={field.isRequired}
 										id={field.id + "-0"}
 										onChange={handleChange}
-										value={field.id != "files" ? values[field.id]?.[0] ?? '' : undefined}
-										variant="outlined"
-									>
+										value={field.id != "files" ? values[field.id]?.values?.[0] ?? '' : undefined}
+										variant="outlined">
 										{(field.options ?? []).map((option) => (
 											<option
 												key={option}
-												value={option}
-											>
+												value={option}>
 												{option}
 											</option>
 										))}
 									</TextField>
 								</Grid>
 							</>))}
+							
 						{(commonFilters?.checkboxes ?? []).map((field) => (
 							<Grid item md={6} xs={6}>
 								<FormControlLabel
@@ -228,9 +231,9 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 										indeterminate={values.hasOwnProperty(field.id) && !values[field.id]}
 										color="primary"
 									/>}
-									label={field.label}
-								/>
-							</Grid>))}
+								label={field.label}
+							/>
+						</Grid>))}
 					</Grid>
 
 				</DialogContent>

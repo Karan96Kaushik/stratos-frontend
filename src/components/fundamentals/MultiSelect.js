@@ -26,7 +26,7 @@ export default function MultiSelect({handleChange, options, value, id, name}) {
                 multiple 
                 fullWidth
                 id={name}
-                value={Array.isArray(value) ? value : [value]}
+                value={Array.isArray(value) ? value : []}
                 onChange={handleSelect}
                 input={<Input placeholder={name}/>}
                 renderValue={(s) => (value ?? []).filter(Boolean).join(", ")}

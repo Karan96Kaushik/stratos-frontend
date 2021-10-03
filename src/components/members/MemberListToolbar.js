@@ -21,8 +21,7 @@ const CustomerListToolbar = (props) => {
 				sx={{
 					display: 'flex',
 					justifyContent: 'flex-end'
-				}}
-			>
+				}}>
 				<Link to="/app/members/add">
 					<Button sx={{ mx: 1 }} variant="contained">
 						Add Member

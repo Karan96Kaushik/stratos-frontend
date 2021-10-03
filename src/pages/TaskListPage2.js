@@ -57,20 +57,15 @@ const TaskList = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
 
-	useEffect(() => {
-		loadData()
-		// getMembers()
-	}, [])
+	useEffect(() => loadData(), [])
 
-	useEffect(async () => {
+	useEffect(async () => (
 		setSearch({...search, page, rowsPerPage, ...sortState})
-	}, [page, rowsPerPage])
+	), [page, rowsPerPage])
 
 	useEffect(async () => {
-		if(!sortState.sortDir) {
-			setSortState({sortID:'createdTime', sortDir:-1})
-			return
-		}
+		if(!sortState.sortDir) 
+			return setSortState({sortID:'createdTime', sortDir:-1})
 		if(page != 1)
 			setPage(1)
 		else
@@ -82,30 +77,8 @@ const TaskList = () => {
 		delete queryParams.filters
 		navigate("/app/tasks?" + serialize(queryParams));
 		if(search.text == "" || search.text?.length > 2 || !search?.text)
-			goSearch();
+			loadData();
 	}, [search])
-
-	const goSearch = (rmk) => {
-		loadData()
-    }
-
-	// const getMembers = async () => {
-	// 	try {
-	// 		let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-	// 		response = [
-	// 			{},
-	// 			...response
-	// 		]
-	// 		setMemberRows(response)
-	// 		return response
-
-	// 	} catch (err) {
-	// 		snackbar.showMessage(
-	// 			"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-	// 		)
-	// 		console.error(err)
-	// 	}
-	// };
 
 	const loadData = async () => {
 		try{
@@ -115,10 +88,16 @@ const TaskList = () => {
 			if(!others?.serviceType?.length)
 				others.searchAll = true
 
-			if(others.filters && others.filters._membersAssigned) {
-				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
-			}
-
+			// Map Member filter string to ID - Multi Select
+			if(others.filters?._membersAssigned?.values?.length)
+				others.filters._membersAssigned.values = others.filters._membersAssigned.values
+					.map(_memberID => (
+						memberRows.find(m => _memberID == m.userName + ` (${m.memberID})`)._id
+					))
+			// Map Member filter string to ID - Single
+			else if(others.filters?._membersAssigned?.length)
+				others.filters._membersAssigned = memberRows.find(m => others.filters?._membersAssigned == m.userName + ` (${m.memberID})`)._id
+			
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/search", 
@@ -129,7 +108,6 @@ const TaskList = () => {
 			setData({rows:_data})
 
 		} catch (err) {
-			console.error(err)
 			snackbar.showMessage(
 				String(err.message ?? err?.response?.data ?? err),
 			)
@@ -171,6 +149,7 @@ const TaskList = () => {
 		}
 	}
 	
+	// View Modal and Filters
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Task ID", id: "taskID"},
@@ -182,8 +161,8 @@ const TaskList = () => {
 		texts:[
 			{label:"Type", id: "serviceType"},
 			{label:"Promoter", id: "promoter"},
-			{label:"Status", id: "status", options: allStatuses},
-			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]},
+			{label:"Status", id: "status", multiSelect:true, options: allStatuses},
+			{label:"Priority", id:"priority", multiSelect:true, options: ["", "High", "Medium", "Low"]},
 			{label:"Deadline", id:"deadline", type:"date"},
 		],
 		checkboxes:[]
@@ -191,7 +170,7 @@ const TaskList = () => {
 
 	const commonFilters = {
 		texts :[
-			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+			{label:"Member Assigned", id: "_membersAssigned", multiSelect:true, options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"}
@@ -200,16 +179,14 @@ const TaskList = () => {
 
 	if(!search.serviceType)
 		commonFilters.texts.push(
-			{label:"Status", id: "status", options: allStatuses},
-			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]}
+			{label:"Status", id: "status", multiSelect:true, options: allStatuses},
+			{label:"Priority", id:"priority", multiSelect:true, options: ["", "High", "Medium", "Low"]}
 		)
 
 	// View button
-	const renderViewButton = (val) => {
-		return (				
-			<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} titleID={"taskID"} />
-		)
-	}
+	const renderViewButton = (val) => (				
+		<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} titleID={"taskID"} />
+	)
 
 	return (<>
 		<Helmet>
@@ -221,7 +198,7 @@ const TaskList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskListToolbar  handleExport={handleExport} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskListToolbar  handleExport={handleExport} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

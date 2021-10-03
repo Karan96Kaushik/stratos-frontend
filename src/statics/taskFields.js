@@ -55,7 +55,7 @@ const actions = [
 ]
 
 let commonTextFields = [
-    {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+    {label:"Priority", id:"priority", multiSelect:true, options:["", "High", "Medium", "Low"]},
     {label:"Deadline", id:"deadline", type:"date"},
     // {label:"Files", id:"files", type:"file", isHidden:true},
 ]
@@ -65,7 +65,7 @@ let commonTextFieldsEnd = [
     {label:"GST", id:"gst", type:"number", isHidden:true},
     {label:"Remarks", id:"remarks"},
     {label:"Notes", id:"notes"},
-    {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,5]},
+    {label:"Payment Rating", id:"rating", type:"number", multiSelect:true, options: ['',1,2,3,4,5]},
     {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 

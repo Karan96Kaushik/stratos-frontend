@@ -12,12 +12,12 @@ const invoiceFields = {
     all: {
         texts:[
             {label:"Invoice ID", id:"invoiceID"},
-            {label:"Invoice From", id:"from", options:froms, isRequired:true},
+            {label:"Invoice From", id:"from", multiSelect:true, options:froms, isRequired:true},
             {label:"Type", id:"type", multiSelect:true, options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
             {label:"Invoice Date", id:"date", type:"date"},
-            {label:"GST Num", id:"gstNum", options:["", "None", "27AAFFO8457Q1ZB"]},
+            {label:"GST Num", id:"gstNum", multiSelect:true, options:["", "None", "27AAFFO8457Q1ZB"]},
             {label:"Project Name", id:"projectName", isRequired:true},
-            {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "CPAPK0273E"]},
+            {label:"PAN Card No", id:"panNum", multiSelect:true, options:["", "None", "AAFFO8457Q", "CPAPK0273E"]},
             {label:"Particulars", id:"particulars"},
             {label:"Bill To", id:"billTo"},
             {label:"Client Addr", id:"clientAddress"},

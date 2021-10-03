@@ -14,15 +14,6 @@ const PaymentsListToolbar = (props) => {
 		setOpen(true)
 	}
 
-	const commonFilters = {
-		texts: [
-			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
-			...props.fields?.texts
-		],
-		checkboxes: [
-			{label:"Include Archived", id: "archived"},
-		]
-	}
 	return (
 		<Box {...props}>
 		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
@@ -57,7 +48,12 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
                                 <Grid item md={4} xs={6}>
-									<Filters forView="taskaccounts"  commonFilters={commonFilters} type={"all"} fields={props.fields} setSearch={props.setSearch} search={props.searchInfo}/>
+									<Filters 
+										forView="taskaccounts" 
+										type={"all"} 
+										commonFilters={props.fields} 
+										setSearch={props.setSearch} 
+										search={props.searchInfo}/>
 								</Grid>
 							</Grid>
 						</Box>

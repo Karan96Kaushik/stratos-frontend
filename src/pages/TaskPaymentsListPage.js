@@ -57,20 +57,12 @@ const CustomerList = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
 
-	useEffect(() => {
-		loadData()
-	}, [])
+	useEffect(() => loadData(), [])
+	useEffect(async () => setSearch({...search, page, rowsPerPage, ...sortState}), [page, rowsPerPage])
 
 	useEffect(async () => {
-		console.log("Page num updated")
-		setSearch({...search, page, rowsPerPage, ...sortState})
-	}, [page, rowsPerPage])
-
-	useEffect(async () => {
-		if(!sortState.sortDir) {
-			setSortState({sortID:'createdTime', sortDir:-1})
-			return
-		}
+		if(!sortState.sortDir)
+			return setSortState({sortID:'createdTime', sortDir:-1})
 		if(page != 1)
 			setPage(1)
 		else
@@ -78,17 +70,12 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/taskaccounts?" + serialize(queryParams));
-		if(search?.text?.length > 3 || search?.text?.length == 0 || !search?.text)
-			goSearch();
+		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
+			loadData();
 	}, [search])
-
-	const goSearch = () => {
-		loadData()
-    }
 
 	const loadData = async () => {
 		try{
@@ -127,9 +114,11 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 	
+	// Table view
 	const extraFields = [
 	]
 
+	// View dialog
 	const otherFields = [
 		{name:"Task Date", id: "createdTime"},
 		{name:"Task ID", id: "taskID"},
@@ -148,14 +137,15 @@ const CustomerList = () => {
 		{name:"Payment History", id:"payments", type:"array"},
 	]
 
+	// Table and Filters
 	const defaultFields = {
 			texts:[
 				{label:"Task Date", id: "createdTime"},
 				{label:"Task ID", id: "taskID"},
-				{label:"Type", id: "serviceType", options:["",...allTasks]},
+				{label:"Type", id: "serviceType", multiSelect:true, options:["",...allTasks]},
 				{label:"Client Name", id: "clientName"},
 				{label:"Promoter", id: "promoter"},
-				{label:"Status", id: "status", options:allStatuses},
+				{label:"Status", id: "status", multiSelect:true, options:allStatuses},
 				// {label:"Remarks", id: "remarks"},
 				// {label:"Bill Amount", id:"billAmount", type:"number"},
 				// {label:"GST", id:"gst", type:"number"},
@@ -163,10 +153,12 @@ const CustomerList = () => {
 				// {label:"Government Fees", id:"govtFees", type:"number"},
 				{label:"Total", id:"total", type:"number"},
 				{label:"Received", id:"received", type:"number"},
-				{label:"Balance", id:"balance", type:"number"},
-				{label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,5]},
+				{label:"Balance", id:"balance", options:["", "Nil", "Pending"]},
+				{label:"Payment Rating", id:"rating", multiSelect:true, options: ['',1,2,3,4,5]},
 			],
-			checkboxes:[]
+			checkboxes:[
+				{label:"Include Archived", id: "archived"},
+			]
 	}
 
 	// View button
@@ -217,7 +209,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TaskPaymentsListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TaskPaymentsListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

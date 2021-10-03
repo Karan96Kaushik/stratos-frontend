@@ -42,8 +42,8 @@ const MemberAddForm = (props) => {
 	const loginState = useContext(LoginContext);
 	const snackbar = useSnackbar();
 	const location = useLocation();
+
 	let memberFieldsCopy = _.merge({}, memberFields);
-	console.log(memberFieldsCopy)
 	memberFieldsCopy = memberFieldsCopy.all
 
     let isEdit = false;
@@ -125,17 +125,15 @@ const MemberAddForm = (props) => {
 	const handleChange = async (event) => {
 		let others = {}
 		if (event.target.id == 'files') {
-			// console.log(event.target.files.length)
 			others = {docs:[]}
 
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
-			// console.log(allFiles)
 			for (let i=0; i < len; i++) {
 				let file = allFiles[i]
 				let fileData = file
@@ -148,18 +146,15 @@ const MemberAddForm = (props) => {
 						.replace(/^.+,/, "");
 				
 					resolve(base64String)
-					// console.log(base64String);
 					};
 					reader.readAsDataURL(fileData);
 				})
 	
 				fileData = await fileData
-				// console.log(file.name, others.docs.length, len, i)
 	
 				others.docs.push({name:file.name, data:fileData})
 			}
-			// event.target.files = allFiles
-			console.log(event.target.files, allFiles)
+
 			event.target.id = "ignore"
 				
 		}
@@ -193,7 +188,6 @@ const MemberAddForm = (props) => {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
 			)
-			console.error(err)
 		}
 
 	};

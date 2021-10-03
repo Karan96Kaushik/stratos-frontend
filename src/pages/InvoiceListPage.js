@@ -63,10 +63,8 @@ const CustomerList = () => {
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
-		if(!sortState.sortDir) {
-			setSortState({sortID:'createdTime', sortDir:-1})
-			return
-		}
+		if(!sortState.sortDir)
+			return setSortState({sortID:'createdTime', sortDir:-1})
 		if(page != 1)
 			setPage(1)
 		else
@@ -78,12 +76,8 @@ const CustomerList = () => {
 		delete queryParams.filters
 		navigate("/app/invoices?" + serialize(queryParams));
 		if(search?.text == "" || search.text.length > 2)
-			goSearch("PG");
+			loadData()
 	}, [search])
-
-	const goSearch = (rmk) => {
-		loadData()
-    }
 
 	const loadData = async () => {
 		try{
@@ -105,11 +99,9 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
-		// if (event.target.id == 'leadType'){
-			setData({rows:[]})
-			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		// }
+		setData({rows:[]})
+		setPage(1)
+		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 
 	const handleExport = async (password) => {
@@ -130,12 +122,13 @@ const CustomerList = () => {
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
-		{name:"Invoice ID", id: "invoiceID"},
+		// {name:"Invoice ID", id: "invoiceID"},
 		// {name:"Member ID", id: "memberID"},
 	]
 
 	const defaultFields = {
 		texts:[
+			{label:"Invoice ID", id: "invoiceID"},
             {label:"Invoice Date", id:"date", type:"date"},
             {label:"Project Name", id:"projectName", isRequired:true},
             {label:"Bill To", id:"billTo"},
@@ -147,11 +140,9 @@ const CustomerList = () => {
 	}
 
 	// View button
-	const renderViewButton = (val) => {
-		return (				
-			<ViewDialog data={val} fields={invoiceFields} otherFields={extraFields} typeField={null}/>
-		)
-	}
+	const renderViewButton = (val) => (				
+		<ViewDialog data={val} fields={invoiceFields} otherFields={extraFields} typeField={null}/>
+	)
 
 	return (<>
 		<Helmet>
@@ -163,7 +154,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<InvoiceListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<InvoiceListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

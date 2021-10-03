@@ -47,7 +47,7 @@
     "material-ui-phone-number": "^2.2.6",
     "material-ui-snackbar-provider": "^1.4.0",
     "moment": "^2.27.0",
-    "npm": "^7.7.4",
+    "npm": "^7.24.1",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
