@@ -169,7 +169,7 @@ const TaskAddForm = (props) => {
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
-					title={!isEdit ? "New Invoice" : "Edit Invoice"}
+					title={!isEdit ? "New Invoice" : ("Edit Invoice " + values?.invoiceID)}
 					subheader=""
 				/>
 				<Divider />

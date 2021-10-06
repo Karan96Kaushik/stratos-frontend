@@ -237,9 +237,10 @@ const taskFields = {
             {label:"Service Description", id:"serviceDesc"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
-            {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
-            {label:"GST", id:"gst", type:"number", isHidden:true},
-            {label:"Files", id:"files", type:"file", isHidden:true},
+            ...commonTextFieldsEnd
+            // {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
+            // {label:"GST", id:"gst", type:"number", isHidden:true},
+            // {label:"Files", id:"files", type:"file", isHidden:true},
         ],
         checkboxes:[
             ...commonCheckboxFields
