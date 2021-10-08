@@ -15,24 +15,8 @@ import {
 } from "../store/reducers/filtersSlice";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import * as _ from 'lodash';
-
-function useQuery() {
-	let entries =  new URLSearchParams(useLocation().search);
-	const result = {}
-	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
-		result[key] = value;
-	}
-	return result;
-}
-
-const serialize = function(obj) {
-	var str = [];
-	for (var p in obj)
-	  if (obj.hasOwnProperty(p)) {
-		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-	  }
-	return str.join("&");
-  }
+import { searchTextHelper, sortHelpler, useQuery } from 'src/utils/helpers';
+import { exportHandler } from 'src/utils/handlers';
 
 const TaskList = () => {
 
@@ -43,12 +27,11 @@ const TaskList = () => {
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
-	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("tasks"))
 	const memberRows = useSelector(selectMembers)
 
-	const query = useQuery();
+	const query = useQuery(useLocation);
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
@@ -56,29 +39,18 @@ const TaskList = () => {
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage})
+	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
-	useEffect(() => loadData(), [])
-
-	useEffect(async () => (
-		setSearch({...search, page, rowsPerPage, ...sortState})
-	), [page, rowsPerPage])
-
-	useEffect(async () => {
-		if(!sortState.sortDir) 
-			return setSortState({sortID:'createdTime', sortDir:-1})
-		if(page != 1)
-			setPage(1)
-		else
-			setSearch({...search, ...sortState})
-	}, [sortState])
-
-	useEffect(async () => {
-		let queryParams = Object.assign({}, search)
-		delete queryParams.filters
-		navigate("/app/tasks?" + serialize(queryParams));
-		if(search.text == "" || search.text?.length > 2 || !search?.text)
-			loadData();
-	}, [search])
+	const state = {
+		search,			setSearch,
+		rowsPerPage, 	setRowsPerPage,
+		page, 			setPage,
+		sortState, 		setSortState,
+		snackbar,
+		loginState,
+		memberRows,
+		filters
+	}
 
 	const loadData = async () => {
 		try{
@@ -115,39 +87,21 @@ const TaskList = () => {
 		setLoading({...loading, isActive:false})
 	}
 
+	useEffect(loadData, [])
+	useEffect(() => ( setSearch({...search, page, rowsPerPage, ...sortState}) ), 	[page, rowsPerPage])
+	useEffect(() => { sortHelpler(state) }, [sortState])
+	useEffect(() => { searchTextHelper(state, loadData, "/app/tasks?", navigate) }, [search])
+
+	const handleExport = (password) => ( exportHandler(state, password, "/api/tasks/export") )
+
 	const handleChange = (event) => {
-		if (event.target.id == 'serviceType'){
+		if (event.target.id == 'serviceType') {
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 		}
 	}
 
-	const handleExport = async (password) => {
-		try {
-			let others = {...search}
-			others.filters = _.merge({}, filters)
-	
-			if(!others?.serviceType?.length)
-				others.searchAll = true
-	
-			if(others.filters && others.filters._membersAssigned) {
-				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
-			}
-	
-			await authorizedDownload({
-				route: "/api/tasks/export", 
-				creds: loginState.loginState, 
-				data:{...others, password}, 
-				method: 'post'
-			}, "tasksExport" + ".xlsx")
-		}
-		catch (err) {
-			snackbar.showMessage(
-				String(err.message ?? err?.response?.data ?? err),
-			)
-		}
-	}
 	
 	// View Modal and Filters
 	const extraFields = [

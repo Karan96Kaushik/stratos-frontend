@@ -25,9 +25,14 @@ const TaskAddForm = (props) => {
 	const [clientRows, setClientRows] = useState([]);
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
+	const [placeholder, setPlaceholder] = useState({
+		client: {clientID:"", name: "", _id: ""}
+	});
 	const [type, setType] = useState("");
 
-	const handleChangeClient = ({target}) => {
+	const handleChangeClient = (e) => {
+		const target = e?.target
+
 		if(target?.value?.length > 2) {
 			setSearchInfo({...searchInfo, text: target.value})
 		}
@@ -63,6 +68,7 @@ const TaskAddForm = (props) => {
 			members = members.find(val => String(val._id) == String(data._memberID)) 
 			if(members)
 				setMemberPlaceholder(members)
+			setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			setType(data.serviceType)
 			setValues(data)
 		}
@@ -208,11 +214,14 @@ const TaskAddForm = (props) => {
 		} else if (event.target.id == 'client' && values?.client?.length > 2) {
 			getClients()
 		} else if (event.target.id == '_clientID') {
+			// Don't allow user to EDIT client of the task
+			if(isEdit)
+				return
 			let client = clientRows.find(val => String(val._id) == event.target.value)
-			console.info(client)
 			others.clientName = client.name
 			others.clientID = client.clientID
 			others.promoter = client.promoter
+			setPlaceholder({client})
 		} else if (event.target.id == '_memberID') {
 			others.memberName = event.target.name
 			others.memberID = event.target.memberID
@@ -251,24 +260,27 @@ const TaskAddForm = (props) => {
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
-					title="New Task"
+					title={isEdit ? "Edit Task " + values?.taskID : "New Task"}
 					subheader=""
 				/>
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
-						{!isEdit && (<Grid item md={6} xs={12}>
+						<Grid item md={6} xs={12}>
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
-								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
+								value={placeholder.client}
+								disabled={isEdit}
+								getOptionLabel={(row) => row?.name?.length ? row.name + ` (${row.clientID})` : ""}
+								// getOptionLabel={(row) => row.name + ` (${row.clientID})`}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name, clientID: value.clientID}})}
 								fullWidth
 								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
-						</Grid>)}
+						</Grid>
 
 						<Grid item md={6} xs={12}>
 							<FormControl fullWidth>	

@@ -63,10 +63,16 @@ const CustomerList = () => {
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
-		if(!sortState.sortDir)
-			return setSortState({sortID:'createdTime', sortDir:-1})
-		if(page != 1)
+		// Don't update Page num to 1 on FIRST RENDER
+		if(sortState.sortDir == -1 && sortState.sortID == 'createdTime')
+			setSearch({...search, ...sortState})
+		// If another sort state is set to neutral (0); revert to default sortState
+		else if(!sortState.sortDir)
+			setSortState({sortID:'createdTime', sortDir:-1})
+		// reset to page 1 when sort state is changed
+		else if(page != 1)
 			setPage(1)
+		// If page is reset to 1, search useEffect will automatically trigger
 		else
 			setSearch({...search, ...sortState})
 	}, [sortState])
