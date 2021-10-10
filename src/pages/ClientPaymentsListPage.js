@@ -201,6 +201,7 @@ const CustomerList = () => {
 							setSortState={setSortState}
 							sortState={sortState}
 							additional={[renderViewButton, renderButton]}
+							disableEdit={true}
 						/>				
 					</Paper>
 				</Box>

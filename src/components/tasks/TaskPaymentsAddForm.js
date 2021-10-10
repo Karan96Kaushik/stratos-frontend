@@ -21,7 +21,7 @@ const TaskAddForm = (props) => {
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
 	const [type, setType] = useState("");
-	const [placeholder, setPlaceholder] = useState({});
+	const [placeholder, setPlaceholder] = useState({client: {clientID:"", name: "", _id: ""}});
 
 	const handleChangeClient = (e) => {
 		let target = e?.target
@@ -52,6 +52,9 @@ const TaskAddForm = (props) => {
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/tasks/", data:{_id:taskID}, creds:loginState.loginState, method:"get"})
 			// data = data[0]
+			setPlaceholder({
+				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
+			})
 			setType(data.serviceType)
 			setValues(data)
 		}, [])
@@ -212,25 +215,26 @@ const TaskAddForm = (props) => {
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
 				<CardHeader
-					title="New Task"
+					title={!isEdit ? "New Task" : "Edit Task"}
 					subheader=""
 				/>
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
-						{!isEdit && (<Grid item md={6} xs={12}>
+						{<Grid item md={6} xs={12}>
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
+								disabled={isEdit}
 								value={placeholder.client}
-								getOptionLabel={(row) => row.name + ` (${row.clientID})`}
+								getOptionLabel={(row) => row?.name?.length ? (row.name + ` (${row.clientID})`) : ""}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name}})}
 								fullWidth
 								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
-						</Grid>)}
+						</Grid>}
 
 						<Grid item md={12} xs={12}>
 							<TextField
@@ -245,8 +249,7 @@ const TaskAddForm = (props) => {
 								value={values.serviceType}
 								select
 								SelectProps={{ native: true }}
-								variant="outlined"
-							>
+								variant="outlined">
 								<option />
 								{Object.keys(taskFields).map((option) => (
 									<option

@@ -27,7 +27,7 @@ const useRowStyles = makeStyles({
 	},
 });
 
-function Row({ row, type, fields, extraFields, additional, defaultFields }) {
+function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit }) {
 	const classes = useRowStyles();
 	// Filter out the ones not hidden in table view
 
@@ -54,13 +54,13 @@ function Row({ row, type, fields, extraFields, additional, defaultFields }) {
 						</IconButton>
 					</Link>
 				</TableCell> */}
-				<TableCell>
+				{!disableEdit && <TableCell>
 					<Link to={"edit/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
 							<Edit />
 						</IconButton>
 					</Link>
-				</TableCell>
+				</TableCell>}
 			</TableRow>
 		</React.Fragment>
 	);
@@ -131,7 +131,7 @@ function TablePaginationActions(props) {
 	);
   }
 
-export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional}) {
+export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, disableEdit}) {
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
 
@@ -195,6 +195,7 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 							row={row} 
 							type={type} 
 							additional={additional}
+							disableEdit={disableEdit}
 						/>
 					))}
 				</TableBody>

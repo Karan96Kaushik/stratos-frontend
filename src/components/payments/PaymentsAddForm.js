@@ -187,6 +187,12 @@ const PaymentAddForm = (props) => {
 		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/payments/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+
+			setPlaceholder({
+				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
+				task: {taskID:data.taskID, name: "", _id: ""}, 
+			})
+
 			setValues(data)
 		}, [])
 	}
@@ -349,11 +355,12 @@ const PaymentAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{!isEdit && (<Grid item md={6} xs={12}>
+						{<Grid item md={6} xs={12}>
 							<Autocomplete
 								id="_clientID"
 								options={clientRows}
 								value={placeholder.client}
+								disabled={isEdit}
 								getOptionLabel={(row) => row.name.length ? row.name + ` (${row.clientID})` : ""}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name}})}
@@ -361,36 +368,22 @@ const PaymentAddForm = (props) => {
 								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
 							/>
-						</Grid>)}
+						</Grid>}
 
-						{!isEdit  && (<Grid item md={6} xs={12}>
+						{<Grid item md={6} xs={12}>
 							<Autocomplete
 								id="_taskID"
 								options={taskRows}
 								value={placeholder.task}
 								getOptionLabel={(row) => row.taskID + (row.billAmount ? ` - ₹${row.billAmount}` : "")}
-								disabled={(values?._clientID?.length || 0) < 3}
+								disabled={((values?._clientID?.length || 0) < 3) || isEdit}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_taskID", value:value?._id, name:value?.name}})}
 								fullWidth
 								// filterOptions={filterTaskOptions}
 								renderInput={(params) => <TextField {...params} label="Select Task" variant="standard" />}
 							/>
-						</Grid>)}
-
-						{/* {!isEdit  && (<Grid item md={6} xs={12}>
-							<Autocomplete
-								id="_invoiceID"
-								options={invoiceRows}
-								getOptionLabel={(row) => row.invoiceID}
-								disabled={(values?._taskID?.length || 0) < 3}
-								onInputChange={handleChangeClient}
-								onChange={(e,value) => handleChange({target:{id:"_invoiceID", value:value._id, name:value.name}})}
-								fullWidth
-								filterOptions={filterInvoiceOptions}
-								renderInput={(params) => <TextField {...params} label="Select Invoice" variant="standard" />}
-							/>
-						</Grid>)} */}
+						</Grid>}
 
 						{paymentFields.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
