@@ -295,7 +295,7 @@ const taskFields = {
             {label:"Project Name", id:"projectName"},
             {label:"RERA Number", id:"reraNumber"},
             {label:"Complaint Number", id:"complaint"},
-            {label:"Hearing Date", id:"hearingDate", type:"date"},
+            {label:"Hearing Date", id:"hearingDate"},
             {label:"Package Description", id:"packageDesc"},
             {label:"Manhours", id:"manhours"},
             {label:"Result", id:"result"},
