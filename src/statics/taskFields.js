@@ -298,7 +298,6 @@ const taskFields = {
             {label:"Hearing Date", id:"hearingDate", type:"date"},
             {label:"Package Description", id:"packageDesc"},
             {label:"Manhours", id:"manhours"},
-            {label:"Status", id:"status"},
             {label:"Result", id:"result"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet3]},
             ...commonTextFields,
