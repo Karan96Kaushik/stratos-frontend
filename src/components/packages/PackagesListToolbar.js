@@ -3,12 +3,12 @@ import {
 	CardContent, TextField, InputAdornment,
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
-import paymentFields from 'src/statics/paymentFields';
 import FiltersDialog from '../FiltersDialog';
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
+import packageFields from 'src/statics/packageFields';
 
-const PaymentsListToolbar = (props) => {
+const PackagesListToolbar = (props) => {
 
 	const [open, setOpen] = React.useState(false)
 
@@ -25,9 +25,9 @@ const PaymentsListToolbar = (props) => {
 					justifyContent: 'flex-end'
 				}
 			}>
-				<Link to="/app/payments/add">
+				<Link to="/app/packages/add">
 					<Button sx={{mx: 1}} variant="contained">
-						Add Payment
+						Add Package
 					</Button>
 				</Link>
 				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
@@ -50,7 +50,7 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={paymentFields}/>
+									<FiltersDialog forView="packages" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={packageFields}/>
 								</Grid>
 							</Grid>
 						</Box>
@@ -61,4 +61,4 @@ const PaymentsListToolbar = (props) => {
 	)
 };
 
-export default PaymentsListToolbar;
+export default PackagesListToolbar;

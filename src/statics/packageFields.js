@@ -16,18 +16,28 @@ const services = [
 export default {
     all: {
         texts: [
-            {label:'Consultation', id:"consultation", options: ['Y', 'N']},
-            {label:'Site Updation', id:"siteUpdation", options: ['Y', 'N']},
-            {label:'Proof Reading', id:"proofReading", options: ['Y', 'N']},
-            {label:'Form 1', id:"form1", options: ['Y', 'N']},
-            {label:'Form 2', id:"form2", options: ['Y', 'N']},
-            {label:'Form 2A', id:"form2a", options: ['Y', 'N']},
-            {label:'Form 3', id:"form3", options: ['Y', 'N']},
-            {label:'Form 5', id:"form5", options: ['Y', 'N']},
-            {label:'Format D', id:"formatD", options: ['Y', 'N']},
-            {label:'Disclosure of Sold', id:"disclosure", options: ['Y', 'N']},
-            {label:'Other Services', id:"other", options: ['Y', 'N']},
+            {label:'Yearly Amount', id:"amount", type: 'number', required: true},
+            {label:'Start Date', id:"startDate", type: 'date', required: true},
+            {label:'Description', id:"description", required: true},
+            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly'], required: true},
+            {label:'Due Amount', id:"due", type: 'number'},
+            {label:'Paid Amount', id:"paid", type: 'number', required: true},
+            {label:'Cersai Undertaking', id:"cersai"},
+            {label:'Other Services', id:"other"},
+            {label:'Notes', id:"notes"},
+            {label:'Remarks', id:"remarks"},
         ],
-        checkboxes: []
+        checkboxes: [
+            {label:'Consultation', id:"consultation", options: ['N','Y']},
+            {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},
+            {label:'Proof Reading', id:"proofReading", options: ['N','Y']},
+            {label:'Form 1', id:"form1", options: ['N','Y']},
+            {label:'Form 2', id:"form2", options: ['N','Y']},
+            {label:'Form 2A', id:"form2a", options: ['N','Y']},
+            {label:'Form 3', id:"form3", options: ['N','Y']},
+            {label:'Form 5', id:"form5", options: ['N','Y']},
+            {label:'Format D', id:"formatD", options: ['N','Y']},
+            {label:'Disclosure of Sold', id:"disclosure", options: ['N','Y']},
+        ]
     }
 }

@@ -85,18 +85,9 @@ const CustomerList = () => {
 			const searchCopy = _.merge({}, search)
 			searchCopy.filters = _.merge({}, filters)
 			
-			// Original amount is shown from dynamic calculation
-			// But sorting needs to be done from a denormalised version
-
-			if(searchCopy.sortID == "received")
-				searchCopy.sortID = "receivedAmount"
-
-			else if(searchCopy.sortID == "total")
-				searchCopy.sortID = "totalAmount"
-
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
-				route: "/api/tasks/payments/search", 
+				route: "/api/packages/search", 
 				creds: loginState.loginState, 
 				data:{...searchCopy}, 
 				method: 'post'
@@ -116,45 +107,40 @@ const CustomerList = () => {
 		setPage(1)
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
-	
-	const extraFields = [
-	]
 
+	// Fields in view details pop up
 	const otherFields = [
-		{name:"Task Date", id: "createdTime"},
-		{name:"Task ID", id: "taskID"},
-		{name:"Type", id: "serviceType", options:["",...allTasks]},
-		{name:"Client Name", id: "clientName"},
-		{name:"Status", id: "status", options:allStatuses},
-		{name:"Promoter", id: "promoter"},
-		{name:"Remarks", id: "remarks"},
-		{name:"Bill Amount", id:"billAmount", type:"number"},
-		{name:"GST", id:"gst", type:"number"},
-		{name:"SRO Fees", id:"sroFees", type:"number"},
-		{name:"Government Fees", id:"govtFees", type:"number"},
-		{name:"Total", id:"total", type:"number"},
-		{name:"Received", id:"received", type:"number"},
-		{name:"Balance", id:"balance", type:"number"},
-		{name:"Payment History", id:"payments", type:"array"},
+		{name:'Client Name', id:"clientName"},
+		{name:'Date', id:"createdTime"},
+		{name:'Promoter', id:"promoter"},
+		{name:'Yearly Amount', id:"amount", type: 'number'},
+		{name:'Start Date', id:"startDate", type: 'date'},
+		{name:'Description', id:"description"},
+		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+		{name:'Due Amount', id:"due", type: 'number'},
+		{name:'Paid Amount', id:"paid", type: 'number'},
+		{name:'Cersai Undertaking', id:"cersai"},
+		{name:'Other Services', id:"other"},
+		{name:'Notes', id:"notes"},
+		{name:'Remarks', id:"remarks"}
 	]
 
+	// Fields to be shown in the main table 
 	const defaultFields = {
 			texts:[
-				{label:"Task Date", id: "createdTime"},
-				{label:"Task ID", id: "taskID"},
-				{label:"Type", id: "serviceType", options:["",...allTasks]},
-				{label:"Client Name", id: "clientName"},
-				{label:"Promoter", id: "promoter"},
-				{label:"Status", id: "status", options:allStatuses},
-				// {label:"Remarks", id: "remarks"},
-				// {label:"Bill Amount", id:"billAmount", type:"number"},
-				// {label:"GST", id:"gst", type:"number"},
-				// {label:"SRO Fees", id:"sroFees", type:"number"},
-				// {label:"Government Fees", id:"govtFees", type:"number"},
-				{label:"Total", id:"total", type:"number"},
-				{label:"Received", id:"received", type:"number"},
-				{label:"Balance", id:"balance", type:"number"},
-				{label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,5]},
+				{label:'Date', id:"createdTime"},
+				{label:'Client Name', id:"clientName"},
+				{label:'Promoter', id:"promoter"},
+				{label:'Yearly Amount', id:"amount", type: 'number'},
+				{label:'Start Date', id:"startDate", type: 'date'},
+				{label:'Description', id:"description"},
+				{label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+				{label:'Due Amount', id:"due", type: 'number'},
+				{label:'Paid Amount', id:"paid", type: 'number'},
+				{label:'Cersai Undertaking', id:"cersai"},
+				{label:'Other Services', id:"other"},
+				{label:'Notes', id:"notes"},
+				{label:'Remarks', id:"remarks"}
 			],
 			checkboxes:[]
 	}
@@ -186,20 +172,9 @@ const CustomerList = () => {
 		}
 	}
 
-	// Add payment button
-	const renderButton = (val) => {
-		return (				
-			<Link to={`/app/payments/add?taskID=${val.taskID}`}>
-				<IconButton aria-label="expand row" size="small">
-					<Add />
-				</IconButton>
-			</Link>
-		)
-	}
-
 	return (<>
 		<Helmet>
-			<title>Task Accounts | TMS</title>
+			<title>Packages | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -211,7 +186,7 @@ const CustomerList = () => {
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
-							extraFields={extraFields} 
+							extraFields={[]} 
 							defaultFields={defaultFields} 
 							type={null} 
 							fields={{}} 
@@ -224,7 +199,7 @@ const CustomerList = () => {
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
-							additional={[renderViewButton, renderButton]}
+							additional={[renderViewButton]}
 						/>				
 					</Paper>
 				</Box>

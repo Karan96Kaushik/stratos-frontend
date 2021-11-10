@@ -256,14 +256,14 @@ const TaskAddForm = (props) => {
 								/>
 							</Grid>))}
 						<Grid item md={6} xs={12}>
-						{isEdit && values?.files && <List>
+							{isEdit && values?.files && <List>
 								{values?.files?.map((file) => (<ListItem>
 									<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
 										<Typography >{file}</Typography>
 									</Link>
 									</ListItem>))}
-							</List>
-						}
+								</List>
+							}
 						</Grid>
 					</Grid>
 				</CardContent>

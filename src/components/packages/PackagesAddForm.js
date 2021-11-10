@@ -3,7 +3,8 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
 	Link, List, ListItem, Typography, makeStyles, 
-	Autocomplete,
+	Autocomplete, FormControlLabel, Checkbox,
+	FormControl
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -216,9 +217,11 @@ const PackageAddForm = (props) => {
 		}
 
 		else if (event.target.id == '_clientID' && event.target.value) {
-			others["clientID"] = clientRows.find(val => event.target.value == val._id)
-			setPlaceholder({client:others["clientID"]})
-			others["clientID"] = others["clientID"].clientID
+			let client = clientRows.find(val => event.target.value == val._id)
+			others.clientName = client.name
+			others.clientID = client.clientID
+			others.promoter = client.promoter
+			setPlaceholder({client:client})
 		}
 
 		setValues({
@@ -295,6 +298,23 @@ const PackageAddForm = (props) => {
 										</option>
 									))}
 								</TextField>
+							</Grid>))}
+
+						<Grid item md={12} xs={12}>
+							<Typography variant='h4'>Services</Typography>
+						</Grid>
+
+						{packageFields?.all?.checkboxes.map((field) => (
+							<Grid item md={6} xs={12}>
+								<FormControlLabel
+									control={<Checkbox
+										checked={values[field.id] ? true : false}
+										onChange={handleChange}
+										id={field.id}
+										color="primary"
+									/>}
+									label={field.label}
+								/>
 							</Grid>))}
 						
 						<Grid item md={6} xs={12}>
