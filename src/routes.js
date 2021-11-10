@@ -19,6 +19,8 @@ import TaskPaymentsAddPage from 'src/pages/TaskPaymentsAddPage';
 import PaymentsAdd from 'src/pages/PaymentsAdd';
 import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
+import PackagesListPage from 'src/pages/PackagesListPage';
+import PackagesAdd from 'src/pages/PackagesAddPage';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
 import NotFound from 'src/pages/NotFound';
@@ -102,6 +104,14 @@ const routes = (isLoggedIn) => [
 				path: 'clientaccounts',
 				children: [
 					{ path: '/', element: <ClientPaymentsListPage /> },
+				]
+			},
+			{
+				path: 'packages',
+				children: [
+					{ path: '/', element: <PackagesListPage /> },
+					{ path: 'add', element: <PackagesAdd /> },
+					{ path: 'edit/:id', element: <PackagesAdd /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
