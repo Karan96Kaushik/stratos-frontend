@@ -21,6 +21,10 @@ import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
 import PackagesListPage from 'src/pages/PackagesListPage';
 import PackagesAdd from 'src/pages/PackagesAddPage';
+import PackageAccountsListPage from 'src/pages/PackageAccountsListPage';
+// import PackageAccountsAdd from 'src/pages/PackagesAddPage';
+import PackageServicesListPage from 'src/pages/PackageServicesListPage';
+import PackageServicesUpdate from 'src/pages/PackageServicesUpdatePage';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
 import NotFound from 'src/pages/NotFound';
@@ -112,6 +116,22 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <PackagesListPage /> },
 					{ path: 'add', element: <PackagesAdd /> },
 					{ path: 'edit/:id', element: <PackagesAdd /> },
+				]
+			},
+			{
+				path: 'package/services',
+				children: [
+					{ path: '/', element: <PackageServicesListPage /> },
+					{ path: 'add', element: <PackageServicesUpdate /> },
+					{ path: 'edit/:id', element: <PackageServicesUpdate /> },
+				]
+			},
+			{
+				path: 'package/accounts',
+				children: [
+					{ path: '/', element: <PackageAccountsListPage /> },
+					// { path: 'add', element: <PackageAccountsAdd /> },
+					// { path: 'edit/:id', element: <PackageAccountsAdd /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }

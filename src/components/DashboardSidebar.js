@@ -21,6 +21,8 @@ import {
 	Mail as MailIcon,
 	FileText as FileTextIcon,
 	DollarSign as DollarSignIcon,
+	Package as PackageIcon,
+	CheckCircle as CheckCircleIcon,
 	ShoppingBag as ShoppingBagIcon,
 	User as UserIcon,
 	UserPlus as UserPlusIcon,
@@ -56,14 +58,6 @@ const items = [
 		icon: FlagIcon,
 		title: 'Leads'
 	},
-	
-	// {
-	// 	// href:"#",
-	// 	onClick: () => {console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);},
-	// 	icon: ArrowDownCircle,
-	// 	title: 'Install'
-	// },
-
 	{
 		href: '/app/quotations',
 		icon: MailIcon,
@@ -90,9 +84,27 @@ const items = [
 		title: 'Client - Accounts'
 	},
 	{
-		href: '/app/packages',
-		icon: DollarSignIcon,
+		href: '#',
+		icon: PackageIcon,
 		title: 'Packages'
+	},
+	{
+		href: '/app/packages',
+		icon: PackageIcon,
+		isSub: true,
+		title: 'Details'
+	},
+	{
+		href: '/app/package/services',
+		icon: CheckCircleIcon,
+		isSub: true,
+		title: 'Services'
+	},
+	{
+		href: '/app/package/accounts',
+		icon: DollarSignIcon,
+		isSub: true,
+		title: 'Accounts'
 	},
 	// {
 	// 	href: '/app/settings',
@@ -150,7 +162,10 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 				<List>
 					{items.map((item) => (
 						<NavItem
-							href={item.href}
+							style={{
+								left: item.isSub ? 20 : 0
+							}}
+							href={item.href == '#' ? undefined : item.href}
 							onClick={item.onClick ?? (() => {console.debug(item.href)})}
 							key={item.title}
 							title={item.title}
@@ -187,7 +202,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					variant="persistent"
 					PaperProps={{
 						sx: {
-							width: 185,
+							width: 195,
 							top: 64,
 							height: 'calc(100% - 64px)'
 						}

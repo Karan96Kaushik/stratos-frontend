@@ -110,15 +110,15 @@ const CustomerList = () => {
 
 	// Fields in view details pop up
 	const otherFields = [
-		{name:'Client Name', id:"clientName"},
 		{name:'Date', id:"createdTime"},
+		{name:'Package ID', id:"packageID"},
+		{name:'Client Name', id:"clientName"},
 		{name:'Promoter', id:"promoter"},
-		{name:'Yearly Amount', id:"amount", type: 'number'},
+		// {name:'Yearly Amount', id:"amount", type: 'number'},
 		{name:'Start Date', id:"startDate", type: 'date'},
 		{name:'Description', id:"description"},
-		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
-		{name:'Due Amount', id:"due", type: 'number'},
-		{name:'Paid Amount', id:"paid", type: 'number'},
+		// {name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+		// {name:'Due Amount', id:"due", type: 'number'},
 		{name:'Cersai Undertaking', id:"cersai"},
 		{name:'Other Services', id:"other"},
 		{name:'Notes', id:"notes"},
@@ -129,18 +129,17 @@ const CustomerList = () => {
 	const defaultFields = {
 			texts:[
 				{label:'Date', id:"createdTime"},
+				{label:'Package ID', id:"packageID"},
 				{label:'Client Name', id:"clientName"},
 				{label:'Promoter', id:"promoter"},
-				{label:'Yearly Amount', id:"amount", type: 'number'},
+				// {label:'Yearly Amount', id:"amount", type: 'number'},
 				{label:'Start Date', id:"startDate", type: 'date'},
 				{label:'Description', id:"description"},
-				{label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
-				{label:'Due Amount', id:"due", type: 'number'},
-				{label:'Paid Amount', id:"paid", type: 'number'},
+				// {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+				// {label:'Due Amount', id:"due", type: 'number'},
+				// {label:'Paid Amount', id:"paid", type: 'number'},
 				{label:'Cersai Undertaking', id:"cersai"},
 				{label:'Other Services', id:"other"},
-				{label:'Notes', id:"notes"},
-				{label:'Remarks', id:"remarks"}
 			],
 			checkboxes:[]
 	}

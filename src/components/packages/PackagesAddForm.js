@@ -11,7 +11,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import packageFields from '../../statics/packageFields';
+import packageFields, { services } from '../../statics/packageFields';
 import PasswordDialog from '../passwordDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +59,10 @@ const PackageAddForm = (props) => {
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 
 	const [errors, setErrors] = useState({});
+
+	const packageFieldsCopy = _.merge({}, packageFields)
+
+	services.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
 
 	const validateForm = () => {
 		let errFields = []
@@ -157,7 +161,7 @@ const PackageAddForm = (props) => {
 		try {
 			let packageID = location.pathname.split("/").pop()
 			await authorizedReq({
-				route:"/api/package/",
+				route:"/api/packages/",
 				data:{_id:packageID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
@@ -274,7 +278,7 @@ const PackageAddForm = (props) => {
 							/>
 						</Grid>}
 
-						{packageFields.all?.texts.map((field) => (
+						{packageFieldsCopy.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -304,7 +308,7 @@ const PackageAddForm = (props) => {
 							<Typography variant='h4'>Services</Typography>
 						</Grid>
 
-						{packageFields?.all?.checkboxes.map((field) => (
+						{packageFieldsCopy?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
