@@ -128,7 +128,7 @@ const CustomerList = () => {
 				{label:'Date', id:"createdTime"},
                 {label:'Package ID', id:"packageID"},
                 {label:'Client Name', id:"clientName"},
-				{label:'Promoter', id:"promoter"},
+				// {label:'Promoter', id:"promoter"},
 				{label:'Start Date', id:"startDate", type: 'date'},
 			],
 			checkboxes:[
@@ -138,6 +138,7 @@ const CustomerList = () => {
             ]
 	}
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
+    services.forEach(s => otherFields.push({name:s, id:s}))
 
 	// View button
 	const renderViewButton = (val) => {

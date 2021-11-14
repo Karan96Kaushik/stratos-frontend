@@ -158,11 +158,11 @@ const CustomerList = () => {
 			others.filters = _.merge({}, filters)
 
 			await authorizedDownload({
-				route: "/api/tasks/payments/export", 
+				route: "/api/packages/export", 
 				creds: loginState.loginState, 
 				data:{...search, ...others, password}, 
 				method: 'post'
-			}, "taskPaymentsExport" + ".xlsx")
+			}, "packageDetailsExport" + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
