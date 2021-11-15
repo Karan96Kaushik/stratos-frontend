@@ -85,7 +85,12 @@ const PackageAddForm = (props) => {
             others.completed = values.completed ?? {}
             if (!others.completed[service])
                 others.completed[service] = []
-            others.completed[service].push(date)
+			if(event.target.checked)
+	            others.completed[service].push(date)
+			else {
+				const index = others.completed[service].indexOf(date)
+				others.completed[service].splice(index, 1)
+			}
 
             return setValues({
                 ...values,
