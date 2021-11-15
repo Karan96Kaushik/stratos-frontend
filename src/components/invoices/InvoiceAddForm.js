@@ -3,7 +3,7 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List,
-	ListItem, Typography
+	ListItem, Typography, Autocomplete
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -11,6 +11,7 @@ import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import invoiceFields from '../../statics/invoiceFields';
 import PasswordDialog from '../passwordDialog';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -18,7 +19,12 @@ const TaskAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 
 	const [values, setValues] = useState({});
-	
+	const [clientRows, setClientRows] = useState([]);
+	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
+	const [placeholder, setPlaceholder] = useState({
+		client: {clientID:"", name: "", _id: ""}
+	});
+
     let isEdit = false;
 
 	const [errors, setErrors] = useState({});
@@ -112,6 +118,19 @@ const TaskAddForm = (props) => {
 			console.log(event.target.files, allFiles)
 			event.target.id = "ignore"
 				
+		} else if (event.target.id == '_clientID') {
+			// Don't allow user to EDIT client of the task
+			if(isEdit)
+				return
+			let client = clientRows.find(val => String(val._id) == event.target.value)
+			others.clientName = client.name
+			others.billTo = client.name
+			others.projectName = client.relatedProject ?? client.name
+			others.clientID = client.clientID
+			others.promoter = client.promoter
+			setPlaceholder({client})
+		} else if (event.target.id == 'client' && values?.client?.length > 2) {
+			getClients()
 		}
 
 		setValues({
@@ -121,6 +140,38 @@ const TaskAddForm = (props) => {
 		});
 
 	};
+
+	const getClients = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true, ignorePermissions:true}, method: 'post' })
+			setClientRows(response)
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting clients - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
+	};
+
+	const handleChangeClient = (e) => {
+		const target = e?.target
+
+		if(target?.value?.length > 2) {
+			setSearchInfo({...searchInfo, text: target.value})
+		}
+		if(target?.value?.length == 0) {
+			setClientRows([])
+		}
+	}
+
+	useEffect(async () => {
+		if(searchInfo.text.length > 2)
+			getClients()
+		if(searchInfo.text.length == 0)
+			setClientRows([])
+	}, [searchInfo])
 
 	const [open, setOpen] = useState(false)
 	const tryDelete = () => {
@@ -161,8 +212,11 @@ const TaskAddForm = (props) => {
 			creds:loginState.loginState, 
 			method:"post"
 		}, fileName.split("/")[1])
-
 	}
+
+	const filterOptions = createFilterOptions({
+		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
+	});
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
@@ -175,6 +229,21 @@ const TaskAddForm = (props) => {
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
+						<Grid item md={6} xs={12}>
+							<Autocomplete
+								id="_clientID"
+								options={clientRows}
+								value={placeholder.client}
+								disabled={isEdit}
+								getOptionLabel={(row) => row?.name?.length ? row.name + ` (${row.clientID})` : ""}
+								// getOptionLabel={(row) => row.name + ` (${row.clientID})`}
+								onInputChange={handleChangeClient}
+								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name, clientID: value.clientID}})}
+								fullWidth
+								filterOptions={filterOptions}
+								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
+							/>
+						</Grid>
 
 						{invoiceFields?.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
