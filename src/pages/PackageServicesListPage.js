@@ -116,10 +116,13 @@ const CustomerList = () => {
 		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 		{name:'Due Amount', id:"due", type: 'number'},
 		{name:'Received Amount', id:"receivedAmount", type: 'number'},
-		{name:'Cersai Undertaking', id:"cersai"},
-		{name:'Other Services', id:"other"},
+		// {name:'Cersai Undertaking', id:"cersai"},
 		{name:'Notes', id:"notes"},
-		{name:'Remarks', id:"remarks"}
+		{name:'Remarks', id:"remarks"},
+		{name:'Consultation', id:"Consultation", type: 'date'},
+		{name:'Proof Reading', id:"Proof Reading", type: 'date'},
+		{name:'Legal Documents', id:"Legal Documents", type: 'date'},
+		{name:'Other Services', id:"Other Services"},
 	]
 
 	// Fields to be shown in the main table 
@@ -132,9 +135,10 @@ const CustomerList = () => {
 				{label:'Start Date', id:"startDate", type: 'date'},
 			],
 			checkboxes:[
-				{label:'Consultation', id:"Consultation", type: 'date'},
-				{label:'Proof Reading', id:"Proof Reading", type: 'date'},
-				{label:'Legal Documents', id:"Legal Documents", type: 'date'},
+				// {label:'Consultation', id:"Consultation", type: 'date'},
+				// {label:'Proof Reading', id:"Proof Reading", type: 'date'},
+				// {label:'Legal Documents', id:"Legal Documents", type: 'date'},
+				// {label:'Other Services', id:"Other Services", type: 'date'},
             ]
 	}
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
