@@ -11,7 +11,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import packageFields, { services } from '../../statics/packageFields';
+import packageFields, { services, yearlyServices } from '../../statics/packageFields';
 import PasswordDialog from '../passwordDialog';
 import moment from 'moment';
 
@@ -119,6 +119,30 @@ const PackageAddForm = (props) => {
 					<Grid container spacing={3}>
 
 						{services.map((s) => values?.[s] && (
+                            <Grid item md={12} xs={12}>
+				            	<Grid container spacing={3}>
+                                    <Grid item md={12} xs={12}>
+                                        <Typography variant='h5'>{s}</Typography>
+                                    </Grid>
+
+                                    {(values?.[s] ?? []).map(period => (
+                                        <Grid item md={4} xs={6}>
+                                            <FormControlLabel
+                                                control={<Checkbox
+                                                    checked={(values?.completed?.[s] ?? []).includes(period.date)}
+                                                    onChange={handleChange}
+                                                    id={s + '$' + period.date}
+                                                    color="primary"
+                                                />}
+                                                label={moment(new Date(period.date)).format('MMM-YY')}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        ))}
+
+						{yearlyServices.map((s) => values?.[s] && (
                             <Grid item md={12} xs={12}>
 				            	<Grid container spacing={3}>
                                     <Grid item md={12} xs={12}>

@@ -8,7 +8,7 @@ import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
-import {services} from 'src/statics/packageFields';
+import {services, yearlyServices} from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
@@ -139,6 +139,8 @@ const CustomerList = () => {
 	}
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
     services.forEach(s => otherFields.push({name:s, id:s}))
+    yearlyServices.forEach(s => defaultFields.texts.push({label:s, id:s}))
+    yearlyServices.forEach(s => otherFields.push({name:s, id:s}))
 
 	// View button
 	const renderViewButton = (val) => {

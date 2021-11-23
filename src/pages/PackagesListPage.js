@@ -119,8 +119,8 @@ const CustomerList = () => {
 		{name:'Description', id:"description"},
 		// {name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 		// {name:'Due Amount', id:"due", type: 'number'},
-		{name:'Cersai Undertaking', id:"cersai"},
-		{name:'Other Services', id:"other"},
+		// {name:'Cersai Undertaking', id:"cersai"},
+		// {name:'Other Services', id:"other"},
 		{name:'Notes', id:"notes"},
 		{name:'Remarks', id:"remarks"}
 	]
@@ -138,8 +138,8 @@ const CustomerList = () => {
 				// {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 				// {label:'Due Amount', id:"due", type: 'number'},
 				// {label:'Paid Amount', id:"paid", type: 'number'},
-				{label:'Cersai Undertaking', id:"cersai"},
-				{label:'Other Services', id:"other"},
+				// {label:'Cersai Undertaking', id:"cersai"},
+				// {label:'Other Services', id:"other"},
 			],
 			checkboxes:[]
 	}

@@ -11,7 +11,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import packageFields, { services } from '../../statics/packageFields';
+import packageFields, { services, yearlyServices } from '../../statics/packageFields';
 import PasswordDialog from '../passwordDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,6 +63,7 @@ const PackageAddForm = (props) => {
 	const packageFieldsCopy = _.merge({}, packageFields)
 
 	services.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
+	yearlyServices.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
 
 	const validateForm = () => {
 		let errFields = []

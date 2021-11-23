@@ -7,10 +7,14 @@ const services = [
     'Form 2',
     'Form 2A',
     'Form 3',
-    'Form 5',
+    // 'Form 5',
     'Format D',
     'Disclosure of Sold',
-    // 'Other Services', 
+    'Cersai Undertaking', 
+]
+
+const yearlyServices = [
+    'Form 5'
 ]
 
 export default {
@@ -22,8 +26,8 @@ export default {
             {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly', 'Quarterly'], required: true},
             // {label:'Due Amount', id:"due", type: 'number'},
             // {label:'Received Amount', id:"receivedAmount", type: 'number', required: true},
-            {label:'Cersai Undertaking', id:"cersai"},
-            {label:'Other Services', id:"other"},
+            {label:'Relationship Manager', id:"relationshipManager", options: ['', 'Yes', 'No']},
+            // {label:'Other Services', id:"other"},
             {label:'Notes', id:"notes"},
             {label:'Remarks', id:"remarks"},
         ],
@@ -32,6 +36,7 @@ export default {
             // {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},
             {label:'Proof Reading', id:"Proof Reading"},
             {label:'Legal Documents', id:"Legal Documents"},
+            {label:'Other Services', id:'Other Services'},
             // {label:'Form 1', id:"form1", options: ['N','Y']},
             // {label:'Form 2', id:"form2", options: ['N','Y']},
             // {label:'Form 2A', id:"form2a", options: ['N','Y']},
@@ -42,4 +47,4 @@ export default {
         ]
     }
 }
-export {services}
+export {services, yearlyServices}
