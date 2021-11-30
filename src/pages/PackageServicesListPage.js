@@ -193,9 +193,9 @@ const CustomerList = () => {
 							fields={{}} 
 							data={data} 
 							search={search} 
-							handleChange={handleChange} 
+							handleChange={handleChange}
 							page={page} 
-							rowsPerPage={rowsPerPage} 
+							rowsPerPage={rowsPerPage}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}

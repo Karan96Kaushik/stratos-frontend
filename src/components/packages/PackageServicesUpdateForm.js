@@ -15,29 +15,9 @@ import packageFields, { services, yearlyServices } from '../../statics/packageFi
 import PasswordDialog from '../passwordDialog';
 import moment from 'moment';
 
-const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(1)
-	},
-	chips: {
-		display: 'flex',
-		flexWrap: 'wrap'
-	},
-	chip: {
-		margin: 2
-	},
-	noLabel: {
-		marginTop: theme.spacing(3)
-	}
-}));
-
-function useQuery() {
-	let entries =  new URLSearchParams(useLocation().search);
-	const result = {}
-	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
-		result[key] = value;
-	}
-	return result;
+const getYearlyLabel = (date) => {
+	let year = (new Date(date)).getYear() //moment(new Date(period.date)).format('YY')+
+	return ((year - 1)%100) + '-' + (year%100)
 }
 
 const PackageAddForm = (props) => {
@@ -99,6 +79,20 @@ const PackageAddForm = (props) => {
             
         }
 
+		else if(event.target.id.includes('#')) {
+            const service = event.target.id.split('#')[1] 
+
+            others.lastUpdated = values.lastUpdated ?? {}
+
+			others.lastUpdated[service] = event.target.value
+
+            return setValues({
+                ...values,
+                ...others
+            }); 
+            
+        }
+
 		setValues({
 			...values,
 			...others,
@@ -121,6 +115,7 @@ const PackageAddForm = (props) => {
 						{services.map((s) => values?.[s] && (
                             <Grid item md={12} xs={12}>
 				            	<Grid container spacing={3}>
+
                                     <Grid item md={12} xs={12}>
                                         <Typography variant='h5'>{s}</Typography>
                                     </Grid>
@@ -138,6 +133,20 @@ const PackageAddForm = (props) => {
                                             />
                                         </Grid>
                                     ))}
+
+									<Grid item md={4} xs={6}>
+										<TextField
+											fullWidth
+											label={'Last Updated'}
+											type={'date'}
+											InputLabelProps={{ shrink: true }}
+											id={'#' + s}
+											onChange={handleChange}
+											value={values.lastUpdated?.[s]}
+											variant="outlined"
+										/>
+									</Grid>
+
                                 </Grid>
                             </Grid>
                         ))}
@@ -158,10 +167,24 @@ const PackageAddForm = (props) => {
                                                     id={s + '$' + period.date}
                                                     color="primary"
                                                 />}
-                                                label={moment(new Date(period.date)).format('MMM-YY')}
+                                                label={getYearlyLabel(period.date)}
                                             />
                                         </Grid>
                                     ))}
+
+									<Grid item md={4} xs={6}>
+										<TextField
+											fullWidth
+											label={'Last Updated'}
+											type={'date'}
+											InputLabelProps={{ shrink: true }}
+											id={'#' + s}
+											onChange={handleChange}
+											value={values.lastUpdated?.[s]}
+											variant="outlined"
+										/>
+									</Grid>
+
                                 </Grid>
                             </Grid>
                         ))}

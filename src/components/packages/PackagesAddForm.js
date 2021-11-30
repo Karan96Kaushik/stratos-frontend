@@ -62,8 +62,8 @@ const PackageAddForm = (props) => {
 
 	const packageFieldsCopy = _.merge({}, packageFields)
 
-	services.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
-	yearlyServices.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
+	// services.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
+	// yearlyServices.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
 
 	const validateForm = () => {
 		let errFields = []
@@ -305,9 +305,6 @@ const PackageAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						<Grid item md={12} xs={12}>
-							<Typography variant='h4'>Services</Typography>
-						</Grid>
 
 						{packageFieldsCopy?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -319,6 +316,23 @@ const PackageAddForm = (props) => {
 										color="primary"
 									/>}
 									label={field.label}
+								/>
+							</Grid>))}
+
+						<Grid item md={12} xs={12}>
+							<Typography variant='h4'>Services</Typography>
+						</Grid>
+
+						{[...services, ...yearlyServices].map((field) => (
+							<Grid item md={6} xs={12}>
+								<FormControlLabel
+									control={<Checkbox
+										checked={values[field] ? true : false}
+										onChange={handleChange}
+										id={field}
+										color="primary"
+									/>}
+									label={field}
 								/>
 							</Grid>))}
 						
