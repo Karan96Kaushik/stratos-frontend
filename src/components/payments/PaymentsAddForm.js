@@ -361,7 +361,7 @@ const PaymentAddForm = (props) => {
 								options={clientRows}
 								value={placeholder.client}
 								disabled={isEdit}
-								getOptionLabel={(row) => row.name.length ? row.name + ` (${row.clientID})` : ""}
+								getOptionLabel={(row) => row.name?.length ? row.name + ` (${row.clientID})` : ""}
 								onInputChange={handleChangeClient}
 								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name}})}
 								fullWidth
