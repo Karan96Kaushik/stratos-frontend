@@ -1,5 +1,5 @@
 const modeOptions = [
-    "", "Shantanu HDFC", "RERA Easy", "Osha Technologies", "Cash", "Other (please specify)", "TDS", "SDC Legal Services"
+    "", "Shantanu HDFC", "RERA Easy", "Osha Technologies", "Bad Debt", "Other (please specify)", "TDS", "SDC Legal Services"
 ]
 
 export default {
