@@ -21,6 +21,7 @@ export default {
     all: {
         texts: [
             {label:'Yearly Amount', id:"amount", type: 'number', required: true},
+            {label:'GST Amount', id:"gstamount", type: 'number', required: false},
             {label:'Start Date', id:"startDate", type: 'date', required: true},
             {label:'Description', id:"description", required: true},
             {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], required: true},
