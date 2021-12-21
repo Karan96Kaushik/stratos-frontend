@@ -32,6 +32,9 @@ const useRowStyles = makeStyles({
 		color: "#E1AD01"
 	},
 	low: {
+		color: "green"
+	},
+	none: {
 	}
 });
 
@@ -46,11 +49,13 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 		fieldsShow.texts = fieldsShow?.texts.filter(val => !val.isHidden)
 
 	const flagColor = (id) => {
+		if(row[id + "Color"] == 0)
+			return "low"
 		if(row[id + "Color"] == 1)
 			return "medium"
 		if(row[id + "Color"] == 2)
 			return "high"
-		return "low"
+		return "none"
 	}
 
 	return (
