@@ -37,13 +37,23 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 	if(type?.length)
 		fieldsShow.texts = fieldsShow?.texts.filter(val => !val.isHidden)
 
+	const flagColor = (id) => {
+		if(row[id + "Color"] == 1)
+			return "secondary"
+		if(row[id + "Color"] == 2)
+			return "primary"
+		return "text"
+	}
+
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
 				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
-				{fieldsShow?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{fieldsShow?.texts.map(field => <TableCell align="left">
+					<Typography name={field.id} variant="header" color={flagColor(field.id)}>{row[field.id]}</Typography>
+				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
 				{additional?.map(func => (<TableCell>{func(row)}</TableCell>))}
