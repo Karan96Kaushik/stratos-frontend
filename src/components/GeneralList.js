@@ -25,6 +25,14 @@ const useRowStyles = makeStyles({
 			borderBottom: 'unset',
 		},
 	},
+	high: {
+		color: "red"
+	},
+	medium: {
+		color: "#E1AD01"
+	},
+	low: {
+	}
 });
 
 function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit }) {
@@ -39,10 +47,10 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 
 	const flagColor = (id) => {
 		if(row[id + "Color"] == 1)
-			return "secondary"
+			return "medium"
 		if(row[id + "Color"] == 2)
-			return "primary"
-		return "text"
+			return "high"
+		return "low"
 	}
 
 	return (
@@ -52,7 +60,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
 				{fieldsShow?.texts.map(field => <TableCell align="left">
-					<Typography name={field.id} variant="header" color={flagColor(field.id)}>{row[field.id]}</Typography>
+					<Typography name={field.id} variant="header" className={classes[flagColor(field.id)]}>{row[field.id]}</Typography>
 				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
