@@ -17,6 +17,14 @@ const yearlyServices = [
     'Form 5'
 ]
 
+const otherServices = [
+    'Consultation',
+    'Proof Reading',
+    'Legal Documents',
+    'Other Services',
+    'Relationship Manager',
+]
+
 export default {
     all: {
         texts: [
@@ -32,7 +40,7 @@ export default {
             {label:'Remarks', id:"remarks"},
         ],
         checkboxes: [
-            {label:'Relationship Manager', id:"relationshipManager"},
+            // {label:'Relationship Manager', id:"relationshipManager"},
             // {label:'Consultation', id:"Consultation"},
             // {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},
             // {label:'Proof Reading', id:"Proof Reading"},
@@ -48,4 +56,4 @@ export default {
         ]
     }
 }
-export {services, yearlyServices}
+export {services, yearlyServices, otherServices}

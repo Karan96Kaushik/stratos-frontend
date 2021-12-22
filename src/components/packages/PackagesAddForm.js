@@ -11,7 +11,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import packageFields, { services, yearlyServices } from '../../statics/packageFields';
+import packageFields, { otherServices, services, yearlyServices } from '../../statics/packageFields';
 import PasswordDialog from '../passwordDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -323,7 +323,7 @@ const PackageAddForm = (props) => {
 							<Typography variant='h4'>Services</Typography>
 						</Grid>
 
-						{[...services, ...yearlyServices].map((field) => (
+						{[...services, ...yearlyServices, ...otherServices].map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
