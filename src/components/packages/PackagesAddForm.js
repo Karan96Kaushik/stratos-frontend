@@ -1,23 +1,18 @@
-import { useState, useContext, useRef, Fragment, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
-	Checkbox, FormControlLabel, List, Link,
-	FormControl, InputLabel, makeStyles, ListItemText, Input,
-	ListItem, Typography, Select, MenuItem
+	Link, List, ListItem, Typography, makeStyles, 
+	Autocomplete, FormControlLabel, Checkbox,
+	FormControl
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
-import { useNavigate } from 'react-router-dom';
-import quotationFields from '../../statics/quotationFields';
-import taskFields from "../../statics/taskFields"
+import { useNavigate, useLocation } from 'react-router-dom';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import packageFields, { otherServices, services, yearlyServices } from '../../statics/packageFields';
 import PasswordDialog from '../passwordDialog';
-
-let services = Object.keys(taskFields).map(a => (taskFields[a].name))
-// let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
-services.unshift("")
-services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
 
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -35,17 +30,41 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const TaskAddForm = (props) => {
+function useQuery() {
+	let entries =  new URLSearchParams(useLocation().search);
+	const result = {}
+	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
+		result[key] = value;
+	}
+	return result;
+}
+
+const PackageAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
 
+	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
+	const [placeholder, setPlaceholder] = useState({
+		task: {taskID:"", _id: ""}, 
+		client: {clientID:"", name: "", _id: ""}
+	});
+
 	const [values, setValues] = useState({});
 	
+	const query = useQuery();
+
     let isEdit = false;
+	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 
 	const [errors, setErrors] = useState({});
+
+	const packageFieldsCopy = _.merge({}, packageFields)
+
+	// services.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
+	// yearlyServices.forEach(s => { packageFieldsCopy.all.checkboxes.push({label:s, id:s}) })
+
 	const validateForm = () => {
 		let errFields = []
 		let foundErrs = {}
@@ -53,7 +72,7 @@ const TaskAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		quotationFields.all.texts.map(field => {
+		packageFields["all"].texts.map(field => {
 			if(field.isRequired && !values[field.id]){
 				errFields.push(field.label)
 				foundErrs[field.id] = true
@@ -65,28 +84,66 @@ const TaskAddForm = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
+	useEffect(async () => {
+		if(searchInfo.text.length > 3)
+			getClients()
+		if(searchInfo.text.length == 0)
+			setClientRows([])
+	}, [searchInfo])
+
+	const getClients = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true, ignorePermissions:true}, method: 'post' })
+			setClientRows(response)
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting clients - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+	};
+
 	if (location.pathname.includes("edit")) {
 		isEdit = true
-		let quotationID = location.pathname.split("/").pop()
+		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/quotations/", data:{_id:quotationID}, creds:loginState.loginState, method:"get"})
+			let data = await authorizedReq({route:"/api/packages/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+
+			setPlaceholder({
+				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
+			})
+
 			setValues(data)
 		}, [])
+	}
+
+	const handleChangeClient = (e) => {
+		let target = e?.target
+		if(!target)
+			return
+
+		if(target?.value?.length > 3) {
+			setSearchInfo({...searchInfo, text: target.value})
+		}
+		if(target?.value?.length == 0) {
+			setClientRows([])
+		}
 	}
 
 	const handleSubmit = async () => {
 		try {
 			validateForm()
 			await authorizedReq({
-				route:"/api/quotations/" + (!isEdit ? "add" : "update"), 
+				route:"/api/packages/" + (!isEdit ? "add" : "update"), 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isEdit ? "added" : "updated"} quotation!`,
+				`Successfully ${!isEdit ? "added" : "updated"} package!`,
 			)
-			navigate('/app/quotations');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -103,18 +160,17 @@ const TaskAddForm = (props) => {
 
 	const handleDelete = async (password) => {
 		try {
-
-			let taskID = location.pathname.split("/").pop()
+			let packageID = location.pathname.split("/").pop()
 			await authorizedReq({
-				route:"/api/quotations/", 
-				data:{_id:taskID, password}, 
+				route:"/api/packages/",
+				data:{_id:packageID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
 			snackbar.showMessage(
-				`Successfully deleted quotation!`,
+				`Successfully deleted package!`,
 			)
-			navigate('/app/quotations');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -127,13 +183,12 @@ const TaskAddForm = (props) => {
 	const handleChange = async (event) => {
 		let others = {}
 		if (event.target.id == 'files') {
-			// console.log(event.target.files.length)
 			others = {docs:[]}
 
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+			// console.log(filesClone)
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
@@ -161,15 +216,23 @@ const TaskAddForm = (props) => {
 				others.docs.push({name:file.name, data:fileData})
 			}
 			// event.target.files = allFiles
-			console.log(event.target.files, allFiles)
+			// console.log(event.target.files, allFiles)
 			event.target.id = "ignore"
 				
 		}
-		
+
+		else if (event.target.id == '_clientID' && event.target.value) {
+			let client = clientRows.find(val => event.target.value == val._id)
+			others.clientName = client.name
+			others.clientID = client.clientID
+			others.promoter = client.promoter
+			setPlaceholder({client:client})
+		}
+
 		setValues({
 			...values,
 			...others,
-			[event.target.id ?? event.target.name]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
+			[event.target.id]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
 		});
 
 	};
@@ -184,19 +247,39 @@ const TaskAddForm = (props) => {
 		}, fileName.split("/")[1])
 
 	}
+
+	const filterOptions = createFilterOptions({
+		stringify: option => option.promoter + option.name + option.location + option.clientID + option.userID,
+	});
+
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
-					title={!isEdit ? "New Quotation" : "Edit Quotation"}
+					title={!isEdit ? "New Package" : "Edit Package"}
 					subheader=""
 				/>
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{quotationFields?.all?.texts.map((field) => (
+						{<Grid item md={6} xs={12}>
+							<Autocomplete
+								id="_clientID"
+								options={clientRows}
+								value={placeholder.client}
+								disabled={isEdit}
+								getOptionLabel={(row) => row.name.length ? row.name + ` (${row.clientID})` : ""}
+								onInputChange={handleChangeClient}
+								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name}})}
+								fullWidth
+								filterOptions={filterOptions}
+								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
+							/>
+						</Grid>}
+
+						{packageFieldsCopy.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -204,13 +287,13 @@ const TaskAddForm = (props) => {
 									SelectProps={{ native: true }}
 									label={field.label}
 									type={field.type ?? 'text'}
-									id={field.id}
 									inputProps={field.type == "file" ? { multiple: true } : {}}
 									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
-									value={field.id != "files" ? values[field.id] ?? '' : undefined}
+									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}
 									onChange={handleChange}
+									value={field.id != "files" ? values[field.id] ?? '' : undefined}
 									variant="outlined"
 								>
 									{(field.options ?? []).map((option) => (
@@ -222,28 +305,8 @@ const TaskAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						<Grid item md={12} xs={12}>
-							<FormControl fullWidth className={classes.formControl}>	
-							<InputLabel id="serviceType">Service Type</InputLabel>
-							<Select 
-								multiple 
-								fullWidth
-								name="serviceType"
-								id="serviceType" value={values?.serviceType ?? []}
-								onChange={handleChange}
-								input={<Input />} renderValue={(selected) => selected.join(', ')}
-								>
-								{services.map((name) => (
-									<MenuItem key={name} value={name}>
-										<Checkbox checked={(values?.serviceType ?? []).indexOf(name) > -1} />
-										<ListItemText primary={name} />
-									</MenuItem>
-								))}
-							</Select>
-							</FormControl>
-						</Grid>
 
-						{quotationFields?.all?.checkboxes.map((field) => (
+						{packageFieldsCopy?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
@@ -255,13 +318,31 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						<Grid item md={12} xs={12}>
+							<Typography variant='h4'>Services</Typography>
+						</Grid>
+
+						{[...services, ...yearlyServices, ...otherServices].map((field) => (
+							<Grid item md={6} xs={12}>
+								<FormControlLabel
+									control={<Checkbox
+										checked={values[field] ? true : false}
+										onChange={handleChange}
+										id={field}
+										color="primary"
+									/>}
+									label={field}
+								/>
+							</Grid>))}
+						
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
-								{values?.files?.map((file) => (<ListItem>
-									<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
-										<Typography >{file}</Typography>
-									</Link>
-									</ListItem>))}
+									{values?.files?.map((file) => (<ListItem>
+										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
+											<Typography >{file}</Typography>
+										</Link>
+										</ListItem>))}
 								</List>
 							}
 						</Grid>
@@ -283,4 +364,4 @@ const TaskAddForm = (props) => {
 	);
 };
 
-export default TaskAddForm;
+export default PackageAddForm;

@@ -1,14 +1,18 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import PaymentsListToolbar from 'src/components/payments/PaymentsListToolbar';
+import PackagesListToolbar from 'src/components/packages/PackagesListToolbar';
 import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import paymentFields from '../statics/paymentFields';
+// import paymentFields from '../statics/paymentFields';
+import {allStatuses, allTasks} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
+import { Add } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
 import ViewDialog from 'src/components/ViewDialog';
+import packageFields from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
@@ -24,26 +28,16 @@ function useQuery() {
 	return result;
 }
 
-const serialize = function(obj) {
-	var str = [];
-	for (var p in obj)
-	  if (obj.hasOwnProperty(p)) {
-		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-	  }
-	return str.join("&");
-  }
-
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
-    // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
-	const filters = useSelector(selectFilterFor("payments"))
+	const filters = useSelector(selectFilterFor("packages"))
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -59,7 +53,6 @@ const CustomerList = () => {
 	}, [])
 
 	useEffect(async () => {
-		console.log("Page num updated")
 		setSearch({...search, page, rowsPerPage, ...sortState})
 	}, [page, rowsPerPage])
 
@@ -79,25 +72,24 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
+		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-
-		navigate("/app/payments?" + serialize(queryParams));
+		// navigate("/app/taskaccounts?" + serialize(queryParams));
 		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
-			goSearch();
+			loadData();
 	}, [search])
-
-	const goSearch = () => {
-		loadData()
-    }
 
 	const loadData = async () => {
 		try{
+			const searchCopy = _.merge({}, search)
+			searchCopy.filters = _.merge({}, filters)
+			
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
-				route: "/api/payments/search", 
+				route: "/api/packages/search", 
 				creds: loginState.loginState, 
-				data:{...search, filters: {...filters}}, 
+				data:{...searchCopy, accounts: true}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -116,14 +108,80 @@ const CustomerList = () => {
 		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 
+	// Fields in view details pop up
+	const otherFields = [
+		{name:'Date', id:"createdTime"},
+		{name:'Package ID', id:"packageID"},
+		{name:'Client Name', id:"clientName"},
+		{name:'Promoter', id:"promoter"},
+		{name:'Yearly Amount', id:"amount", type: 'number'},
+		{name:'GST Amount', id:"gstamount", type: 'number'},
+		{name:'Start Date', id:"startDate", type: 'date'},
+		{name:'Description', id:"description"},
+		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+		{name:'Due Amount', id:"due", type: 'number'},
+		{name:'Received Amount', id:"receivedAmount", type: 'number'},
+		{name:'Balance Amount', id:"balanceAmount", type: 'number'},
+		// {name:'Cersai Undertaking', id:"cersai"},
+		// {name:'Other Services', id:"other"},
+		{name:'Completion Date', id:"completionDate"},
+		{name:'Notes', id:"notes"},
+		{name:'Remarks', id:"remarks"},
+		{name:"Payment History", id:"payments", type:"array"},
+	]
+
+	// Fields to be shown in the main table 
+	const defaultFields = {
+			texts:[
+				{label:'Date', id:"createdTime"},
+				{label:'Package ID', id:"packageID"},
+				{label:'Client Name', id:"clientName"},
+				{label:'Promoter', id:"promoter"},
+				{label:'Yearly Amount', id:"amount", type: 'number'},
+				{label:'GST Amount', id:"gstamount", type: 'number'},
+				{label:'Start Date', id:"startDate", type: 'date'},
+				{label:'Completion Date', id:"completionDate"},
+				// {label:'Description', id:"description"},
+				{label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+				{label:'Due Amount', id:"due", type: 'number'},
+				{label:'Received Amount', id:"receivedAmount", type: 'number'},
+				{label:'Balance Amount', id:"balanceAmount", type: 'number'},
+				// {label:'Cersai Undertaking', id:"cersai"},
+				// {label:'Other Services', id:"other"},
+			],
+			checkboxes:[]
+	}
+
+	// View button
+	const renderViewButton = (val) => {
+		return (				
+			<ViewDialog data={val} fields={defaultFields} otherFields={otherFields} typeField={null}/>
+		)
+	}
+
+	// Add payment button
+	const renderAddButton = (val) => {
+		return (				
+			<Link to={`/app/payments/add?packageID=${val.packageID}`}>
+				<IconButton aria-label="expand row" size="small">
+					<Add />
+				</IconButton>
+			</Link>
+		)
+	}
+
 	const handleExport = async (password) => {
 		try {
+
+			let others = {}
+			others.filters = _.merge({}, filters)
+
 			await authorizedDownload({
-				route: "/api/payments/export", 
+				route: "/api/tasks/payments/export", 
 				creds: loginState.loginState, 
-				data:{...search, password, filters: {...filters}}, 
+				data:{...search, ...others, password}, 
 				method: 'post'
-			}, "paymentsExport" + ".xlsx")
+			}, "taskPaymentsExport" + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
@@ -131,37 +189,10 @@ const CustomerList = () => {
 			)
 		}
 	}
-	
-	const extraFields = [
-		{name:"Date", id: "createdTime"},
-		{name:"Payment ID", id: "paymentID"},
-		{name:"Task/Package ID", id: "taskID"},
-		{name:"Client ID", id: "clientID"},
-		{name:"Client Name", id: "clientName"},
-		{name:"Promoter", id: "promoter"},
-	]
-
-	const defaultFields = {
-		texts:[
-            {label:"Payment Date", id:"paymentDate", type:"date"},
-            // {label:"Invoice ID", id:"invoiceID"},
-            {label:"Received Amount", id:"receivedAmount", type:"number", isRequired:true},
-            // {label:"Mode", id:"mode", options:modeOptions, isRequired:true},
-            // {label:"Remarks", id:"remarks"},
-		],
-		checkboxes:[]
-	}
-
-	// View button
-	const renderViewButton = (val) => {
-		return (				
-			<ViewDialog data={val} fields={paymentFields} otherFields={extraFields} typeField={null}/>
-		)
-	}
 
 	return (<>
 		<Helmet>
-			<title>Payments | TMS</title>
+			<title>Packages | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -169,25 +200,25 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PaymentsListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
-							extraFields={extraFields} 
+							extraFields={[]} 
+							defaultFields={defaultFields} 
 							type={null} 
-							fields={paymentFields} 
+							fields={{}} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
-							defaultFields={defaultFields} 
-							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
-							// additional={additional}
+							additional={[renderAddButton, renderViewButton]}
+							disableEdit={true}
 						/>				
 					</Paper>
 				</Box>

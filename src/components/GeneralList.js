@@ -23,8 +23,23 @@ const useRowStyles = makeStyles({
 	root: {
 		'& > *': {
 			borderBottom: 'unset',
+			border: '1px solid #e0e0e0',
 		},
 	},
+	high: {
+		color: "red"
+	},
+	medium: {
+		color: "#E1AD01"
+	},
+	low: {
+		color: "green"
+	},
+	none: {
+	},
+	clientName: {
+		maxWidth: "150px"
+	}
 });
 
 function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit }) {
@@ -37,13 +52,25 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 	if(type?.length)
 		fieldsShow.texts = fieldsShow?.texts.filter(val => !val.isHidden)
 
+	const flagColor = (id) => {
+		if(row[id + "Color"] == 0)
+			return "low"
+		if(row[id + "Color"] == 1)
+			return "medium"
+		if(row[id + "Color"] == 2)
+			return "high"
+		return "none"
+	}
+
 	return (
 		<React.Fragment>
 			<TableRow className={classes.root}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
 				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
-				{fieldsShow?.texts.map(field => <TableCell align="left">{row[field.id]}</TableCell>)}
+				{fieldsShow?.texts.map(field => <TableCell className={classes[field.id]} align="left">
+					<Typography name={field.id} variant="header" className={classes[flagColor(field.id)]}>{row[field.id]}</Typography>
+				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
 				{additional?.map(func => (<TableCell>{func(row)}</TableCell>))}
@@ -73,10 +100,9 @@ const useStyles1 = makeStyles((theme) => ({
 		display:"flex",
 		flex:1,
 		flexDirection:"row",
-	},
+	}
 }));
 
-  
 function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
@@ -129,9 +155,16 @@ function TablePaginationActions(props) {
 		</IconButton>
 	  </div>
 	);
-  }
+}
+
+const useTableStyles = makeStyles((theme) => ({
+	root: {
+		border: '1px solid #e0e0e0',
+	}
+}));
 
 export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, disableEdit}) {
+	const classes = useTableStyles();
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
 
@@ -180,9 +213,9 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 			<Table aria-label="collapsible table">
 				<TableHead>
 					<TableRow>
-						{(fieldsShow?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
-						{fieldsShow?.texts.map(field => <TableCell name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
-						{fieldsShow?.checkboxes.map(field => <TableCell align="left">{field.label}</TableCell>)}
+						{(fieldsShow?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell className={classes.root} name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
+						{fieldsShow?.texts.map(field => <TableCell className={classes.root} name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
+						{fieldsShow?.checkboxes.map(field => <TableCell className={classes.root} align="left">{field.label}</TableCell>)}
 						<TableCell align="left"></TableCell>
 					</TableRow>
 				</TableHead>

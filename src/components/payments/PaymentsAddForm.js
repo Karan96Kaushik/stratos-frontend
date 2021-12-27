@@ -51,7 +51,7 @@ const PaymentAddForm = (props) => {
 	const classes = useStyles();
 
 	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
-	const [taskRows, setTaskRows] = useState([{taskID:"", _id: ""}]);
+	const [taskRows, setTaskRows] = useState([{taskID:'', packageID:'', _id: ""}]);
 	// const [invoiceRows, setInvoiceRows] = useState([]);
 	const [placeholder, setPlaceholder] = useState({
 		task: {taskID:"", _id: ""}, 
@@ -112,6 +112,31 @@ const PaymentAddForm = (props) => {
 			}
 		}
 
+		if(query.packageID) {
+			try {
+				let res = await authorizedReq({ route: "/api/packages/", creds: loginState.loginState, data: {packageID: query.packageID}, method: 'get' })
+				setClientRows([{clientID:res.clientID, name: res.clientName, _id: res._id}])
+				setTaskRows([{packageID:res.packageID, _id: res._id}])
+				setPlaceholder({
+					client: {clientID:res.clientID, name: res.clientName, _id: res._id}, 
+					task: {packageID:res.packageID, _id: res._id}
+				})
+				setValues({
+					...values, 
+					clientID: res.clientID, 
+					packageID: res.packageID, 
+					_clientID: res._clientID,
+					_packageID: res._id,
+					promoter: res.promoter,
+					clientName: res.clientName,
+				})
+			} catch (err) {
+				snackbar.showMessage(
+					"Error getting tasks - " + (err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
+
 		if(query.clientID) {
 			try {
 				let res = await authorizedReq({ route: "/api/clients/payments/search/add", creds: loginState.loginState, data: {clientID: query.clientID}, method: 'get' })
@@ -153,10 +178,12 @@ const PaymentAddForm = (props) => {
 		}
 	};
 
+	// gets both tasks and packages
 	const getTasks = async (_clientID) => {
 		try {
-			let response = await authorizedReq({ route: "/api/tasks/search/all", creds: loginState.loginState, data: {_clientID}, method: 'get' })
-			setTaskRows(response)
+			let tasks = await authorizedReq({ route: "/api/tasks/search/all", creds: loginState.loginState, data: {_clientID}, method: 'get' })
+			let packages = await authorizedReq({ route: "/api/packages/payments/search", creds: loginState.loginState, data: {_clientID}, method: 'get' })
+			setTaskRows([...tasks, ...packages])
 
 		} catch (err) {
 			snackbar.showMessage(
@@ -166,22 +193,6 @@ const PaymentAddForm = (props) => {
 		}
 	};
 
-	/*
-		const getInvoices = async (_taskID) => {
-			try {
-				let response = await authorizedReq({ route: "/api/invoices/search/all", creds: loginState.loginState, data: {_taskID}, method: 'get' })
-				setInvoiceRows(response)
-
-			} catch (err) {
-				snackbar.showMessage(
-					"Error getting tasks - " + (err?.response?.data ?? err.message ?? err),
-				)
-				console.error(err)
-			}
-			// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
-		};
-	*/
-
 	if (location.pathname.includes("edit")) {
 		isEdit = true
 		let leadID = location.pathname.split("/").pop()
@@ -190,7 +201,7 @@ const PaymentAddForm = (props) => {
 
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
-				task: {taskID:data.taskID, name: "", _id: ""}, 
+				task: {taskID:data.taskID, packageID: data.packageID, name: "", _id: ""}, 
 			})
 
 			setValues(data)
@@ -313,11 +324,25 @@ const PaymentAddForm = (props) => {
 		else if (event.target.id == '_taskID' && event.target.value) {
 			getTasks(event.target.value)
 			let task = taskRows.find(val => event.target.value == val._id)
-			console.info(task)
-			setPlaceholder({...placeholder, task:others["taskID"]})
+			setPlaceholder({...placeholder, task})
 			others["promoter"] = task.promoter
 			others["clientName"] = task.clientName
 			others["taskID"] = task.taskID
+			// Clear package info if previously set
+			others["packageID"] = null
+			others["_packageID"] = null
+		}
+
+		else if (event.target.id == '_packageID' && event.target.value) {
+			getTasks(event.target.value)
+			let task = taskRows.find(val => event.target.value == val._id)
+			setPlaceholder({...placeholder, task})
+			others["promoter"] = task.promoter
+			others["clientName"] = task.clientName
+			others["packageID"] = task.packageID
+			// Clear tasks info if previously set
+			others["taskID"] = null
+			others["_taskID"] = null
 		}
 
 		setValues({
@@ -375,13 +400,13 @@ const PaymentAddForm = (props) => {
 								id="_taskID"
 								options={taskRows}
 								value={placeholder.task}
-								getOptionLabel={(row) => row.taskID + (row.billAmount ? ` - ₹${row.billAmount}` : "")}
+								getOptionLabel={(row) => (row.taskID ?? row.packageID) + (row.billAmount ? ` - ₹${row.billAmount}` : row.amount ? ` - ₹${row.amount}` : "")}
 								disabled={((values?._clientID?.length || 0) < 3) || isEdit}
 								onInputChange={handleChangeClient}
-								onChange={(e,value) => handleChange({target:{id:"_taskID", value:value?._id, name:value?.name}})}
+								onChange={(e,value) => handleChange({target:{id:value?.taskID ? "_taskID" : "_packageID", value:value?._id, name:value?.name}})}
 								fullWidth
 								// filterOptions={filterTaskOptions}
-								renderInput={(params) => <TextField {...params} label="Select Task" variant="standard" />}
+								renderInput={(params) => <TextField {...params} label="Select Task / Package" variant="standard" />}
 							/>
 						</Grid>}
 
