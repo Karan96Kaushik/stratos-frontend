@@ -195,10 +195,10 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 	const sortColor = (id) => {
 		if(sortState.sortID == id)
 			if(sortState.sortDir == 1)
-				return "textTertiary"
+				return "text.quinary"
 			else if (sortState.sortDir == -1)
-				return "textTertiary"
-		return "textTertiary"
+				return "text.quarternary"
+		return "text"
 	}
 
 	let fieldsShow = _.merge({}, fields[type])

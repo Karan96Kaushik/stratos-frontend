@@ -13,9 +13,11 @@ const lightTheme = {
             main: '#2e2528'
         },
         text: {
-            primary: '#172b4d',
-            secondary: '#6b778c',
-            tertiary: '#f5cc5a',
+            primary: '#172b4d',     // Black
+            secondary: '#6b778c',   // Red
+            tertiary: '#f5cc5a',   // Yellow
+            quarternary: '#bc3713',   // Red
+            quinary: '#3b9d66',   // Green
         }
     },
     shadows,
