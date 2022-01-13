@@ -29,7 +29,7 @@ export default {
     all: {
         texts: [
             {label:'Yearly Amount', id:"amount", type: 'number', required: true},
-            {label:'GST Amount', id:"gstamount", type: 'number', required: false},
+            // {label:'GST Amount', id:"gstamount", type: 'number', required: false},
             {label:'Start Date', id:"startDate", type: 'date', required: true},
             {label:'Description', id:"description", required: true},
             {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], required: true},
@@ -40,6 +40,7 @@ export default {
             {label:'Remarks', id:"remarks"},
         ],
         checkboxes: [
+            {label:'Add GST', id:"gstEnabled", type: 'number', required: false},
             // {label:'Relationship Manager', id:"relationshipManager"},
             // {label:'Consultation', id:"Consultation"},
             // {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},
