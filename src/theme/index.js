@@ -9,12 +9,13 @@ const lightTheme = {
             paper: colors.common.white
         },
         primary: {
-            contrastText: '#ffffff',
-            main: '#5664d2'
+            contrastText: '#f5cc5a',
+            main: '#2e2528'
         },
         text: {
             primary: '#172b4d',
-            secondary: '#6b778c'
+            secondary: '#6b778c',
+            tertiary: '#f5cc5a',
         }
     },
     shadows,
@@ -24,13 +25,13 @@ const lightTheme = {
 const darkTheme = {
     palette: {
         background: {
-            default: '#004D40',
-            primary: '#004D40',
+            default: '#868d99',
+            primary: '#f5cc5a',
             paper: '#00695C'
         },
         primary: {
-            contrastText: '#B2DFDB',
-            main: '#00897B' // Status bar
+            contrastText: '#f5cc5a',
+            main: '#2e2528' // Status bar
         },
         text: {
             primary: '#4DB6AC',

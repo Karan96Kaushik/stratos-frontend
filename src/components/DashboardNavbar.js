@@ -23,7 +23,7 @@ const DashboardNavbar = ({
 			{...rest}>
 			<Toolbar>
 				<RouterLink to="/">
-					<Logo style={{ height: 40, width: 40 }}/>
+					<Logo style={{ height: 50, width: 160 }}/>
 				</RouterLink>
 				<Box sx={
 					{flexGrow: 1}
