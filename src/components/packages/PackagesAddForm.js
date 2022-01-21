@@ -4,7 +4,8 @@ import {
 	CardHeader, Divider, Grid, TextField,
 	Link, List, ListItem, Typography, makeStyles, 
 	Autocomplete, FormControlLabel, Checkbox,
-	FormControl
+	FormControl, InputLabel, Select, Input,
+	MenuItem, ListItemText
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -46,6 +47,7 @@ const PackageAddForm = (props) => {
 	const classes = useStyles();
 
 	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
+	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 	const [placeholder, setPlaceholder] = useState({
 		task: {taskID:"", _id: ""}, 
 		client: {clientID:"", name: "", _id: ""}
@@ -104,12 +106,30 @@ const PackageAddForm = (props) => {
 		}
 	};
 
+	const getMembers = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
+			setMemberRows(response)
+			return response
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
+	};
+
+	useEffect(() => {
+		getMembers()
+	}, [])
+
 	if (location.pathname.includes("edit")) {
 		isEdit = true
 		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/packages/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
@@ -229,6 +249,12 @@ const PackageAddForm = (props) => {
 			setPlaceholder({client:client})
 		}
 
+		else if (event.target.id == '_rmAssigned') {
+			others.rmAssigned = memberRows.filter(v => event.target.value.includes(v._id))
+			others.rmAssigned = others.rmAssigned.map(v => v.userName)
+			others.rmAssigned = others.rmAssigned.join(", ")
+		}
+
 		setValues({
 			...values,
 			...others,
@@ -304,7 +330,29 @@ const PackageAddForm = (props) => {
 									))}
 								</TextField>
 							</Grid>))}
-
+						
+										
+						<Grid item md={6} xs={12}>
+							<FormControl fullWidth>	
+								<InputLabel id="_rmAssigned">Relationship Manager</InputLabel>
+								<Select 
+									multiple 
+									fullWidth
+									id="_rmAssigned" 
+									value={values?._rmAssigned || []}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_rmAssigned"}})}
+									input={<Input />} 
+									renderValue={(s) => values?.rmAssigned}
+									>
+									{memberRows.map((member) => (
+										<MenuItem key={member.userName} value={member._id}>
+											<Checkbox checked={(values?._rmAssigned ?? []).indexOf(member._id) > -1} />
+											<ListItemText primary={member.userName} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
 
 						{packageFieldsCopy?.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
