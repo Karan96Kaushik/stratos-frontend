@@ -218,6 +218,8 @@ const TaskAddForm = (props) => {
 			if(isEdit)
 				return
 			let client = clientRows.find(val => String(val._id) == event.target.value)
+			if (!client)
+				return
 			others.clientName = client.name
 			others.clientID = client.clientID
 			others.promoter = client.promoter
@@ -275,7 +277,7 @@ const TaskAddForm = (props) => {
 								getOptionLabel={(row) => row?.name?.length ? row.name + ` (${row.clientID})` : ""}
 								// getOptionLabel={(row) => row.name + ` (${row.clientID})`}
 								onInputChange={handleChangeClient}
-								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value._id, name:value.name, clientID: value.clientID}})}
+								onChange={(e,value) => handleChange({target:{id:"_clientID", value:value?._id, name:value?.name, clientID: value?.clientID}})}
 								fullWidth
 								filterOptions={filterOptions}
 								renderInput={(params) => <TextField {...params} label="Select Client" variant="standard" />}
