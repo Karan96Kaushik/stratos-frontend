@@ -195,9 +195,9 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 	const sortColor = (id) => {
 		if(sortState.sortID == id)
 			if(sortState.sortDir == 1)
-				return "secondary"
+				return "text.quinary"
 			else if (sortState.sortDir == -1)
-				return "primary"
+				return "text.quarternary"
 		return "text"
 	}
 
