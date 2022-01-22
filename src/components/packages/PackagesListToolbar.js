@@ -15,6 +15,17 @@ const PackagesListToolbar = (props) => {
 	const getExport = async () => {
 		setOpen(true)
 	}
+	
+	const commonFilters = {
+		texts: [
+			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
+			// ...props.fields?.texts
+		],
+		checkboxes: [
+			{label:"Form 5", id: "Form 5"},
+			// {label:"Include Archived", id: "archived"},
+		]
+	}
 
 	return (
 		<Box {...props}>
@@ -50,7 +61,7 @@ const PackagesListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog forView="packages" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={packageFields}/>
+									<FiltersDialog forView="packages" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={packageFields}/>
 								</Grid>
 							</Grid>
 						</Box>

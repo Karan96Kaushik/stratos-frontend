@@ -8,7 +8,7 @@ import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
-import {services} from 'src/statics/packageFields';
+import {otherServices, services, yearlyServices} from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
@@ -110,16 +110,20 @@ const CustomerList = () => {
 		{name:'Client Name', id:"clientName"},
 		{name:'Date', id:"createdTime"},
 		{name:'Promoter', id:"promoter"},
-		{name:'Yearly Amount', id:"amount", type: 'number'},
+		// {name:'Yearly Amount', id:"amount", type: 'number'},
 		{name:'Start Date', id:"startDate", type: 'date'},
 		{name:'Description', id:"description"},
-		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
-		{name:'Due Amount', id:"due", type: 'number'},
-		{name:'Received Amount', id:"receivedAmount", type: 'number'},
-		{name:'Cersai Undertaking', id:"cersai"},
-		{name:'Other Services', id:"other"},
+		// {name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+		// {name:'Due Amount', id:"due", type: 'number'},
+		// {name:'Received Amount', id:"receivedAmount", type: 'number'},
+		{name:'Completion Date', id:"completionDate"},
+				// {name:'Cersai Undertaking', id:"cersai"},
 		{name:'Notes', id:"notes"},
-		{name:'Remarks', id:"remarks"}
+		{name:'Remarks', id:"remarks"},
+		// {name:'Consultation', id:"Consultation", type: 'date'},
+		// {name:'Proof Reading', id:"Proof Reading", type: 'date'},
+		// {name:'Legal Documents', id:"Legal Documents", type: 'date'},
+		// {name:'Other Services', id:"Other Services"},
 	]
 
 	// Fields to be shown in the main table 
@@ -128,17 +132,23 @@ const CustomerList = () => {
 				{label:'Date', id:"createdTime"},
                 {label:'Package ID', id:"packageID"},
                 {label:'Client Name', id:"clientName"},
+				{label:'Completion Date', id:"completionDate"},
 				// {label:'Promoter', id:"promoter"},
 				{label:'Start Date', id:"startDate", type: 'date'},
 			],
 			checkboxes:[
-				{label:'Consultation', id:"Consultation", type: 'date'},
-				{label:'Proof Reading', id:"Proof Reading", type: 'date'},
-				{label:'Legal Documents', id:"Legal Documents", type: 'date'},
+				// {label:'Consultation', id:"Consultation", type: 'date'},
+				// {label:'Proof Reading', id:"Proof Reading", type: 'date'},
+				// {label:'Legal Documents', id:"Legal Documents", type: 'date'},
+				// {label:'Other Services', id:"Other Services", type: 'date'},
             ]
 	}
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
     services.forEach(s => otherFields.push({name:s, id:s}))
+    yearlyServices.forEach(s => defaultFields.texts.push({label:s, id:s}))
+    yearlyServices.forEach(s => otherFields.push({name:s, id:s}))
+    // otherServices.forEach(s => defaultFields.checkboxes.push({label:s, id:s}))
+    otherServices.forEach(s => otherFields.push({name:s, id:s, type: 'boolean'}))
 
 	// View button
 	const renderViewButton = (val) => {
@@ -187,9 +197,9 @@ const CustomerList = () => {
 							fields={{}} 
 							data={data} 
 							search={search} 
-							handleChange={handleChange} 
+							handleChange={handleChange}
 							page={page} 
-							rowsPerPage={rowsPerPage} 
+							rowsPerPage={rowsPerPage}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}

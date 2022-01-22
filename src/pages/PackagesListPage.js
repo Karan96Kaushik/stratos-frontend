@@ -117,10 +117,11 @@ const CustomerList = () => {
 		// {name:'Yearly Amount', id:"amount", type: 'number'},
 		{name:'Start Date', id:"startDate", type: 'date'},
 		{name:'Description', id:"description"},
+		{label:'Relationship Manager', id:"rmAssigned"},
 		// {name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 		// {name:'Due Amount', id:"due", type: 'number'},
-		{name:'Cersai Undertaking', id:"cersai"},
-		{name:'Other Services', id:"other"},
+		// {name:'Cersai Undertaking', id:"cersai"},
+		// {name:'Other Services', id:"other"},
 		{name:'Notes', id:"notes"},
 		{name:'Remarks', id:"remarks"}
 	]
@@ -133,13 +134,14 @@ const CustomerList = () => {
 				{label:'Client Name', id:"clientName"},
 				{label:'Promoter', id:"promoter"},
 				// {label:'Yearly Amount', id:"amount", type: 'number'},
+				{label:'Relationship Manager', id:"rmAssigned"},
 				{label:'Start Date', id:"startDate", type: 'date'},
 				{label:'Description', id:"description"},
 				// {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 				// {label:'Due Amount', id:"due", type: 'number'},
 				// {label:'Paid Amount', id:"paid", type: 'number'},
-				{label:'Cersai Undertaking', id:"cersai"},
-				{label:'Other Services', id:"other"},
+				// {label:'Cersai Undertaking', id:"cersai"},
+				// {label:'Other Services', id:"other"},
 			],
 			checkboxes:[]
 	}
