@@ -12,6 +12,7 @@ import {otherServices, services, yearlyServices} from 'src/statics/packageFields
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 
@@ -43,6 +44,7 @@ const CustomerList = () => {
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("packages"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -89,6 +91,10 @@ const CustomerList = () => {
 			const searchCopy = _.merge({}, search)
 			searchCopy.filters = _.merge({}, filters)
 			
+			if(searchCopy.filters && searchCopy.filters._rmAssigned) {
+				searchCopy.filters._rmAssigned = memberRows.find(m => searchCopy.filters._rmAssigned == m.userName + ` (${m.memberID})`)._id
+			}
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/packages/search", 
