@@ -16,6 +16,7 @@ import packageFields from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 
@@ -28,6 +29,15 @@ function useQuery() {
 	return result;
 }
 
+const serialize = function(obj) {
+	var str = [];
+	for (var p in obj)
+		if (obj.hasOwnProperty(p)) {
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		}
+	return str.join("&");
+}
+
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
@@ -38,10 +48,11 @@ const CustomerList = () => {
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("packages"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
-		if(!([25,50,100].includes(query.rowsPerPage)))
+		if(!([25,50,100].includes(parseInt(query.rowsPerPage))))
 			query.rowsPerPage = 25
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
@@ -72,10 +83,9 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-		// navigate("/app/taskaccounts?" + serialize(queryParams));
+		navigate("/app/packages?" + serialize(search));
 		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
 			loadData();
 	}, [search])
@@ -84,12 +94,16 @@ const CustomerList = () => {
 		try{
 			const searchCopy = _.merge({}, search)
 			searchCopy.filters = _.merge({}, filters)
+
+			if(searchCopy.filters && searchCopy.filters._rmAssigned) {
+				searchCopy.filters._rmAssigned = memberRows.find(m => searchCopy.filters._rmAssigned == m.userName + ` (${m.memberID})`)._id
+			}
 			
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/packages/search", 
 				creds: loginState.loginState, 
-				data:{...searchCopy}, 
+				data:{...searchCopy, details:true}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -117,6 +131,7 @@ const CustomerList = () => {
 		// {name:'Yearly Amount', id:"amount", type: 'number'},
 		{name:'Start Date', id:"startDate", type: 'date'},
 		{name:'Description', id:"description"},
+		{label:'Relationship Manager', id:"rmAssigned"},
 		// {name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 		// {name:'Due Amount', id:"due", type: 'number'},
 		// {name:'Cersai Undertaking', id:"cersai"},
@@ -133,6 +148,7 @@ const CustomerList = () => {
 				{label:'Client Name', id:"clientName"},
 				{label:'Promoter', id:"promoter"},
 				// {label:'Yearly Amount', id:"amount", type: 'number'},
+				{label:'Relationship Manager', id:"rmAssigned"},
 				{label:'Start Date', id:"startDate", type: 'date'},
 				{label:'Description', id:"description"},
 				// {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
@@ -142,6 +158,14 @@ const CustomerList = () => {
 				// {label:'Other Services', id:"other"},
 			],
 			checkboxes:[]
+	}
+
+	const commonFilters = {
+		texts :[
+			{label:"Relationship Manager", id: "_rmAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		],
+		checkboxes:[
+		]
 	}
 
 	// View button
@@ -181,7 +205,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

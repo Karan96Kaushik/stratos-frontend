@@ -12,6 +12,7 @@ import {otherServices, services, yearlyServices} from 'src/statics/packageFields
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 
@@ -24,6 +25,15 @@ function useQuery() {
 	return result;
 }
 
+const serialize = function(obj) {
+	var str = [];
+	for (var p in obj)
+		if (obj.hasOwnProperty(p)) {
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		}
+	return str.join("&");
+}
+
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
@@ -34,10 +44,11 @@ const CustomerList = () => {
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("packages"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
-		if(!([25,50,100].includes(query.rowsPerPage)))
+		if(!([25,50,100].includes(parseInt(query.rowsPerPage))))
 			query.rowsPerPage = 25
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
@@ -68,10 +79,9 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-		// navigate("/app/taskaccounts?" + serialize(queryParams));
+		navigate("/app/package/services?" + serialize(search));
 		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
 			loadData();
 	}, [search])
@@ -81,11 +91,15 @@ const CustomerList = () => {
 			const searchCopy = _.merge({}, search)
 			searchCopy.filters = _.merge({}, filters)
 			
+			if(searchCopy.filters && searchCopy.filters._rmAssigned) {
+				searchCopy.filters._rmAssigned = memberRows.find(m => searchCopy.filters._rmAssigned == m.userName + ` (${m.memberID})`)._id
+			}
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/packages/search", 
 				creds: loginState.loginState, 
-				data:{...searchCopy}, 
+				data:{...searchCopy, services: true}, 
 				method: 'post'
 			})
 			setData({rows:_data})
