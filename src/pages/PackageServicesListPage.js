@@ -85,7 +85,7 @@ const CustomerList = () => {
 			const _data = await authorizedReq({
 				route: "/api/packages/search", 
 				creds: loginState.loginState, 
-				data:{...searchCopy}, 
+				data:{...searchCopy, services: true}, 
 				method: 'post'
 			})
 			setData({rows:_data})
