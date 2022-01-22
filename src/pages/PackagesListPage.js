@@ -16,6 +16,7 @@ import packageFields from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 
@@ -47,6 +48,7 @@ const CustomerList = () => {
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("packages"))
+	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
@@ -92,6 +94,10 @@ const CustomerList = () => {
 		try{
 			const searchCopy = _.merge({}, search)
 			searchCopy.filters = _.merge({}, filters)
+
+			if(searchCopy.filters && searchCopy.filters._rmAssigned) {
+				searchCopy.filters._rmAssigned = memberRows.find(m => searchCopy.filters._rmAssigned == m.userName + ` (${m.memberID})`)._id
+			}
 			
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
@@ -154,6 +160,14 @@ const CustomerList = () => {
 			checkboxes:[]
 	}
 
+	const commonFilters = {
+		texts :[
+			{label:"Relationship Manager", id: "_rmAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		],
+		checkboxes:[
+		]
+	}
+
 	// View button
 	const renderViewButton = (val) => {
 		return (				
@@ -191,7 +205,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

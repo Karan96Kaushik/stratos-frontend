@@ -19,6 +19,7 @@ const PackagesListToolbar = (props) => {
 	const commonFilters = {
 		texts: [
 			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
+			...props?.commonFilters?.texts
 			// ...props.fields?.texts
 		],
 		checkboxes: [
