@@ -28,19 +28,19 @@ const otherServices = [
 export default {
     all: {
         texts: [
-            {label:'Yearly Amount', id:"amount", type: 'number', required: true},
+            {label:'Yearly Amount', id:"amount", type: 'number', isRequired: true},
             // {label:'GST Amount', id:"gstamount", type: 'number', required: false},
-            {label:'Start Date', id:"startDate", type: 'date', required: true},
-            {label:'Description', id:"description", required: true},
-            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], required: true},
+            {label:'Start Date', id:"startDate", type: 'date', isRequired: true},
+            {label:'Description', id:"description", isRequired: true},
+            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], isRequired: true},
             // {label:'Due Amount', id:"due", type: 'number'},
-            // {label:'Received Amount', id:"receivedAmount", type: 'number', required: true},
+            // {label:'Received Amount', id:"receivedAmount", type: 'number', isRequired: true},
             // {label:'Other Services', id:"other"},
             {label:'Notes', id:"notes"},
             {label:'Remarks', id:"remarks"},
         ],
         checkboxes: [
-            {label:'Add GST', id:"gstEnabled", type: 'number', required: false},
+            {label:'Add GST', id:"gstEnabled", type: 'number', isRequired: false},
             // {label:'Relationship Manager', id:"relationshipManager"},
             // {label:'Consultation', id:"Consultation"},
             // {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},
