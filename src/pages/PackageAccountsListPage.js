@@ -29,6 +29,15 @@ function useQuery() {
 	return result;
 }
 
+const serialize = function(obj) {
+	var str = [];
+	for (var p in obj)
+		if (obj.hasOwnProperty(p)) {
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		}
+	return str.join("&");
+}
+
 const CustomerList = () => {
 
 	const loginState = useContext(LoginContext)
@@ -43,7 +52,7 @@ const CustomerList = () => {
 
 	const query = useQuery();
 	if(query.rowsPerPage)
-		if(!([25,50,100].includes(query.rowsPerPage)))
+		if(!([25,50,100].includes(parseInt(query.rowsPerPage))))
 			query.rowsPerPage = 25
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
@@ -77,6 +86,7 @@ const CustomerList = () => {
 		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
+		navigate("/app/package/accounts?" + serialize(search));
 		// navigate("/app/taskaccounts?" + serialize(queryParams));
 		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
 			loadData();
