@@ -174,15 +174,19 @@ const CustomerList = () => {
 	const handleExport = async (password) => {
 		try {
 
-			let others = {}
-			others.filters = _.merge({}, filters)
+			const searchCopy = _.merge({}, search)
+			searchCopy.filters = _.merge({}, filters)
+			
+			if(searchCopy.filters && searchCopy.filters._rmAssigned) {
+				searchCopy.filters._rmAssigned = memberRows.find(m => searchCopy.filters._rmAssigned == m.userName + ` (${m.memberID})`)._id
+			}
 
 			await authorizedDownload({
-				route: "/api/tasks/payments/export", 
+				route: "/api/packages/export", 
 				creds: loginState.loginState, 
-				data:{...search, ...others, password}, 
+				data:{...searchCopy, services: true, password}, 
 				method: 'post'
-			}, "taskPaymentsExport" + ".xlsx")
+			}, "packageServicesExport" + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
