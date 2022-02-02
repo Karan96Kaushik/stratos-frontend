@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, Container, Paper, Tab, Tabs, IconButton } from '@material-ui/core';
 import InvoiceListToolbar from 'src/components/invoices/InvoiceListToolbar';
 import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
@@ -14,6 +14,7 @@ import {
 } from "../store/reducers/filtersSlice";
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
+import { Download } from '@material-ui/icons';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -131,6 +132,22 @@ const CustomerList = () => {
 			)
 		}
 	}
+
+	const handleInvoiceDownload = async (invoiceID, _id) => {
+		try {
+			await authorizedDownload({
+				route: "/api/invoices/generate", 
+				creds: loginState.loginState, 
+				data:{_id}, 
+				method: 'post'
+			}, invoiceID + ".pdf")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
+	}
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
@@ -157,6 +174,15 @@ const CustomerList = () => {
 		)
 	}
 
+	// Download button
+	const renderDownloadButton = (val) => {
+		return (				
+			<IconButton aria-label="expand row" size="small" onClick={() => handleInvoiceDownload(val.invoiceID, val._id)}>
+				<Download />
+			</IconButton>
+		)
+	}
+
 	return (<>
 		<Helmet>
 			<title>Invoices | TMS</title>
@@ -179,7 +205,7 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
-							additional={[renderViewButton]}
+							additional={[renderViewButton, renderDownloadButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
