@@ -1,10 +1,11 @@
 import { useState, useContext, useRef, Fragment, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
-	CardHeader, Divider, Grid, TextField,
+	CardHeader, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List,
 	ListItem, Typography
 } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
@@ -18,7 +19,6 @@ const TaskAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 
 	const [values, setValues] = useState({});
-	
     let isEdit = false;
 
 	const [errors, setErrors] = useState({});
@@ -74,6 +74,7 @@ const TaskAddForm = (props) => {
 
 	const handleChange = async (event) => {
 		let others = {}
+		let overrideID
 		if (event.target.id == 'files') {
 			// console.log(event.target.files.length)
 			others = {docs:[]}
@@ -109,15 +110,21 @@ const TaskAddForm = (props) => {
 				others.docs.push({name:file.name, data:fileData})
 			}
 			// event.target.files = allFiles
-			console.log(event.target.files, allFiles)
+			// console.log(event.target.files, allFiles)
 			event.target.id = "ignore"
 				
+		}
+		else if (event.target.id.includes("-$")) {
+			let [id, idx] = event.target.id.split("-$")
+			others.items = values.items
+			others.items[parseInt(idx)][id] = event.target.value
+			overrideID = "none"
 		}
 
 		setValues({
 			...values,
 			...others,
-			[event.target.id]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
+			[overrideID ?? event.target.id]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
 		});
 
 	};
@@ -172,7 +179,6 @@ const TaskAddForm = (props) => {
 					title={!isEdit ? "New Invoice" : ("Edit Invoice " + values?.invoiceID)}
 					subheader=""
 				/>
-				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
 
@@ -214,6 +220,43 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						{(values.items ?? []).map((item, idx) => (
+							<>
+								<Divider style={{width:'100%', padding: '10px'}}  />
+								{invoiceFields?.item?.texts.map((field) => (
+									<Grid item md={6} xs={12}>
+										<TextField
+											fullWidth
+											select={field.options?.length}
+											SelectProps={{ native: true }}
+											label={field.label + " " + (idx+2)}
+											type={field.type ?? 'text'}
+											id={field.id + "-$" + idx}
+											inputProps={field.type == "file" ? { multiple: true } : {}}
+											InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+											value={field.id != "files" ? values.items[idx][field.id] ?? '' : undefined}
+											// required={field.isRequired}
+											// error={errors[field.id]}
+											onChange={handleChange}
+											variant="outlined"
+										>
+											{(field.options ?? []).map((option) => (
+												<option key={option}
+													value={option}>
+													{option}
+												</option>
+											))}
+										</TextField>
+									</Grid>))}
+							</>
+						))}
+						<Grid item md={12} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+							<Button variant="contained" onClick={() => { values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) }}>
+								Add Invoice Item
+							</Button>
+						</Grid>
+						<Divider style={{width:'100%', padding: '10px'}}  />
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>

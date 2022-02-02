@@ -20,7 +20,7 @@ const invoiceFields = {
             {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "CPAPK0273E"]},
             {label:"Particulars", id:"particulars"},
             {label:"Bill To", id:"billTo"},
-            {label:"Client Addr", id:"clientAddress"},
+            {label:"Client Address", id:"clientAddress"},
             {label:"Client GST", id:"clientGST"},
             {label:"Total Bill Amount", id:"billAmount", type:"number"},
             {label:"Total Tax Amount", id:"taxAmount", type:"number"},
@@ -32,7 +32,17 @@ const invoiceFields = {
         ],
         checkboxes:[
         ]
-    }
+    },
+    item: {
+        texts:[
+            {label:"Particulars", id:"particulars"},
+            {label:"Bill Amount", id:"billAmount", type:"number"},
+            {label:"Tax Amount", id:"taxAmount", type:"number"},
+            {label:"Govt Fees", id:"govtFees", type:"number"},
+        ],
+        checkboxes:[
+        ]
+    },
 }
 
 export default invoiceFields
