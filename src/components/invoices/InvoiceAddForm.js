@@ -230,7 +230,7 @@ const TaskAddForm = (props) => {
 											fullWidth
 											select={field.options?.length}
 											SelectProps={{ native: true }}
-											label={field.label + " " + (idx+2)}
+											label={field.label + " " + (idx+1)}
 											type={field.type ?? 'text'}
 											id={field.id + "-$" + idx}
 											inputProps={field.type == "file" ? { multiple: true } : {}}
