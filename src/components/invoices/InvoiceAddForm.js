@@ -3,7 +3,7 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List,
-	ListItem, Typography
+	ListItem, Typography, IconButton, Badge, SvgIcon
 } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { LoginContext } from "../../myContext"
@@ -12,6 +12,7 @@ import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
 import invoiceFields from '../../statics/invoiceFields';
 import PasswordDialog from '../passwordDialog';
+import { Plus, Trash2 } from 'react-feather';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -72,7 +73,15 @@ const TaskAddForm = (props) => {
 
 	};
 
-	const handleChange = async (event) => {
+	const removeItem = (idx) => {
+		console.log(idx)
+		console.log(values.items)
+		values.items.splice(idx,1)
+		console.log(values.items)
+		setValues({...values, items: values.items})
+	}
+
+	const handleChange = async (event) => {console.log("SAKJSKAJSKJA")
 		let others = {}
 		let overrideID
 		if (event.target.id == 'files') {
@@ -82,7 +91,7 @@ const TaskAddForm = (props) => {
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+			// console.log(filesClone)
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
@@ -249,10 +258,15 @@ const TaskAddForm = (props) => {
 											))}
 										</TextField>
 									</Grid>))}
+									<Grid item md={6} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+										<IconButton onClick={() => removeItem(idx)}>
+											<Trash2 color='red' />
+										</IconButton>
+									</Grid>
 							</>
 						))}
 						<Grid item md={12} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-							<Button variant="contained" onClick={() => { values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) }}>
+							<Button variant="outlined" onClick={() => { values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) }}>
 								Add Invoice Item
 							</Button>
 						</Grid>
