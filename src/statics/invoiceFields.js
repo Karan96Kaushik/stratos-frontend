@@ -29,6 +29,10 @@ const invoiceFields = {
             {label:"Paid Amount", id:"paidAmount", type:"number"},
             // {label:"Balance Amount", id:"balanceAmount", type:"number"},
             {label:"Notes", id:"notes"},
+            {label:"Special Notes", id:"specialNotes"},
+            {label:"Bill Period", id:"billPeriod"},
+            {label:"Quotation Date", id:"quotationDate"},
+            {label:"Quotation No", id:"quotationNum"},
             {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
