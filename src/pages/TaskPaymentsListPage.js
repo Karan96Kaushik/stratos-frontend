@@ -103,6 +103,9 @@ const CustomerList = () => {
 
 			if(searchCopy.sortID == "received")
 				searchCopy.sortID = "receivedAmount"
+			
+			if(searchCopy.sortID == "balance")
+				searchCopy.sortID = "balanceAmount"
 
 			else if(searchCopy.sortID == "total")
 				searchCopy.sortID = "totalAmount"
