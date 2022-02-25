@@ -110,6 +110,9 @@ const CustomerList = () => {
 			else if(searchCopy.sortID == "total")
 				searchCopy.sortID = "totalAmount"
 
+			if(!searchCopy.text)
+				delete searchCopy.text
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/payments/search", 
