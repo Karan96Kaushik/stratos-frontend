@@ -70,7 +70,8 @@ let commonTextFieldsEnd = [
 ]
 
 let commonCheckboxFields = [
-    {label:"Archived", id:"archived"}
+    {label:"Archived", id:"archived"},
+    {label:"Remove From Accounts", id:"removeFromAccounts"},
 ]
 
 let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])

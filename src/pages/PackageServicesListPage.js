@@ -131,7 +131,8 @@ const CustomerList = () => {
 		// {name:'Due Amount', id:"due", type: 'number'},
 		// {name:'Received Amount', id:"receivedAmount", type: 'number'},
 		{name:'Completion Date', id:"completionDate"},
-				// {name:'Cersai Undertaking', id:"cersai"},
+		// {name:'Cersai Undertaking', id:"cersai"},
+		{name:'Relationship Manager', id:"rmAssigned"},
 		{name:'Notes', id:"notes"},
 		{name:'Remarks', id:"remarks"},
 		// {name:'Consultation', id:"Consultation", type: 'date'},
@@ -142,27 +143,37 @@ const CustomerList = () => {
 
 	// Fields to be shown in the main table 
 	const defaultFields = {
-			texts:[
-				{label:'Date', id:"createdTime"},
-                {label:'Package ID', id:"packageID"},
-                {label:'Client Name', id:"clientName"},
-				{label:'Completion Date', id:"completionDate"},
-				// {label:'Promoter', id:"promoter"},
-				{label:'Start Date', id:"startDate", type: 'date'},
-			],
-			checkboxes:[
-				// {label:'Consultation', id:"Consultation", type: 'date'},
-				// {label:'Proof Reading', id:"Proof Reading", type: 'date'},
-				// {label:'Legal Documents', id:"Legal Documents", type: 'date'},
-				// {label:'Other Services', id:"Other Services", type: 'date'},
-            ]
+		texts:[
+			{label:'Date', id:"createdTime"},
+			{label:'Package ID', id:"packageID"},
+			{label:'Client Name', id:"clientName"},
+			{label:'Completion Date', id:"completionDate"},
+			// {label:'Promoter', id:"promoter"},
+			{label:'Start Date', id:"startDate", type: 'date'},
+			{label:'Relationship Manager', id:"rmAssigned"},
+		],
+		checkboxes:[
+			// {label:'Consultation', id:"Consultation", type: 'date'},
+			// {label:'Proof Reading', id:"Proof Reading", type: 'date'},
+			// {label:'Legal Documents', id:"Legal Documents", type: 'date'},
+			// {label:'Other Services', id:"Other Services", type: 'date'},
+		]
 	}
+
+	const commonFilters = {
+		texts :[
+			{label:"Relationship Manager", id: "_rmAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		],
+		checkboxes:[
+		]
+	}
+
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
     services.forEach(s => otherFields.push({name:s, id:s}))
     yearlyServices.forEach(s => defaultFields.texts.push({label:s, id:s}))
     yearlyServices.forEach(s => otherFields.push({name:s, id:s}))
-    // otherServices.forEach(s => defaultFields.checkboxes.push({label:s, id:s}))
     otherServices.forEach(s => otherFields.push({name:s, id:s, type: 'boolean'}))
+    // otherServices.forEach(s => defaultFields.checkboxes.push({label:s, id:s}))
 
 	// View button
 	const renderViewButton = (val) => {
@@ -205,7 +216,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<PackagesListToolbar handleExport={handleExport} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<PackagesListToolbar handleExport={handleExport} commonFilters={commonFilters} fields={defaultFields} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
