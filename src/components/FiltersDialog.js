@@ -46,7 +46,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 	};
 
 	const handleChange = (e) => {
-		let change = {}
+		let change = { [e.target.id]: e.target.type != 'checkbox' ? e.target.value : e.target.checked }
 
 		let eSplit = (e.target.id ?? e.target.name).split("-")
 
@@ -55,12 +55,12 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			if(!change[eSplit[0]])
 				change[eSplit[0]] = []
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
+			delete change[e.target.id]
 		}
 
 		setValues({
 			...values,
-			...change,
-			[e.target.id]: e.target.type != 'checkbox' ? e.target.value : e.target.checked
+			...change
 		});
 	};
 	const handleClose = () => {
@@ -83,7 +83,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 				<DialogContent>
 					<Grid container spacing={3}>
 
-					{commonFilters?.texts.map((field) => (field?.options?.length &&
+						{commonFilters?.texts.map((field) => (field?.options?.length &&
 							<>
 								<Grid item md={6} xs={12}>
 									<TextField
@@ -194,6 +194,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
+
 						{(commonFilters?.checkboxes ?? []).map((field) => (
 							<Grid item md={6} xs={6}>
 								<FormControlLabel
@@ -207,6 +208,60 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									label={field.label}
 								/>
 							</Grid>))}
+
+						{commonFilters?.texts.map((field) => (field.type == 'date' &&
+							<>
+								<Grid item md={6} xs={12}>
+									<TextField
+										fullWidth
+										select={field.options?.length}
+										SelectProps={{ native: true }}
+										label={field.label + " - Min"}
+										type={field.type ?? 'text'}
+										inputProps={field.type == "file" ? { multiple: true } : {}}
+										InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+										required={field.isRequired}
+										id={field.id + "-1"}
+										onChange={handleChange}
+										value={field.id != "files" ? values[field.id]?.[1] ?? '' : undefined}
+										variant="outlined"
+									>
+										{(field.options ?? []).map((option) => (
+											<option
+												key={option}
+												value={option}
+											>
+												{option}
+											</option>
+										))}
+									</TextField>
+								</Grid>
+								<Grid item md={6} xs={12}>
+									<TextField
+										fullWidth
+										select={field.options?.length}
+										SelectProps={{ native: true }}
+										label={field.label + " - Max"}
+										type={field.type ?? 'text'}
+										inputProps={field.type == "file" ? { multiple: true } : {}}
+										InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+										required={field.isRequired}
+										id={field.id + "-0"}
+										onChange={handleChange}
+										value={field.id != "files" ? values[field.id]?.[0] ?? '' : undefined}
+										variant="outlined"
+									>
+										{(field.options ?? []).map((option) => (
+											<option
+												key={option}
+												value={option}
+											>
+												{option}
+											</option>
+										))}
+									</TextField>
+								</Grid>
+							</>))}
 					</Grid>
 
 				</DialogContent>

@@ -168,6 +168,10 @@ const CustomerList = () => {
 		]
 	}
 
+    // services.forEach(s => commonFilters.texts.push({label:s, id:s, type:'date'}))
+    services.forEach(s => commonFilters.texts.push({label:s, id:'lastUpdated.'+s, type:'date'}))
+    yearlyServices.forEach(s => commonFilters.texts.push({label:s, id:'lastUpdated.'+s, type:'date'}))
+
     services.forEach(s => defaultFields.texts.push({label:s, id:s}))
     services.forEach(s => otherFields.push({name:s, id:s}))
     yearlyServices.forEach(s => defaultFields.texts.push({label:s, id:s}))
