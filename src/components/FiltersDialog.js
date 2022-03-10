@@ -195,20 +195,6 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 								</Grid>
 							</>))}
 
-						{(commonFilters?.checkboxes ?? []).map((field) => (
-							<Grid item md={6} xs={6}>
-								<FormControlLabel
-									control={<Checkbox
-										checked={values[field.id] ? true : false}
-										onChange={handleChange}
-										id={field.id}
-										indeterminate={values.hasOwnProperty(field.id) && !values[field.id]}
-										color="primary"
-									/>}
-									label={field.label}
-								/>
-							</Grid>))}
-
 						{commonFilters?.texts.map((field) => (field.type == 'date' &&
 							<>
 								<Grid item md={6} xs={12}>
@@ -262,6 +248,20 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
+
+						{(commonFilters?.checkboxes ?? []).map((field) => (
+							<Grid item md={6} xs={6}>
+								<FormControlLabel
+									control={<Checkbox
+										checked={values[field.id] ? true : false}
+										onChange={handleChange}
+										id={field.id}
+										indeterminate={values.hasOwnProperty(field.id) && !values[field.id]}
+										color="primary"
+									/>}
+									label={field.label}
+								/>
+							</Grid>))}
 					</Grid>
 
 				</DialogContent>

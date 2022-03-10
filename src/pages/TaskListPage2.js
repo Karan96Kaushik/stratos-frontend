@@ -198,7 +198,9 @@ const TaskList = () => {
 			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
-			{label:"Include Archived", id:"archived"}
+			{label:"Include Archived", id:"archived"},
+			{label:"Only Archived", id: "onlyarchived"},
+			{label:"Only Removed from Accounts", id: "onlyremovedfromaccounts"},
 		]
 	}
 

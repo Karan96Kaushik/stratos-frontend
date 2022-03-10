@@ -21,6 +21,7 @@ const PaymentsListToolbar = (props) => {
 		],
 		checkboxes: [
 			{label:"Include Archived", id: "archived"},
+			{label:"Only Archived", id: "onlyarchived"},
 		]
 	}
 	return (

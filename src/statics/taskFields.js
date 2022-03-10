@@ -65,7 +65,9 @@ let commonTextFieldsEnd = [
     {label:"GST", id:"gst", type:"number", isHidden:true},
     {label:"Remarks", id:"remarks"},
     {label:"Notes", id:"notes"},
-    {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,5]},
+    {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,4.5,5]},
+    {label:"Payment Date", id:"paymentDate", type:"date"},
+    {label:"FollowUp Date", id:"followupDate", type:"date"},
     {label:"Files", id:"files", type:"file", isHidden:true},
 ]
 
@@ -136,6 +138,7 @@ const taskFields = {
         texts:[
             {label:"Correction Details", id:"correctionDetails"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFields,
             ...commonTextFieldsEnd,
         ],
