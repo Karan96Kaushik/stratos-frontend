@@ -158,6 +158,7 @@ const CustomerList = () => {
 	const defaultFields = {
 		texts:[
             {label:"Invoice Date", id:"date", type:"date"},
+            {label:"Added By", id:"addedBy"},
             {label:"Project Name", id:"projectName", isRequired:true},
             {label:"Bill To", id:"billTo"},
             {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
