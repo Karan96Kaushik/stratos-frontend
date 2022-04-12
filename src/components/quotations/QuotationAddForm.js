@@ -86,7 +86,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} quotation!`,
 			)
-			navigate('/app/quotations');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
