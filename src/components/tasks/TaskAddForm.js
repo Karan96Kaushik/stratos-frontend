@@ -231,15 +231,12 @@ const TaskAddForm = (props) => {
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		} else if (event.target.id == '_membersAssigned') {
-			console.debug(event.target.value)
-
-			let departments = event.target.value.filter(d => d.includes('Department')).map(d => d.split(" Department")[0])
-			others.membersAssigned = memberRows.filter(v => (departments.includes(v.department)) || event.target.value.includes(v._id))
-			event.target.value = others.membersAssigned.map(v => v._id)
+			let departments = event.target.value.filter(d => d.includes('Department'))
+			let departmentNames = departments.map(d => d.split(" Department")[0])
+			others.membersAssigned = memberRows.filter(v => (departmentNames.includes(v.department)) || event.target.value.includes(v._id))
+			event.target.value = others.membersAssigned.map(v => v._id).concat(departments)
 			others.membersAssigned = others.membersAssigned.map(v => v.userName)
 			others.membersAssigned = others.membersAssigned.join(", ")
-			
-			console.debug(event.target.value)
 		}
 
 		setValues({
@@ -306,7 +303,7 @@ const TaskAddForm = (props) => {
 									>
 									{memberRows.map((member) => (
 										<MenuItem key={member.userName} value={member._id ?? member.userName}>
-											<Checkbox checked={(values?._membersAssigned ?? []).indexOf(member._id) > -1} />
+											<Checkbox checked={(values?._membersAssigned ?? []).includes(member._id) || (values?._membersAssigned ?? []).includes(member.userName)} />
 											<ListItemText primary={member.userName} />
 										</MenuItem>
 									))}
