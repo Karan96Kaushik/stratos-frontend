@@ -31,6 +31,7 @@ export default {
             {label:'Yearly Amount', id:"amount", type: 'number', isRequired: true},
             // {label:'GST Amount', id:"gstamount", type: 'number', required: false},
             {label:'Start Date', id:"startDate", type: 'date', isRequired: true},
+            {label:'End Date', id:"endDate", type: 'date'},
             {label:'Description', id:"description", isRequired: true},
             {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], isRequired: true},
             {label:"Payment Date", id:"paymentDate", type:"date"},

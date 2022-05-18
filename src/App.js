@@ -54,7 +54,7 @@ const App = () => {
 	const routing = useRoutes(routes(loginState?.isLoggedIn));
 
 	return (
-		<SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
+		<SnackbarProvider SnackbarProps={{ autoHideDuration: 2000 }}>
 		<LoginContext.Provider value={{ loginState, setLogin }}>
 		<LoadingContext.Provider value={{ loading, setLoading }}>
 			<ThemeProvider theme={theme}>
