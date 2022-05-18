@@ -91,6 +91,8 @@ const TaskAddForm = (props) => {
 	const getMembers = async () => {
 		try {
 			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
+			const memberSet = [...new Set(response.map(m => m.department))]
+			memberSet.forEach(dep => response.push({isDept: true, userName: dep + " Department", memberID: "Dept."}))
 			setMemberRows(response)
 			return response
 
@@ -229,9 +231,15 @@ const TaskAddForm = (props) => {
 			others.memberID = event.target.memberID
 			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		} else if (event.target.id == '_membersAssigned') {
-			others.membersAssigned = memberRows.filter(v => event.target.value.includes(v._id))
+			console.debug(event.target.value)
+
+			let departments = event.target.value.filter(d => d.includes('Department')).map(d => d.split(" Department")[0])
+			others.membersAssigned = memberRows.filter(v => (departments.includes(v.department)) || event.target.value.includes(v._id))
+			event.target.value = others.membersAssigned.map(v => v._id)
 			others.membersAssigned = others.membersAssigned.map(v => v.userName)
 			others.membersAssigned = others.membersAssigned.join(", ")
+			
+			console.debug(event.target.value)
 		}
 
 		setValues({
@@ -292,12 +300,12 @@ const TaskAddForm = (props) => {
 									fullWidth
 									id="_membersAssigned" 
 									value={values?._membersAssigned || []}
-									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned"}})}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned" }})}
 									input={<Input />} 
 									renderValue={(s) => values?.membersAssigned}
 									>
 									{memberRows.map((member) => (
-										<MenuItem key={member.userName} value={member._id}>
+										<MenuItem key={member.userName} value={member._id ?? member.userName}>
 											<Checkbox checked={(values?._membersAssigned ?? []).indexOf(member._id) > -1} />
 											<ListItemText primary={member.userName} />
 										</MenuItem>
