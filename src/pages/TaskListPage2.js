@@ -187,6 +187,7 @@ const TaskList = () => {
 			{label:"Type", id: "serviceType"},
 			{label:"Promoter", id: "promoter"},
 			{label:"Status", id: "status", options: allStatuses},
+			{label:"As On Date", id: "asOnDate"},
 			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]},
 			{label:"Deadline", id:"deadline", type:"date"},
 		],

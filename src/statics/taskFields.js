@@ -20,7 +20,7 @@ const statusSet1 = [
     "Certificate Generated"
 ]
 
-// F5 F2A UP F1 F2 F3 OT TC
+// F2A UP F1 F2 OT TC
 const statusSet2 = [
     "Awaiting Client Confirmation",
     "For Certification",  
@@ -42,6 +42,24 @@ const statusSet4 = [
 const statusSet5 = [
     "Appointment Done", "Completed" 
 ]
+
+// F5 F3
+const statusSet6 = [
+    "Awaiting Client Confirmation",
+    "For Certification",  
+    "Uploaded",
+    "Certified", 
+]
+
+const caOptions = [
+    "",
+    "Rutuja Narsingh & Associates", 
+    "STP Associates" ,
+    "Gupta Lodha & Co",
+    "MDA Associates",
+    "Others",
+]
+
 
 const actions = [
     "", 
@@ -152,8 +170,8 @@ const taskFields = {
         texts:[
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Period", id:"period", isRequired:true},
-            {label:"CA Assigned", id:"ca"},
-            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
+            {label:"CA Assigned", id:"ca", options:caOptions},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet6]},
             ...commonTextFields,
             ...commonTextFieldsEnd,
         ],
@@ -223,10 +241,10 @@ const taskFields = {
     "Form 3": {
         name:"Form 3",
         texts:[
-            {label:"CA Assigned", id:"ca"},
+            {label:"CA Assigned", id:"ca", options:caOptions},
             {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
-            {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet6]},
             ...commonTextFields,
             ...commonTextFieldsEnd,
         ],
