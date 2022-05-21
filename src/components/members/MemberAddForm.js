@@ -225,19 +225,28 @@ const MemberAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 						{memberFieldsCopy.texts.map((field) => (!field.hideEdit || !isEdit) ? (<Grid item md={6} xs={12}>
-								<TextField fullWidth
+							<TextField
+									fullWidth
 									select={field.options?.length}
+									SelectProps={{ native: true }}
 									label={field.label}
+									type={field.type ?? 'text'}
+									inputProps={field.type == "file" ? { multiple: true } : {}}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}
-									inputProps={{ multiple: true }}
-									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
-									type={field.type ?? "text"}
 									onChange={handleChange}
 									value={field.id != "files" ? values[field.id] ?? '' : undefined}
 									variant="outlined"
-								/>
+								>
+									{(field.options ?? []).map((option) => (
+										<option key={option}
+											value={option}>
+											{option}
+										</option>
+									))}
+								</TextField>
 							</Grid>): <></>)}
 						<Grid item md={12} xs={12}>
 							<FormControl fullWidth className={classes.formControl}>	

@@ -6,6 +6,17 @@ const validateMobile = (val="") => {
     return false
 }
 
+let departments = [
+    '',
+    'Operations', 
+    'Technical',
+    'Accounts',
+    'Relationship Manager',
+    'Sales',
+    'Marketing',
+    'Legal'
+]
+
 const memberFields = {all:{
         texts:[
             {label:"Name", id:"userName", isRequired:true},
@@ -13,7 +24,7 @@ const memberFields = {all:{
             {label:"Password", id:"password", hideEdit:false, isRequired:true},
             {label:"Mobile", id:"phone", isRequired:true, validation:[validateMobile]},
             {label:"Designation", id:"designation", isRequired:true},
-            {label:"Department", id:"department", isRequired:true},
+            {label:"Department", id:"department", isRequired:true, options: departments},
             {label:"Address", id:"address", isRequired:true},
             {label:"Emergency Contact", id:"emergencyContact", isRequired:true, validation:[validateMobile]},
             {label:"Blood Group", id:"bloodGroup", isRequired:true},
