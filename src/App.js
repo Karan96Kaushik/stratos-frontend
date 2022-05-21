@@ -33,12 +33,12 @@ const App = () => {
 	useEffect(() => {
 		if(loginState?.isLoggedIn) {
 			// Refresh the token on application load
-			authorizedLogin(loginState).then((resp) => {
-				if(resp.isLoggedIn) {
-					setLogin(loginState)
-					dispatch(setMembersService(resp))
-				}
-			})
+			// authorizedLogin(loginState).then((resp) => {
+			// 	if(resp.isLoggedIn) {
+			// 		setLogin(loginState)
+			// 		dispatch(setMembersService(resp))
+			// 	}
+			// })
 			
 			// Continously check refresh token
 			// setInterval(async () => {
