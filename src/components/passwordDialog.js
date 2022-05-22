@@ -44,7 +44,7 @@ export default function PasswordDialog({ protectedFunction, open, setOpen }) {
                                 fullWidth
                                 onChange={handleChange}
                                 value={value}
-                                type="text"
+                                type="password"
                                 variant="outlined"
                             >
                             </TextField>
