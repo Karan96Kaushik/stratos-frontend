@@ -6,7 +6,7 @@ import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import taskFields, { allStatuses } from '../statics/taskFields';
+import taskFields, { allStatuses, legal, technical } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from '../components/ViewDialog'
 import { useSelector } from "react-redux";
@@ -142,10 +142,26 @@ const TaskList = () => {
 	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'serviceType'){
+		if (event.target.name == 'serviceType'){
+			if (event.target.value.includes('Legal') && !(search.serviceType ?? []).includes('Legal')) {
+				event.target.value.push(...legal)
+			}
+			else if (!event.target.value.includes('Legal') && (search.serviceType ?? []).includes('Legal')) {
+				event.target.value = event.target.value.filter(s => !legal.includes(s))
+			}
+
+			if (event.target.value.includes('Technical') && !(search.serviceType ?? []).includes('Technical')) {
+				event.target.value.push(...technical)
+			}
+			else if (!event.target.value.includes('Technical') && (search.serviceType ?? []).includes('Technical')) {
+				event.target.value = event.target.value.filter(s => !technical.includes(s))
+			}
+
+			event.target.value = [...new Set(event.target.value)]
+
 			setData({rows:[]})
 			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
+			setSearch({...search, [event.target.name]: event.target.value, type:"", text:""})
 		}
 	}
 

@@ -417,7 +417,32 @@ const taskFields = {
 
 const allTasks = Object.keys(taskFields)
 
+const technical =  [
+    "Agent Registration",
+    "Project Registration",
+    "Extension",
+    "Correction",
+    "Form 5 - Audit",
+    "Form 2A",
+    "Updation",
+    "Form 1",
+    "Form 2",
+    "Form 3",
+    "Others - Tech",
+]
+
+const legal = [
+    "Title Certificate",
+    "Agreement for Sale Draft",
+    "Litigation",
+    "Hourly Package",
+    "Legal Notice",
+    "Registration",
+    "Drafting of Documents",
+    "Others - Legal"
+]
+
 allStatuses = [...allStatuses]
 
-export {allStatuses, allTasks}
+export {allStatuses, allTasks, legal, technical}
 export default taskFields
