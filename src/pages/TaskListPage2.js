@@ -143,19 +143,15 @@ const TaskList = () => {
 
 	const handleChange = (event) => {
 		if (event.target.name == 'serviceType'){
-			if (event.target.value.includes('Legal') && !(search.serviceType ?? []).includes('Legal')) {
+			if (event.target.value.includes('Legal') && !(search.serviceType ?? []).includes('Legal'))
 				event.target.value.push(...legal)
-			}
-			else if (!event.target.value.includes('Legal') && (search.serviceType ?? []).includes('Legal')) {
+			else if (!event.target.value.includes('Legal') && (search.serviceType ?? []).includes('Legal'))
 				event.target.value = event.target.value.filter(s => !legal.includes(s))
-			}
 
-			if (event.target.value.includes('Technical') && !(search.serviceType ?? []).includes('Technical')) {
+			if (event.target.value.includes('Technical') && !(search.serviceType ?? []).includes('Technical'))
 				event.target.value.push(...technical)
-			}
-			else if (!event.target.value.includes('Technical') && (search.serviceType ?? []).includes('Technical')) {
+			else if (!event.target.value.includes('Technical') && (search.serviceType ?? []).includes('Technical'))
 				event.target.value = event.target.value.filter(s => !technical.includes(s))
-			}
 
 			event.target.value = [...new Set(event.target.value)]
 
