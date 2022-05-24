@@ -66,7 +66,7 @@ const TaskList = () => {
 	}, [])
 
 	useEffect(async () => {
-		setSearch({...search, page, rowsPerPage, serviceType: query.serviceType, ...sortState})
+		setSearch({...search, page, rowsPerPage, ...sortState})
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
