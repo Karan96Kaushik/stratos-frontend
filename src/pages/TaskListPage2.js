@@ -201,7 +201,8 @@ const TaskList = () => {
 			{label:"Status", id: "status", options: allStatuses},
 			{label:"As On Date", id: "asOnDate"},
 			{label:"Priority", id:"priority", options: ["", "High", "Medium", "Low"]},
-			{label:"Deadline", id:"deadline", type:"date"},
+			{label:"Confirmation Date", id:"confirmationDate", type:"date"},
+			// {label:"Deadline", id:"deadline", type:"date"},
 		],
 		checkboxes:[]
 	}

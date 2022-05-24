@@ -48,11 +48,11 @@ const CustomerListToolbar = (props) => {
 									<Select multiple fullWidth
 										id="serviceType"
 										name="serviceType"
-										value={props.searchInfo["serviceType"] || []}
+										value={Array.isArray(props.searchInfo["serviceType"]) ? props.searchInfo["serviceType"] : []}
 										onChange={props.handleChange}
 										input={<Input />}
 										placeholder="Services"
-										renderValue={(selected) => selected.join(', ')}
+										renderValue={(selected) => (selected ?? []).join(', ')}
 										>
 										<MenuItem key={'Technical'} value={'Technical'}>
 											<Checkbox checked={(props.searchInfo["serviceType"] ?? []).indexOf("Technical") > -1} />
