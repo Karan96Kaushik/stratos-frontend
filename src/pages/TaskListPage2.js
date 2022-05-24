@@ -49,6 +49,9 @@ const TaskList = () => {
 	const memberRows = useSelector(selectMembers)
 
 	const query = useQuery();
+
+	query.serviceType = query.serviceType?.split(',') ?? []
+
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
@@ -63,7 +66,7 @@ const TaskList = () => {
 	}, [])
 
 	useEffect(async () => {
-		setSearch({...search, page, rowsPerPage, ...sortState})
+		setSearch({...search, page, rowsPerPage, serviceType: query.serviceType, ...sortState})
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
