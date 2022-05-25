@@ -1,8 +1,13 @@
 import {
-	Box, Button, Grid, Card,
-	CardContent, TextField, InputAdornment,
+	Box, FormControl,
+	Button, InputLabel,
+	Grid, MenuItem,
+	Card, Input, Checkbox,
+	CardContent, Select,
+	TextField, ListItemText
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import taskFields, { allStatuses, legal, technical } from '../../statics/taskFields';
 import Filters from '../FiltersDialog'
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
@@ -47,6 +52,51 @@ const PaymentsListToolbar = (props) => {
 					<CardContent>
 						<Box>
 							<Grid container spacing={1}>
+							<Grid item md={4} xs={6}>
+									<FormControl fullWidth >	
+									<InputLabel fullWidth >Services</InputLabel>
+									<Select multiple fullWidth
+										id="serviceType"
+										name="serviceType"
+										value={Array.isArray(props.searchInfo["serviceType"]) ? props.searchInfo["serviceType"] : []}
+										onChange={props.handleChange}
+										input={<Input />}
+										placeholder="Services"
+										renderValue={(selected) => (selected ?? []).join(', ')}
+										>
+										<MenuItem key={'Technical'} value={'Technical'}>
+											<Checkbox checked={(props.searchInfo["serviceType"] ?? []).indexOf("Technical") > -1} />
+											<ListItemText primary={'Technical'} />
+										</MenuItem>
+										{ technical.map((option) => (
+											<MenuItem 
+												key={option} 
+												value={option}
+												style={{
+													left: 20
+												}}>
+												<Checkbox checked={(props.searchInfo["serviceType"] ?? []).indexOf(option) > -1} />
+												<ListItemText primary={option} />
+											</MenuItem>
+										))}
+										<MenuItem key={'Legal'} value={'Legal'}>
+											<Checkbox checked={(props.searchInfo["serviceType"] ?? []).indexOf("Legal") > -1} />
+											<ListItemText primary={'Legal'} />
+										</MenuItem>
+										{ legal.map((option) => (
+											<MenuItem 
+												key={option} 
+												value={option}
+												style={{
+													left: 20
+												}}>
+												<Checkbox checked={(props.searchInfo["serviceType"] ?? []).indexOf(option) > -1} />
+												<ListItemText primary={option} />
+											</MenuItem>
+										))}
+									</Select>
+									</FormControl>
+								</Grid>
 								<Grid item md={4} xs={6}>
 									<TextField
 										fullWidth

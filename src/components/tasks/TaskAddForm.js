@@ -92,7 +92,7 @@ const TaskAddForm = (props) => {
 		try {
 			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
 			const memberSet = [...new Set(response.map(m => m.department))]
-			memberSet.forEach(dep => response.push({isDept: true, userName: dep + " Department", memberID: "Dept."}))
+			memberSet.forEach(dep => response.unshift({isDept: true, userName: dep + " Department", memberID: "Dept."}))
 			setMemberRows(response)
 			return response
 

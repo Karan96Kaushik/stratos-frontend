@@ -7,7 +7,7 @@ import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 // import paymentFields from '../statics/paymentFields';
-import {allStatuses, allTasks} from '../statics/taskFields';
+import {allStatuses, allTasks, technical, legal} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import { Add } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
@@ -53,6 +53,9 @@ const CustomerList = () => {
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
 
+	if (query.serviceType)
+		query.serviceType = query.serviceType?.split(',') ?? []
+	
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
@@ -131,9 +134,23 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
+		if (event.target.name == 'serviceType'){
+			if (event.target.value.includes('Legal') && !(search.serviceType ?? []).includes('Legal'))
+				event.target.value.push(...legal)
+			else if (!event.target.value.includes('Legal') && (search.serviceType ?? []).includes('Legal'))
+				event.target.value = event.target.value.filter(s => !legal.includes(s))
+
+			if (event.target.value.includes('Technical') && !(search.serviceType ?? []).includes('Technical'))
+				event.target.value.push(...technical)
+			else if (!event.target.value.includes('Technical') && (search.serviceType ?? []).includes('Technical'))
+				event.target.value = event.target.value.filter(s => !technical.includes(s))
+
+			event.target.value = [...new Set(event.target.value)]
+		}
+
 		setData({rows:[]})
 		setPage(1)
-		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
+		setSearch({...search, [event.target.id ?? event.target.name]: event.target.value, type:"", text:""})
 	}
 	
 	const extraFields = [

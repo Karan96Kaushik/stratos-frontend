@@ -40,6 +40,7 @@ export default {
             // {label:'Received Amount', id:"receivedAmount", type: 'number', isRequired: true},
             // {label:'Other Services', id:"other"},
             {label:'Period Cycle', id:"periodCycle"},
+            {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,4.5,5]},
             {label:'Notes', id:"notes"},
             {label:'Remarks', id:"remarks"},
         ],
