@@ -50,7 +50,8 @@ const TaskList = () => {
 
 	const query = useQuery();
 
-	query.serviceType = query.serviceType?.split(',') ?? []
+	if (query.serviceType)
+		query.serviceType = query.serviceType?.split(',') ?? []
 
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
