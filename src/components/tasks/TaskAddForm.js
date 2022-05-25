@@ -92,8 +92,13 @@ const TaskAddForm = (props) => {
 		try {
 			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
 			const memberSet = [...new Set(response.map(m => m.department))]
-			memberSet.forEach(dep => response.unshift({isDept: true, userName: dep + " Department", memberID: "Dept."}))
-			setMemberRows(response)
+			let membersData = []
+			memberSet.forEach(dep => {
+				membersData.push({isDept: true, userName: dep + " Department", memberID: "Dept."})
+				membersData.push(...response.filter(m => m.department == dep))
+			})
+
+			setMemberRows(membersData)
 			return response
 
 		} catch (err) {
@@ -302,7 +307,7 @@ const TaskAddForm = (props) => {
 									renderValue={(s) => values?.membersAssigned}
 									>
 									{memberRows.map((member) => (
-										<MenuItem key={member.userName} value={member._id ?? member.userName}>
+										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
 											<Checkbox checked={(values?._membersAssigned ?? []).includes(member._id) || (values?._membersAssigned ?? []).includes(member.userName)} />
 											<ListItemText primary={member.userName} />
 										</MenuItem>
