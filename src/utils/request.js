@@ -28,8 +28,8 @@ const authorizedReq = async (request) => {
     }
     catch (err) {
         // console.info(err)
-        // console.info("REQUEST ERROR", err?.response?.data)
-        throw new Error(err?.response?.data?.message || err?.message || err?.response?.data || err)
+        // console.info("REQUEST ERROR", err?.response)
+        throw new Error(err?.response?.data || err?.message || err?.response?.data?.message || err)
         // await localStorage.setItem("kiraaStore", JSON.stringify({}))
         // await loginState.setLogin({})
         // setLoading(false)

@@ -31,6 +31,7 @@ import NotFound from 'src/pages/NotFound';
 import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
+import Calendar from 'src/pages/Calendar';
 
 const routes = (isLoggedIn) => [
 	{
@@ -41,6 +42,7 @@ const routes = (isLoggedIn) => [
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
+			{ path: 'calendar', element: <Calendar /> },
 			{
 				path: 'clients',
 				children: [
