@@ -27,6 +27,7 @@ import {
 	User as UserIcon,
 	UserPlus as UserPlusIcon,
 	Users as UsersIcon,
+	Calendar,
 	ArrowDownCircle
 } from 'react-feather';
 import NavItem from './NavItem';
@@ -105,6 +106,12 @@ const items = [
 		icon: DollarSignIcon,
 		isSub: true,
 		title: 'Accounts'
+	},
+	{
+		href: '/app/calendar',
+		icon: Calendar,
+		// isSub: true,
+		title: 'Hearing Calendar'
 	},
 	// {
 	// 	href: '/app/settings',

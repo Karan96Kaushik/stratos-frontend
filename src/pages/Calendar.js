@@ -14,13 +14,8 @@ const Account = () => (
 				py: 3
 			}
 		}>
-			<Container maxWidth="lg">
-				<Grid container
-					spacing={3}>
-					<Grid item lg={8} md={6} xs={12}>
-						<HearingDateCalendar/>
-					</Grid>
-				</Grid>
+			<Container maxWidth="xl">
+                <HearingDateCalendar/>
 			</Container>
 		</Box>
 	</>
