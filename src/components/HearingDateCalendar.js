@@ -6,7 +6,14 @@ import "../styles.css";
 
 const MyCalendar = (props) => {
 
-    const events = [{ title: "AB00212", date: ('2022-05-05'), interactive:true, url:'google.com' }];
+    const events = [
+        { 
+          title: "AB00212", 
+          date: ('2022-05-05'), 
+          interactive:true, 
+          url:'google.com' 
+        }
+    ];
 
     return (
       <div className="Cal">

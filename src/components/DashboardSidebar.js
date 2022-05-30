@@ -45,44 +45,38 @@ const items = [
 		title: 'Members'
 	},
 	{
-		href: '/app/clients',
+		href: '#',
 		icon: UsersIcon,
 		title: 'Clients'
 	},
 	{
-		href: '/app/tasks',
-		icon: CheckSquareIcon,
-		title: 'Tasks'
-	},
-	{
-		href: '/app/leads',
-		icon: FlagIcon,
-		title: 'Leads'
-	},
-	{
-		href: '/app/quotations',
-		icon: MailIcon,
-		title: 'Quotations'
-	},
-	{
-		href: '/app/invoices',
-		icon: FileTextIcon,
-		title: 'Invoices'
-	},
-	{
-		href: '/app/payments',
-		icon: DollarSignIcon,
-		title: 'Payments'
-	},
-	{
-		href: '/app/taskaccounts',
-		icon: DollarSignIcon,
-		title: 'Task - Accounts'
+		href: '/app/clients',
+		icon: UsersIcon,
+		isSub: true,
+		title: 'Details'
 	},
 	{
 		href: '/app/clientaccounts',
 		icon: DollarSignIcon,
-		title: 'Client - Accounts'
+		isSub: true,
+		title: 'Accounts'
+	},
+	{
+		href: '#',
+		icon: CheckSquareIcon,
+		title: 'Tasks'
+	},
+	{
+		href: '/app/tasks',
+		icon: CheckSquareIcon,
+		isSub: true,
+		title: 'Details'
+	},
+	{
+		href: '/app/taskaccounts',
+		icon: DollarSignIcon,
+		isSub: true,
+		title: 'Accounts'
 	},
 	{
 		href: '#',
@@ -112,6 +106,26 @@ const items = [
 		icon: Calendar,
 		// isSub: true,
 		title: 'Hearing Calendar'
+	},
+	{
+		href: '/app/leads',
+		icon: FlagIcon,
+		title: 'Leads'
+	},
+	{
+		href: '/app/quotations',
+		icon: MailIcon,
+		title: 'Quotations'
+	},
+	{
+		href: '/app/invoices',
+		icon: FileTextIcon,
+		title: 'Invoices'
+	},
+	{
+		href: '/app/payments',
+		icon: DollarSignIcon,
+		title: 'Payments'
 	},
 	// {
 	// 	href: '/app/settings',
