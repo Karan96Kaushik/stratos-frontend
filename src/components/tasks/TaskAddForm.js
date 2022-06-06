@@ -70,6 +70,8 @@ const TaskAddForm = (props) => {
 				setMemberPlaceholder(members)
 			setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			setType(data.serviceType)
+			if (typeof data._membersAssigned == 'string')
+				data._membersAssigned = JSON.parse(data._membersAssigned)
 			setValues(data)
 		}
 	}, [])

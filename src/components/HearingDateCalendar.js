@@ -1,19 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import CalendarDialog from 'src/components/CalendarDialog';
 
 import "../styles.css";
 
 const MyCalendar = (props) => {
 
-    const events = [
-        { 
-          title: "AB00212", 
-          date: ('2022-05-05'), 
-          interactive:true, 
-          url:'google.com' 
-        }
-    ];
+    const events = props.events ?? []
 
     return (
       <div className="Cal">
@@ -22,6 +16,10 @@ const MyCalendar = (props) => {
           plugins={[dayGridPlugin]}
           events={events}
         />
+        <br />
+        <CalendarDialog setEvents={props.setEvents} events={events} />
+        <br />
+        <CalendarDialog setEvents={props.setEvents} events={events} isDelete='true' />
       </div>
     );
 }

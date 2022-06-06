@@ -28,6 +28,8 @@ import {
 	UserPlus as UserPlusIcon,
 	Users as UsersIcon,
 	Calendar,
+	Info,
+	File,
 	ArrowDownCircle
 } from 'react-feather';
 import NavItem from './NavItem';
@@ -51,7 +53,7 @@ const items = [
 	},
 	{
 		href: '/app/clients',
-		icon: UsersIcon,
+		icon: File,
 		isSub: true,
 		title: 'Details'
 	},
@@ -68,7 +70,7 @@ const items = [
 	},
 	{
 		href: '/app/tasks',
-		icon: CheckSquareIcon,
+		icon: File,
 		isSub: true,
 		title: 'Details'
 	},
@@ -85,7 +87,7 @@ const items = [
 	},
 	{
 		href: '/app/packages',
-		icon: PackageIcon,
+		icon: File,
 		isSub: true,
 		title: 'Details'
 	},
@@ -105,7 +107,7 @@ const items = [
 		href: '/app/calendar',
 		icon: Calendar,
 		// isSub: true,
-		title: 'Hearing Calendar'
+		title: 'Hearing Dates'
 	},
 	{
 		href: '/app/leads',
