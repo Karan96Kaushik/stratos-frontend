@@ -33,7 +33,7 @@ export default {
             {label:'Start Date', id:"startDate", type: 'date', isRequired: true},
             {label:'End Date', id:"endDate", type: 'date'},
             {label:'Description', id:"description", isRequired: true},
-            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly'], isRequired: true},
+            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly', 'Lumpsum'], isRequired: true},
             {label:"Payment Date", id:"paymentDate", type:"date"},
             {label:"FollowUp Date", id:"followupDate", type:"date"},
             // {label:'Due Amount', id:"due", type: 'number'},
