@@ -10,7 +10,6 @@ const Calendar = () => {
 	const [events, setEvents] = useState([])
     const {loading, setLoading} = useContext(LoadingContext)
 	const loginState = useContext(LoginContext)
-	console.log(events, "KSAJKJHSAJKAHS")
     useEffect(async () => {
 		try {
 			setLoading({...loading, isActive:true})
@@ -26,10 +25,10 @@ const Calendar = () => {
 				return
 			
 			response = response.map(t => ({
-				title: t.taskID, 
+				title: t.title, 
 				date: t.hearingDate, 
 				interactive:true,
-				url:'/app/tasks?text=' + t.taskID
+				data: t
 			}))
 			
 			setEvents(response)
