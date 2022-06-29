@@ -209,6 +209,32 @@ export default function ViewDialog({ setEvents, events }) {
                     
                     <Grid container spacing={3}>
 
+						{hearingDateFields.texts.map((field) => (
+							<Grid item md={6} xs={12}>
+								<TextField
+									fullWidth
+									select={field.options?.length}
+									SelectProps={{ native: true }}
+									label={field.label}
+									type={field.type ?? 'text'}
+									inputProps={field.type == "file" ? { multiple: true } : {}}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file") ? true : undefined }}
+									id={field.id}
+									required={field.isRequired}
+									error={errors[field.id]}
+									onChange={handleChange}
+									value={field.id != "files" ? values[field.id] ?? '' : undefined}
+									variant="outlined"
+								>
+									{(field.options ?? []).map((option) => (
+										<option key={option}
+											value={option}>
+											{option}
+										</option>
+									))}
+								</TextField>
+							</Grid>))}
+
 						{<Grid item md={6} xs={12}>
 							<Autocomplete
 								id="_clientID"
@@ -239,32 +265,6 @@ export default function ViewDialog({ setEvents, events }) {
 								renderInput={(params) => <TextField {...params} label="Select Task" variant="standard" />}
 							/>
 						</Grid>}
-
-						{hearingDateFields.texts.map((field) => (
-							<Grid item md={6} xs={12}>
-								<TextField
-									fullWidth
-									select={field.options?.length}
-									SelectProps={{ native: true }}
-									label={field.label}
-									type={field.type ?? 'text'}
-									inputProps={field.type == "file" ? { multiple: true } : {}}
-									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file") ? true : undefined }}
-									id={field.id}
-									required={field.isRequired}
-									error={errors[field.id]}
-									onChange={handleChange}
-									value={field.id != "files" ? values[field.id] ?? '' : undefined}
-									variant="outlined"
-								>
-									{(field.options ?? []).map((option) => (
-										<option key={option}
-											value={option}>
-											{option}
-										</option>
-									))}
-								</TextField>
-							</Grid>))}
 
                     </Grid>
 
