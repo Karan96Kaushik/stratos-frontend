@@ -113,11 +113,39 @@ export default function ViewDialog({ setEvents, events }) {
 		}
 	};
 
+	const [errors, setErrors] = useState({});
+	const validateForm = () => {
+		let errFields = []
+		let foundErrs = {}
+		let errorFlag = false
+
+		if(!Object.keys(values).length)
+			throw new Error("Incomplete Form")
+		hearingDateFields.texts.map(field => {
+			let isInvalid = false
+			if(field.isRequired && !values[field.id])
+				isInvalid = true
+			else if ((
+				(field.validation ?? [])
+					.map(validator => validator(values[field.id]))
+					.find(v => v)
+			))
+				isInvalid = true
+
+			if(isInvalid) {
+				errFields.push(field.label)
+				foundErrs[field.id] = true
+				errorFlag = true
+			}
+		})
+		setErrors(foundErrs)
+		if(errorFlag)
+			throw new Error(errFields.join(", "))
+	}
+
 	const handleSubmit = async () => {
 		try {
-			// validateForm()
-			if (!values.title)
-				throw new Error("Enter Title")
+			validateForm()
 			
 			let response = await authorizedReq({
 				route:"/api/hearingdates", 
@@ -224,7 +252,7 @@ export default function ViewDialog({ setEvents, events }) {
 									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file") ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
-									// error={errors[field.id]}
+									error={errors[field.id]}
 									onChange={handleChange}
 									value={field.id != "files" ? values[field.id] ?? '' : undefined}
 									variant="outlined"
