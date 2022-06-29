@@ -132,7 +132,7 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 				newEvents.push({
 					date: values.hearingDate,
 					interactive: true,
-					title: values.taskID,
+					title: values.title || values.taskID,
 					data: values
 					// url: '/app/tasks?text=' + values.taskID
 				})
