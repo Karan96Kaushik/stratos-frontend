@@ -13,7 +13,7 @@ import { LoadingContext, LoginContext } from "../myContext"
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import hearingDateFields from '../statics/hearingDateFields'
 
-export default function ViewDialog({ setEvents, events, isDelete=false }) {
+export default function ViewDialog({ setEvents, events }) {
 	const [open, setOpen] = useState(false)
     const [values, setValues] = useState({})
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
@@ -119,27 +119,22 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 			if (!values.title)
 				throw new Error("Enter Title")
 			
-			await authorizedReq({
+			let response = await authorizedReq({
 				route:"/api/hearingdates", 
 				data: values, 
 				creds:loginState.loginState, 
-				method: isDelete ? 'delete' : 'post'
+				method: 'post'
 			})
 
 			let newEvents = [...events]
-
-			if (!isDelete) {
-				newEvents.push({
-					date: values.hearingDate,
-					interactive: true,
-					title: values.title || values.taskID,
-					data: values
-					// url: '/app/tasks?text=' + values.taskID
-				})
-			} 
-			else {
-				newEvents = newEvents.filter(t => t.title !== values.taskID)
-			}
+			response.hearingDate = values.hearingDate
+			newEvents.push({
+				date: values.hearingDate,
+				interactive: true,
+				title: response.title || response.taskID,
+				data: response
+				// url: '/app/tasks?text=' + values.taskID
+			})
 
             setEvents(newEvents)
 			setValues({})
@@ -152,7 +147,7 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 			});
 			
 			snackbar.showMessage(
-				`Successfully ${!isDelete ? "added" : "deleted"} date!`,
+				`Successfully added date!`,
 			)
 			handleClose()
 		} catch (err) {
@@ -169,7 +164,7 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 	return (
 		<div>
             <Button sx={{mx: 1}} variant="contained" onClick={() => setOpen(true)}>
-                {!isDelete ? 'Add Hearing Date' : 'Delete Event'}
+                Add Hearing Date
             </Button>
 			<Dialog
 				fullWidth={true}
@@ -179,7 +174,7 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 				aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">
                     <Typography variant="h4">
-                        {!isDelete ? 'Add Hearing Date' : 'Delete Event'}
+                        Add Hearing Date
                     </Typography>
                 </DialogTitle>
 				<DialogContent>
@@ -251,7 +246,7 @@ export default function ViewDialog({ setEvents, events, isDelete=false }) {
 						Cancel
 					</Button>
 					<Button onClick={handleSubmit} color="primary">
-						{isDelete ? 'Delete' : 'Save'}
+						Save
 					</Button>
 				</DialogActions>
 				<DialogActions>

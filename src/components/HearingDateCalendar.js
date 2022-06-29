@@ -48,9 +48,7 @@ const MyCalendar = (props) => {
       <br />
       <CalendarDialog setEvents={props.setEvents} events={events} />
       <br />
-      <CalendarDialog setEvents={props.setEvents} events={events} isDelete='true' />
-      <br />
-      <EventViewDialog event={popup} setEvent={setPopup} />
+      <EventViewDialog event={popup} setEvent={setPopup} allEvents={props.events} setAllEvents={props.setEvents} />
     </div>
   );
 }

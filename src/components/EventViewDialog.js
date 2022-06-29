@@ -25,12 +25,36 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ViewDialog({ event, setEvent }) {
+export default function ViewDialog({ event, setEvent, allEvents, setAllEvents }) {
     const classes = useStyles();
+
+    const {loading, setLoading} = useContext(LoadingContext)
+	const loginState = useContext(LoginContext)
 
 	const handleClose = () => {
 		setEvent(null);
 	};
+
+    const handleDelete = async () => {
+        try {
+			setLoading({...loading, isActive:true})
+            await authorizedReq({
+                route:"/api/hearingdates", 
+                data: {_id: event._id}, 
+                creds:loginState.loginState, 
+                method: 'delete'
+            })
+            let newEvents = allEvents.filter(e => e.data._id !== event._id)
+            setAllEvents(newEvents)
+            handleClose()
+        }
+        catch (err) {
+			console.info(err)
+        }
+        finally {
+			setLoading({...loading, isActive:false})
+        }
+    }
 
     let headers = {
         'hearingDate': 'Date',
@@ -82,12 +106,12 @@ export default function ViewDialog({ event, setEvent }) {
                 
 				</DialogContent>
 				<DialogActions>
-					{/* <Button onClick={handleClose} color="primary">
-						Cancel
+					<Button onClick={handleClose} color="primary">
+						Close
 					</Button>
-					<Button onClick={handleSubmit} color="primary">
-						{isDelete ? 'Delete' : 'Save'}
-					</Button> */}
+					{!event?.isTask && <Button onClick={handleDelete} color="primary">
+						Delete
+					</Button>}
 				</DialogActions>
 				<DialogActions>
 				</DialogActions>

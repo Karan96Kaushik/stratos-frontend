@@ -35,7 +35,10 @@ const Calendar = () => {
 		
 		}
 		catch (err) {
-			console.info(err)
+			snackbar.showMessage(
+				"Error getting deleting - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
 		}
 		finally {
 			setLoading({...loading, isActive:false})
