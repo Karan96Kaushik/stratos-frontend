@@ -6,13 +6,8 @@ import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-// import paymentFields from '../statics/paymentFields';
-import {allStatuses, allTasks} from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
-import { Add } from '@material-ui/icons';
-import { IconButton } from '@material-ui/core';
 import ViewDialog from 'src/components/ViewDialog';
-import packageFields from 'src/statics/packageFields';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
@@ -132,6 +127,10 @@ const CustomerList = () => {
 		{name:'Start Date', id:"startDate", type: 'date'},
 		{name:'Period Cycle', id:"periodCycle"},
 		{name:'Description', id:"description"},
+		{name:'Contact Person', id:"contactPerson"},
+		{name:'Contact No', id:"contactNum"},
+		{name:'Owner Name', id:"owner"},
+		{name:'Owner Contact No', id:"ownerContact"},
 		{name:'Completion Date', id:"completionDate"},
 		{name:'Relationship Manager', id:"rmAssigned"},
 		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
