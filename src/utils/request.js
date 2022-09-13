@@ -29,7 +29,7 @@ const authorizedReq = async (request) => {
     catch (err) {
         // console.info(err)
         // console.info("REQUEST ERROR", err?.response)
-        throw new Error(err?.response?.data || err?.message || err?.response?.data?.message || err)
+        throw new Error(err?.response?.data?.message?? err?.response?.data ?? err?.response ?? err)
         // await localStorage.setItem("kiraaStore", JSON.stringify({}))
         // await loginState.setLogin({})
         // setLoading(false)
@@ -147,8 +147,8 @@ const authorizedLogin = async (request) => {
     }
     catch (err) {
         console.error(err)
-        console.debug("REFRESH Error", err?.response?.data ?? err?.response ?? err)
-        throw new Error(err?.response?.data || err)
+        // console.debug("REFRESH Error", err?.response?.data ?? err?.response ?? err)
+        throw new Error(err?.response?.data?.message?? err?.response?.data ?? err?.response ?? err)
     }
 };
 
