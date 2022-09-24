@@ -29,9 +29,9 @@ const MyCalendar = (props) => {
     if (!date) {
       date = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-date')
     }
-    let event = props.events.find(e => e.title.replace(/ /g, '') == taskID.replace(/ /g, '') && e.date == date)
+    let event = events.find(e => e.title.replace(/ /g, '') == taskID.replace(/ /g, '') && e.date == date)
 
-    if (!event) event = props.events.find(e => e.title.replace(/ /g, '') == taskID.replace(/ /g, ''))
+    if (!event) event = events.find(e => e.title.replace(/ /g, '') == taskID.replace(/ /g, ''))
     if (!event) return
     
     setPopup(event?.data)
@@ -49,7 +49,7 @@ const MyCalendar = (props) => {
         }
 
     }, 0)
-  }, [props.events])
+  }, [props.events, search])
 
   return (
     <div className="Cal">
