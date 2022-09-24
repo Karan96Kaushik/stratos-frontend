@@ -1,17 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createRef} from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import CalendarDialog from 'src/components/CalendarDialog';
 import EventViewDialog from 'src/components/EventViewDialog';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { TextField } from '@material-ui/core';
 
 import "../styles.css";
 
 const MyCalendar = (props) => {
   
   const [popup, setPopup] = useState(null)
-  const events = props.events ?? []
-  
+  const [search, setSearch] = useState('')
+  let events = props.events ?? []
+
+  if (search.length)
+    events = props.events.filter(e => 
+      e.title?.toLowerCase().includes(search.toLowerCase()) || 
+      e.data.remarks?.toLowerCase().includes(search.toLowerCase()) || 
+      e.data.court?.toLowerCase().includes(search.toLowerCase()) 
+    )
+
+  const calendarRef = createRef()
+
   function clickListener (e) {
     let taskID = e.target.innerText
     let date = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-date')
@@ -44,9 +55,21 @@ const MyCalendar = (props) => {
     <div className="Cal">
       <FullCalendar
         defaultView="dayGridMonth"
+        initialDate={new Date()}
         plugins={[dayGridPlugin]}
         events={events}
+        ref={calendarRef}
       />
+      <br />
+      <TextField
+        fullWidth
+        label="Search"
+        id="text"
+        value={search}
+        onChange={({target}) => setSearch(target.value)}
+        variant="standard"
+      />
+      <br />
       <br />
       <CalendarDialog setEvents={props.setEvents} events={events} />
       <br />

@@ -1,15 +1,18 @@
 import {Helmet} from 'react-helmet';
 import {Box, Container, Grid} from '@material-ui/core';
 import HearingDateCalendar from 'src/components/HearingDateCalendar';
-import {useRef, useEffect, useState, useContext} from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
 import { LoadingContext, LoginContext } from "../myContext"
-import {authorizedReq, authorizedDownload} from '../utils/request'
+import { authorizedReq, authorizedDownload } from '../utils/request'
+import { useSnackbar } from 'material-ui-snackbar-provider'
 
 const Calendar = () => {
 
 	const [events, setEvents] = useState([])
     const {loading, setLoading} = useContext(LoadingContext)
 	const loginState = useContext(LoginContext)
+	const snackbar = useSnackbar()
+
     useEffect(async () => {
 		try {
 			setLoading({...loading, isActive:true})
