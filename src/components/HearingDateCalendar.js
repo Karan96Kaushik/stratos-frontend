@@ -20,7 +20,9 @@ const MyCalendar = (props) => {
     events = props.events.filter(e => 
       e.title?.toLowerCase().includes(search.toLowerCase()) || 
       e.data.remarks?.toLowerCase().includes(search.toLowerCase()) || 
-      e.data.court?.toLowerCase().includes(search.toLowerCase()) 
+      e.data.court?.toLowerCase().includes(search.toLowerCase()) ||
+      e.data.clientName?.toLowerCase().includes(search.toLowerCase()) || 
+      e.data.clientID?.toLowerCase().includes(search.toLowerCase()) 
     )
 
   const calendarRef = createRef()
