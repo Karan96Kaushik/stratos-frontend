@@ -72,6 +72,7 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
         'clientName': 'Client Name',
         'court': 'Court',
         'remarks': 'Remarks',
+        'remarksNextHearing': 'Next Hearing Remarks',
     }
 
 	return (

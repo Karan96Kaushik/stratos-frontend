@@ -4,6 +4,7 @@ export default {
         {label:"Hearing Date", id:"hearingDate", type: 'date', isRequired:true},
         {label:"Court", id:"court"},
         {label:"Remarks", id:"remarks"},
+        {label:"Next Hearing Remarks", id:"remarksNextHearing"},
     ],
     checkboxes: []
 }
