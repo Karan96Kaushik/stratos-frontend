@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ViewDialog({ event, setEvent, allEvents, setAllEvents }) {
+export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen, allEvents, setAllEvents }) {
     const classes = useStyles();
 
     const {loading, setLoading} = useContext(LoadingContext)
@@ -35,13 +35,23 @@ export default function ViewDialog({ event, setEvent, allEvents, setAllEvents })
 		setEvent(null);
 	};
 
+	const handleEdit = () => {
+		setEditEvent(event);
+		setEditOpen(true);
+        handleClose()
+	};
+
     const handleDelete = async () => {
         try {
+
+			const resp = confirm("Are you sure you want to delete this entry?")
+			if(!resp)
+				return
 			setLoading({...loading, isActive:true})
             await authorizedReq({
                 route:"/api/hearingdates", 
                 data: {_id: event._id}, 
-                creds:loginState.loginState, 
+                creds: loginState.loginState, 
                 method: 'delete'
             })
             let newEvents = allEvents.filter(e => e.data._id !== event._id)
@@ -108,6 +118,9 @@ export default function ViewDialog({ event, setEvent, allEvents, setAllEvents })
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">
 						Close
+					</Button>
+					<Button onClick={handleEdit} color="primary">
+						Edit
 					</Button>
 					{!event?.isTask && <Button onClick={handleDelete} color="primary">
 						Delete

@@ -10,7 +10,9 @@ import "../styles.css";
 
 const MyCalendar = (props) => {
   
+	const [open, setOpen] = useState(false)
   const [popup, setPopup] = useState(null)
+  const [editEvent, setEditEvent] = useState(null)
   const [search, setSearch] = useState('')
   let events = props.events ?? []
 
@@ -25,12 +27,16 @@ const MyCalendar = (props) => {
 
   function clickListener (e) {
     let taskID = e.target.innerText
-    let date = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-date')
+    // console.debug(e.target)
+    let date = e.target.parentElement?.parentElement?.parentElement?.parentElement?.getAttribute('data-date')
     if (!date) {
-      date = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-date')
+      date = e.target?.parentElement?.parentElement?.parentElement?.parentElement?.getAttribute('data-date')
+    }
+    if (!date) {
+      return
     }
     let event = events.find(e => e.title.replace(/ /g, '').trim() == taskID.replace(/ /g, '').trim() && e.date == date)
-
+    // console.log(events.map(e => e.title.replace(/ /g, '').trim()), taskID.replace(/ /g, '').trim())
     if (!event) event = events.find(e => e.title.replace(/ /g, '').trim() == taskID.replace(/ /g, '').trim())
     if (!event) return
     
@@ -40,7 +46,7 @@ const MyCalendar = (props) => {
   useEffect(() => {
     setTimeout(() => {
       let eventsEls = document.getElementsByClassName('fc-daygrid-event')
-
+      // console.debug("EV EL", eventsEls.length)
       if (eventsEls.length)
         for (let i = 0; i < eventsEls.length; i++) {
           eventsEls[i].removeEventListener('click', clickListener)
@@ -49,7 +55,7 @@ const MyCalendar = (props) => {
         }
 
     }, 0)
-  }, [props.events, search])
+  }, [events, search])
 
   return (
     <div className="Cal">
@@ -71,9 +77,18 @@ const MyCalendar = (props) => {
       />
       <br />
       <br />
-      <CalendarDialog setEvents={props.setEvents} events={events} />
+      <CalendarDialog 
+        setOpen={setOpen} open={open}
+        setEvents={props.setEvents} events={events} 
+        editEvent={editEvent} setEditEvent={setEditEvent} 
+      />
       <br />
-      <EventViewDialog event={popup} setEvent={setPopup} allEvents={props.events} setAllEvents={props.setEvents} />
+      <EventViewDialog 
+        event={popup} setEvent={setPopup} 
+        setEditEvent={setEditEvent} 
+        allEvents={props.events} setAllEvents={props.setEvents} 
+        setEditOpen={setOpen}
+      />
     </div>
   );
 }

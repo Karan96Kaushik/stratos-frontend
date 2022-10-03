@@ -14,8 +14,8 @@ const authorizedReq = async (request) => {
                 "x-authentication": request.creds.token
             }
         }
-
-        if(request.method == "post") {
+        console.debug(request.method)
+        if(request.method == "post" || request.method == "patch") {
             options.data = {...request.data}
         } else {
             options.params = {...request.data}

@@ -39,7 +39,7 @@ const Calendar = () => {
 		}
 		catch (err) {
 			snackbar.showMessage(
-				"Error getting deleting - " + (err?.response?.data ?? err.message ?? err),
+				"Error getting tasks - " + (err?.response?.data ?? err.message ?? err),
 			)
 			console.error(err)
 		}

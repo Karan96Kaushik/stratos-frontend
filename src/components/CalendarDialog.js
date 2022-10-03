@@ -13,8 +13,8 @@ import { LoadingContext, LoginContext } from "../myContext"
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import hearingDateFields from '../statics/hearingDateFields'
 
-export default function ViewDialog({ setEvents, events }) {
-	const [open, setOpen] = useState(false)
+export default function ViewDialog({ setEvents, events, editEvent, setEditEvent, open, setOpen }) {
+
     const [values, setValues] = useState({})
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
@@ -24,6 +24,8 @@ export default function ViewDialog({ setEvents, events }) {
 		client: {clientID:"", name: "", _id: ""}
 	});
 
+	let isEdit = Boolean(editEvent)
+	
 	const loginState = useContext(LoginContext)
 
 	const snackbar = useSnackbar()
@@ -83,6 +85,11 @@ export default function ViewDialog({ setEvents, events }) {
 		if(searchInfo.text.length == 0)
 			setClientRows([])
 	}, [searchInfo])
+
+	useEffect(async () => {
+		if(Boolean(editEvent))
+			setValues(editEvent)
+	}, [editEvent])
 
 	const getClients = async () => {
 		try {
@@ -148,13 +155,15 @@ export default function ViewDialog({ setEvents, events }) {
 			validateForm()
 			
 			let response = await authorizedReq({
-				route:"/api/hearingdates", 
+				route: "/api/hearingdates", 
 				data: values, 
 				creds:loginState.loginState, 
-				method: 'post'
+				method: !isEdit ? 'post' : 'patch'
 			})
 
 			let newEvents = [...events]
+            newEvents = events.filter(e => e.data._id !== values._id)
+
 			response.hearingDate = values.hearingDate
 			newEvents.push({
 				date: values.hearingDate,
@@ -173,6 +182,7 @@ export default function ViewDialog({ setEvents, events }) {
 				task: {taskID:"", _id: ""}, 
 				client: {clientID:"", name: "", _id: ""}
 			});
+            setEditEvent(null)
 			
 			snackbar.showMessage(
 				`Successfully added date!`,

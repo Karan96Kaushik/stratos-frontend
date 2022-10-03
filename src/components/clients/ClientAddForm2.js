@@ -75,7 +75,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} client!`,
 			)
-			navigate('/app/clients');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -153,7 +153,7 @@ const TaskAddForm = (props) => {
 				others.docs.push({name:file.name, data:fileData})
 			}
 			// event.target.files = allFiles
-			console.log(event.target.files, allFiles)
+			// console.log(event.target.files, allFiles)
 			event.target.id = "ignore"
 				
 		} else if (event.target.id == 'clientType') {
