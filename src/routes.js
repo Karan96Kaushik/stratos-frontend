@@ -133,7 +133,7 @@ const routes = (isLoggedIn) => [
 				children: [
 					{ path: '/', element: <PackageAccountsListPage /> },
 					// { path: 'add', element: <PackageAccountsAdd /> },
-					// { path: 'edit/:id', element: <PackageAccountsAdd /> },
+					{ path: 'edit/:id', element: <PackagesAdd /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
