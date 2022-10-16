@@ -170,6 +170,8 @@ const CustomerList = () => {
 			{label:"Relationship Manager", id: "_rmAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
+			{label:"Include Archived", id:"archived"},
+			{label:"Only Archived", id: "onlyarchived"},
 		]
 	}
 

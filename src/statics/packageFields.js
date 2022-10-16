@@ -50,6 +50,7 @@ export default {
         ],
         checkboxes: [
             {label:'Add GST', id:"gstEnabled", type: 'number', isRequired: false},
+            {label:"Archived", id:"archived"},
             // {label:'Relationship Manager', id:"relationshipManager"},
             // {label:'Consultation', id:"Consultation"},
             // {label:'Site Updation', id:"siteUpdation", options: ['N','Y']},

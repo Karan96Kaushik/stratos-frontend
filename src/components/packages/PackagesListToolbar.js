@@ -24,7 +24,8 @@ const PackagesListToolbar = (props) => {
 		],
 		checkboxes: [
 			{label:"Form 5", id: "Form 5"},
-			// {label:"Include Archived", id: "archived"},
+			{label:"Include Archived", id:"archived"},
+			{label:"Only Archived", id: "onlyarchived"},
 		]
 	}
 
