@@ -43,6 +43,10 @@ const statusSet5 = [
     "Appointment Done", "Completed" 
 ]
 
+const paymentStatuses = [
+    "", "Payment Clear", "Payment Pending", "To Be Updated" 
+]
+
 // F5 F3
 const statusSet6 = [
     "Awaiting Client Confirmation",
@@ -87,6 +91,7 @@ let commonTextFieldsEnd = [
     {label:"Payment Date", id:"paymentDate", type:"date"},
     {label:"FollowUp Date", id:"followupDate", type:"date"},
     {label:"Files", id:"files", type:"file", isHidden:true},
+    {label:"Payment Status", id:"paymentStatus", options: paymentStatuses},
 ]
 
 let commonCheckboxFields = [
