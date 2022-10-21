@@ -74,14 +74,11 @@ const TaskAddForm = (props) => {
 	};
 
 	const removeItem = (idx) => {
-		console.log(idx)
-		console.log(values.items)
 		values.items.splice(idx,1)
-		console.log(values.items)
 		setValues({...values, items: values.items})
 	}
 
-	const handleChange = async (event) => {console.log("SAKJSKAJSKJA")
+	const handleChange = async (event) => {
 		let others = {}
 		let overrideID
 		if (event.target.id == 'files') {
@@ -164,7 +161,7 @@ const TaskAddForm = (props) => {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
 			)
-			console.error(err)
+			// console.error(err)
 		}
 
 	};
@@ -191,7 +188,7 @@ const TaskAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{invoiceFields?.all?.texts.map((field) => (
+						{invoiceFields?.all?.texts.map((field) => field.id !== "invoiceID" && (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
