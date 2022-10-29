@@ -58,7 +58,7 @@ const pagePermissionFields = [
 	"Packages Services R",
 	"Packages Accounts W",
 	"Packages Accounts R",
-	"Service Specific Accounts R",
+	"Assigned Task Accounts R",
 ]
 
 const servicePermissionFields = Object.keys(taskFields)
