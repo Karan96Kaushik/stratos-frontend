@@ -144,7 +144,7 @@ const CustomerList = () => {
 		{name:"Name", id: "name"},
 		// {name:"Member Assigned", id: "memberName"},
 		{name:"Type", id: "leadType"},
-		{label:"Members Assigned", id:"membersAssigned", isHidden:false},
+		{name:"Members Assigned", id:"membersAssigned", isHidden:false},
 	]
 
 	const defaultFields = {
