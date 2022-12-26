@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, Fragment, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
@@ -13,10 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import leadFields from '../../statics/leadFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
+import { selectMembers } from 'src/store/reducers/membersSlice';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
-services.unshift("")
+// services.unshift("")
 services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
 
 const useStyles = makeStyles((theme) => ({
@@ -35,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const TaskAddForm = (props) => {
+const LeadAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
+	
+	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
+	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 
 	const [values, setValues] = useState({});
 	const [type, setType] = useState("");
@@ -78,6 +82,45 @@ const TaskAddForm = (props) => {
 		if(errorFlag)
 			throw new Error(errFields.join(", "))
 	}
+
+	const getMembers = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
+			const memberSet = [...new Set(response.map(m => m.department))]
+			let membersData = []
+			memberSet.forEach(dep => {
+				membersData.push({isDept: true, userName: dep + " Department", memberID: "Dept."})
+				membersData.push(...response.filter(m => m.department == dep))
+			})
+
+			setMemberRows(membersData)
+			return response
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
+	};
+
+	useEffect(async () => {
+		let members = await getMembers()
+		if (isEdit) {
+			let leadID = location.pathname.split("/").pop()
+			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+
+			members = members.find(val => String(val._id) == String(data._memberID))
+			if(members)
+				setMemberPlaceholder(members)
+			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
+			setType(data.leadType)
+			if (typeof data._membersAssigned == 'string')
+				data._membersAssigned = JSON.parse(data._membersAssigned)
+			setValues(data)
+		}
+	}, [])
 
 	if (location.pathname.includes("edit")) {
 		isEdit = true
@@ -183,6 +226,19 @@ const TaskAddForm = (props) => {
 
 		if (event.target.id == 'leadType') {
 			setType(event.target.value)
+		} 
+		else if (event.target.id == '_memberID') {
+			others.memberName = event.target.name
+			others.memberID = event.target.memberID
+			// setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
+		} 
+		else if (event.target.id == '_membersAssigned') {
+			let departments = event.target.value.filter(d => d.includes('Department'))
+			let departmentNames = departments.map(d => d.split(" Department")[0])
+			others.membersAssigned = memberRows.filter(v => (departmentNames.includes(v.department)) || event.target.value.includes(v._id))
+			event.target.value = others.membersAssigned.map(v => v._id).concat(departments)
+			others.membersAssigned = others.membersAssigned.map(v => v.userName)
+			others.membersAssigned = others.membersAssigned.join(", ")
 		}
 
 		setValues({
@@ -242,6 +298,28 @@ const TaskAddForm = (props) => {
 							</TextField>
 						</Grid>
 
+						<Grid item md={6} xs={12}>
+							<FormControl fullWidth>	
+								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
+								<Select 
+									multiple 
+									fullWidth
+									id="_membersAssigned" 
+									value={values?._membersAssigned || []}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned" }})}
+									input={<Input />} 
+									renderValue={(s) => values?.membersAssigned}
+									>
+									{memberRows.map((member) => (
+										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
+											<Checkbox checked={(values?._membersAssigned ?? []).includes(member._id) || (values?._membersAssigned ?? []).includes(member.userName)} />
+											<ListItemText primary={member.userName} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
+
 						{leadFields[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
@@ -268,7 +346,7 @@ const TaskAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 						
-						{type == 'developer' &&
+						{type &&
 						<Grid item md={12} xs={12}>
 							<FormControl fullWidth className={classes.formControl}>	
 							<InputLabel id="serviceType">Service Type</InputLabel>
@@ -332,4 +410,4 @@ const TaskAddForm = (props) => {
 	);
 };
 
-export default TaskAddForm;
+export default LeadAddForm;

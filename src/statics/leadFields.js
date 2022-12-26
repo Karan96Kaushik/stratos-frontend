@@ -19,6 +19,27 @@ const statusOptions = ["", "Profile Sent", "Quotation Sent", "Awaiting Response"
 // Project Location 	Project Plot Area 	Quoted Amount 	RERA Number 	Mobile Number 	Office Number 	Email ID 	Lead Rating (Multiple Option - 1/2/3/4/5)	Lead Source (Whatsapp/ Inbound Calls/ Existing Customer/ Reference/ Outbound Calls/ Website / Enquiries / Others)		Lead Responsibility 	Status (Multiple option - Profile Sent / Quotation Sent / Awaiting response/ Follow up require 	Follow up date 	Remarks 
 
 export default {
+    // all: {
+    //     name:"",
+    //     texts:[
+    //         {label:"Date Added", id:"createdTime", isRequired:true},
+    //         {label:"Lead ID", id:"leadID", isRequired:true},
+    //         {label:"Member ID", id:"memberID", isRequired:true},
+            
+    //         {label:"Name", id:"name", isRequired:true},
+    //         {label:"Service Type", id:"serviceType", options:services, isHidden:false},
+    //         {label:"Mobile", id:"mobile", isRequired:true},
+    //         {label:"Email", id:"email", isHidden:true},
+
+    //         {label:"Lead Rating", id:"leadRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
+    //         {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:true},
+    //         {label:"Lead Responsibility", id:"leadResponsibility", isHidden:true},
+    //         {label:"FollowUp Date", id:"followUpDate", type:"date"},
+    //         {label:"Remarks", id:"remarks", isHidden:true},
+    //         {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
+    //         {label:"Status", id: "status", options: statusOptions},
+    //     ]
+    // },
     developer: {
         name:"Developer",
         texts:[
@@ -59,7 +80,8 @@ export default {
             {label:"Type", id:"type", options:["","Individual", "Other than Individual"], isHidden:false},
             {label:"Location", id:"location", isHidden:false},
             {label:"Status", id: "status", options: statusOptions},
-            {label:"Service Type", id: "serviceType", option:["", 'RERA Registration', 'Other Services'], isHidden:false},
+            // {label:"Service Type", id:"serviceType", options:services, isHidden:false},
+            // {label:"Service Type", id: "serviceType", option:["", 'RERA Registration', 'Other Services'], isHidden:false},
 
             {label:"Lead Rating", id:"leadRating", options: ["",1,2,3,4,5], type:"number"},
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:false},
@@ -82,6 +104,7 @@ export default {
             
             {label:"Type", id:"type", options:["","Complainant", "Respondant"], isRequired:true, isHidden:false},
             {label:"Category", id:"category", options:["","Developer", "Buyer"], isRequired:true, isHidden:false},
+            // {label:"Service Type", id:"serviceType", options:services, isHidden:false},
             {label:"Service", id:"service", options:["","Package","Indivudal Service","Retainer Service"], isHidden:false},
             {label:"Breif Service Required", id:"breifService", isHidden:false},
             {label:"Breif Case", id:"breifCase", isHidden:false},

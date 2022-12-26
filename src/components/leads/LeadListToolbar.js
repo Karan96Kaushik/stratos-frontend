@@ -90,7 +90,7 @@ const CustomerListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-								<Grid item item md={4} xs={6}>
+								<Grid item md={4} xs={6}>
 									<Filters forView="leads" search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["leadType"]} fields={leadFields}/>
 								</Grid>
 							</Grid>

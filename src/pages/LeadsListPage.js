@@ -45,21 +45,23 @@ const CustomerList = () => {
 
 	const filters = useSelector(selectFilterFor("leads"))
 
+	const leadFieldsCopy = _.merge({}, leadFields)
+
 	const query = useQuery();
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
-	if(!query.leadType)
-		query.leadType = 'developer'
+	// if(!query.leadType)
+	// 	query.leadType = 'developer'
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
 
 	useEffect(() => {
-		if(query.leadType) {
-			loadData()
-		}
+		// if(query.leadType) {
+		loadData()
+		// }
 	}, [])
 
 	useEffect(async () => {
@@ -85,8 +87,7 @@ const CustomerList = () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/leads?" + serialize(queryParams));
-		if(search.leadType)
-			goSearch();
+		goSearch();
 	}, [search])
 
 	const goSearch = (rmk) => {
@@ -141,14 +142,16 @@ const CustomerList = () => {
 		{name:"Date", id: "createdTime"},
 		{name:"Lead ID", id: "leadID"},
 		{name:"Name", id: "name"},
-		{name:"Member Assigned", id: "memberName"},
+		// {name:"Member Assigned", id: "memberName"},
 		{name:"Type", id: "leadType"},
+		{label:"Members Assigned", id:"membersAssigned", isHidden:false},
 	]
 
 	const defaultFields = {
 		texts:[
+			{label:"Service Type", id: "serviceType"},
             {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
-			{label:"Name", id: "name"},
+			// {label:"Name", id: "name"},
 			{label:"Status", id: "status"},
             {label:"Closure Status", id:"closureStatus"},
 		],
@@ -158,10 +161,9 @@ const CustomerList = () => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={leadFields} otherFields={extraFields} typeField={'leadType'}/>
+			<ViewDialog data={val} fields={leadFieldsCopy} otherFields={[]} typeField={'leadType'}/>
 		)
 	}
-	
 
 	return (<>
 		<Helmet>
@@ -179,7 +181,7 @@ const CustomerList = () => {
 						<GeneralList
 							extraFields={extraFields} 
 							type={null}//search.leadType} 
-							fields={leadFields} 
+							fields={leadFieldsCopy} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
