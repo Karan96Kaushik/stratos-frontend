@@ -61,6 +61,7 @@ const caOptions = [
     "STP Associates" ,
     "Gupta Lodha & Co",
     "MDA Associates",
+    "Gaurav S Rajpal & Co",
     "Others",
 ]
 
