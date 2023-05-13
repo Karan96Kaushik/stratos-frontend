@@ -1,5 +1,14 @@
 const modeOptions = [
-    "", "Shantanu HDFC", "RERA Easy", "Osha Technologies", "Bad Debt", "Other (please specify)", "TDS", "SDC Legal Services", "RERA Easy Services"
+    "", "Shantanu HDFC", 
+    "RERA Easy", 
+    "Osha Technologies", 
+    "Bad Debt", 
+    "Other (please specify)", 
+    "TDS", 
+    "SDC Legal Services", 
+    "RERA Easy Services",
+    "RERA Easy Consultancy",
+    "KC Partners",
 ]
 
 export default {
