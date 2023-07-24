@@ -6,6 +6,8 @@ const statuses = [
     "On Hold", 
     "Awaiting Documents from client", 
     "Awaiting Accounts Confirmation",
+    "Uploaded with Errors",
+    "Verified",
 ] 
 
 // AR PR EX CO
@@ -25,7 +27,8 @@ const statusSet2 = [
     "Awaiting Client Confirmation",
     "For Certification",  
     "Completed", 
-    "Uploaded"
+    "Uploaded",
+    "Sent for Queries",
 ]
 
 // LT
@@ -53,6 +56,7 @@ const statusSet6 = [
     "For Certification",  
     "Uploaded",
     "Certified", 
+    "Sent for Queries",
 ]
 
 const caOptions = [

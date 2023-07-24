@@ -9,6 +9,7 @@ const modeOptions = [
     "RERA Easy Services",
     "RERA Easy Consultancy",
     "KC Partners",
+    "Waved off",
 ]
 
 export default {
