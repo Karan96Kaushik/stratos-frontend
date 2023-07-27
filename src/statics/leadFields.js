@@ -43,6 +43,7 @@ export default {
     developer: {
         name:"Developer",
         texts:[
+            {label:"Added By", id:"memberName", isRequired:true},
             {label:"Name", id:"name", isRequired:true},
             {label:"Project Name", id:"projectName"},
             {label:"Company Name", id:"companyName", isHidden:false},
@@ -58,7 +59,7 @@ export default {
 
             {label:"Lead Rating", id:"leadRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:false},
-            {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
+            // {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false, optType:'members'},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Status", id: "status", options: statusOptions},
@@ -72,6 +73,7 @@ export default {
     agent: {
         name:"Agent",
         texts:[
+            {label:"Added By", id:"memberName", isRequired:true},
             {label:"Name", id:"name", isRequired:true},
             {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email", isHidden:false},
@@ -85,7 +87,7 @@ export default {
 
             {label:"Lead Rating", id:"leadRating", options: ["",1,2,3,4,5], type:"number"},
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:false},
-            {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
+            // {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file", isHidden:false},
@@ -98,6 +100,7 @@ export default {
     litigation: {
         name:"Litigation",
         texts:[
+            {label:"Added By", id:"memberName", isRequired:true},
             {label:"Name", id:"name", isRequired:true},
             {label:"Mobile", id:"mobile", isRequired:true, validation:[validateMobile]},
             {label:"Email", id:"email", isHidden:false},
@@ -114,7 +117,7 @@ export default {
             {label:"Status", id: "status", options: statusOptions},
             {label:"Lead Rating", id:"leadRating", options: ["",1,2,3,4,5], type:"number"},
             {label:"Lead Source", id:"leadSource", options:leadSourceOptions, isHidden:false},
-            {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
+            // {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file", isHidden:false},

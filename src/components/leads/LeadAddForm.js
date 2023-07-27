@@ -320,6 +320,30 @@ const LeadAddForm = (props) => {
 							</FormControl>
 						</Grid>
 
+							<Grid item md={6} xs={12}>
+								<TextField
+									fullWidth
+									select={memberRows.length}
+									SelectProps={{ native: true }}
+									label={'Lead Responsibility'}
+									type={'text'}
+									InputLabelProps={{ shrink: isEdit ? true : undefined }}
+									id={'leadResponsibility'}
+									// required={field.isRequired}
+									error={errors['leadResponsibility']}
+									onChange={handleChange}
+									value={values['leadResponsibility'] ?? ''}
+									variant="outlined"
+								>
+									{(['',...memberRows.filter(m => !m.isDept)] ?? []).map((option) => (
+										<option key={option.userName}
+											value={option.userName}>
+											{option.userName}
+										</option>
+									))}
+								</TextField>
+							</Grid>
+
 						{leadFields[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField

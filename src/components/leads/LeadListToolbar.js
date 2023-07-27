@@ -11,13 +11,34 @@ import leadFields from '../../statics/leadFields';
 import Filters from '../FiltersDialog'
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
+import taskFields from "../../statics/taskFields"
+import { useSelector } from "react-redux";
+import { selectMembers } from 'src/store/reducers/membersSlice';
+
+let services = Object.keys(taskFields).map(a => (taskFields[a].name))
+services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
+services.unshift('')
 
 const CustomerListToolbar = (props) => {
+
+	const memberRows = useSelector(selectMembers)
+	const memberNames = memberRows.map(m => m.userName)
+	// memberNames.unshift('')
 
 	const [open, setOpen] = React.useState(false)
 
 	const getExport = async () => {
 		setOpen(true)
+	}
+
+	const commonFilters = {
+		texts: [
+            {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+            // {label:"Lead Rating", id:"leadRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
+            {label:"Lead Responsibility", id:"leadResponsibility", options: memberNames, isRequired:true},
+		],
+		checkboxes: [
+		]
 	}
 
 	return (
@@ -91,7 +112,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<Filters forView="leads" search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["leadType"]} fields={leadFields}/>
+									<Filters forView="leads" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["leadType"]} fields={leadFields}/>
 								</Grid>
 							</Grid>
 						</Box>
