@@ -7,6 +7,11 @@ import paymentFields from 'src/statics/paymentFields';
 import FiltersDialog from '../FiltersDialog';
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
+import taskFields from "../../statics/taskFields"
+
+let services = Object.keys(taskFields).map(a => (taskFields[a].name))
+// services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
+services.unshift('')
 
 const PaymentsListToolbar = (props) => {
 
@@ -14,6 +19,14 @@ const PaymentsListToolbar = (props) => {
 
 	const getExport = async () => {
 		setOpen(true)
+	}
+
+	const commonFilters = {
+		texts: [
+            {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+		],
+		checkboxes: [
+		]
 	}
 
 	return (
@@ -50,7 +63,7 @@ const PaymentsListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item item md={4} xs={6}>
-									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={paymentFields}/>
+									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} commonFilters={commonFilters} type={'all'} fields={paymentFields}/>
 								</Grid>
 							</Grid>
 						</Box>

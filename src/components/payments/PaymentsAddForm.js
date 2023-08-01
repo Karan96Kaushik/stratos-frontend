@@ -103,6 +103,7 @@ const PaymentAddForm = (props) => {
 					_clientID: res._clientID,
 					_taskID: res._taskID,
 					promoter: res.promoter,
+					serviceType: res.serviceType,
 					clientName: res.clientName,
 				})
 			} catch (err) {
@@ -326,6 +327,7 @@ const PaymentAddForm = (props) => {
 			let task = taskRows.find(val => event.target.value == val._id)
 			setPlaceholder({...placeholder, task})
 			others["promoter"] = task.promoter
+			others["serviceType"] = task.serviceType
 			others["clientName"] = task.clientName
 			others["taskID"] = task.taskID
 			// Clear package info if previously set
@@ -338,6 +340,7 @@ const PaymentAddForm = (props) => {
 			let task = taskRows.find(val => event.target.value == val._id)
 			setPlaceholder({...placeholder, task})
 			others["promoter"] = task.promoter
+			// others["serviceType"] = task.serviceType
 			others["clientName"] = task.clientName
 			others["packageID"] = task.packageID
 			// Clear tasks info if previously set
