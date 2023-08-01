@@ -19,7 +19,8 @@ const statusSet1 = [
     "Desk 4", 
     "Accepted - 4", 
     "Under Scrutiny", 
-    "Certificate Generated"
+    "Certificate Generated",
+    "Retrieval Pending",
 ]
 
 // F2A UP F1 F2 OT TC
@@ -65,11 +66,21 @@ const statusSet7 = [
     "Transfer of Profile",
 ]
 
+// PC
 const statusSet8 = [
+    "Form 4 Submitted",
     "Form 4 Accepted",
     "Form 4 Rejected",
     "Completed", 
     "Uploaded",
+]
+
+const statusSet9 = [
+    "MahaRERA Queries",
+    "Submitted for Approval",
+    "Transfer of Profile",
+    "Listed - Awaiting Approval",
+    "De-Registered",
 ]
 
 const caOptions = [
@@ -284,6 +295,7 @@ const taskFields = {
             {label:"Service Description", id:"serviceDesc"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFieldsEnd
             // {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
             // {label:"GST", id:"gst", type:"number", isHidden:true},
@@ -453,6 +465,20 @@ const taskFields = {
             ...commonCheckboxFields
         ]
     },
+    "De-Registration": {
+        name:"De-Registration",
+        texts:[
+            {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
+            {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet9]},
+            ...commonTextFieldsEnd,
+        ],
+        checkboxes:[
+            {label:"With Consents", id:"withConsents"},
+            {label:"Without Consents", id:"withoutConsents"},
+            ...commonCheckboxFields
+        ]
+    },
     "Others - Legal": {
         name:"Others - Legal",
         texts:[
@@ -483,6 +509,9 @@ const technical =  [
     "Form 1",
     "Form 2",
     "Form 3",
+    "Change of Promoter",
+    "Project Closure",
+    "De-Registration",
     "Others - Tech",
 ]
 
@@ -494,8 +523,6 @@ const legal = [
     "Legal Notice",
     "Registration",
     "Drafting of Documents",
-    "Change of Promoter",
-    "Project Closure",
     "Others - Legal"
 ]
 
