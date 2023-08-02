@@ -10,7 +10,7 @@ import React from 'react';
 import taskFields from "../../statics/taskFields"
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
-// services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
+services.push('Package')
 services.unshift('')
 
 const PaymentsListToolbar = (props) => {
