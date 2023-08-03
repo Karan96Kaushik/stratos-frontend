@@ -8,25 +8,25 @@ import TableRow from '@material-ui/core/TableRow'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import {
-	AlertCircle,
-	BarChart,
-	Lock,
-	Settings,
+	// AlertCircle,
+	// BarChart,
+	// Lock,
+	// Settings,
 	CheckSquare,
-	Flag,
-	Mail,
-	FileText,
+	// Flag,
+	// Mail,
+	// FileText,
 	DollarSign,
 	Package,
-	CheckCircle,
-	ShoppingBag,
-	User,
-	UserPlus,
-	Users,
-	Calendar,
-	Info,
-	File,
-	ArrowDownCircle
+	// CheckCircle,
+	// ShoppingBag,
+	// User,
+	// UserPlus,
+	// Users,
+	// Calendar,
+	// Info,
+	// File,
+	// ArrowDownCircle
 } from 'react-feather';
 import moment from 'moment'
 
@@ -84,6 +84,11 @@ const NotificationList = ({notifications}) => {
                     <TableCell align="right">{row.protein}</TableCell> */}
                 </TableRow>
             ))}
+            {!notifications.length &&
+                <TableRow>
+                    <TableCell align="left">No Notifications Yet</TableCell>
+                </TableRow>
+            }
             </TableBody>
         </Table>
         </TableContainer>
