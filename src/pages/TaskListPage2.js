@@ -16,8 +16,9 @@ import {
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import * as _ from 'lodash';
 
-function useQuery() {
-	let entries =  new URLSearchParams(useLocation().search);
+function useQuery(url) {
+	const {search} = new URL(url);
+	let entries =  new URLSearchParams(search);
 	const result = {}
 	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
 		result[key] = value;
@@ -34,7 +35,7 @@ const serialize = function(obj) {
 	return str.join("&");
   }
 
-const TaskList = () => {
+const TaskList = (props) => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
@@ -47,8 +48,9 @@ const TaskList = () => {
 
 	const filters = useSelector(selectFilterFor("tasks"))
 	const memberRows = useSelector(selectMembers)
-
-	const query = useQuery();
+	// const location = useLocation()
+	// console.debug(location)
+	const query = useQuery(window.location.href);
 
 	if (query.serviceType)
 		query.serviceType = query.serviceType?.split(',') ?? []
@@ -70,6 +72,13 @@ const TaskList = () => {
 		setSearch({...search, page, rowsPerPage, ...sortState})
 	}, [page, rowsPerPage])
 
+
+	useEffect(async () => {
+		const query = useQuery(window.location.href);
+		if((query.text !== search.text))
+			setSearch({...search, text:query.text || ''})
+	}, [useLocation().search])
+
 	useEffect(async () => {
 		// Don't update Page num to 1 on FIRST RENDER
 		if(sortState.sortDir == -1 && sortState.sortID == 'createdTime')
@@ -86,7 +95,9 @@ const TaskList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		let queryParams = Object.assign({}, search)
+		const query = useQuery(window.location.href);
+		let queryParams = Object.assign({}, search, query)
+		// console.debug(queryParams)
 		delete queryParams.filters
 		navigate("/app/tasks?" + serialize(queryParams));
 		if(search.text == "" || search.text?.length > 2 || !search?.text)
