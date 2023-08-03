@@ -28,6 +28,7 @@ import {
 	File,
 	ArrowDownCircle
 } from 'react-feather';
+import moment from 'moment'
 
 const serialize = function(obj) {
 	var str = [];
@@ -77,6 +78,7 @@ const NotificationList = ({notifications}) => {
                     </TableCell>
                     <TableCell align="right">{notif.text}</TableCell>
                     <TableCell align="right">{notif.id}</TableCell>
+                    <TableCell align="right">{moment(notif.createdTime).format('hh:mm DD/MM')}</TableCell>
                     {/* <TableCell align="right">{row.fat}</TableCell>
                     <TableCell align="right">{row.carbs}</TableCell>
                     <TableCell align="right">{row.protein}</TableCell> */}

@@ -8,7 +8,6 @@ export const membersSlice = createSlice({
     },
     reducers: {
         setMembers:(state,action)=>{
-            console.log("SETTING", action.payload)
             state.members = action.payload
         },
     }
@@ -23,7 +22,7 @@ export const setMembersService = (creds) => {
             dispatch(setMembers(response))
         }
         catch (err) {
-            console.log(err)
+            console.error(err)
         }
     }
 }

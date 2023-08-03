@@ -14,6 +14,7 @@ import {
 	memberFields, 
 	pagePermissionFields,
 	servicePermissionFields,
+	notificationTypes
 } from '../../statics/memberFields';
 import * as _ from 'lodash';
 import PasswordDialog from '../passwordDialog';
@@ -281,6 +282,26 @@ const MemberAddForm = (props) => {
 								{servicePermissionFields.map((name) => (
 									<MenuItem key={name} value={name}>
 										<Checkbox checked={(values?.servicePermissions ?? []).indexOf(name) > -1} />
+										<ListItemText primary={name} />
+									</MenuItem>
+								))}
+							</Select>
+							</FormControl>
+						</Grid>
+						<Grid item md={12} xs={12}>
+							<FormControl fullWidth className={classes.formControl}>	
+							<InputLabel fullWidth id="activeNotifications">Active Notifications</InputLabel>
+							<Select multiple fullWidth
+								id="activeNotifications"
+								value={values?.activeNotifications || []}
+								onChange={(e) => setValues({...values, activeNotifications:e.target.value})}
+								input={<Input />}
+								placeholder="Active Notifications"
+								renderValue={(selected) => selected.join(', ')}
+								>
+								{notificationTypes.map((name) => (
+									<MenuItem key={name} value={name}>
+										<Checkbox checked={(values?.activeNotifications ?? []).indexOf(name) > -1} />
 										<ListItemText primary={name} />
 									</MenuItem>
 								))}

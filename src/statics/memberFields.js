@@ -65,8 +65,15 @@ const pagePermissionFields = [
 
 const servicePermissionFields = Object.keys(taskFields)
 
+const notificationTypes = [
+    "New Assigned Task",
+    "Assigned Task - Added Payments",
+    "Package RM - Added Payments",
+]
+
 export {
     pagePermissionFields,
     servicePermissionFields,
-    memberFields
+    memberFields,
+    notificationTypes
 }
