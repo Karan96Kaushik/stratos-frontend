@@ -15,14 +15,16 @@ import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 
-function useQuery() {
-	let entries =  new URLSearchParams(useLocation().search);
+function useQuery(url) {
+	const {search} = new URL(url);
+	let entries =  new URLSearchParams(search);
 	const result = {}
 	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
 		result[key] = value;
 	}
 	return result;
 }
+
 
 const serialize = function(obj) {
 	var str = [];
@@ -45,7 +47,7 @@ const CustomerList = () => {
 	const filters = useSelector(selectFilterFor("packages"))
 	const memberRows = useSelector(selectMembers)
 
-	const query = useQuery();
+	const query = useQuery(window.location.href);
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(parseInt(query.rowsPerPage))))
 			query.rowsPerPage = 25
@@ -63,6 +65,12 @@ const CustomerList = () => {
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
+		const query = useQuery(window.location.href);
+		if((query.text !== search.text))
+			setSearch({...search, text:query.text || ''})
+	}, [useLocation().search])
+
+	useEffect(async () => {
 		// Don't update Page num to 1 on FIRST RENDER
 		if(sortState.sortDir == -1 && sortState.sortID == 'createdTime')
 			setSearch({...search, ...sortState})
@@ -78,7 +86,8 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		let queryParams = Object.assign({}, search)
+		const query = useQuery(window.location.href);
+		let queryParams = Object.assign({}, search, query)
 		delete queryParams.filters
 		navigate("/app/packages?" + serialize(search));
 		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)

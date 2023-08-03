@@ -58,6 +58,7 @@ const PackagesListToolbar = (props) => {
 										label="Search"
 										id="text"
 										value={props.searchInfo["text"]}
+										InputLabelProps={{ shrink: (props.searchInfo["text"]?.length) ? true : undefined }}
 										onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 										variant="standard"
 									/>
