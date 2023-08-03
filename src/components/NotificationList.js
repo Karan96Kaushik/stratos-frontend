@@ -43,9 +43,9 @@ const NotificationList = ({notifications}) => {
 
 	const navigate = useNavigate();
 
-    const handleClick = (searchTerm) => {
+    const handleClick = (n) => {
         // console.log(event.target)
-        navigate("/app/tasks?" + serialize({text:searchTerm}));
+        navigate("/app/" + typeRoute[n.type] + "?" + serialize({text:n.id}));
     }
 
     const typeIcons = {
@@ -59,7 +59,7 @@ const NotificationList = ({notifications}) => {
         'task': 'tasks',
         // 'client': User,
         'package': 'packages',
-        'payment': 'tasks',
+        'payment': 'payments',
     }
 
 	return (
@@ -72,11 +72,11 @@ const NotificationList = ({notifications}) => {
                     // key={'ABCDEF' + notif.type}
                     hover
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => handleClick(notif.id)}>
+                    onClick={() => handleClick(notif)}>
                     <TableCell component="th" scope="row">
                         {typeIcons[notif.type]}
                     </TableCell>
-                    <TableCell align="right">{notif.text}</TableCell>
+                    <TableCell align="left">{notif.text}</TableCell>
                     <TableCell align="right">{notif.id}</TableCell>
                     <TableCell align="right">{moment(notif.createdTime).format('hh:mm DD/MM')}</TableCell>
                     {/* <TableCell align="right">{row.fat}</TableCell>
