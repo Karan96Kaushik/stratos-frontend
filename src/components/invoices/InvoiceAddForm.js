@@ -142,7 +142,8 @@ const TaskAddForm = (props) => {
 					panNum: true
 				})
 			}
-			else if (event.target.value == 'Osha Technologies') {
+			// else if (event.target.value == 'Osha Technologies') {
+			else {
 				others = {
 					gstNum: '27AAFFO8457Q1ZB',
 					panNum: 'AAFFO8457Q'
@@ -152,16 +153,16 @@ const TaskAddForm = (props) => {
 					panNum: true
 				})
 			}
-			else {
-				others = {
-					gstNum: '',
-					panNum: ''
-				}
-				setDisabled({
-					gstNum: false,
-					panNum: false
-				})
-			}
+			// else {
+			// 	others = {
+			// 		gstNum: '',
+			// 		panNum: ''
+			// 	}
+			// 	setDisabled({
+			// 		gstNum: false,
+			// 		panNum: false
+			// 	})
+			// }
 			
 		}
 
