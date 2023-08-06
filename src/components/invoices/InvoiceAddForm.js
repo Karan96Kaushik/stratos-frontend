@@ -23,6 +23,7 @@ const TaskAddForm = (props) => {
     let isEdit = false;
 
 	const [errors, setErrors] = useState({});
+	const [disabled, setDisabled] = useState({});
 	const validateForm = () => {
 		let errFields = []
 		let foundErrs = {}
@@ -53,6 +54,9 @@ const TaskAddForm = (props) => {
 
 	const handleSubmit = async () => {
 		try {
+			if((values?.items?.length ?? []) == 0) {
+				throw new Error("No items added to invoice")
+			}
 			validateForm()
 			await authorizedReq({
 				route:"/api/invoices/" + (!isEdit ? "add" : "update"), 
@@ -125,6 +129,40 @@ const TaskAddForm = (props) => {
 			others.items = values.items
 			others.items[parseInt(idx)][id] = event.target.value
 			overrideID = "none"
+		}
+		else if (event.target.id == "from") {
+
+			if (event.target.value == 'Envision Next LLP') {
+				others = {
+					gstNum: '27AAJFE1796J1ZZ',
+					panNum: 'AAJFE1796J'
+				}
+				setDisabled({
+					gstNum: true,
+					panNum: true
+				})
+			}
+			else if (event.target.value == 'Osha Technologies') {
+				others = {
+					gstNum: '27AAFFO8457Q1ZB',
+					panNum: 'AAFFO8457Q'
+				}
+				setDisabled({
+					gstNum: true,
+					panNum: true
+				})
+			}
+			else {
+				others = {
+					gstNum: '',
+					panNum: ''
+				}
+				setDisabled({
+					gstNum: false,
+					panNum: false
+				})
+			}
+			
 		}
 
 		setValues({
@@ -204,6 +242,7 @@ const TaskAddForm = (props) => {
 									error={errors[field.id]}
 									onChange={handleChange}
 									variant="outlined"
+									disabled={disabled[field.id] ?? false}
 								>
 									{(field.options ?? []).map((option) => (
 										<option key={option}
