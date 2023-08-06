@@ -29,6 +29,7 @@ const TaskAddForm = (props) => {
 		client: {clientID:"", name: "", _id: ""}
 	});
 	const [type, setType] = useState("");
+	const [disabled, setDisabled] = useState({});
 
 	const handleChangeClient = (e) => {
 		const target = e?.target
@@ -135,6 +136,7 @@ const TaskAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			setDisabled({...disabled, submit:true})
 			await authorizedReq({
 				route:"/api/tasks/" + (!isEdit ? "add" : "update"), 
 				data:values, 
@@ -146,6 +148,7 @@ const TaskAddForm = (props) => {
 			)
 			navigate(-1);
 		} catch (err) {
+			setDisabled({...disabled, submit:false})
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
 			)
@@ -414,7 +417,7 @@ const TaskAddForm = (props) => {
 				</CardContent>
 				<Divider />
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-					<Button color="primary" variant="contained" onClick={handleSubmit}>
+					<Button color="primary" variant="contained" onClick={handleSubmit} disabled={disabled['submit'] ?? false}>
 						Save details
 					</Button>
 					{
