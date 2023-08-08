@@ -1,25 +1,45 @@
-
-const froms = [
-    "",
-    "Osha Technologies",
-    "RERA Easy",
-    "Shantanu Kuchya" ,
-    "SDC Legal Services", 
-    "Envision Next LLP",
-    "RERA Easy Services",
-    "RERA Easy Consultancy",
-] 
+const froms = {
+    "": {},
+    "Osha Technologies": {
+        gstNum: '27AAFFO8457Q1ZB',
+        panNum: 'AAFFO8457Q'
+    },
+    "RERA Easy": {
+        gstNum: 'None',
+        panNum: 'CPAPK0273E'
+    },
+    "Shantanu Kuchya": {
+        gstNum: 'None',
+        panNum: 'CPAPK0273E'
+    },
+    "SDC Legal Services": {
+        gstNum: 'None',
+        panNum: 'CCKPM8294A'
+    }, 
+    "Envision Next LLP": {
+        gstNum: '27AAJFE1796J1ZZ',
+        panNum: 'AAJFE1796J'
+    },
+    "RERA Easy Services": {
+        gstNum: 'None',
+        panNum: 'GHWPK7836P'
+    },
+    "RERA Easy Consultancy": {
+        gstNum: 'None',
+        panNum: 'ABGFR8055D'
+    },
+}
 
 const invoiceFields = {
     all: {
         texts:[
             {label:"Invoice ID", id:"invoiceID"},
-            {label:"Invoice From", id:"from", options:froms, isRequired:true},
+            {label:"Invoice From", id:"from", options:Object.keys(froms), isRequired:true},
             {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
             {label:"Invoice Date", id:"date", type:"date"},
             {label:"GST Num", id:"gstNum", options:["", "None", "27AAFFO8457Q1ZB","27AAJFE1796J1ZZ"]},
             {label:"Project Name", id:"projectName", isRequired:true},
-            {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "AAJFE1796J"]},
+            {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "AAJFE1796J", "CCKPM8294A", "GHWPK7836P", "ABGFR8055D", "CPAPK0273E"]},
             // {label:"Particulars", id:"particulars"},
             {label:"Bill To", id:"billTo"},
             {label:"Client Address", id:"clientAddress"},
@@ -53,4 +73,5 @@ const invoiceFields = {
     },
 }
 
+export {froms}
 export default invoiceFields

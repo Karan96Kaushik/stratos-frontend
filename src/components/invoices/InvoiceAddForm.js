@@ -10,7 +10,7 @@ import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
-import invoiceFields from '../../statics/invoiceFields';
+import invoiceFields, {froms} from '../../statics/invoiceFields';
 import PasswordDialog from '../passwordDialog';
 import { Plus, Trash2 } from 'react-feather';
 
@@ -132,10 +132,10 @@ const TaskAddForm = (props) => {
 		}
 		else if (event.target.id == "from") {
 
-			if (event.target.value == 'Envision Next LLP') {
+			if (froms[event.target.value].gstNum) {
 				others = {
-					gstNum: '27AAJFE1796J1ZZ',
-					panNum: 'AAJFE1796J'
+					gstNum: froms[event.target.value].gstNum,
+					panNum: froms[event.target.value].panNum
 				}
 				setDisabled({
 					gstNum: true,
@@ -145,12 +145,12 @@ const TaskAddForm = (props) => {
 			// else if (event.target.value == 'Osha Technologies') {
 			else {
 				others = {
-					gstNum: '27AAFFO8457Q1ZB',
-					panNum: 'AAFFO8457Q'
+					gstNum: '',
+					panNum: ''
 				}
 				setDisabled({
-					gstNum: true,
-					panNum: true
+					gstNum: false,
+					panNum: false
 				})
 			}
 			// else {
