@@ -39,17 +39,13 @@ const TaskList = (props) => {
 
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
-	// let [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 	const [data, setData] = useState({type: '', rows:[]})
-    // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("tasks"))
 	const memberRows = useSelector(selectMembers)
-	// const location = useLocation()
-	// console.debug(location)
 	const query = useQuery(window.location.href);
 
 	if (query.serviceType)
@@ -107,24 +103,6 @@ const TaskList = (props) => {
 	const goSearch = (rmk) => {
 		loadData()
     }
-
-	// const getMembers = async () => {
-	// 	try {
-	// 		let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-	// 		response = [
-	// 			{},
-	// 			...response
-	// 		]
-	// 		setMemberRows(response)
-	// 		return response
-
-	// 	} catch (err) {
-	// 		snackbar.showMessage(
-	// 			"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-	// 		)
-	// 		console.error(err)
-	// 	}
-	// };
 
 	const loadData = async () => {
 		try{

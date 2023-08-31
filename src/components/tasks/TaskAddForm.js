@@ -88,7 +88,6 @@ const TaskAddForm = (props) => {
 			)
 			console.error(err)
 		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 	};
 
 	const getMembers = async () => {
@@ -110,7 +109,6 @@ const TaskAddForm = (props) => {
 			)
 			console.error(err)
 		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
 	};
 
 	const [errors, setErrors] = useState({});
@@ -188,7 +186,6 @@ const TaskAddForm = (props) => {
 	const handleChange = async (event) => {
 		let others = {}
 		if (event.target.id == 'files') {
-			// console.log(event.target.files.length)
 			others = {docs:[]}
 
 			let allFiles = []
@@ -197,7 +194,6 @@ const TaskAddForm = (props) => {
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
-			// console.log(allFiles)
 			for (let i=0; i < len; i++) {
 				let file = allFiles[i]
 				let fileData = file

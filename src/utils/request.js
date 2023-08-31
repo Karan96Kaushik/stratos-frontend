@@ -5,8 +5,6 @@ import { LoginContext } from "../myContext"
 const authorizedReq = async (request) => {
 
     try {
-        // console.log('submitting formValues', request);
-
         let options = {
             method:request.method,
             url: request.route, 
@@ -14,7 +12,6 @@ const authorizedReq = async (request) => {
                 "x-authentication": request.creds.token
             }
         }
-        console.debug(request.method)
         if(request.method == "post" || request.method == "patch") {
             options.data = {...request.data}
         } else {
@@ -23,18 +20,10 @@ const authorizedReq = async (request) => {
 
         let resp = await axios(options)
         
-        // console.log(resp)
         return resp.data
     }
     catch (err) {
-        // console.info(err)
-        // console.info("REQUEST ERROR", err?.response)
         throw new Error(err?.response?.data?.message?? err?.response?.data ?? err?.response ?? err)
-        // await localStorage.setItem("kiraaStore", JSON.stringify({}))
-        // await loginState.setLogin({})
-        // setLoading(false)
-        // setMessage("")
-        // setError(err.response.data)
     }
 };
 
@@ -147,7 +136,6 @@ const authorizedLogin = async (request) => {
     }
     catch (err) {
         console.error(err)
-        // console.debug("REFRESH Error", err?.response?.data ?? err?.response ?? err)
         throw new Error(err?.response?.data?.message?? err?.response?.data ?? err?.response ?? err)
     }
 };
