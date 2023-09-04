@@ -359,6 +359,8 @@ const TaskAddForm = (props) => {
 						</Grid>
 
 						{taskFieldsCopy[type]?.texts.map((field) => (
+							<>
+							{field.type !== 'multiple' &&
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -384,7 +386,35 @@ const TaskAddForm = (props) => {
 										</option>
 									))}
 								</TextField>
-							</Grid>))}
+							</Grid>}
+							{field.type == 'multiple' &&
+								<Grid item md={6} xs={12}>
+									<FormControl fullWidth>	
+										<InputLabel id={field.id}>{field.label}</InputLabel>
+										<Select 
+											multiple 
+											fullWidth
+											label={field.label}
+											id={field.id}
+											value={values?.[field.id] || []}
+											onChange={({target}) => handleChange({target: {value: target.value, id:field.id }})}
+											// variant="outlined"
+											// input={<TextField variant="outlined"/>} 
+											renderValue={(s) => values?.[field.id].join(', ')}
+											>
+											{field.options.map((opt) => (
+												<MenuItem key={opt} value={opt}>
+													<Checkbox checked={(values?.[field.id] ?? []).includes(opt)}/>
+													<ListItemText primary={opt} />
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</Grid>
+							}
+							</>
+							
+							))}
 
 						{taskFieldsCopy[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
