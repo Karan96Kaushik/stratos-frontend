@@ -187,7 +187,7 @@ const TaskList = (props) => {
 			)
 		}
 	}
-	
+
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Task ID", id: "taskID"},
@@ -214,6 +214,7 @@ const TaskList = (props) => {
 		texts :[
 			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 			{label:"Member Allocated", id: "_membersAllocated", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+            {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech']},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"},
