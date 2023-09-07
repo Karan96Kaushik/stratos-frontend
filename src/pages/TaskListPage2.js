@@ -116,6 +116,10 @@ const TaskList = (props) => {
 				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
 			}
 
+			if(others.filters && others.filters._membersAllocated) {
+				others.filters._membersAllocated = memberRows.find(m => others.filters._membersAllocated == m.userName + ` (${m.memberID})`)._id
+			}
+
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
 				route: "/api/tasks/search", 
@@ -165,6 +169,10 @@ const TaskList = (props) => {
 			if(others.filters && others.filters._membersAssigned) {
 				others.filters._membersAssigned = memberRows.find(m => others.filters._membersAssigned == m.userName + ` (${m.memberID})`)._id
 			}
+
+			if(others.filters && others.filters._membersAllocated) {
+				others.filters._membersAllocated = memberRows.find(m => others.filters._membersAllocated == m.userName + ` (${m.memberID})`)._id
+			}
 	
 			await authorizedDownload({
 				route: "/api/tasks/export", 
@@ -185,6 +193,7 @@ const TaskList = (props) => {
 		{name:"Task ID", id: "taskID"},
 		{name:"Client Name", id: "clientName"},
 		{name:"Members Assigned", id: "membersAssigned"},
+		// {name:"Members Allocated", id: "membersAllocated"},
 	]
 
 	const defaultFields = {
@@ -204,6 +213,7 @@ const TaskList = (props) => {
 	const commonFilters = {
 		texts :[
 			{label:"Member Assigned", id: "_membersAssigned", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+			{label:"Member Allocated", id: "_membersAllocated", options: (memberRows??[]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"},

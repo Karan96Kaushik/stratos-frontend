@@ -73,6 +73,8 @@ const TaskAddForm = (props) => {
 			setType(data.serviceType)
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
+			if (typeof data._membersAllocated == 'string')
+				data._membersAllocated = JSON.parse(data._membersAllocated)
 			setValues(data)
 		}
 	}, [])
@@ -243,7 +245,15 @@ const TaskAddForm = (props) => {
 			event.target.value = others.membersAssigned.map(v => v._id).concat(departments)
 			others.membersAssigned = others.membersAssigned.map(v => v.userName)
 			others.membersAssigned = others.membersAssigned.join(", ")
+		} else if (event.target.id == '_membersAllocated') {
+			let departments = event.target.value.filter(d => d.includes('Department'))
+			let departmentNames = departments.map(d => d.split(" Department")[0])
+			others.membersAllocated = memberRows.filter(v => (departmentNames.includes(v.department)) || event.target.value.includes(v._id))
+			event.target.value = others.membersAllocated.map(v => v._id).concat(departments)
+			others.membersAllocated = others.membersAllocated.map(v => v.userName)
+			others.membersAllocated = others.membersAllocated.join(", ")
 		}
+
 
 		setValues({
 			...values,
@@ -296,6 +306,28 @@ const TaskAddForm = (props) => {
 						</Grid>
 
 						<Grid item md={6} xs={12}>
+							<FormControl fullWidth>	
+								<InputLabel id="_membersAllocated">Allocated Members</InputLabel>
+								<Select 
+									multiple 
+									fullWidth
+									id="_membersAllocated" 
+									value={values?._membersAllocated || []}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAllocated" }})}
+									input={<Input />} 
+									renderValue={(s) => values?.membersAllocated}
+									>
+									{memberRows.map((member) => (
+										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
+											<Checkbox checked={(values?._membersAllocated ?? []).includes(member._id) || (values?._membersAllocated ?? []).includes(member.userName)} />
+											<ListItemText primary={member.userName} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
+
+						<Grid item md={12} xs={12}>
 							<FormControl fullWidth>	
 								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
 								<Select 
