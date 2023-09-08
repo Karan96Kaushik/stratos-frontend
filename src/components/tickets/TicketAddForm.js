@@ -10,7 +10,7 @@ import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
-import leadFields from '../../statics/leadFields';
+import ticketFields from '../../statics/ticketFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
 import { selectMembers } from 'src/store/reducers/membersSlice';
@@ -48,7 +48,7 @@ const TicketAddForm = (props) => {
 	const [values, setValues] = useState({});
 	const [type, setType] = useState("");
 	
-    let isEdit = false;
+    let isUpdate = false;
 
 	const [errors, setErrors] = useState({});
 	const validateForm = () => {
@@ -59,7 +59,7 @@ const TicketAddForm = (props) => {
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
 
-		leadFields[type].texts.map(field => {
+		ticketFields[type].texts.map(field => {
 			let isInvalid = false
 
 			if(field.isRequired && !values[field.id])
@@ -83,51 +83,28 @@ const TicketAddForm = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
-	const getMembers = async () => {
-		try {
-			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-			const memberSet = [...new Set(response.map(m => m.department))]
-			let membersData = []
-			memberSet.forEach(dep => {
-				membersData.push({isDept: true, userName: dep + " Department", memberID: "Dept."})
-				membersData.push(...response.filter(m => m.department == dep))
-			})
-
-			setMemberRows(membersData)
-			return response
-
-		} catch (err) {
-			snackbar.showMessage(
-				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-			)
-			console.error(err)
-		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
-	};
-
 	useEffect(async () => {
-		let members = await getMembers()
-		if (isEdit) {
-			let leadID = location.pathname.split("/").pop()
-			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+		if (isUpdate) {
+			let ticketID = location.pathname.split("/").pop()
+			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
 
-			members = members.find(val => String(val._id) == String(data._memberID))
+			members = memberRows.find(val => String(val._id) == String(data._memberID))
 			if(members)
 				setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
-			setType(data.leadType)
+			setType(data.ticketType)
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
 			setValues(data)
 		}
 	}, [])
 
-	if (location.pathname.includes("edit")) {
-		isEdit = true
-		let leadID = location.pathname.split("/").pop()
+	if (location.pathname.includes("update")) {
+		isUpdate = true
+		let ticketID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			setType(data.leadType)
+			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
+			setType(data.ticketType)
 			setValues(data)
 		}, [])
 	}
@@ -136,15 +113,15 @@ const TicketAddForm = (props) => {
 		try {
 			validateForm()
 			await authorizedReq({
-				route:"/api/leads/" + (!isEdit ? "add" : "update"), 
+				route:"/api/tickets/" + (!isUpdate ? "add" : "update"), 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isEdit ? "added" : "updated"} lead!`,
+				`Successfully ${!isUpdate ? "added" : "updated"} ticket!`,
 			)
-			navigate('/app/leads');
+			navigate('/app/tickets');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -164,15 +141,15 @@ const TicketAddForm = (props) => {
 		try {
 			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
-				route:"/api/leads/", 
+				route:"/api/tickets/", 
 				data:{_id:taskID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
 			snackbar.showMessage(
-				`Successfully deleted lead!`,
+				`Successfully deleted ticket!`,
 			)
-			navigate('/app/leads');
+			navigate('/app/tickets');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -224,7 +201,7 @@ const TicketAddForm = (props) => {
 				
 		}
 
-		if (event.target.id == 'leadType') {
+		if (event.target.id == 'ticketType') {
 			setType(event.target.value)
 		} 
 		else if (event.target.id == '_memberID') {
@@ -264,7 +241,7 @@ const TicketAddForm = (props) => {
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
-					title={!isEdit ? "New Lead" : "Edit Lead"}
+					title={!isUpdate ? "New Ticket" : "Update Ticket"}
 					subheader=""
 				/>
 				<Divider />
@@ -275,24 +252,24 @@ const TicketAddForm = (props) => {
 							<TextField
 								fullWidth
 								label="Select Type"
-								id="leadType"
+								id="ticketType"
 								onChange={handleChange}
 								required
-								error={errors.leadType}
-								defaultValue={!isEdit ? "":Object.keys(leadFields)[0]}
-								disabled={isEdit}
-								value={values.leadType}
+								error={errors.ticketType}
+								defaultValue={!isUpdate ? "":Object.keys(ticketFields)[0]}
+								disabled={isUpdate}
+								value={values.ticketType}
 								select
 								SelectProps={{ native: true }}
 								variant="outlined"
 							>
 								<option />
-								{Object.keys(leadFields).map((option) => (
+								{Object.keys(ticketFields).map((option) => (
 									<option
 										key={option}
 										value={option}
 									>
-										{leadFields[option]?.name}
+										{ticketFields[option]?.name}
 									</option>
 								))}
 							</TextField>
@@ -325,14 +302,14 @@ const TicketAddForm = (props) => {
 									fullWidth
 									select={memberRows.length}
 									SelectProps={{ native: true }}
-									label={'Lead Responsibility'}
+									label={'ticket Responsibility'}
 									type={'text'}
-									InputLabelProps={{ shrink: isEdit ? true : undefined }}
-									id={'leadResponsibility'}
+									InputLabelProps={{ shrink: isUpdate ? true : undefined }}
+									id={'ticketResponsibility'}
 									// required={field.isRequired}
-									error={errors['leadResponsibility']}
+									error={errors['ticketResponsibility']}
 									onChange={handleChange}
-									value={values['leadResponsibility'] ?? ''}
+									value={values['ticketResponsibility'] ?? ''}
 									variant="outlined"
 								>
 									{(['',...memberRows.filter(m => !m.isDept)] ?? []).map((option) => (
@@ -344,7 +321,7 @@ const TicketAddForm = (props) => {
 								</TextField>
 							</Grid>
 
-						{leadFields[type]?.texts.map((field) => (
+						{ticketFields[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -353,7 +330,7 @@ const TicketAddForm = (props) => {
 									label={field.label}
 									type={field.type ?? 'text'}
 									inputProps={field.type == "file" ? { multiple: true } : {}}
-									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isUpdate) ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}
@@ -392,7 +369,7 @@ const TicketAddForm = (props) => {
 							</FormControl>
 						</Grid>}
 
-						{leadFields[type]?.checkboxes.map((field) => (
+						{ticketFields[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
@@ -407,7 +384,7 @@ const TicketAddForm = (props) => {
 
 						
 						<Grid item md={6} xs={12}>
-							{isEdit && values?.files && <List>
+							{isUpdate && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>
 										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
 											<Typography >{file}</Typography>
@@ -424,7 +401,7 @@ const TicketAddForm = (props) => {
 						Save details
 					</Button>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
+						isUpdate && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
 						</Button>)
 					}

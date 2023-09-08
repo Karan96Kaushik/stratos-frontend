@@ -6,7 +6,7 @@ import TicketMessenger from 'src/components/tickets/TicketMessenger';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Task | TMS</title>
+			<title>Ticket | TMS</title>
 		</Helmet>
 		<Box sx={
 			{

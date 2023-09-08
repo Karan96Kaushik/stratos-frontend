@@ -12,9 +12,10 @@ import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
-import leadFields from '../../statics/leadFields';
+import ticketFields from '../../statics/ticketFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
+import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import { messengerFields } from 'src/statics/ticketFields';
 
@@ -25,10 +26,10 @@ services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        paddingLeft:20,
-        paddingRight:20,
-        marginTop:20,
-        marginBottom:20,
+        // paddingLeft:20,
+        // paddingRight:20,
+        // marginTop:20,
+        // marginBottom:20,
 	},
 	formControl: {
 		margin: theme.spacing(1)
@@ -40,9 +41,22 @@ const useStyles = makeStyles((theme) => ({
 	chip: {
 		margin: 2
 	},
+	header: {
+
+        // paddingLeft:20,
+        // paddingRight:20,
+        marginTop:10,
+        // marginBottom:10,
+		// padding: 40
+	},
 	noLabel: {
 		marginTop: theme.spacing(3)
-	}
+	},
+	messageRow: {
+        // borderBottom:'none',
+        border:0,
+        // 'border-bottom':'none'
+	},
 }));
 
 const TicketMessenger = (props) => {
@@ -50,14 +64,12 @@ const TicketMessenger = (props) => {
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
-	
-	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
+
+	const memberRows = useSelector(selectMembers)
 
 	const [values, setValues] = useState({});
-	const [type, setType] = useState("");
 	
-    let isEdit = false;
+    let isUpdate = false;
 
 	const [errors, setErrors] = useState({});
 	const validateForm = () => {
@@ -92,51 +104,33 @@ const TicketMessenger = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
-	const getMembers = async () => {
-		try {
-			let response = await authorizedReq({ route: "/api/members/list", creds: loginState.loginState, data: {}, method: 'get' })
-			const memberSet = [...new Set(response.map(m => m.department))]
-			let membersData = []
-			memberSet.forEach(dep => {
-				membersData.push({isDept: true, userName: dep + " Department", memberID: "Dept."})
-				membersData.push(...response.filter(m => m.department == dep))
-			})
-
-			setMemberRows(membersData)
-			return response
-
-		} catch (err) {
-			snackbar.showMessage(
-				"Error getting members - " + (err?.response?.data ?? err.message ?? err),
-			)
-			console.error(err)
-		}
-		// response = response.map(val => ({id: val._id, label: (val.clientID ?? val.name) + ` (${val._id})`}))
-	};
-
 	useEffect(async () => {
-		let members = await getMembers()
-		if (isEdit) {
-			let leadID = location.pathname.split("/").pop()
-			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+        const tableContainer = document.getElementById('myTableContainer');
+        if (tableContainer) {
+          tableContainer.scrollTop = tableContainer.scrollHeight;
+        }
 
-			members = members.find(val => String(val._id) == String(data._memberID))
+		if (isUpdate) {
+			let ticketID = location.pathname.split("/").pop()
+			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
+
+			members = memberRows.find(val => String(val._id) == String(data._memberID))
 			if(members)
 				setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
-			setType(data.leadType)
+			setType(data.ticketType)
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
 			setValues(data)
 		}
 	}, [])
 
-	if (location.pathname.includes("edit")) {
-		isEdit = true
-		let leadID = location.pathname.split("/").pop()
+	if (location.pathname.includes("update")) {
+		isUpdate = true
+		let ticketID = location.pathname.split("/").pop()
 		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
-			setType(data.leadType)
+			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
+			setType(data.ticketType)
 			setValues(data)
 		}, [])
 	}
@@ -145,15 +139,15 @@ const TicketMessenger = (props) => {
 		try {
 			validateForm()
 			await authorizedReq({
-				route:"/api/leads/" + (!isEdit ? "add" : "update"), 
+				route:"/api/ticket/message" + (!isUpdate ? "add" : "update"), 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isEdit ? "added" : "updated"} lead!`,
+				`Successfully ${!isUpdate ? "added" : "updated"} ticket!`,
 			)
-			navigate('/app/leads');
+			navigate('/app/tickets');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -167,29 +161,6 @@ const TicketMessenger = (props) => {
 	const tryDelete = () => {
 		setOpen(true)
 	}
-
-	const handleDelete = async (password) => {
-
-		try {
-			let taskID = location.pathname.split("/").pop()
-			await authorizedReq({
-				route:"/api/leads/", 
-				data:{_id:taskID, password}, 
-				creds:loginState.loginState, 
-				method:"delete"
-			})
-			snackbar.showMessage(
-				`Successfully deleted lead!`,
-			)
-			navigate('/app/leads');
-		} catch (err) {
-			snackbar.showMessage(
-				(err?.response?.data ?? err.message ?? err),
-			)
-			console.error(err)
-		}
-
-	};
 
 	const handleChange = async (event) => {
 		let others = {}
@@ -233,7 +204,7 @@ const TicketMessenger = (props) => {
 				
 		}
 
-		if (event.target.id == 'leadType') {
+		if (event.target.id == 'ticketType') {
 			setType(event.target.value)
 		} 
 		else if (event.target.id == '_memberID') {
@@ -298,15 +269,17 @@ const TicketMessenger = (props) => {
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
 				<CardHeader
+                    className={classes.header}
 					title={"Messages"}
 					subheader=""
 				/>
-				<Divider />
+				{/* <Divider /> */}
 				<CardContent>
 					<Grid className={classes.root} container spacing={3}>
 
+                    <Grid item md={12} xs={12}>
 
-                    <TableContainer sx={{ maxHeight: 440 }}>
+                    <TableContainer sx={{ maxHeight: 440 }} id="myTableContainer">
                         <Table stickyHeader>
 
                             <TableHead>
@@ -318,8 +291,8 @@ const TicketMessenger = (props) => {
                                     {messages && messages?.map(message => (
                                         <>
                                         <TableRow>
-                                            <TableCell align="left"><Typography variant="h5">{message.memberName}</Typography></TableCell>
-                                            <TableCell align="right">{message.date}</TableCell>
+                                            <TableCell  style={{ borderBottom: 'none' }} align="left"><Typography variant="h5">{message.memberName}</Typography></TableCell>
+                                            <TableCell  style={{ borderBottom: 'none' }} align="right">{message.date}</TableCell>
                                         </TableRow>   
                                         <TableRow>
                                             {/* <TableCell align="left"><Typography variant="h5">{message.memberName}</Typography></TableCell> */}
@@ -337,7 +310,10 @@ const TicketMessenger = (props) => {
                         </Table>
                     </TableContainer>
 
-                    
+                    </Grid>
+
+                    <Divider/>
+
                     <Grid item md={12} xs={12}>
                         <TextField 
                             multiline
@@ -349,6 +325,7 @@ const TicketMessenger = (props) => {
                             />
                     </Grid>
 
+
                     {messengerFields?.texts.map((field) => (
                         <Grid item md={6} xs={12}>
                             <TextField
@@ -358,7 +335,7 @@ const TicketMessenger = (props) => {
                                 label={field.label}
                                 type={field.type ?? 'text'}
                                 inputProps={field.type == "file" ? { multiple: true } : {}}
-                                InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+                                InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isUpdate) ? true : undefined }}
                                 id={field.id}
                                 required={field.isRequired}
                                 error={errors[field.id]}
@@ -390,7 +367,7 @@ const TicketMessenger = (props) => {
 
 						
 						<Grid item md={6} xs={12}>
-							{isEdit && values?.files && <List>
+							{isUpdate && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>
 										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
 											<Typography >{file}</Typography>
