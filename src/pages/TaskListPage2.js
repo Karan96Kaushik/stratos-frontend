@@ -188,12 +188,18 @@ const TaskList = (props) => {
 		}
 	}
 
-	const extraFields = [
+	const dashBoardFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Task ID", id: "taskID"},
 		{name:"Client Name", id: "clientName"},
-		{name:"Members Assigned", id: "membersAssigned"},
+		// {name:"Members Assigned", id: "membersAssigned"},
+		{name:"Members Allocated", id: "membersAllocated"},
+	]
+
+	const commonViewFields = [
+		...dashBoardFields,
 		// {name:"Members Allocated", id: "membersAllocated"},
+		{name:"Members Assigned", id: "membersAssigned"},
 	]
 
 	const defaultFields = {
@@ -232,7 +238,7 @@ const TaskList = (props) => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={taskFields} otherFields={extraFields} typeField={'serviceType'} titleID={"taskID"} />
+			<ViewDialog data={val} fields={taskFields} otherFields={commonViewFields} typeField={'serviceType'} titleID={"taskID"} />
 		)
 	}
 
@@ -250,7 +256,7 @@ const TaskList = (props) => {
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
-							extraFields={extraFields} 
+							extraFields={dashBoardFields} 
 							type={null}//{search.serviceType} 
 							fields={taskFields} 
 							defaultFields={defaultFields} 
