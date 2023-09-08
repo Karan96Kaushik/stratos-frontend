@@ -81,6 +81,11 @@ const items = [
 		title: 'Accounts'
 	},
 	{
+		href: '/app/tickets',
+		icon: FlagIcon,
+		title: 'Tickets'
+	},
+	{
 		href: '#',
 		icon: PackageIcon,
 		title: 'Packages'
