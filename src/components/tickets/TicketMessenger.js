@@ -67,6 +67,8 @@ const TicketMessenger = (props) => {
 
 	const memberRows = useSelector(selectMembers)
 
+    console.log(memberRows)
+
 	const [values, setValues] = useState({});
 	
     let isUpdate = false;

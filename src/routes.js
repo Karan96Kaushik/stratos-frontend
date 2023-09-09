@@ -6,6 +6,7 @@ import MembersAdd from 'src/pages/MembersAdd';
 import MembersList from 'src/pages/MembersListPage';
 import TasksList from 'src/pages/TaskListPage2';
 import TasksAdd from 'src/pages/TasksAdd';
+import TicketList from 'src/pages/TicketsListPage';
 import TicketAdd from 'src/pages/TicketAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
@@ -71,7 +72,7 @@ const routes = (isLoggedIn) => [
 			{
 				path: 'tickets',
 				children: [
-					{ path: '/', element: <TasksList /> },
+					{ path: '/', element: <TicketList /> },
 					{ path: 'add', element: <TicketAdd /> },
 					{ path: 'edit/:id', element: <TicketAdd /> },
 				]

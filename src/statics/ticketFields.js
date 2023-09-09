@@ -1,7 +1,9 @@
 const ticketFields = {
     // all: {
         texts:[
-            {label:"Files", id:"files", type:"file", isHidden:true},
+            // {label:"Ticket ID", id:"ticketID", isHidden:true},
+            {label:"Status", id:"status", options:['', 'Open', 'Closed']},
+            {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]

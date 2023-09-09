@@ -1,12 +1,12 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import LeadListToolbar from 'src/components/leads/LeadListToolbar';
+import TicketListToolbar from 'src/components/tickets/TicketListToolbar';
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import leadFields from '../statics/leadFields';
+import ticketFields from '../statics/ticketFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
 import {
@@ -43,23 +43,23 @@ const CustomerList = () => {
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
-	const filters = useSelector(selectFilterFor("leads"))
+	const filters = useSelector(selectFilterFor("tickets"))
 
-	const leadFieldsCopy = _.merge({}, leadFields)
+	const ticketFieldsCopy = _.merge({}, ticketFields)
 
 	const query = useQuery();
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
-	// if(!query.leadType)
-	// 	query.leadType = 'developer'
+	// if(!query.ticketType)
+	// 	query.ticketType = 'developer'
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
 
 	useEffect(() => {
-		// if(query.leadType) {
+		// if(query.ticketType) {
 		loadData()
 		// }
 	}, [])
@@ -86,7 +86,7 @@ const CustomerList = () => {
 	useEffect(async () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-		navigate("/app/leads?" + serialize(queryParams));
+		navigate("/app/tickets?" + serialize(queryParams));
 		goSearch();
 	}, [search])
 
@@ -98,7 +98,7 @@ const CustomerList = () => {
 		try{
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
-				route: "/api/leads/search", 
+				route: "/api/tickets/search", 
 				creds: loginState.loginState, 
 				data:{...search, filters: {...filters}}, 
 				method: 'post'
@@ -114,7 +114,7 @@ const CustomerList = () => {
 	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'leadType'){
+		if (event.target.id == 'ticketType'){
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
@@ -124,12 +124,12 @@ const CustomerList = () => {
 	const handleExport = async (password) => {
 		try {
 			await authorizedDownload({
-				route: "/api/leads/export", 
+				route: "/api/tickets/export", 
 				creds: loginState.loginState, 
 				data:{...search, password, filters: {...filters}}, 
 				method: 'post',
 				password
-			}, "leadsExport-" + search.leadType + ".xlsx")
+			}, "ticketsExport-" + search.ticketType + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
@@ -140,20 +140,16 @@ const CustomerList = () => {
 	
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
-		{name:"Lead ID", id: "leadID"},
+		{name:"Ticket ID", id: "ticketID"},
 		{name:"Name", id: "name"},
 		// {name:"Member Assigned", id: "memberName"},
-		{name:"Type", id: "leadType"},
+		{name:"Type", id: "ticketType"},
 		{name:"Members Assigned", id:"membersAssigned", isHidden:false},
 	]
 
 	const defaultFields = {
 		texts:[
-			{label:"Service Type", id: "serviceType"},
-            {label:"Lead Responsibility", id:"leadResponsibility", isHidden:false},
-			// {label:"Name", id: "name"},
 			{label:"Status", id: "status"},
-            {label:"Closure Status", id:"closureStatus"},
 		],
 		checkboxes:[]
 	}
@@ -161,13 +157,13 @@ const CustomerList = () => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={leadFieldsCopy} otherFields={[]} typeField={'leadType'}/>
+			<ViewDialog data={val} fields={ticketFieldsCopy} otherFields={[]} typeField={'ticketType'}/>
 		)
 	}
 
 	return (<>
 		<Helmet>
-			<title>Leads | TMS</title>
+			<title>Tickets | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -175,13 +171,13 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<LeadListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TicketListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={null}//search.leadType} 
-							fields={leadFieldsCopy} 
+							type={null}//search.ticketType} 
+							fields={ticketFieldsCopy} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 

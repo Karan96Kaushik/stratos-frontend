@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import ticketFields from '../../statics/ticketFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
+import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
@@ -42,11 +43,10 @@ const TicketAddForm = (props) => {
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
 	
-	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
+	const memberRows = useSelector(selectMembers)
 
 	const [values, setValues] = useState({});
-	const [type, setType] = useState("");
+	// const [type, setType] = useState("");
 	
     let isUpdate = false;
 
@@ -59,7 +59,7 @@ const TicketAddForm = (props) => {
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
 
-		ticketFields[type].texts.map(field => {
+		ticketFields.texts.map(field => {
 			let isInvalid = false
 
 			if(field.isRequired && !values[field.id])
@@ -248,35 +248,8 @@ const TicketAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						<Grid item md={12} xs={12}>
-							<TextField
-								fullWidth
-								label="Select Type"
-								id="ticketType"
-								onChange={handleChange}
-								required
-								error={errors.ticketType}
-								defaultValue={!isUpdate ? "":Object.keys(ticketFields)[0]}
-								disabled={isUpdate}
-								value={values.ticketType}
-								select
-								SelectProps={{ native: true }}
-								variant="outlined"
-							>
-								<option />
-								{Object.keys(ticketFields).map((option) => (
-									<option
-										key={option}
-										value={option}
-									>
-										{ticketFields[option]?.name}
-									</option>
-								))}
-							</TextField>
-						</Grid>
-
-						<Grid item md={6} xs={12}>
-							<FormControl fullWidth>	
+					<Grid item md={12} xs={12}>
+							<FormControl fullWidth>
 								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
 								<Select 
 									multiple 
@@ -297,31 +270,19 @@ const TicketAddForm = (props) => {
 							</FormControl>
 						</Grid>
 
-							<Grid item md={6} xs={12}>
-								<TextField
-									fullWidth
-									select={memberRows.length}
-									SelectProps={{ native: true }}
-									label={'ticket Responsibility'}
-									type={'text'}
-									InputLabelProps={{ shrink: isUpdate ? true : undefined }}
-									id={'ticketResponsibility'}
-									// required={field.isRequired}
-									error={errors['ticketResponsibility']}
-									onChange={handleChange}
-									value={values['ticketResponsibility'] ?? ''}
-									variant="outlined"
-								>
-									{(['',...memberRows.filter(m => !m.isDept)] ?? []).map((option) => (
-										<option key={option.userName}
-											value={option.userName}>
-											{option.userName}
-										</option>
-									))}
-								</TextField>
-							</Grid>
 
-						{ticketFields[type]?.texts.map((field) => (
+						<Grid item md={12} xs={12}>
+							<TextField 
+								multiline
+								fullWidth
+								id="description"
+								rows={4}
+								label="Description"
+								onChange={handleChange}
+								/>
+						</Grid>
+
+						{ticketFields?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -347,29 +308,7 @@ const TicketAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 						
-						{type &&
-						<Grid item md={12} xs={12}>
-							<FormControl fullWidth className={classes.formControl}>	
-							<InputLabel id="serviceType">Service Type</InputLabel>
-							<Select 
-								multiple 
-								fullWidth
-								name="serviceType"
-								id="serviceType" value={values?.serviceType ?? []}
-								onChange={handleChange}
-								input={<Input />} renderValue={(selected) => selected.join(', ')}
-								>
-								{services.map((name) => (
-									<MenuItem key={name} value={name}>
-										<Checkbox checked={(values?.serviceType ?? []).indexOf(name) > -1} />
-										<ListItemText primary={name} />
-									</MenuItem>
-								))}
-							</Select>
-							</FormControl>
-						</Grid>}
-
-						{ticketFields[type]?.checkboxes.map((field) => (
+						{ticketFields?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
@@ -393,6 +332,8 @@ const TicketAddForm = (props) => {
 								</List>
 							}
 						</Grid>
+
+						
 					</Grid>
 				</CardContent>
 				<Divider />

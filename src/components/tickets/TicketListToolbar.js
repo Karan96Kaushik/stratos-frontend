@@ -7,7 +7,7 @@ import {
 	TextField,
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
-import leadFields from '../../statics/leadFields';
+import ticketFields from '../../statics/ticketFields';
 import Filters from '../FiltersDialog'
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
@@ -19,7 +19,7 @@ let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
 services.unshift('')
 
-const CustomerListToolbar = (props) => {
+const TicketListToolbar = (props) => {
 
 	const memberRows = useSelector(selectMembers)
 	const memberNames = memberRows.map(m => m.userName)
@@ -33,9 +33,9 @@ const CustomerListToolbar = (props) => {
 
 	const commonFilters = {
 		texts: [
-            {label:"Service Type", id:"serviceType", options: services, isRequired:true},
-            // {label:"Lead Rating", id:"leadRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
-            {label:"Lead Responsibility", id:"leadResponsibility", options: memberNames, isRequired:true},
+            // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+            // {label:"Ticket Rating", id:"ticketRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
+            // {label:"Ticket Responsibility", id:"ticketResponsibility", options: memberNames, isRequired:true},
 		],
 		checkboxes: [
 		]
@@ -50,9 +50,9 @@ const CustomerListToolbar = (props) => {
 					justifyContent: 'flex-end'
 				}
 			}>
-				<Link to="/app/leads/add">
+				<Link to="/app/tickets/add">
 					<Button sx={{mx: 1}} variant="contained">
-						Add Lead
+						Add Ticket
 					</Button>
 				</Link>
 				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
@@ -64,22 +64,22 @@ const CustomerListToolbar = (props) => {
 					<CardContent>
 						<Box>
 							<Grid container spacing={1}>
-								<Grid item md={4} xs={6}>
+							{/* 	<Grid item md={4} xs={6}>
 									<TextField fullWidth label="Select Type" 
-										id="leadType"
+										id="ticketType"
 										onChange={props.handleChange}
 										select
 										SelectProps={{native: true}}
-										value={props.searchInfo["leadType"]}
+										value={props.searchInfo["ticketType"]}
 										variant="standard">
 										<option/> {
-										Object.keys(leadFields).map((option) => (
+										Object.keys(ticketFields).map((option) => (
 											<option key={option}
 												value={option}>
-												{leadFields[option]?.name}</option>
+												{ticketFields[option]?.name}</option>
 										))
 									} </TextField>
-								</Grid>
+								</Grid> */}
 								{/* <Grid item md={4} xs={6}>
 									<TextField
 										fullWidth
@@ -91,7 +91,7 @@ const CustomerListToolbar = (props) => {
 										SelectProps={{ native: true }}
 										variant="outlined"
 									>
-										{([["",""],["Lead ID", "leadID"], ["Name", "name"]]).map((option) => (
+										{([["",""],["Ticket ID", "ticketID"], ["Name", "name"]]).map((option) => (
 											<option
 												key={option[0]}
 												value={option[1]}
@@ -112,7 +112,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<Filters forView="leads" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["leadType"]} fields={leadFields}/>
+									<Filters forView="tickets" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["ticketType"]} fields={ticketFields}/>
 								</Grid>
 							</Grid>
 						</Box>
@@ -123,4 +123,4 @@ const CustomerListToolbar = (props) => {
 	)
 };
 
-export default CustomerListToolbar;
+export default TicketListToolbar;
