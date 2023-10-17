@@ -6,6 +6,12 @@ const serviceTypes = Object.keys(taskFields)
 serviceTypes.unshift("")
 serviceTypes.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D')
 
+const validateMobileEnd = (val="") => {
+    if(val.length !== 5)
+        return true
+    return false
+}
+
 const quotationFields = {
     "all": {
         texts:[
@@ -20,6 +26,7 @@ const quotationFields = {
             {label:"Status", id:"status", options: status},
             {label:"Closure Status", id:"closureStatus", options:closureStatusOptions},
             {label:"Files", id:"files", type:"file"},
+            {label:"Client Mobile End (5)", id:"mobileEnd", validation:[validateMobileEnd]},
             {label:"Remarks", id:"remarks"},
         ],
         checkboxes:[

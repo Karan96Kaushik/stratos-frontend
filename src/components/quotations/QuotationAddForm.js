@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import quotationFields from '../../statics/quotationFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
+import MessageDialog from '../MessageDialog.js';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -40,6 +41,8 @@ const TaskAddForm = (props) => {
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
+
+	const [message, setMessage] = useState({})
 
 	const [values, setValues] = useState({});
 	
@@ -77,12 +80,42 @@ const TaskAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
-			await authorizedReq({
+			let resp = await authorizedReq({
 				route:"/api/quotations/" + (!isEdit ? "add" : "update"), 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
+
+			if (resp.message) {
+				let resolveExternal, rejectExternal
+				const promise = new Promise((resolve, reject) => {
+					resolveExternal = resolve;
+					rejectExternal = reject;
+				});
+				setMessage({
+					open:true,
+					resolveExternal, rejectExternal,
+					options:['Ignore Duplicate', 'Return To Check'],
+					title: resp.message,
+					content: 'Please return to check or ignore if checked already'
+				})
+	
+				const userResp = await promise
+	
+				if (userResp !== 'Ignore Duplicate') {
+					return 
+				}
+
+				await authorizedReq({
+					route:"/api/quotations/" + (!isEdit ? "add" : "update"), 
+					data:{...values, ignoreDuplicateMobile: true}, 
+					creds:loginState.loginState, 
+					method:"post"
+				})
+			}
+
+
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} quotation!`,
 			)
@@ -194,6 +227,7 @@ const TaskAddForm = (props) => {
 				/>
 				<Divider />
 				<CardContent>
+					<MessageDialog message={message} setMessage={setMessage} />
 					<Grid container spacing={3}>
 
 						{quotationFields?.all?.texts.map((field) => (
