@@ -83,31 +83,24 @@ const TicketAddForm = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
+	isUpdate = Boolean(location.pathname.includes("edit"))
+
 	useEffect(async () => {
 		if (isUpdate) {
+
 			let ticketID = location.pathname.split("/").pop()
 			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
 
-			members = memberRows.find(val => String(val._id) == String(data._memberID))
-			if(members)
-				setMemberPlaceholder(members)
+			let members = memberRows.find(val => String(val._id) == String(data._memberID))
+			// if(members)
+			// 	setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
-			setType(data.ticketType)
+			// setType(data.ticketType)
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
 			setValues(data)
 		}
 	}, [])
-
-	if (location.pathname.includes("update")) {
-		isUpdate = true
-		let ticketID = location.pathname.split("/").pop()
-		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
-			setType(data.ticketType)
-			setValues(data)
-		}, [])
-	}
 
 	const handleSubmit = async () => {
 		try {
@@ -270,18 +263,6 @@ const TicketAddForm = (props) => {
 							</FormControl>
 						</Grid>
 
-
-						<Grid item md={12} xs={12}>
-							<TextField 
-								multiline
-								fullWidth
-								id="description"
-								rows={4}
-								label="Description"
-								onChange={handleChange}
-								/>
-						</Grid>
-
 						{ticketFields?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
@@ -307,7 +288,22 @@ const TicketAddForm = (props) => {
 									))}
 								</TextField>
 							</Grid>))}
-						
+
+
+						<Grid item md={12} xs={12}>
+							<TextField 
+								multiline
+								InputLabelProps={{ shrink: (isUpdate) ? true : undefined }}
+								fullWidth
+								id="description"
+								value={values["description"]}
+								rows={4}
+								label="Description"
+								onChange={handleChange}
+								/>
+						</Grid>
+
+
 						{ticketFields?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel

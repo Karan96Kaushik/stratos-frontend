@@ -141,10 +141,13 @@ const CustomerList = () => {
 	const extraFields = [
 		{name:"Date", id: "createdTime"},
 		{name:"Ticket ID", id: "ticketID"},
-		{name:"Name", id: "name"},
+		// {name:"Name", id: "name"},
 		// {name:"Member Assigned", id: "memberName"},
-		{name:"Type", id: "ticketType"},
+		// {name:"Type", id: "ticketType"},
 		{name:"Members Assigned", id:"membersAssigned", isHidden:false},
+		{name:"Subject", id: "subject"},
+		// {name:"Description", id: "description"},
+
 	]
 
 	const defaultFields = {
