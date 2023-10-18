@@ -12,10 +12,7 @@ import {
 	Typography
 } from '@material-ui/core';
 import {
-	AlertCircle as AlertCircleIcon,
 	BarChart as BarChartIcon,
-	Lock as LockIcon,
-	Settings as SettingsIcon,
 	CheckSquare as CheckSquareIcon,
 	Flag as FlagIcon,
 	Mail as MailIcon,
@@ -23,14 +20,11 @@ import {
 	DollarSign as DollarSignIcon,
 	Package as PackageIcon,
 	CheckCircle as CheckCircleIcon,
-	ShoppingBag as ShoppingBagIcon,
 	User as UserIcon,
-	UserPlus as UserPlusIcon,
 	Users as UsersIcon,
 	Calendar,
-	Info,
 	File,
-	ArrowDownCircle
+	AlertCircle,
 } from 'react-feather';
 import NavItem from './NavItem';
 import {LoginContext} from "../myContext"
@@ -81,11 +75,6 @@ const items = [
 		title: 'Accounts'
 	},
 	{
-		href: '/app/tickets',
-		icon: FlagIcon,
-		title: 'Tickets'
-	},
-	{
 		href: '#',
 		icon: PackageIcon,
 		title: 'Packages'
@@ -113,6 +102,11 @@ const items = [
 		icon: Calendar,
 		// isSub: true,
 		title: 'Hearing Dates'
+	},
+	{
+		href: '/app/tickets',
+		icon: AlertCircle,
+		title: 'Tickets'
 	},
 	{
 		href: '/app/leads',
