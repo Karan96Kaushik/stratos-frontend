@@ -55,9 +55,9 @@ const TicketListToolbar = (props) => {
 						Add Ticket
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
+				{/* <Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
-				</Button>
+				</Button> */}
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
