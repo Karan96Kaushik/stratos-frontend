@@ -4,7 +4,7 @@ const ticketFields = {
             // {label:"Ticket ID", id:"ticketID", isHidden:true},
             {label:"Subject", id:"subject"},
             {label:"Status", id:"status", options:['', 'Open', 'Closed']},
-            {label:"Files", id:"files", type:"file"},
+            // {label:"Files", id:"files", type:"file"},
         ],
         checkboxes:[
         ]
@@ -14,7 +14,7 @@ const ticketFields = {
 const messengerFields = {
     // all: {
         texts:[
-            {label:"Files", id:"files", type:"file", isHidden:true},
+            // {label:"Files", id:"files", type:"file", isHidden:true},
         ],
         checkboxes:[
         ]

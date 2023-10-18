@@ -64,14 +64,18 @@ const TicketMessenger = (props) => {
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
-
+	
 	const memberRows = useSelector(selectMembers)
-
+	
     console.log(memberRows)
-
+	
 	const [values, setValues] = useState({});
+	const [messages, setMessages] = useState([]);
 	
     let isUpdate = false;
+
+	if (location.pathname.includes("edit"))
+		isUpdate = true
 
 	const [errors, setErrors] = useState({});
 	const validateForm = () => {
@@ -99,57 +103,52 @@ const TicketMessenger = (props) => {
 				foundErrs[field.id] = true
 				errorFlag = true
 			}
-
+			
 		})
 		setErrors(foundErrs)
 		if(errorFlag)
-			throw new Error(errFields.join(", "))
+		throw new Error(errFields.join(", "))
 	}
 
-	useEffect(async () => {
+	let _ticketID = location.pathname.split("/").pop()
+
+	const getTickets = async () => {
+
+		let data = await authorizedReq({route:"/api/messages/", data:{_ticketID}, creds:loginState.loginState, method:"get"})
+	
+		setMessages(data)
+
         const tableContainer = document.getElementById('myTableContainer');
         if (tableContainer) {
           tableContainer.scrollTop = tableContainer.scrollHeight;
         }
-
-		if (isUpdate) {
-			let ticketID = location.pathname.split("/").pop()
-			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
-
-			members = memberRows.find(val => String(val._id) == String(data._memberID))
-			if(members)
-				setMemberPlaceholder(members)
-			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
-			setType(data.ticketType)
-			if (typeof data._membersAssigned == 'string')
-				data._membersAssigned = JSON.parse(data._membersAssigned)
-			setValues(data)
-		}
-	}, [])
-
-	if (location.pathname.includes("update")) {
-		isUpdate = true
-		let ticketID = location.pathname.split("/").pop()
-		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
-			setType(data.ticketType)
-			setValues(data)
-		}, [])
 	}
+
+	useEffect(async () => {
+		if (isUpdate) 
+			getTickets()
+	}, [])
 
 	const handleSubmit = async () => {
 		try {
 			validateForm()
-			await authorizedReq({
-				route:"/api/ticket/message" + (!isUpdate ? "add" : "update"), 
-				data:values, 
+			const res = await authorizedReq({
+				route:"/api/messages/add",
+				data:{...values, _ticketID},
 				creds:loginState.loginState, 
 				method:"post"
 			})
 			snackbar.showMessage(
-				`Successfully ${!isUpdate ? "added" : "updated"} ticket!`,
+				`Successfully ${!isUpdate ? "added" : "updated"} message!`,
 			)
-			navigate('/app/tickets');
+			setMessages([...messages, res])
+			setValues({message:""})
+
+			const tableContainer = document.getElementById('myTableContainer');
+			if (tableContainer) {
+			tableContainer.scrollTop = tableContainer.scrollHeight;
+			}
+			// navigate('/app/tickets');
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -159,9 +158,7 @@ const TicketMessenger = (props) => {
 
 	};
 
-	const [open, setOpen] = useState(false)
 	const tryDelete = () => {
-		setOpen(true)
 	}
 
 	const handleChange = async (event) => {
@@ -241,32 +238,6 @@ const TicketMessenger = (props) => {
 		}, fileName.split("/")[1])
 	}
 
-    const messages = [
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjh askjhasjkhajkshajksh ajkhsjkahskjahsjkah skjahsjka hskajshkaj hskajhsj kahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjhask jhasjkhajks hajkshajkhsjkah skjahsjka hskjahsjkahskajs hkajhskaj hsjkahs"},
-        {'memberName': "Karan Kaushik", date:'12 Sep 2013', 'message': "hia aksja sja ghhjkasgkajhskjahsk  ahsahshhhkjlashajk shjkas hkahskjahsklja hsjk ahsjhask jhasjkhajkshaj kshajkhsj kahskjahsjkahsk jahsjkah skajshkaj hskajhsj kahs"},
-    ]
-
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
@@ -275,7 +246,6 @@ const TicketMessenger = (props) => {
 					title={"Messages"}
 					subheader=""
 				/>
-				{/* <Divider /> */}
 				<CardContent>
 					<Grid className={classes.root} container spacing={3}>
 
@@ -294,11 +264,11 @@ const TicketMessenger = (props) => {
                                         <>
                                         <TableRow>
                                             <TableCell  style={{ borderBottom: 'none' }} align="left"><Typography variant="h5">{message.memberName}</Typography></TableCell>
-                                            <TableCell  style={{ borderBottom: 'none' }} align="right">{message.date}</TableCell>
+                                            <TableCell  style={{ borderBottom: 'none' }} align="right">{message.createdTime}</TableCell>
                                         </TableRow>   
                                         <TableRow>
                                             {/* <TableCell align="left"><Typography variant="h5">{message.memberName}</Typography></TableCell> */}
-                                            <TableCell align="left" colSpan={2}>{message.message}</TableCell>
+                                            <TableCell align="left" colSpan={2}>{ message.message.split('\n').map(m => <p>{m}</p>) }</TableCell>
                                         </TableRow>   
                                         </>
                                     ))}
@@ -321,6 +291,7 @@ const TicketMessenger = (props) => {
                             multiline
                             fullWidth
                             id="message"
+							value={values.message}
                             rows={4}
                             label="Message"
                             onChange={handleChange}
