@@ -3,7 +3,11 @@ import {Box, Container, Grid} from '@material-ui/core';
 import TicketAddForm from 'src/components/tickets/TicketAddForm';
 import TicketMessenger from 'src/components/tickets/TicketMessenger';
 
-const Account = () => (
+const TicketAdd = () => {
+
+	const isUpdate = Boolean(location.pathname.includes("edit"))
+
+	return (
 	<>
 		<Helmet>
 			<title>Ticket | TMS</title>
@@ -22,12 +26,12 @@ const Account = () => (
 						<TicketAddForm/>
 					</Grid>
 					<Grid item lg={8} md={6} xs={12}>
-						<TicketMessenger/>
+						{isUpdate && <TicketMessenger/>}
 					</Grid>
 				</Grid>
 			</Container>
 		</Box>
 	</>
-);
+)};
 
-export default Account;
+export default TicketAdd;
