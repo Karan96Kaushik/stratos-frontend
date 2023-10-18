@@ -18,8 +18,16 @@ export const setMembersService = (creds) => {
     return async (dispatch, getState) => {
         try {
             let response = await authorizedReq({ route: "/api/members/list", creds, data: {}, method: 'get' })
-			response = [ {}, ...response ]
-            dispatch(setMembers(response))
+			// response = [ {}, ...response ]
+
+            const memberSet = [...new Set(response.map(m => m.department))]
+			let membersData = []
+			memberSet.forEach(dep => {
+				membersData.push({isDept: true, userName: dep + " Department", memberID: "Dept."})
+				membersData.push(...response.filter(m => m.department == dep))
+			})
+
+            dispatch(setMembers(membersData))
         }
         catch (err) {
             console.error(err)
