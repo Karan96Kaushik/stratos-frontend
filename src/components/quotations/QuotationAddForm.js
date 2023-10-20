@@ -166,7 +166,7 @@ const TaskAddForm = (props) => {
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+			// console.log(filesClone)
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 

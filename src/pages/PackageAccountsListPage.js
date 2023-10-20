@@ -83,7 +83,6 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		console.log(search)
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/package/accounts?" + serialize(search));

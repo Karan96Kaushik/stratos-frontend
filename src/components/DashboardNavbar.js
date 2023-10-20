@@ -63,7 +63,6 @@ const DashboardNavbar = ({
 			})
 			if (res.notifications.length) {
 				let unread = unreadRef.current
-				console.debug(unread)
 				const lastReadTime = new Date(unread.lastRead || 0)
 				const unreadLength = res.notifications.filter(n => new Date(n.createdTime) > lastReadTime).length
 				
@@ -86,7 +85,7 @@ const DashboardNavbar = ({
 
 	useEffect(async () => {
 			getNotifications()
-			setInterval(getNotifications, 10000)
+			setInterval(getNotifications, 20000)
 	}, [])
 
 	return (

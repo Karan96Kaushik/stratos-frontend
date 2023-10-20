@@ -43,8 +43,6 @@ const CustomerList = () => {
 				setLoading({...loading, isActive:false})
 			})
 			.catch((err) => {
-				console.debug(err)
-				console.debug(err?.response?.data, err.message)
 				setLoading({...loading, isActive:false})
 				snackbar.showMessage(
 					err?.response?.data ?? err.message ?? err,
@@ -67,7 +65,6 @@ const CustomerList = () => {
 
 	const handleExport = async (password) => {
 		try{
-			console.info(password)
 			await authorizedDownload({
 				route: "/api/members/export", 
 				creds: loginState.loginState, 

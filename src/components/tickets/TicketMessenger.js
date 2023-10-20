@@ -60,14 +60,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TicketMessenger = (props) => {
-	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
 	
 	const memberRows = useSelector(selectMembers)
-	
-    console.log(memberRows)
 	
 	const [values, setValues] = useState({});
 	const [messages, setMessages] = useState([]);

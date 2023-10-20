@@ -44,21 +44,25 @@ const NotificationList = ({notifications}) => {
 	const navigate = useNavigate();
 
     const handleClick = (n) => {
-        // console.log(event.target)
-        navigate("/app/" + typeRoute[n.type] + "?" + serialize({text:n.id}));
+        console.log("/app/" + (typeRoute[n.type] ?? n.type) + "?" + serialize({text:n.id}))
+        navigate("/app/" + (typeRoute[n.type] ?? n.type) + "?" + serialize({text:n.id}));
     }
 
     const typeIcons = {
         'task': <CheckSquare/>,
+        'taskaccounts': <DollarSign/>,
         // 'client': User,
         'package': <Package/>,
+        'packageaccounts': <DollarSign/>,
         'payment': <DollarSign/>,
     }
 
     const typeRoute = {
         'task': 'tasks',
+        'taskaccounts': 'taskaccounts',
         // 'client': User,
         'package': 'packages',
+        'packageaccounts': 'package/accounts',
         'payment': 'payments',
     }
 

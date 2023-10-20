@@ -120,7 +120,6 @@ const TaskAddForm = (props) => {
 	const handleDelete = async () => {
 		try {
 			const resp = confirm("Are you sure you want to delete this entry?")
-			console.log(resp)
 			if(!resp)
 				return
 			let taskID = location.pathname.split("/").pop()

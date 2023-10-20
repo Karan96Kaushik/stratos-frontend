@@ -93,7 +93,6 @@ const TaskList = (props) => {
 	useEffect(async () => {
 		const query = useQuery(window.location.href);
 		let queryParams = Object.assign({}, query, search)
-		// console.debug(queryParams)
 		delete queryParams.filters
 		navigate("/app/tasks?" + serialize(queryParams));
 		if(search.text == "" || search.text?.length > 2 || !search?.text)

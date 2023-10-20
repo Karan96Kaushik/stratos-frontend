@@ -35,22 +35,6 @@ const App = () => {
 
 			dispatch(setMembersService(loginState))
 
-			// Refresh the token on application load
-			// authorizedLogin(loginState).then((resp) => {
-			// 	if(resp.isLoggedIn) {
-			// 		setLogin(loginState)
-			// 		dispatch(setMembersService(resp))
-			// 	}
-			// })
-			
-			// Continously check refresh token
-			// setInterval(async () => {
-			// 	if(+new Date - loginState.loginTime > 1000*15) {
-			// 		let resp = await authorizedLogin(loginState)
-			// 		if(resp.isLoggedIn)
-			// 			setLogin(loginState)
-			// 	}
-			// }, 5*60*1000);
 		}
 	}, [])
 

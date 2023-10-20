@@ -101,7 +101,6 @@ const authorizedDownloadLink = async (request, fileName) => {
         }
     
         let resp = await axios(options)
-        console.log(resp)
         window.open(resp.data.file)
     } catch (err) {
         throw new Error(err)
