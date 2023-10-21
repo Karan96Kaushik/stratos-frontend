@@ -15,6 +15,7 @@ import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
 import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
+import ClientsInput from 'src/components/ClientsInput';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -59,7 +60,7 @@ const TicketAddForm = (props) => {
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
 
-		ticketFields.texts.map(field => {
+		ticketFields.all.texts.map(field => {
 			let isInvalid = false
 
 			if(field.isRequired && !values[field.id])
@@ -263,7 +264,11 @@ const TicketAddForm = (props) => {
 							</FormControl>
 						</Grid>
 
-						{ticketFields?.texts.map((field) => (
+						<Grid item md={6} xs={12}>
+							<ClientsInput values={values} setValues={setValues} isEdit={isUpdate} />
+						</Grid>
+
+						{ticketFields.all?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -304,7 +309,7 @@ const TicketAddForm = (props) => {
 						</Grid>
 
 
-						{ticketFields?.checkboxes.map((field) => (
+						{ticketFields.all?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
