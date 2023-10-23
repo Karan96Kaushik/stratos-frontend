@@ -144,6 +144,7 @@ const CustomerList = () => {
 		// {name:"Name", id: "name"},
 		// {name:"Member Assigned", id: "memberName"},
 		// {name:"Type", id: "ticketType"},
+		{name:"Added By", id:"adderName", isHidden:false},
 		{name:"Members Assigned", id:"membersAssigned", isHidden:false},
 		{name:"Subject", id: "subject"},
 		// {name:"Description", id: "description"},

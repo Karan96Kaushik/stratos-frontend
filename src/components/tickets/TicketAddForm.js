@@ -106,6 +106,11 @@ const TicketAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			if (!isUpdate) {
+				let creator = memberRows.find(m => m._id == loginState.loginState._id)
+				values.adderName = creator.userName
+			}
+
 			await authorizedReq({
 				route:"/api/tickets/" + (!isUpdate ? "add" : "update"), 
 				data:values, 
