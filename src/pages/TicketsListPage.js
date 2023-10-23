@@ -161,7 +161,7 @@ const CustomerList = () => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={ticketFieldsCopy} otherFields={[]} typeField={'ticketType'}/>
+			<ViewDialog data={val} fields={ticketFieldsCopy} otherFields={[]} typeField={null}/>
 		)
 	}
 
