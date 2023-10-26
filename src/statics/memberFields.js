@@ -8,12 +8,13 @@ const validateMobile = (val="") => {
 
 let departments = [
     '',
-    'Admin', 
-    'Operations', 
-    'Technical',
-    'Accounts',
-    'Relationship Manager',
-    'Sales',
+    'Administration', 
+    'Compliance', 
+    'Registration',
+    'Finance',
+    'Client Retention',
+    'Business Development',
+    'Human Resource',
     'Marketing',
     'Legal'
 ]
