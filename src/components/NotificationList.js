@@ -13,6 +13,7 @@ import {
 	// Lock,
 	// Settings,
 	CheckSquare,
+    AlertCircle,
 	// Flag,
 	// Mail,
 	// FileText,
@@ -55,6 +56,7 @@ const NotificationList = ({notifications}) => {
         'package': <Package/>,
         'packageaccounts': <DollarSign/>,
         'payment': <DollarSign/>,
+        'tickets': <AlertCircle/>,
     }
 
     const typeRoute = {
