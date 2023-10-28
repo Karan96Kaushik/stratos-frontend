@@ -3,7 +3,7 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List,
-	ListItem, Typography, IconButton, Badge, SvgIcon
+	ListItem, Typography, IconButton, Badge, SvgIcon, Autocomplete
 } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { LoginContext } from "../../myContext"
@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import invoiceFields, {froms} from '../../statics/invoiceFields';
 import PasswordDialog from '../passwordDialog';
 import { Plus, Trash2 } from 'react-feather';
+import ProjectInput from '../ProjectInput';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -51,6 +52,19 @@ const TaskAddForm = (props) => {
 			setValues(data)
 		}, [])
 	}
+
+    const getClients = async () => {
+		try {
+			let response = await authorizedReq({ route: "/api/clients/search", creds: loginState.loginState, data: {...searchInfo, searchAll:true, ignorePermissions:true}, method: 'post' })
+			setClientRows(response)
+
+		} catch (err) {
+			snackbar.showMessage(
+				"Error getting clients - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.error(err)
+		}
+	};
 
 	const handleSubmit = async () => {
 		try {
@@ -179,6 +193,8 @@ const TaskAddForm = (props) => {
 		setOpen(true)
 	}
 
+	console.debug(values)
+
 	const handleDelete = async (password) => {
 		try {
 			// const resp = confirm("Are you sure you want to delete this entry?")
@@ -227,7 +243,8 @@ const TaskAddForm = (props) => {
 				<CardContent>
 					<Grid container spacing={3}>
 
-						{invoiceFields?.all?.texts.map((field) => field.id !== "invoiceID" && (
+						{invoiceFields?.all?.texts.map((field) => field.id !== "invoiceID" && ( 
+							field.id == 'projectName' ? <Grid item md={6} xs={12}> <ProjectInput values={values} setValues={setValues} /> </Grid> :
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
