@@ -43,8 +43,6 @@ const ProjectInput = ({values, setValues, isEdit}) => {
 
 
     const handleClientChange = (event) => {
-        const others = {}
-
         let client = clientRows.find(val => String(val._id) == event.target.value)
         if (!client) return
         setPlaceholder({client})
