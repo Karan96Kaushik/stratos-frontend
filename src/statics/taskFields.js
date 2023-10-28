@@ -83,6 +83,11 @@ const statusSet9 = [
     "De-Registered",
 ]
 
+const statusSet10 = [
+    "Retrieval Pending", 
+    "Half Yearly Retainer",
+]
+
 const caOptions = [
     "",
     "Rutuja Narsingh & Associates", 
@@ -137,7 +142,7 @@ const taskFields = {
         name:"Agent Registration",
         texts:[
             ...commonTextFields,
-            {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1, ...statusSet10]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFieldsEnd,
         ],
