@@ -39,7 +39,7 @@ const ProjectInput = ({values, setValues, isEdit}) => {
             const client = {clientID:"", name: values.projectName, _id: ""}
             setPlaceholder({client})
         }
-    }, [])
+    }, [values._id])
 
 
     const handleClientChange = (event) => {
