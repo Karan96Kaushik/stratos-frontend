@@ -29,6 +29,7 @@ export default {
     all: {
         texts: [
             {label:'Yearly Amount', id:"amount", type: 'number', isRequired: true},
+            {label:'Government Fees', id:"govtFees", type: 'number', isRequired: false},
             // {label:'GST Amount', id:"gstamount", type: 'number', required: false},
             {label:'Start Date', id:"startDate", type: 'date', isRequired: true},
             {label:'End Date', id:"endDate", type: 'date'},
