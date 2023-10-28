@@ -39,7 +39,7 @@ const ProjectInput = ({values, setValues, isEdit}) => {
             const client = {clientID:"", name: values.projectName, _id: ""}
             setPlaceholder({client})
         }
-    })
+    }, [])
 
 
     const handleClientChange = (event) => {
@@ -58,13 +58,12 @@ const ProjectInput = ({values, setValues, isEdit}) => {
         if(target?.value?.length == 0) {
             setClientRows([])
         }
-
         // Handle the case when no option is selected
-        if (reason === 'input' && value) {
-            setValues({...values, projectName:value})
-            const client = {clientID:"", name: value, _id: ""}
-            setPlaceholder({client})
-        }
+        // if (reason === 'input' && value) {
+        setValues({...values, projectName:value})
+        const client = {clientID:"", name: value, _id: ""}
+        setPlaceholder({client})
+        // }
     }
 
     useEffect(async () => {
