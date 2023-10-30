@@ -84,7 +84,7 @@ const statusSet9 = [
 ]
 
 const statusSet10 = [
-    "Retrieval Pending", 
+    "Retrieval Only", 
     "Half Yearly Retainer",
 ]
 
