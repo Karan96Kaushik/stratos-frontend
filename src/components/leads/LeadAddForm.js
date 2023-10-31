@@ -43,7 +43,7 @@ const LeadAddForm = (props) => {
 	const classes = useStyles();
 	
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
+	// const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 
 	const [values, setValues] = useState({});
 	const [type, setType] = useState("");
@@ -112,8 +112,8 @@ const LeadAddForm = (props) => {
 			let data = await authorizedReq({route:"/api/leads/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
 
 			members = members.find(val => String(val._id) == String(data._memberID))
-			if(members)
-				setMemberPlaceholder(members)
+			// if(members)
+			// 	setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			setType(data.leadType)
 			if (typeof data._membersAssigned == 'string')
