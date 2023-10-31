@@ -24,7 +24,7 @@ const CustomerListToolbar = (props) => {
 	let filterFields = _.merge({}, quotationFields)
 
 	filterFields.all.texts = filterFields.all.texts.filter(val => val.id != "quoteValid")
-	
+
 	return (
 		<Box {...props}>
 		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen}/>
@@ -58,8 +58,8 @@ const CustomerListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-								<Grid item item md={4} xs={6}>
-									<FiltersDialog forView="quotations" search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={filterFields}/>
+								<Grid item md={4} xs={6}>
+									<FiltersDialog forView="quotations" commonFilters={props.commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={filterFields}/>
 								</Grid>
 							</Grid>
 						</Box>

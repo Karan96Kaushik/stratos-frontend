@@ -14,6 +14,7 @@ import {
 } from "../store/reducers/filtersSlice";
 import { useSelector } from "react-redux";
 import * as _ from "lodash";
+import { selectMembers } from 'src/store/reducers/membersSlice';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -45,6 +46,8 @@ const CustomerList = () => {
 
 	const filters = useSelector(selectFilterFor("quotations"))
 
+	const memberRows = useSelector(selectMembers)
+
 	const query = useQuery();
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
@@ -53,6 +56,14 @@ const CustomerList = () => {
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
+
+	const commonFilters = {
+		texts :[
+			{label:"Added By", id: "addedBy", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+		],
+		checkboxes:[
+		]
+	}
 
 	useEffect(() => {
 		loadData()
@@ -93,6 +104,10 @@ const CustomerList = () => {
 		try{
 			let others = {}
 			others.filters = _.merge({}, filters)
+
+			if(others.filters && others.filters.addedBy) {
+				others.filters.addedBy = memberRows.find(m => others.filters.addedBy == m.userName + ` (${m.memberID})`)._id
+			}
 
 			setLoading({...loading, isActive:true})
 			const _data = await authorizedReq({
@@ -171,7 +186,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<QuotationListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<QuotationListToolbar handleExport={handleExport} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
