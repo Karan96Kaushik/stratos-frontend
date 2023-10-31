@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function useQuery() {
-	let entries =  new URLSearchParams(useLocation().search);
-	const result = {}
-	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
-		result[key] = value;
-	}
-	return result;
-}
+// function useQuery() {
+// 	let entries =  new URLSearchParams(useLocation().search);
+// 	const result = {}
+// 	for(const [key, value] of entries) { // each 'entry' is a [key, value] tupple
+// 		result[key] = value;
+// 	}
+// 	return result;
+// }
 
 const PackageAddForm = (props) => {
 	const navigate = useNavigate();
@@ -54,9 +54,8 @@ const PackageAddForm = (props) => {
 	});
 
 	const [values, setValues] = useState({});
+	const [disabled, setDisabled] = useState({});
 	
-	const query = useQuery();
-
     let isEdit = false;
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
 
@@ -133,7 +132,8 @@ const PackageAddForm = (props) => {
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
-
+			if (data.govtFees || String(data.govtFees) === '0')
+				setDisabled({ govtFees:true })
 			setValues(data)
 		}, [])
 	}
@@ -312,6 +312,7 @@ const PackageAddForm = (props) => {
 									select={field.options?.length}
 									SelectProps={{ native: true }}
 									label={field.label}
+									disabled={disabled[field.id]}
 									type={field.type ?? 'text'}
 									inputProps={field.type == "file" ? { multiple: true } : {}}
 									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
