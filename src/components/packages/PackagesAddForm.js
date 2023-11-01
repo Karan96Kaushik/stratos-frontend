@@ -55,6 +55,8 @@ const PackageAddForm = (props) => {
 
 	const [values, setValues] = useState({});
 	const [disabled, setDisabled] = useState({});
+
+	const isAccounts = !!location.pathname.includes("accounts")
 	
     let isEdit = false;
 	const [searchInfo, setSearchInfo] = useState({type:"", text:""});
@@ -132,7 +134,7 @@ const PackageAddForm = (props) => {
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
-			if (data.govtFees || String(data.govtFees) === '0')
+			if (isAccounts && (data.govtFees || String(data.govtFees) === '0'))
 				setDisabled({ govtFees:true })
 			setValues(data)
 		}, [])
