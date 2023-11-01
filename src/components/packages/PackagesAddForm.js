@@ -134,7 +134,7 @@ const PackageAddForm = (props) => {
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
-			if (isAccounts && (data.govtFees || String(data.govtFees) === '0'))
+			if (!isAccounts && (data.govtFees || String(data.govtFees) === '0'))
 				setDisabled({ govtFees:true })
 			setValues(data)
 		}, [])
