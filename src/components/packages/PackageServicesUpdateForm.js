@@ -200,7 +200,7 @@ const PackageAddForm = (props) => {
                             </Grid>
                         ))}
 						
-						{/* <Grid item md={6} xs={12}>
+						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>
 										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
@@ -209,7 +209,7 @@ const PackageAddForm = (props) => {
 										</ListItem>))}
 								</List>
 							}
-						</Grid> */}
+						</Grid>
 					</Grid>
 				</CardContent>
 				<Divider />
