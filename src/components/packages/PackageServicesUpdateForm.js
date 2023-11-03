@@ -101,6 +101,17 @@ const PackageAddForm = (props) => {
 
 	};
 
+	const downloadFile = ({target}) => {
+		const fileName = target.textContent
+		authorizedDownloadLink({
+			route:"/api/files", 
+			data:{fileName}, 
+			creds:loginState.loginState, 
+			method:"post"
+		}, fileName.split("/")[1])
+
+	}
+
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<Card>
