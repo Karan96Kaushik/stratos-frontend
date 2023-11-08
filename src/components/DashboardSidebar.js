@@ -1,10 +1,8 @@
-import { useEffect, useContext } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-	Avatar,
 	Box,
-	Button,
 	Divider,
 	Drawer,
 	Hidden,
@@ -27,7 +25,8 @@ import {
 	AlertCircle,
 } from 'react-feather';
 import NavItem from './NavItem';
-import {LoginContext} from "../myContext"
+import { selectUser } from 'src/store/reducers/userSlice';
+import { useSelector } from 'react-redux';
 
 const items = [
 	{
@@ -142,7 +141,10 @@ const items = [
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
-    const loginContext = useContext(LoginContext)
+	const user = useSelector(selectUser)
+	
+	let unread = user.unread ?? 0
+	if (unread < 0) unread = 0
 
 	useEffect(() => {
 		if (openMobile && onMobileClose) {
@@ -170,13 +172,13 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					color="textPrimary"
 					variant="h5"
 				>
-					{loginContext.loginState.userName}
+					{user.userName}
 				</Typography>
 				<Typography
 					color="textSecondary"
 					variant="body2"
 				>
-					{loginContext.loginState.designation + ' | ' + loginContext.loginState.department}
+					{user.designation + ' | ' + user.department}
 				</Typography>
 			</Box>
 			<Divider />
@@ -190,7 +192,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 							href={item.href == '#' ? undefined : item.href}
 							onClick={item.onClick ?? (() => {console.debug(item.href)})}
 							key={item.title}
-							title={item.title}
+							title={item.title + ((item.title == "Tickets" && unread > 0) ? ` (${unread})` : '')}
 							icon={item.icon}
 						/>
 					))}

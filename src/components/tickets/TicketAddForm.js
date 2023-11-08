@@ -13,9 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import ticketFields from '../../statics/ticketFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import ClientsInput from 'src/components/ClientsInput';
+import { updateUser } from 'src/store/reducers/userSlice';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TicketAddForm = (props) => {
+	const dispatch = useDispatch()
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
@@ -91,8 +93,12 @@ const TicketAddForm = (props) => {
 
 			let ticketID = location.pathname.split("/").pop()
 			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
+			
+			if (String(data.unread) !== "undefined")
+				dispatch(updateUser({unread: data.unread}))
 
-			let members = memberRows.find(val => String(val._id) == String(data._memberID))
+			data = data.tickets
+			// let members = memberRows.find(val => String(val._id) == String(data._memberID))
 			// if(members)
 			// 	setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})

@@ -14,12 +14,15 @@ import NotificationList from './NotificationList.js'
 import {LoginContext} from '../myContext'
 import { authorizedReq } from 'src/utils/request'
 import { useSnackbar } from 'material-ui-snackbar-provider'
+import { useDispatch } from 'react-redux'
+import { updateUser } from 'src/store/reducers/userSlice'
 
 const DashboardNavbar = ({
 	onMobileNavOpen,
 	...rest
 }) => {
 
+	const dispatch = useDispatch();
 	const snackbar = useSnackbar();
 
 	const loginState = useContext(LoginContext)
@@ -58,13 +61,15 @@ const DashboardNavbar = ({
 				creds:loginState.loginState, 
 				method:"get"
 			})
-			if (res.notifications.length) {
+			if (res?.notifications?.length) {
 				let unread = unreadRef.current
 				const lastReadTime = new Date(unread.lastRead || 0)
 				const unreadLength = res.notifications.filter(n => new Date(n.createdTime) > lastReadTime).length
 				
 				setUnread({...unread, count:unreadLength})
 				setNotif(res.notifications)
+				if (res.unread != undefined)
+					dispatch(updateUser({unread: res.unread}))
 			}
 		}
 		catch (err) {

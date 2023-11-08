@@ -12,8 +12,9 @@ import ViewDialog from 'src/components/ViewDialog';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as _ from "lodash"
+import { selectUser, updateUser } from 'src/store/reducers/userSlice';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -35,6 +36,7 @@ const serialize = function(obj) {
 
 const CustomerList = () => {
 
+	const dispatch = useDispatch()
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
@@ -44,6 +46,7 @@ const CustomerList = () => {
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
 	const filters = useSelector(selectFilterFor("tickets"))
+	const user = useSelector(selectUser)
 
 	const ticketFieldsCopy = _.merge({}, ticketFields)
 
@@ -87,23 +90,21 @@ const CustomerList = () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/tickets?" + serialize(queryParams));
-		goSearch();
-	}, [search])
-
-	const goSearch = (rmk) => {
 		loadData()
-    }
+	}, [search, user.unread])
 
 	const loadData = async () => {
 		try{
 			setLoading({...loading, isActive:true})
-			const _data = await authorizedReq({
+			const data = await authorizedReq({
 				route: "/api/tickets/search", 
 				creds: loginState.loginState, 
 				data:{...search, filters: {...filters}}, 
 				method: 'post'
 			})
-			setData({rows:_data})
+			if(data.unread !== undefined)
+				dispatch(updateUser({unread:data.unread}))
+			setData({rows:data.tickets})
 
 		} catch (err) {
 			snackbar.showMessage(
@@ -175,7 +176,7 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<TicketListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<TicketListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

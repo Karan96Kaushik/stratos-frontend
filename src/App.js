@@ -14,6 +14,9 @@ import { useDispatch } from "react-redux";
 import {
 	setMembersService
 } from "./store/reducers/membersSlice";
+import {
+	updateUser
+} from "./store/reducers/userSlice";
 
 const App = () => {
 
@@ -32,9 +35,8 @@ const App = () => {
 
 	useEffect(() => {
 		if(loginState?.isLoggedIn) {
-
 			dispatch(setMembersService(loginState))
-
+			dispatch(updateUser(loginState))
 		}
 	}, [])
 

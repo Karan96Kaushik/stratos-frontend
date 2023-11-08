@@ -1,6 +1,10 @@
-import { useContext, useState } from 'react';
 import axios from 'axios';
-import { LoginContext } from "../myContext"
+
+const axiosInstance = axios.create({
+    validateStatus: function (status) {
+      return (status <= 299 && status >= 200) || status === 304;
+    }
+});
 
 const authorizedReq = async (request) => {
 
@@ -18,11 +22,12 @@ const authorizedReq = async (request) => {
             options.params = {...request.data}
         }
 
-        let resp = await axios(options)
+        let resp = await axiosInstance(options)
         
         return resp.data
     }
     catch (err) {
+        console.error(err)
         throw new Error(err?.response?.data?.message?? err?.response?.data ?? err?.response ?? err)
     }
 };
@@ -100,7 +105,7 @@ const authorizedDownloadLink = async (request, fileName) => {
             options.params = {...request.data}
         }
     
-        let resp = await axios(options)
+        let resp = await axiosInstance(options)
         window.open(resp.data.file)
     } catch (err) {
         throw new Error(err)
@@ -121,7 +126,7 @@ const authorizedLogin = async (request) => {
             }
         }
 
-        let resp = await axios(options)
+        let resp = await axiosInstance(options)
 
         resp = {
             isLoggedIn: true,
