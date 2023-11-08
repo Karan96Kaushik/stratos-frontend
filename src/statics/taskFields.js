@@ -89,8 +89,6 @@ const statusSet10 = [
 ]
 
 const statusSet11 = [
-    "Awaiting Documents From Client",
-    "Under Scrutiny",
     "Submitted Documents to RERA",
     "Hearing Date Received",
     "MahaRERA Queries",
