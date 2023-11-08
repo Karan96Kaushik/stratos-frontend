@@ -8,23 +8,26 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import _ from 'lodash';
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
-const useRowStyles = makeStyles({
+const useRowStyles = ({makeHover}) => makeStyles({
 	root: {
 		'& > *': {
 			borderBottom: 'unset',
 			border: '1px solid #e0e0e0',
 		},
+		'&:hover': makeHover ? {
+		  backgroundColor: '#f5f5f5', // This is the color you want on hover
+		  cursor: 'pointer',
+		} : {},
 	},
 	high: {
 		color: "red"
@@ -42,8 +45,8 @@ const useRowStyles = makeStyles({
 	}
 });
 
-function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit }) {
-	const classes = useRowStyles();
+function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit, rowOnclick }) {
+	const classes = useRowStyles({makeHover:true})();
 	// Filter out the ones not hidden in table view
 
 	let fieldsShow = _.merge({}, fields[type])
@@ -64,7 +67,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 
 	return (
 		<React.Fragment>
-			<TableRow className={classes.root}>
+			<TableRow className={classes.root} onClick={rowOnclick(row)}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
 				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
@@ -163,7 +166,7 @@ const useTableStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, disableEdit}) {
+export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, disableEdit, rowOnclick}) {
 	const classes = useTableStyles();
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
@@ -229,12 +232,11 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 							type={type} 
 							additional={additional}
 							disableEdit={disableEdit}
+							rowOnclick={rowOnclick}
 						/>
 					))}
 				</TableBody>
 				</Table>
-				{/* <TableFooter> */}
-					{/* <TableRow> */}
 						<TablePaginationActions
 							rowsPerPageOptions={[25, 50, 100]}
 							colSpan={0}
@@ -245,8 +247,6 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 							onRowsPerPageChange={handleChangeRowsPerPage}
 							ActionsComponent={TablePaginationActions}
 						/>
-					{/* </TableRow> */}
-					{/* </TableFooter> */}
 		</TableContainer>
 	);
 }

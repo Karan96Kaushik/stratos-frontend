@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as _ from "lodash"
 import { selectUser, updateUser } from 'src/store/reducers/userSlice';
+import { useHistory } from "react-router-dom";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -165,6 +166,9 @@ const CustomerList = () => {
 			<ViewDialog data={val} fields={ticketFieldsCopy} otherFields={[]} typeField={null}/>
 		)
 	}
+	const openTicket = (val) => (_e) => {
+		navigate('edit/' + val._id)
+	}
 
 	return (<>
 		<Helmet>
@@ -194,6 +198,8 @@ const CustomerList = () => {
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
+							rowOnclick={openTicket}
+							disableEdit={true}
 						/>				
 					</Paper>
 				</Box>
