@@ -26,17 +26,16 @@ const DashboardNavbar = ({
 	const [notifications, setNotif] = useState([])
 	const [unread, setUnread] = useState({count:0, lastRead:new Date(loginState.loginState?.lastReadTime ?? 0)})
 	const unreadRef = useRef(unread);
+	const notificationsRef = useRef(notifications.length);
 	
 	useEffect(() => {
 		unreadRef.current = unread; // Keep the latest value in the ref
-	  }, [unread]);
+		notificationsRef.current = notifications.length; // Keep the latest value in the ref
+	}, [notifications]);
 
-	  
 	const [anchorEl, setAnchorEl] = useState(null)
 	const [open, setOpen] = useState(false)
 
-
-	
 	const handleClick = async (event) => {
 	  setAnchorEl(event.currentTarget)
 	  setOpen(true)
@@ -49,15 +48,13 @@ const DashboardNavbar = ({
 	  setUnread({lastRead:(new Date()).toISOString(), count:0})
 	}
 
-
 	const getNotifications = async () => {
 		try {
 			if(!loginState.loginState.isLoggedIn)
 				return
-
 			let res = await authorizedReq({
 				route:"/api/notifications",
-				data: {mid: loginState.loginState._id},
+				data: {mid: loginState.loginState._id, useCached: notificationsRef.current != 0},
 				creds:loginState.loginState, 
 				method:"get"
 			})
