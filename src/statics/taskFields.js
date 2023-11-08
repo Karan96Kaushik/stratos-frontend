@@ -88,6 +88,29 @@ const statusSet10 = [
     "Half Yearly Retainer",
 ]
 
+const statusSet11 = [
+    "Awaiting Documents From Client",
+    "Under Scrutiny",
+    "Submitted Documents to RERA",
+    "Hearing Date Received",
+    "MahaRERA Queries",
+    "Awaiting Order",
+]
+
+const sroAuthorities = [
+    "",
+    "CREDAI MAHARASHTRA",
+    "CREDAI - MCHI",
+    "NAREDCO",
+    "BAI ",
+    "MBVA ",
+    "BDA",
+    "Public Authority ",
+    "Union Territory",
+    "Unavailable",
+]
+
+
 const caOptions = [
     "",
     "Rutuja Narsingh & Associates", 
@@ -486,6 +509,22 @@ const taskFields = {
             ...commonCheckboxFields
         ]
     },
+    "Order No 40": {
+        name:"Order No 40",
+        texts:[
+            {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+            {label:"Hearing Date", id:"hearingDate", type:'date'},
+            {label:"Curr Completion Date", id:"currCompletionDate", type:'date'},
+            {label:"To Be Extended Date", id:"extensionDate", type:'date'},
+            {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
+            {label:"SRO Authority", id:"sroAuthority", options:sroAuthorities},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet1, ...statusSet11]},
+            ...commonTextFieldsEnd,
+        ],
+        checkboxes:[
+            ...commonCheckboxFields
+        ]
+    },
     "Others - Legal": {
         name:"Others - Legal",
         texts:[
@@ -519,6 +558,7 @@ const technical =  [
     "Change of Promoter",
     "Project Closure",
     "De-Registration",
+    "Order No 40",
     "Others - Tech",
 ]
 
