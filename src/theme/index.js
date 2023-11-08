@@ -24,6 +24,28 @@ const lightTheme = {
     typography
 };
 
+const devTheme = {
+    palette: {
+        background: {
+            default: '#F4F6F8',
+            paper: colors.common.white
+        },
+        primary: {
+            contrastText: '#eff1fe',
+            main: '#757575'
+        },
+        text: {
+            primary: '#172b4d',     // Black
+            secondary: '#6b778c',   // Red
+            tertiary: '#eff1fe',   // Yellow
+            quarternary: '#bc3713',   // Red
+            quinary: '#3b9d66',   // Green
+        }
+    },
+    shadows,
+    typography
+};
+
 const darkTheme = {
     palette: {
         background: {
@@ -44,6 +66,6 @@ const darkTheme = {
     typography
 };
 
-const theme = createMuiTheme(0 ? darkTheme : lightTheme);
+const theme = createMuiTheme(process.env.NODE_ENV == "development" ? devTheme : lightTheme);
 
 export default theme;
