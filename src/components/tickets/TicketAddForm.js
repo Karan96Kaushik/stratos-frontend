@@ -103,9 +103,9 @@ const TicketAddForm = (props) => {
 			// 	setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			// setType(data.ticketType)
-			if (typeof data._membersAssigned == 'string')
-				data._membersAssigned = JSON.parse(data._membersAssigned)
-			setValues(data)
+			if (typeof data.tickets._membersAssigned == 'string')
+				data.tickets._membersAssigned = JSON.parse(data.tickets._membersAssigned)
+			setValues(data.tickets)
 		}
 	}, [])
 
