@@ -97,13 +97,13 @@ const CustomerList = () => {
 	const loadData = async () => {
 		try{
 			setLoading({...loading, isActive:true})
-			const _data = await authorizedReq({
+			const data = await authorizedReq({
 				route: "/api/tickets/search", 
 				creds: loginState.loginState, 
 				data:{...search, filters: {...filters}}, 
 				method: 'post'
 			})
-			setData({rows:_data})
+			setData({rows:data.tickets})
 
 		} catch (err) {
 			snackbar.showMessage(
