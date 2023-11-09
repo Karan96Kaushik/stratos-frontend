@@ -18,7 +18,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
-const useRowStyles = ({makeHover}) => makeStyles({
+const useRowStyles = ({makeHover, pointer}) => makeStyles({
 	root: {
 		'& > *': {
 			borderBottom: 'unset',
@@ -26,7 +26,7 @@ const useRowStyles = ({makeHover}) => makeStyles({
 		},
 		'&:hover': makeHover ? {
 		  backgroundColor: '#f5f5f5', // This is the color you want on hover
-		  cursor: 'pointer',
+		  cursor: pointer ? 'pointer' : undefined,
 		} : {},
 	},
 	high: {
@@ -46,7 +46,8 @@ const useRowStyles = ({makeHover}) => makeStyles({
 });
 
 function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit, rowOnclick }) {
-	const classes = useRowStyles({makeHover:true})();
+
+	const classes = useRowStyles({makeHover:true, pointer: rowOnclick ? true : false })();
 	// Filter out the ones not hidden in table view
 
 	let fieldsShow = _.merge({}, fields[type])
@@ -67,7 +68,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 
 	return (
 		<React.Fragment>
-			<TableRow className={classes.root} onClick={rowOnclick(row)}>
+			<TableRow className={classes.root} onClick={rowOnclick ? rowOnclick(row) : undefined}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
 				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id]}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
