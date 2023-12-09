@@ -97,14 +97,16 @@ const TicketAddForm = (props) => {
 			if (String(data.unread) !== "undefined")
 				dispatch(updateUser({unread: data.unread}))
 
-			data = data.tickets
+			// data = data.tickets
 			// let members = memberRows.find(val => String(val._id) == String(data._memberID))
 			// if(members)
 			// 	setMemberPlaceholder(members)
 			// setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			// setType(data.ticketType)
+			
 			if (typeof data.tickets._membersAssigned == 'string')
 				data.tickets._membersAssigned = JSON.parse(data.tickets._membersAssigned)
+
 			setValues(data.tickets)
 		}
 	}, [])
