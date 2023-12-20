@@ -58,6 +58,7 @@ const statusSet6 = [
     "Uploaded",
     "Certified", 
     "Sent for Queries",
+    "Confirmation Received",
 ]
 
 const statusSet7 = [
