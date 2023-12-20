@@ -3,22 +3,18 @@ import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List, 
-	Select, FormControl, makeStyles, ListItem, Typography,
-	InputLabel, Input, MenuItem, ListItemText,
+	makeStyles, ListItem, Typography,
+	// InputLabel, Input, MenuItem, ListItemText,
     TableContainer, TableBody, TableRow, Paper, Table,
     TableHead, TableCell, TableFooter
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
-import { useNavigate } from 'react-router-dom';
-import ticketFields from '../../statics/ticketFields';
 import taskFields from "../../statics/taskFields"
-import PasswordDialog from '../passwordDialog';
 import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import { messengerFields } from 'src/statics/ticketFields';
-import moment from 'moment';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -136,8 +132,6 @@ const TicketMessenger = (props) => {
 				creds:loginState.loginState, 
 				method:"post"
 			})
-			
-			res.createdTime = moment(res.createdTime).format("DD-MMM HH:mm")
 
 			snackbar.showMessage(
 				`Successfully ${!isUpdate ? "added" : "updated"} message!`,
