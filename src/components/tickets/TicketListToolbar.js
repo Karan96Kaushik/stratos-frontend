@@ -22,7 +22,8 @@ services.unshift('')
 const TicketListToolbar = (props) => {
 
 	const memberRows = useSelector(selectMembers)
-	const memberNames = memberRows.map(m => m.userName)
+	const memberNames = memberRows.map(m => m.userName).filter(m => !m.includes('Department'))
+	memberNames.unshift('')
 	// memberNames.unshift('')
 
 	const [open, setOpen] = React.useState(false)
@@ -35,7 +36,8 @@ const TicketListToolbar = (props) => {
 		texts: [
             // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
             // {label:"Ticket Rating", id:"ticketRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
-            // {label:"Ticket Responsibility", id:"ticketResponsibility", options: memberNames, isRequired:true},
+            {label:"Added By", id:"adderName", options: memberNames},
+            {label:"Assigned Member", id:"membersAssigned", options: memberNames},
 		],
 		checkboxes: [
 		]
