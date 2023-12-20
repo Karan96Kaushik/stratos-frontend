@@ -18,6 +18,7 @@ import PasswordDialog from '../passwordDialog';
 import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import { messengerFields } from 'src/statics/ticketFields';
+import moment from 'moment';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -135,6 +136,9 @@ const TicketMessenger = (props) => {
 				creds:loginState.loginState, 
 				method:"post"
 			})
+			
+			res.createdTime = moment(res.createdTime).format("DD-MMM HH:mm")
+
 			snackbar.showMessage(
 				`Successfully ${!isUpdate ? "added" : "updated"} message!`,
 			)
