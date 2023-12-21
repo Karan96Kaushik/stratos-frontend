@@ -93,7 +93,7 @@ const TicketAddForm = (props) => {
 
 			let ticketID = location.pathname.split("/").pop()
 			let data = await authorizedReq({route:"/api/tickets/", data:{_id:ticketID}, creds:loginState.loginState, method:"get"})
-			
+
 			if (String(data.unread) !== "undefined")
 				dispatch(updateUser({unread: data.unread}))
 
@@ -106,6 +106,8 @@ const TicketAddForm = (props) => {
 			
 			if (typeof data.tickets._membersAssigned == 'string')
 				data.tickets._membersAssigned = JSON.parse(data.tickets._membersAssigned)
+			if (data.tickets.membersAssigned.includes(','))
+				data.tickets.membersAssigned = data.tickets.membersAssigned.split(', ')
 
 			setValues(data.tickets)
 		}
@@ -222,7 +224,7 @@ const TicketAddForm = (props) => {
 			others.membersAssigned = memberRows.filter(v => (departmentNames.includes(v.department)) || event.target.value.includes(v._id))
 			event.target.value = others.membersAssigned.map(v => v._id).concat(departments)
 			others.membersAssigned = others.membersAssigned.map(v => v.userName)
-			others.membersAssigned = others.membersAssigned.join(", ")
+			// others.membersAssigned = others.membersAssigned.join(", ")
 		}
 
 		setValues({
@@ -265,7 +267,7 @@ const TicketAddForm = (props) => {
 									value={values?._membersAssigned || []}
 									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned" }})}
 									input={<Input />} 
-									renderValue={(s) => values?.membersAssigned}
+									renderValue={(s) => values?.membersAssigned?.join(', ')}
 									>
 									{memberRows.map((member) => (
 										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>

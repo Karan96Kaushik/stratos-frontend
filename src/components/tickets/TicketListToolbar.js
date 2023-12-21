@@ -28,9 +28,9 @@ const TicketListToolbar = (props) => {
 
 	const [open, setOpen] = React.useState(false)
 
-	const getExport = async () => {
-		setOpen(true)
-	}
+	// const getExport = async () => {
+	// 	setOpen(true)
+	// }
 
 	const commonFilters = {
 		texts: [

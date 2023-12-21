@@ -45,6 +45,11 @@ const useRowStyles = ({makeHover, pointer}) => makeStyles({
 	}
 });
 
+function processText (str) {
+	if (Array.isArray(str)) return str.join(', ')
+	return str
+}
+
 function Row({ row, type, fields, extraFields, additional, defaultFields, disableEdit, rowOnclick }) {
 
 	const classes = useRowStyles({makeHover:true, pointer: rowOnclick ? true : false })();
@@ -70,10 +75,10 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 		<React.Fragment>
 			<TableRow className={classes.root} onClick={rowOnclick ? rowOnclick(row) : undefined}>
 				{/* Mount Extra Fields - fileds that are not entered by user */}
-				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id]}</TableCell>)) : <></>}
+				{(fieldsShow?.texts?.length && extraFields?.length) ? extraFields.map((field) => (<TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{processText(row[field.id])}</TableCell>)) : <></>}
 				{/* Mount Main Fields - enterd by user */}
 				{fieldsShow?.texts.map(field => <TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} className={classes[field.id]} align="left">
-					<Typography name={field.id} variant="header" className={classes[flagColor(field.id)]}>{row[field.id]}</Typography>
+					<Typography name={field.id} variant="header" className={classes[flagColor(field.id)]}>{processText(row[field.id])}</Typography>
 				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
