@@ -267,7 +267,7 @@ const TicketAddForm = (props) => {
 									value={values?._membersAssigned || []}
 									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned" }})}
 									input={<Input />} 
-									renderValue={(s) => values?.membersAssigned?.join(', ')}
+									renderValue={(s) => Array.isArray(values?.membersAssigned) ? values?.membersAssigned?.join(', ') : values?.membersAssigned}
 									>
 									{memberRows.map((member) => (
 										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
