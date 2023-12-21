@@ -24,7 +24,7 @@ const TaskAddForm = (props) => {
 	const [values, setValues] = useState({});
 	const [clientRows, setClientRows] = useState([]);
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
-	const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
+	// const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 	const [placeholder, setPlaceholder] = useState({
 		client: {clientID:"", name: "", _id: ""}
 	});
@@ -67,8 +67,8 @@ const TaskAddForm = (props) => {
 			let data = await authorizedReq({route:"/api/tasks/", data:{_id:taskID}, creds:loginState.loginState, method:"get"})
 
 			members = members.find(val => String(val._id) == String(data._memberID)) 
-			if(members)
-				setMemberPlaceholder(members)
+			// if(members)
+			// 	setMemberPlaceholder(members)
 			setPlaceholder({ client:{ name: data.clientName, clientID: data.clientID }})
 			setType(data.serviceType)
 			if (typeof data._membersAssigned == 'string')
@@ -237,7 +237,7 @@ const TaskAddForm = (props) => {
 		} else if (event.target.id == '_memberID') {
 			others.memberName = event.target.name
 			others.memberID = event.target.memberID
-			setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
+			// setMemberPlaceholder(memberRows.find(val => String(val.memberID) == String(others.memberID)))
 		} else if (event.target.id == '_membersAssigned') {
 			let departments = event.target.value.filter(d => d.includes('Department'))
 			let departmentNames = departments.map(d => d.split(" Department")[0])
