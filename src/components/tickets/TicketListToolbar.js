@@ -38,6 +38,7 @@ const TicketListToolbar = (props) => {
             // {label:"Ticket Rating", id:"ticketRating", options: ["", 1,2,3,4,5], type:"number", isRequired:true},
             {label:"Added By", id:"adderName", options: memberNames},
             {label:"Assigned Member", id:"membersAssigned", options: memberNames},
+            {label:"Status", id:"status", options: ['', 'Open', 'Closed']},
 		],
 		checkboxes: [
 		]
