@@ -1,7 +1,7 @@
 const isMasked = str => /\*{3,}/.test(str);
 
 const validateMobile = (val="") => {
-    if (isMasked) return true
+    if (isMasked) return false
     if(val.length < 10)
         return true
     return false
