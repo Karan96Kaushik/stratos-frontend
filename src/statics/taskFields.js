@@ -53,6 +53,8 @@ const paymentStatuses = [
 
 // F5 F3
 const statusSet6 = [
+    "For Checking",
+    "Checked",
     "Awaiting Client Confirmation",
     "For Certification",  
     "Uploaded",
@@ -117,6 +119,7 @@ const caOptions = [
     "Gupta Lodha & Co",
     "MDA Associates",
     "Gaurav S Rajpal & Co",
+    "Vidya Bhure",
     "Others",
 ]
 
