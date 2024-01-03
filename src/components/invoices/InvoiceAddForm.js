@@ -96,6 +96,15 @@ const TaskAddForm = (props) => {
 		setValues({...values, items: values.items})
 	}
 
+	const addItem = () => { 
+		values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) 
+
+		if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from'])) {
+			others.items.forEach(i => i.particulars = 'Legal Consultation')
+		}
+
+	}
+
 	const handleChange = async (event) => {
 		let others = {}
 		let overrideID
@@ -167,17 +176,11 @@ const TaskAddForm = (props) => {
 					panNum: false
 				})
 			}
-			// else {
-			// 	others = {
-			// 		gstNum: '',
-			// 		panNum: ''
-			// 	}
-			// 	setDisabled({
-			// 		gstNum: false,
-			// 		panNum: false
-			// 	})
-			// }
-			
+
+			if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(event.target.value) && values.items) {
+				others.items = values.items
+				others.items.forEach(i => i.particulars = 'Legal Consultation')
+			}	
 		}
 
 		setValues({
@@ -296,6 +299,7 @@ const TaskAddForm = (props) => {
 											label={field.label + " " + (idx+1)}
 											type={field.type ?? 'text'}
 											id={field.id + "-$" + idx}
+											disabled={['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from']) && field.id == 'particulars'}
 											inputProps={field.type == "file" ? { multiple: true } : {}}
 											InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 											value={field.id != "files" ? values.items[idx][field.id] ?? '' : undefined}
@@ -320,7 +324,7 @@ const TaskAddForm = (props) => {
 							</>
 						))}
 						<Grid item md={12} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-							<Button variant="outlined" onClick={() => { values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) }}>
+							<Button variant="outlined" onClick={addItem}>
 								Add Invoice Item
 							</Button>
 						</Grid>
