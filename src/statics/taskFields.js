@@ -235,6 +235,7 @@ const taskFields = {
             {label:"Date of Certification", id:"dateOfCert", type:"date"},
             {label:"Period", id:"period", isRequired:true},
             {label:"CA Assigned", id:"ca", options:caOptions},
+            {label:"As On Date", id:"asOnDate", type:"date"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet6]},
             {label:"Confirmation Date", id:"confirmationDate", type: 'date'},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
