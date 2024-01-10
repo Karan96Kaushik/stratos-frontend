@@ -97,11 +97,18 @@ const TaskAddForm = (props) => {
 	}
 
 	const addItem = () => { 
-		values.items ? setValues({...values, items:[...values.items, {}]}) : setValues({...values, items:[{}]}) 
+		let items = {}
+		if (!values?.items) 
+			items =[{}]
+		else
+			items = [...values.items, {}]
+
 
 		if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from'])) {
-			others.items.forEach(i => i.particulars = 'Legal Consultation')
+			items.forEach(i => i.particulars = 'Legal Consultation')
 		}
+
+		setValues({...values, items})
 
 	}
 
