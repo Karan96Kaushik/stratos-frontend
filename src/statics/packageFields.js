@@ -38,7 +38,7 @@ export default {
             {label:'Contact No', id:"contactNum"},
             {label:'Owner Name', id:"owner"},
             {label:'Owner Contact No', id:"ownerContact"},
-            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly', 'Lumpsum'], isRequired: true},
+            {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly', 'Monthly', 'Lumpsum'], isRequired: true},
             {label:"Payment Date", id:"paymentDate", type:"date"},
             {label:"FollowUp Date", id:"followupDate", type:"date"},
             // {label:'Due Amount', id:"due", type: 'number'},
