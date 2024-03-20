@@ -21,6 +21,8 @@ const statusSet1 = [
     "Under Scrutiny", 
     "Certificate Generated",
     "Retrieval Pending",
+    "Training & Exam",
+    "HY Report",
 ]
 
 // F2A UP F1 F2 OT TC
