@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, IconButton, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import ClientListToolbar from 'src/components/clients/ClientListToolbar2';
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoginContext,LoadingContext } from "../myContext"
@@ -14,6 +14,7 @@ import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
 import { useSelector } from "react-redux";
+import { Outbound } from '@material-ui/icons';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -157,6 +158,17 @@ const CustomerList = () => {
 		)
 	}
 
+	let isChrome = !!window.chrome
+
+	const renderRERAButton = isChrome && ((val) => {
+		return (
+			val.userID && val.password && 
+			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage({ userID: val.userID, password: val.password }, "*")}>
+				<Outbound />
+			</IconButton>
+		)
+	})
+
 	return (<>
 		<Helmet>
 			<title>Clients | TMS</title>
@@ -180,7 +192,7 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							rowsPerPage={rowsPerPage} 
-							additional={[renderViewButton]}
+							additional={[renderViewButton, renderRERAButton || null]}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}

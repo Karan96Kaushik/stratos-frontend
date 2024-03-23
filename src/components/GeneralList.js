@@ -82,7 +82,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
-				{additional?.map(func => (<TableCell onClick={(event) => event.stopPropagation()}>{func(row)}</TableCell>))}
+				{additional?.map(func => func && (<TableCell onClick={(event) => event.stopPropagation()}>{func(row)}</TableCell>))}
 				{/* <TableCell>
 					<Link to={"view/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
