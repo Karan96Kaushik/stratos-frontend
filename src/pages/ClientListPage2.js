@@ -158,7 +158,13 @@ const CustomerList = () => {
 		)
 	}
 
+	let actionNames = ['View']
+
 	let isChrome = !!window.chrome
+
+	if (isChrome) {
+		actionNames.unshift('Open RERA')
+	}
 
 	const renderRERAButton = isChrome && ((val) => {
 		return (
@@ -192,7 +198,8 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							rowsPerPage={rowsPerPage} 
-							additional={[renderViewButton, renderRERAButton || null]}
+							additionalNames={actionNames}
+							additional={[renderRERAButton || null, renderViewButton]}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
