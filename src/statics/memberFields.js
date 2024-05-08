@@ -64,6 +64,8 @@ const pagePermissionFields = [
     "Leads R Servicewise",
 	"Tickets R",
 	"Tickets W",
+	"Sales R",
+	"Sales W",
 ]
 
 const servicePermissionFields = Object.keys(taskFields)

@@ -22,6 +22,7 @@ import {
 	Users as UsersIcon,
 	Calendar,
 	File,
+	Send,
 	AlertCircle,
 } from 'react-feather';
 import NavItem from './NavItem';
@@ -103,6 +104,12 @@ const items = [
 		title: 'Hearing Dates'
 	},
 	{
+		href: '/app/personalcal',
+		icon: Calendar,
+		// isSub: true,
+		title: 'Personal Calendar'
+	},
+	{
 		href: '/app/tickets',
 		icon: AlertCircle,
 		title: 'Tickets'
@@ -111,6 +118,11 @@ const items = [
 		href: '/app/leads',
 		icon: FlagIcon,
 		title: 'Leads'
+	},
+	{
+		href: '/app/sales',
+		icon: Send,
+		title: 'Sales'
 	},
 	{
 		href: '/app/quotations',

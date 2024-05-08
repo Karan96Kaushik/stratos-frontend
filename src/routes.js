@@ -10,6 +10,8 @@ import TicketList from 'src/pages/TicketsListPage';
 import TicketAdd from 'src/pages/TicketAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
+import SalesAdd from 'src/pages/SalesAdd';
+import SalesListPage from 'src/pages/SalesList';
 import InvoiceListPage from 'src/pages/InvoiceListPage';
 import InvoiceAdd from 'src/pages/InvoiceAdd';
 import QuotationListPage from 'src/pages/QuotationListPage';
@@ -34,6 +36,7 @@ import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import Calendar from 'src/pages/Calendar';
+import PersonalCalendar from 'src/pages/PersonalCalendar';
 
 const routes = (isLoggedIn) => [
 	{
@@ -45,6 +48,7 @@ const routes = (isLoggedIn) => [
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
 			{ path: 'calendar', element: <Calendar /> },
+			{ path: 'personalcal', element: <PersonalCalendar /> },
 			{
 				path: 'clients',
 				children: [
@@ -83,6 +87,14 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <LeadsListPage /> },
 					{ path: 'add', element: <LeadsAdd /> },
 					{ path: 'edit/:id', element: <LeadsAdd /> },
+				]
+			},
+			{
+				path: 'sales',
+				children: [
+					{ path: '/', element: <SalesListPage /> },
+					{ path: 'add', element: <SalesAdd /> },
+					{ path: 'edit/:id', element: <SalesAdd /> },
 				]
 			},
 			{

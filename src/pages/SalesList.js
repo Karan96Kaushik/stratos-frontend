@@ -1,20 +1,22 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
-import ClientListToolbar from 'src/components/clients/ClientListToolbar2';
+import SalesListToolbar from 'src/components/sales/SalesListToolbar';
 import {authorizedReq, authorizedDownload} from '../utils/request'
-import { LoginContext,LoadingContext } from "../myContext"
+import {addBlockers, removeBlockers} from '../utils/jsControls'
+import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import clientFields from '../statics/clientFields';
-import {allClients} from '../statics/clientFields';
+import salesFields from '../statics/salesFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
-import { useSelector } from "react-redux";
-import {addBlockers, removeBlockers} from '../utils/jsControls'
+import { useDispatch, useSelector } from "react-redux";
+import * as _ from "lodash"
+import { selectUser, updateUser } from 'src/store/reducers/userSlice';
+import { useHistory } from "react-router-dom";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -35,31 +37,37 @@ const serialize = function(obj) {
   }
 
 const CustomerList = () => {
-	// console.log("A2HS"); const eventq = new Event('sodapop'); window.dispatchEvent(eventq);
 
-	const filters = useSelector(selectFilterFor("clients"))
-
+	const dispatch = useDispatch()
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
-	const [data, setData] = useState({type: '', rows:[]})
+    const [data, setData] = useState({type: '', rows:[]})
     // const args = useRef({})
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
+	const filters = useSelector(selectFilterFor("sales"))
+	const user = useSelector(selectUser)
+
+	const salesFieldsCopy = _.merge({}, salesFields)
+
 	const query = useQuery();
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
+	// if(!query.salesType)
+	// 	query.salesType = 'developer'
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
-	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
+	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
+
 
 	useEffect(() => {
-		removeBlockers()
-		// if(query.clientType) {
-			loadData()
+        addBlockers()
+        // if(query.salesType) {
+		loadData()
 		// }
 	}, [])
 
@@ -68,7 +76,7 @@ const CustomerList = () => {
 	}, [page, rowsPerPage])
 
 	useEffect(async () => {
-		// Don't update page num to 1 on FIRST RENDER
+		// Don't update Page num to 1 on FIRST RENDER
 		if(sortState.sortDir == -1 && sortState.sortID == 'createdTime')
 			setSearch({...search, ...sortState})
 		// If another sort state is set to neutral (0); revert to default sortState
@@ -83,43 +91,35 @@ const CustomerList = () => {
 	}, [sortState])
 
 	useEffect(async () => {
-		navigate("/app/clients?" + serialize(search));
-		if((search.text == "" || search.text.length > 2 || !search.text))
-			goSearch("PG");
-	}, [search])
-
-	const goSearch = (rmk) => {
-		loadData()
-    }
+		let queryParams = Object.assign({}, search)
+		delete queryParams.filters
+		navigate("/app/sales?" + serialize(queryParams));
+		// loadData()
+	}, [search, user.unread])
 
 	const loadData = async () => {
 		try{
-			let others = {}
-
-			others.filters = _.merge({}, filters)
-
-			if(!search.clientType)
-				others.searchAll = true
-
 			setLoading({...loading, isActive:true})
-			const _data = await authorizedReq({
-				route: "/api/clients/search", 
+			const data = await authorizedReq({
+				route: "/api/sales/search", 
 				creds: loginState.loginState, 
-				data:{...search, ...others}, 
+				data:{...search, filters: {...filters}}, 
 				method: 'post'
 			})
-			setData({rows:_data})
+			if(data.unread !== undefined)
+				dispatch(updateUser({unread:data.unread}))
+			setData({rows:data.sales})
 
 		} catch (err) {
 			snackbar.showMessage(
-				String(err?.response?.data ?? err.message ?? err),
+				err?.response?.data ?? err.message ?? err,
 			)
 		}
 		setLoading({...loading, isActive:false})
 	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'clientType'){
+		if (event.target.id == 'salesType'){
 			setData({rows:[]})
 			setPage(1)
 			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
@@ -128,40 +128,45 @@ const CustomerList = () => {
 
 	const handleExport = async (password) => {
 		try {
-			let others = {}
-			if(!search.clientType)
-				others.searchAll = true
-	
 			await authorizedDownload({
-				route: "/api/clients/export", 
+				route: "/api/sales/export", 
 				creds: loginState.loginState, 
-				data:{...search, ...others, password}, 
-				method: 'post'
-			}, "clientsExport" + ".xlsx")
+				data:{...search, password, filters: {...filters}}, 
+				method: 'post',
+				password
+			}, "salesExport-" + search.salesType + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
 				String(err?.response?.data ?? err.message ?? err),
 			)
 		}
-
 	}
 	
-	const extraFields = [
-		{name:"Date", id: "createdTime"},
-		{name:"Client ID", id: "clientID"},
-	]
+    const extraFields = []
+
+	const defaultFields = {texts:[
+        {label:"Date", id:"createdTime"},
+        {label:"Sales ID", id:"salesID"},
+        {label:"Members Assigned", id:"membersAssigned"},
+        {label:"Promoter Name", id:"promoterName"},
+        {label:"Status", id: "status"},
+        {label:"Rating", id:"rating"},
+    ], checkboxes:[]}
 
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={clientFields} otherFields={extraFields} typeField={'clientType'} titleID={"clientID"} />
+			<ViewDialog data={val} fields={salesFieldsCopy} otherFields={[]} typeField={null}/>
 		)
 	}
+	// const openSales = (val) => (_e) => {
+	// 	navigate('edit/' + val._id)
+	// }
 
 	return (<>
 		<Helmet>
-			<title>Clients | TMS</title>
+			<title>Sales | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -169,24 +174,27 @@ const CustomerList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<ClientListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
+				<SalesListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={null}//{search.clientType} 
-							fields={clientFields} 
-							defaultFields={allClients} 
+							type={null}//search.salesType} 
+							fields={salesFieldsCopy} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
-							rowsPerPage={rowsPerPage} 
+							defaultFields={defaultFields} 
+							additionalNames={['View']}
 							additional={[renderViewButton]}
+							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
+							// rowOnclick={openSales}
+							disableEdit={false}
 						/>				
 					</Paper>
 				</Box>
