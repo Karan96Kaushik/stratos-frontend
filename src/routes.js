@@ -36,7 +36,7 @@ import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import Calendar from 'src/pages/Calendar';
-import PersonalCalendar from 'src/pages/PersonalCalendar';
+import MeetingCalendar from 'src/pages/MeetingCalendar';
 
 const routes = (isLoggedIn) => [
 	{
@@ -48,7 +48,7 @@ const routes = (isLoggedIn) => [
 			{ path: 'products', element: <ProductList /> },
 			{ path: 'settings', element: <Settings /> },
 			{ path: 'calendar', element: <Calendar /> },
-			{ path: 'personalcal', element: <PersonalCalendar /> },
+			{ path: 'meetingcal', element: <MeetingCalendar /> },
 			{
 				path: 'clients',
 				children: [

@@ -104,10 +104,10 @@ const items = [
 		title: 'Hearing Dates'
 	},
 	{
-		href: '/app/personalcal',
+		href: '/app/meetingcal',
 		icon: Calendar,
 		// isSub: true,
-		title: 'Personal Calendar'
+		title: 'Meeting Calendar'
 	},
 	{
 		href: '/app/tickets',

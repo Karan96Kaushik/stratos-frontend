@@ -1,20 +1,22 @@
 import React, {useEffect, useState, createRef} from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import CalendarDialog from 'src/components/CalendarDialog';
-import EventViewDialog from 'src/components/EventViewDialog';
+import MeetingCalDialog from 'src/components/MeetingCalDialog';
+import CalEventViewDialog from 'src/components/MCalEventViewDialog';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 
 import "../styles.css";
 
 const MyCalendar = (props) => {
+
   
 	const [open, setOpen] = useState(false)
   const [popup, setPopup] = useState(null)
   const [editEvent, setEditEvent] = useState(null)
   const [search, setSearch] = useState('')
   let events = props.events ?? []
+  console.log(events)
 
   if (search.length)
     events = props.events.filter(e => 
@@ -27,7 +29,7 @@ const MyCalendar = (props) => {
   const calendarRef = createRef()
 
   function clickListener (e) {
-    let taskID = e.target.innerText
+    let salesID = e.target.innerText
     // console.debug(e.target)
     let date = e.target.parentElement?.parentElement?.parentElement?.parentElement?.getAttribute('data-date')
     if (!date) {
@@ -78,13 +80,13 @@ const MyCalendar = (props) => {
       />
       <br />
       <br />
-      <CalendarDialog 
+      <MeetingCalDialog 
         setOpen={setOpen} open={open}
         setEvents={props.setEvents} events={events} 
         editEvent={editEvent} setEditEvent={setEditEvent} 
       />
       <br />
-      <EventViewDialog 
+      <CalEventViewDialog 
         event={popup} setEvent={setPopup} 
         setEditEvent={setEditEvent} 
         allEvents={props.events} setAllEvents={props.setEvents} 

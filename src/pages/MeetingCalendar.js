@@ -1,6 +1,6 @@
 import {Helmet} from 'react-helmet';
 import {Box, Container, Grid} from '@material-ui/core';
-import PersonalCalendar from 'src/components/PersonalCalendar';
+import MeetingCalendar from 'src/components/MeetingCalendar';
 import { useRef, useEffect, useState, useContext } from 'react';
 import { LoadingContext, LoginContext } from "../myContext"
 import { authorizedReq, authorizedDownload } from '../utils/request'
@@ -9,12 +9,12 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 const getColor = (status) => {
     let color = undefined
     let eventColor = undefined
-    if (status == 0) {
-        color = "#fbbc04"
+    if (!status) {
+        color = "#fbbc04" // Pending
         eventColor = "#000000"
     } 
     else if (status == 3) {
-        color = "#cb483f"
+        color = "#cb483f" // Disapproved
         eventColor = "#000000"
     }
     return [color, eventColor]
@@ -68,7 +68,7 @@ const Calendar = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Personal Calendar</title>
+				<title>Meeting Calendar</title>
 			</Helmet>
 			<Box sx={{
 				backgroundColor: 'background.default',
@@ -76,7 +76,7 @@ const Calendar = () => {
 				py: 3
 			}}>
 				<Container maxWidth="xl">
-					<PersonalCalendar setEvents={setEvents} events={events}/>
+					<MeetingCalendar setEvents={setEvents} events={events}/>
 				</Container>
 			</Box>
 		</>
