@@ -14,6 +14,7 @@ import React from 'react';
 import taskFields from "../../statics/taskFields"
 import { useSelector } from "react-redux";
 import { selectMembers } from 'src/store/reducers/membersSlice';
+import SalesUploadDialog from '../SalesUploadDialog';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 services.push('Consultation', 'Package A', 'Package B', 'Package C', 'Package D', 'General')
@@ -26,12 +27,13 @@ const CustomerListToolbar = (props) => {
 	// memberNames.unshift('')
 
 	const [open, setOpen] = React.useState(false)
+	const [openDialog, setOpenDialog] = React.useState(false)
 
 	const getExport = async () => {
 		setOpen(true)
 	}
 	const openUploadPopup = async () => {
-		// setOpenPopup(true)
+		setOpenDialog(true)
 	}
 
 	const commonFilters = {
@@ -45,6 +47,7 @@ const CustomerListToolbar = (props) => {
 	return (
 		<Box {...props}>
 		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
+		<SalesUploadDialog open={openDialog} setOpen={setOpenDialog} />
 			<Box sx={
 				{
 					display: 'flex',

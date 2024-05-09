@@ -44,7 +44,6 @@ const MemberAddForm = (props) => {
 	const snackbar = useSnackbar();
 	const location = useLocation();
 	let memberFieldsCopy = _.merge({}, memberFields);
-	console.log(memberFieldsCopy)
 	memberFieldsCopy = memberFieldsCopy.all
 
     let isEdit = false;
