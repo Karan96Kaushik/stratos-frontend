@@ -49,7 +49,7 @@ const SalesAddForm = (props) => {
 	// const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 
 	const [values, setValues] = useState({});
-	
+
     let isEdit = false;
 
 	const [errors, setErrors] = useState({});
@@ -141,7 +141,7 @@ const SalesAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} sales!`,
 			)
-			navigate('/app/sales');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -169,7 +169,7 @@ const SalesAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully deleted sales!`,
 			)
-			navigate('/app/sales');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -258,7 +258,7 @@ const SalesAddForm = (props) => {
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
 			<Card>
 				<CardHeader
-					title={!isEdit ? "New Sales Lead" : "Update Sales Lead"}
+					title={!isEdit ? "New Sales Lead" : ("Update Sales Lead " + values?.salesID)}
 					subheader=""
 				/>
 				<Divider />

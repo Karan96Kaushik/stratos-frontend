@@ -30,21 +30,27 @@ export default {
     all: {
         name:"All",
         texts:[
-            {label:"Sales ID", id:"salesID", isRequired:true},
+
+            {label:"Sales ID", id:"salesID", isHidden:true},
             {label:"Project Name", id:"projectName", isRequired:true},
             {label:"Promoter Name", id:"promoterName", isRequired:true},
-            {label:"District", id:"district"},
-            {label:"Certificate No", id:"certificateNo"},
+            // {label:"Members Assigned", id:"membersAssigned", isRequired:true},
             {label:"Added By", id:"memberName", isHidden:true},
             {label:"Phone 1", id:"phone1", isRequired:true},
-            {label:"Phone 2", id:"phone2"},
+            {label:"Phone 2", id:"phone2", isRequired:false},
             {label:"Status", id: "status", options: statusOptions},
-            {label:"Client ID", id:"exClientID"},
-            {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
+            {label:"Client ID", id:"exClientID", isRequired:true},
+            {label:"Village", id:"village"},
+            {label:"OC", id:"oc"},
+            {label:"District", id:"district"},
+            {label:"Completion Date", id:"completionDate", type:"date"},
+            {label:"Form 4", id:"form4"},
+            {label:"Certificate No", id:"certificateNo"},
+            {label:"Certificate Date", id:"certificateDate", type:"date"},
+            {label:"Rating", id:"rating", options:[1,2,3,4,5]},
             {label:"Remarks", id:"remarks", isHidden:false},           
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
-
 
         ],
         checkboxes:[

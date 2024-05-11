@@ -94,7 +94,7 @@ const CustomerList = () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
 		navigate("/app/sales?" + serialize(queryParams));
-		// loadData()
+		loadData()
 	}, [search, user.unread])
 
 	const loadData = async () => {
@@ -134,7 +134,7 @@ const CustomerList = () => {
 				data:{...search, password, filters: {...filters}}, 
 				method: 'post',
 				password
-			}, "salesExport-" + search.salesType + ".xlsx")
+			}, "salesExport" + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
@@ -150,6 +150,7 @@ const CustomerList = () => {
         {label:"Sales ID", id:"salesID"},
         {label:"Members Assigned", id:"membersAssigned"},
         {label:"Promoter Name", id:"promoterName"},
+        {label:"Follow Up Date", id:"followUpDate"},
         {label:"Status", id: "status"},
         {label:"Rating", id:"rating"},
     ], checkboxes:[]}
