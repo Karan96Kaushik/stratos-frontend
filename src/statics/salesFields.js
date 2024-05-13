@@ -47,7 +47,7 @@ export default {
             {label:"Form 4", id:"form4"},
             {label:"Certificate No", id:"certificateNo"},
             {label:"Certificate Date", id:"certificateDate", type:"date"},
-            {label:"Rating", id:"rating", options:[1,2,3,4,5]},
+            {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
             {label:"Remarks", id:"remarks", isHidden:false},           
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Meeting Date", id:"meetingDate", type:"date"},

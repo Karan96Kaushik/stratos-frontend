@@ -23,8 +23,9 @@ services.unshift('')
 const CustomerListToolbar = (props) => {
 
 	const memberRows = useSelector(selectMembers)
-	const memberNames = memberRows.map(m => m.userName)
-	// memberNames.unshift('')
+	let memberNames = memberRows.map(m => m.userName)
+	memberNames = memberNames.filter(m => !m.includes('Department'))
+	memberNames.unshift('')
 
 	const [open, setOpen] = React.useState(false)
 	const [openDialog, setOpenDialog] = React.useState(false)
@@ -38,7 +39,8 @@ const CustomerListToolbar = (props) => {
 
 	const commonFilters = {
 		texts: [
-            {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+            // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+            {label:"Assigned Member", id:"membersAssigned", options: memberNames},
 		],
 		checkboxes: [
 		]

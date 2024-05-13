@@ -203,9 +203,9 @@ export default function ViewDialog({ setEvents, events, editEvent, setEditEvent,
 
 	return (
 		<div>
-            <Button sx={{mx: 1}} variant="contained" onClick={() => setOpen(true)}>
+            {/* <Button sx={{mx: 1}} variant="contained" onClick={() => setOpen(true)}>
                 Add Meeting Date
-            </Button>
+            </Button> */}
 			<Dialog
 				fullWidth={true}
 				maxWidth={'sm'}
