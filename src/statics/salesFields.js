@@ -50,7 +50,7 @@ export default {
             {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
             {label:"Remarks", id:"remarks", isHidden:false},           
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
-            {label:"Calling Date", id:"callingDate", type:"date"},
+            {label:"Calling Date", id:"callingDate", type:"date", isRequired: true},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
 
         ],
