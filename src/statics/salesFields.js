@@ -52,6 +52,8 @@ export default {
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Calling Date", id:"callingDate", type:"date", isRequired: true},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
+            {label:"Quoted Amount", id:"quotedAmount", type:"number"},
+            {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
 
         ],
         checkboxes:[
