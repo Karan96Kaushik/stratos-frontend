@@ -331,8 +331,18 @@ const SalesAddForm = (props) => {
 									))}
 								</TextField>
 							</Grid>))}
+
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Remarks History</Typography>
+
+							{isEdit && values?.existingRemarks?.length && <List>
+								{values?.existingRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List>}
+						</Grid>
 						
-						<Grid item md={12} xs={12}>
+						{/* <Grid item md={12} xs={12}>
 							<FormControl fullWidth className={classes.formControl}>	
 							<InputLabel id="serviceType">Service Type</InputLabel>
 							<Select 
@@ -351,7 +361,7 @@ const SalesAddForm = (props) => {
 								))}
 							</Select>
 							</FormControl>
-						</Grid>
+						</Grid> */}
 
 						{salesFieldsCopy["all"]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -367,16 +377,6 @@ const SalesAddForm = (props) => {
 							</Grid>))}
 
 						
-						<Grid item md={6} xs={12}>
-							{isEdit && values?.files && <List>
-									{values?.files?.map((file) => (<ListItem>
-										<Link style={{cursor:'pointer', wordBreak:'break-all'}} onClick={downloadFile} file={file}>
-											<Typography >{file}</Typography>
-										</Link>
-										</ListItem>))}
-								</List>
-							}
-						</Grid>
 					</Grid>
 				</CardContent>
 				<Divider />
