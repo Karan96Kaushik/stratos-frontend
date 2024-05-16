@@ -55,7 +55,7 @@ export default {
             {label:"Meeting Date", id:"meetingDate", type:"date"},
             {label:"Quoted Amount", id:"quotedAmount", type:"number"},
             {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
-            {label:"Remarks", id:"remarks", isHidden:false}, 
+            {label:"Remarks", id:"remarks", isHidden:false, type:'array'}, 
             
             // {label:"Members Assigned", id:"membersAssigned", isRequired:true},
             
