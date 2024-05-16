@@ -50,6 +50,23 @@ const SalesAddForm = (props) => {
 
 	const [values, setValues] = useState({});
 
+	let disabled = {
+		exClientID: true,
+		callingDate: true,
+		certificateNo: true,
+		salesID: true,
+		projectName: true,
+		promoterName: true,
+		phone1: true,
+		phone2: true,
+		village: true,
+		district: true,
+		form4: true,
+		oc: true,
+		certificateDate: true,
+		completionDate: true,
+	}
+
     let isEdit = false;
 
 	const [errors, setErrors] = useState({});
@@ -159,10 +176,10 @@ const SalesAddForm = (props) => {
 	const handleDelete = async (password) => {
 
 		try {
-			let taskID = location.pathname.split("/").pop()
+			let salesID = location.pathname.split("/").pop()
 			await authorizedReq({
 				route:"/api/sales/", 
-				data:{_id:taskID, password}, 
+				data:{_id:salesID, password}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -294,6 +311,7 @@ const SalesAddForm = (props) => {
 									fullWidth
 									select={field.options?.length}
 									SelectProps={{ native: true }}
+									disabled={isEdit && disabled[field.id]}
 									label={field.label}
 									type={field.type ?? 'text'}
 									inputProps={field.type == "file" ? { multiple: true } : {}}
