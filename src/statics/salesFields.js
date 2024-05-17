@@ -43,7 +43,7 @@ export default {
             {label:"Phone 2", id:"phone2", isRequired:false},
             {label:"Village", id:"village"},
             {label:"District", id:"district"},
-            {label:"Form 4", id:"form4"},
+            {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
             {label:"OC", id:"oc"},
 
             {label:"Certificate Date", id:"certificateDate", type:"date"},
