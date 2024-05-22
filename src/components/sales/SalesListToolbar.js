@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import salesFields from '../../statics/salesFields';
+import {statusOptions} from '../../statics/salesFields';
 import Filters from '../FiltersDialog'
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
@@ -41,6 +42,14 @@ const CustomerListToolbar = (props) => {
 		texts: [
             // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
             {label:"Assigned Member", id:"membersAssigned", options: memberNames},
+            {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
+            {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
+            {label:"Status", id: "status", options: statusOptions},
+
+            {label:"Certificate Date", id:"certificateDate", type:"date"},
+            {label:"Completion Date", id:"completionDate", type:"date"},
+            {label:"FollowUp Date", id:"followUpDate", type:"date"},
+            {label:"Meeting Date", id:"meetingDate", type:"date"},
 		],
 		checkboxes: [
 		]

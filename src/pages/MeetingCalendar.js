@@ -16,6 +16,10 @@ const getColor = (status) => {
     else if (status == 3) {
         color = "#cb483f" // Disapproved
         eventColor = "#000000"
+    } 
+    else if (status == 99) {
+        color = "#f4f6f8" // Follow Up
+        eventColor = "#000000"
     }
     return [color, eventColor]
 }
