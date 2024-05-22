@@ -112,7 +112,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 								</Grid>
 							</>))}
 
-						{((commonFilters?.texts?.length) % 2) > 0 && <Grid item md={6} xs={12} />} 
+						{/* {((commonFilters?.texts?.length) % 2) > 0 && <Grid item md={6} xs={12} />}  */}
 
 						{fields[type]?.texts.map((field) => (field?.options?.length &&
 							<>
@@ -142,6 +142,9 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
+
+						{/* {((fields[type]?.texts.filter(f => f.type != 'date')?.length) % 2) > 0 && <Grid item md={6} xs={12} />}  */}
+						
 
 						{fields[type]?.texts.map((field) => ('date' == field.type &&
 							<>

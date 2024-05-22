@@ -45,13 +45,13 @@ const CustomerListToolbar = (props) => {
             {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
             {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
             {label:"Status", id: "status", options: statusOptions},
+            {label:"OC", id:"oc", options:['', 'Y', 'N']},
 
             {label:"Certificate Date", id:"certificateDate", type:"date"},
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
-			
-            {label:"OC", id:"oc", options:['', 'Y', 'N']},
+
 		],
 		checkboxes: [
 		]
