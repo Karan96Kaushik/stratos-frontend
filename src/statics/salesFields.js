@@ -33,7 +33,7 @@ export default {
 
             {label:"Certificate No", id:"certificateNo"},
 
-            {label:"Client ID", id:"exClientID", isRequired:true},  
+            {label:"Client ID", id:"exClientID",},  
             {label:"Calling Date", id:"callingDate", type:"date", isRequired: true},
 
             {label:"Sales ID", id:"salesID", isHidden:true},
@@ -44,7 +44,7 @@ export default {
             {label:"Village", id:"village"},
             {label:"District", id:"district"},
             {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
-            {label:"OC", id:"oc"},
+            {label:"OC", id:"oc", options:['', 'Y', 'N']},
 
             {label:"Certificate Date", id:"certificateDate", type:"date"},
             {label:"Completion Date", id:"completionDate", type:"date"},

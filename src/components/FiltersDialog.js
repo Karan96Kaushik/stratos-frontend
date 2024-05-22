@@ -3,7 +3,7 @@ import {
 	TextField, Button,
 	Dialog, DialogTitle, Grid,
 	DialogContent, DialogActions,
-	Checkbox, FormControlLabel
+	Checkbox, FormControlLabel,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -111,6 +111,8 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 									</TextField>
 								</Grid>
 							</>))}
+
+						{((commonFilters?.texts?.length) % 2) > 0 && <Grid item md={6} xs={12} />} 
 
 						{fields[type]?.texts.map((field) => (field?.options?.length &&
 							<>

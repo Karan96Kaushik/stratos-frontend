@@ -50,6 +50,8 @@ const CustomerListToolbar = (props) => {
             {label:"Completion Date", id:"completionDate", type:"date"},
             {label:"FollowUp Date", id:"followUpDate", type:"date"},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
+			
+            {label:"OC", id:"oc", options:['', 'Y', 'N']},
 		],
 		checkboxes: [
 		]

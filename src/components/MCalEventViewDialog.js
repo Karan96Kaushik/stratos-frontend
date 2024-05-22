@@ -157,7 +157,7 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
 					{!event?.salesID && <Button onClick={handleEdit} color="primary">
 						Edit
 					</Button>}
-					{(event?.meetingStatus != 1) && approveMeetingsPermission && <Button onClick={handleApprove} color="primary">
+					{(![1, 99].includes(event?.meetingStatus)) && approveMeetingsPermission && <Button onClick={handleApprove} color="primary">
 						Approve
 					</Button>}
 					<Button onClick={handleClose} color="primary">
