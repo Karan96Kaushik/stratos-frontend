@@ -125,6 +125,11 @@ const items = [
 		title: 'Sales'
 	},
 	{
+		href: '/app/ccreceived',
+		icon: Send,
+		title: 'CC Received'
+	},
+	{
 		href: '/app/quotations',
 		icon: MailIcon,
 		title: 'Quotations'

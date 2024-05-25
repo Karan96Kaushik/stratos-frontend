@@ -37,6 +37,8 @@ import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import Calendar from 'src/pages/Calendar';
 import MeetingCalendar from 'src/pages/MeetingCalendar';
+import CCReceivedList from './pages/CCReceivedList';
+import CCReceivedAddPage from './pages/CCReceivedAddPage';
 
 const routes = (isLoggedIn) => [
 	{
@@ -95,6 +97,14 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <SalesListPage /> },
 					{ path: 'add', element: <SalesAdd /> },
 					{ path: 'edit/:id', element: <SalesAdd /> },
+				]
+			},
+			{
+				path: 'ccreceived',
+				children: [
+					{ path: '/', element: <CCReceivedList /> },
+					{ path: 'add', element: <CCReceivedAddPage/> },
+					{ path: 'edit/:id', element: <CCReceivedAddPage /> },
 				]
 			},
 			{

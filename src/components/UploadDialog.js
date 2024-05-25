@@ -8,7 +8,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import {authorizedReq, authorizedDownloadLink} from '../utils/request'
 import {LoginContext} from "../myContext"
 
-export default function SalesUploadDialog({ open, setOpen }) {
+export default function UploadDialog({ open, setOpen, section, title }) {
 	const snackbar = useSnackbar();
 	const loginState = useContext(LoginContext);
 
@@ -18,7 +18,7 @@ export default function SalesUploadDialog({ open, setOpen }) {
 		try {
 			// validateForm()
 			await authorizedReq({
-				route:"/api/sales/fileupload", 
+				route:`/api/${section}/fileupload`, 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
@@ -38,14 +38,14 @@ export default function SalesUploadDialog({ open, setOpen }) {
 
 	const handleChange = async (event) => {
 		let others = {}
-		if (event.target.id == 'salesFile') {
+		if (event.target.id == section+'File') {
 			// console.log(event.target.files.length)
 			others = {docs:[]}
 
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+			// console.log(filesClone)
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
@@ -100,17 +100,17 @@ export default function SalesUploadDialog({ open, setOpen }) {
 				onClose={handleClose} 
 				aria-labelledby="form-dialog-title">
 					
-				<DialogTitle id="form-dialog-title">Upload Sales File</DialogTitle>
+				<DialogTitle id="form-dialog-title">Upload {title} File</DialogTitle>
 				<DialogContent>
 					<Grid container spacing={3}>
                         <Grid item md={12} xs={12}>
                             <TextField
                                 fullWidth
                                 onChange={handleChange}
-                                value={values['salesFile']}
+                                value={values[section + 'File']}
                                 type="file"
                                 variant="outlined"
-                                id='salesFile'
+                                id={section+'File'}
                                 inputProps={{
                                     accept: ".csv" // Accepts only CSV files
                                 }}
