@@ -261,7 +261,7 @@ const CCReceivedAddForm = (props) => {
 					<Grid container spacing={3}>
 
 
-						<Grid item md={6} xs={12}>
+						{/* <Grid item md={6} xs={12}>
 							<FormControl fullWidth>	
 								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
 								<Select 
@@ -281,7 +281,7 @@ const CCReceivedAddForm = (props) => {
 									))}
 								</Select>
 							</FormControl>
-						</Grid>
+						</Grid> */}
 
 						{ccreceivedFieldsCopy["all"]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -310,7 +310,7 @@ const CCReceivedAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						<Grid item md={6} xs={12}>
+						{/* <Grid item md={6} xs={12}>
 							<Typography variant="h5">Remarks History</Typography>
 
 							{isEdit && values?.existingRemarks?.length && <List>
@@ -319,7 +319,7 @@ const CCReceivedAddForm = (props) => {
 									</ListItem>))}
 							</List>}
 						</Grid>
-						
+						 */}
 						{/* <Grid item md={12} xs={12}>
 							<FormControl fullWidth className={classes.formControl}>	
 							<InputLabel id="serviceType">Service Type</InputLabel>
