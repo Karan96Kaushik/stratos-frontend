@@ -24,6 +24,8 @@ import {
 	File,
 	Send,
 	AlertCircle,
+	Archive,
+	Layout,
 } from 'react-feather';
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
@@ -105,7 +107,7 @@ const items = [
 	},
 	{
 		href: '/app/meetingcal',
-		icon: Calendar,
+		icon: Layout,
 		// isSub: true,
 		title: 'Meeting Calendar'
 	},
@@ -126,7 +128,7 @@ const items = [
 	},
 	{
 		href: '/app/ccreceived',
-		icon: Send,
+		icon: Archive,
 		title: 'CC Received'
 	},
 	{

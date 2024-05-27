@@ -148,6 +148,7 @@ const CCReceivedList = () => {
 	const defaultFields = {texts:[
         {label:"Date", id:"createdTime"},
         {label:"Data ID", id:"dataID"},
+        {label:"Certificate No", id:"certNo"},
         {label:"Member Information", id:"memberInformation"},
         {label:"Promoter Name", id:"promoterName"},
         {label:"Village", id:"village"},
@@ -175,7 +176,7 @@ const CCReceivedList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<CCReceivedListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<CCReceivedListToolbar loadData={loadData} handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

@@ -32,7 +32,8 @@ export default {
         texts:[
 
             {label:"Data ID", id:"dataID"},
-            {label:"Member Information", id:"memberInformation", isRequired:true},
+            {label:"Certificate No", id:"certNo", isRequired:true},
+            {label:"Member Details", id:"memberInformation", isRequired:true},
             {label:"Promoter Name", id:"promoterName", isRequired:true},
             {label:"Village", id:"village"},
             {label:"District", id:"district"},

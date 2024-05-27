@@ -60,7 +60,7 @@ const CCReceivedListToolbar = (props) => {
 	return (
 		<Box {...props}>
 		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
-		<UploadDialog open={openDialog} setOpen={setOpenDialog} section='ccreceived' title='CC Received' />
+		<UploadDialog loadData={props.loadData} open={openDialog} setOpen={setOpenDialog} section='ccreceived' title='CC Received' />
 			<Box sx={
 				{
 					display: 'flex',

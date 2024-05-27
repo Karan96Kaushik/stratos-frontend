@@ -5,24 +5,33 @@ import {
 	DialogContent, DialogActions
 } from '@material-ui/core';
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import {authorizedReq, authorizedDownloadLink} from '../utils/request'
-import {LoginContext} from "../myContext"
+import { authorizedReq, authorizedDownloadLink } from '../utils/request'
+import { LoginContext, LoadingContext } from "../myContext"
 
-export default function UploadDialog({ open, setOpen, section, title }) {
+
+export default function UploadDialog({ open, setOpen, section, title, loadData }) {
 	const snackbar = useSnackbar();
 	const loginState = useContext(LoginContext);
+	const {loading, setLoading} = useContext(LoadingContext)
 
 	const [values, setValues] = useState({});
+	const [submitState, setSubmitState] = useState({text:'Submit', disabled:false});
 
 	const handleSubmit = async () => {
 		try {
 			// validateForm()
+			setLoading({...loading, isActive:true})
+			setSubmitState({text:'Uploading...', disabled:true})
+
 			await authorizedReq({
 				route:`/api/${section}/fileupload`, 
 				data:values, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
+
+			loadData()
+
 			snackbar.showMessage(
 				`Successfully uploaded file`,
 			)
@@ -33,6 +42,8 @@ export default function UploadDialog({ open, setOpen, section, title }) {
 			)
 			console.error(err)
 		}
+		setSubmitState({text:'Submit', disabled:false})
+		setLoading({...loading, isActive:false})
 		
 	};
 
@@ -78,7 +89,7 @@ export default function UploadDialog({ open, setOpen, section, title }) {
 				
 		}
 
-        console.debug(others)
+        // console.debug(others)
 
 		setValues({
 			...values,
@@ -121,11 +132,11 @@ export default function UploadDialog({ open, setOpen, section, title }) {
 
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} color="primary">
+					<Button onClick={handleClose} disabled={submitState.disabled} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleSubmit} color="primary">
-						Submit
+					<Button onClick={handleSubmit} disabled={submitState.disabled} color="primary">
+						{submitState.text}
 					</Button>
 				</DialogActions>
 			</Dialog>
