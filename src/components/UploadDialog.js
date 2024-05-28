@@ -29,8 +29,8 @@ export default function UploadDialog({ open, setOpen, section, title, loadData }
 				creds:loginState.loginState, 
 				method:"post"
 			})
-
-			loadData()
+			if (loadData)
+				loadData()
 
 			snackbar.showMessage(
 				`Successfully uploaded file`,
