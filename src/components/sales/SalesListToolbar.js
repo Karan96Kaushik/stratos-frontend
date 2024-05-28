@@ -60,7 +60,7 @@ const CustomerListToolbar = (props) => {
 	return (
 		<Box {...props}>
 		<PasswordDialog protectedFunction={props.handleExport} open={open} setOpen={setOpen} />
-		<UploadDialog loadData={loadData} open={openDialog} setOpen={setOpenDialog} section='sales' title='Sales' />
+		<UploadDialog loadData={props.loadData} open={openDialog} setOpen={setOpenDialog} section='sales' title='Sales' />
 			<Box sx={
 				{
 					display: 'flex',
