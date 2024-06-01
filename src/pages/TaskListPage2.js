@@ -199,6 +199,8 @@ const TaskList = (props) => {
 		...dashBoardFields,
 		// {name:"Members Allocated", id: "membersAllocated"},
 		{name:"Members Assigned", id: "membersAssigned"},
+		{name:"Added By", id:"addedByName"},
+
 	]
 
 	const defaultFields = {
