@@ -48,6 +48,7 @@
     "lodash": "^4.17.19",
     "material-ui-phone-number": "^2.2.6",
     "material-ui-snackbar-provider": "^1.4.0",
+    "materialui-daterange-picker": "^1.1.92",
     "moment": "^2.27.0",
     "npm": "^7.7.4",
     "nprogress": "^0.2.0",

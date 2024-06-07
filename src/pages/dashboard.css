@@ -1,0 +1,4 @@
+.date-range-picker {
+    position: relative; /* Ensure the element is positioned relative to its normal position */
+    z-index: 1000;      /* High value to float above other elements */
+}
