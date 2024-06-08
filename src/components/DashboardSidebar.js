@@ -200,7 +200,13 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 					color="textSecondary"
 					variant="body2"
 				>
-					{user.designation + ' | ' + user.department}
+					{user.designation}
+				</Typography>
+				<Typography
+					color="textSecondary"
+					variant="body2"
+				>
+					{user.department}
 				</Typography>
 			</Box>
 			<Divider />
