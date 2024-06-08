@@ -9,7 +9,7 @@ const personalDashboards = {
     dashboards: {
         'Business Development': {
             components: {
-                'Calls Data': {
+                'Calls Scheduled': {
                     type: 'multicard',
                     dateUsed: true,
                     fields: [
@@ -19,6 +19,17 @@ const personalDashboards = {
                         {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'
+                },
+                'Follow Ups Scheduled': {
+                    type: 'multicard',
+                    dateUsed: true,
+                    fields: [
+                        {title:'Total'},
+                        {title:'Pending'},
+                        {title:'Today'},
+                        {title:'Future'},
+                    ],
+                    api: '/api/dashboard/followups'
                 },
                 'Meetings Scheduled': {
                     type: 'multicard',
@@ -58,7 +69,7 @@ const adminDashboards = {
     dashboards: {
         'Business Development': {
             components: {
-                'Calls Data': {
+                'Calls Scheduled': {
                     type: 'multicard',
                     dateUsed: true,
                     fields: [
@@ -68,6 +79,17 @@ const adminDashboards = {
                         {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'
+                },
+                'Follow Ups Scheduled': {
+                    type: 'multicard',
+                    dateUsed: true,
+                    fields: [
+                        {title:'Total'},
+                        {title:'Pending'},
+                        {title:'Today'},
+                        {title:'Future'},
+                    ],
+                    api: '/api/dashboard/followups'
                 },
                 'Meetings Scheduled': {
                     type: 'multicard',
