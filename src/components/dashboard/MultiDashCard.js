@@ -12,7 +12,7 @@ const MultiDashCard = (props) => {
 	const fields = props.fields
 
 	return (
-	<Card sx={{ height: '100%',  }} {...props} >
+	<Card sx={{ height: 'auto',  }} {...props} >
 		<CardHeader title={props.title} sx={{paddingBottom:0}}/>
 		<CardContent  sx={{paddingLeft:4}}>
 			<Grid container spacing={3} sx={{ justifyContent: 'space-between' }} >
