@@ -1,22 +1,15 @@
-// import moment from 'moment';
-// import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
 	Box,
-	Button,
 	Card,
 	CardHeader,
-	Chip,
 	Divider,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableRow,
-	TableSortLabel,
-	Tooltip
 } from '@material-ui/core';
-// import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const renderRow = (data, fields) => {
 	return (

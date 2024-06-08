@@ -2,39 +2,35 @@ import { Helmet } from 'react-helmet';
 import { 
 	Box, Container, Grid,
 	Tabs, Tab,
-	Typography,
-	Popover,
-	Button,
-	IconButton
+	TextField,
 } from '@material-ui/core';
 import DashCard from 'src/components/dashboard/DashCard';
 import DatePicker from 'src/components/DatePicker';
-import LatestOrders from 'src/components/dashboard/LatestOrders';
-import LatestProducts from 'src/components/dashboard/LatestProducts';
-import Sales from 'src/components/dashboard/Sales';
 import TasksProgress from 'src/components/dashboard/TasksProgress';
 import TasksBreakdown from 'src/components/dashboard/TasksBreakdown';
-import TotalCustomers from 'src/components/dashboard/TotalCustomers';
-import TotalProfit from 'src/components/dashboard/TotalProfit';
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import {authorizedReq} from '../utils/request'
-import {useRef, useEffect, useState, useContext} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import { LoadingContext, LoginContext } from "../myContext"
-import { useLocation, useNavigate } from 'react-router-dom'
-import { PeopleOutlined, Money } from '@material-ui/icons';
-import { red, green, blue } from '@material-ui/core/colors';
+import { Money } from '@material-ui/icons';
+import { green, blue } from '@material-ui/core/colors';
 import GeneralListCard from 'src/components/dashboard/GeneralListCard';
 import { personalDashboards, adminDashboards } from 'src/statics/dashboard';
-import { DateRangePicker } from "materialui-daterange-picker";
 import './dashboard.css';
 import MultiDashCard from 'src/components/dashboard/MultiDashCard';
-import { Calendar } from 'react-feather';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { selectMembers } from 'src/store/reducers/membersSlice';
 
 const Dashboard = () => {
 	
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
+
+	const memberRows = useSelector(selectMembers)
+	const memberNames = memberRows.map(m => m.userName)
+
+	console
 
 	const userDept = loginState.loginState.department
 
@@ -45,12 +41,13 @@ const Dashboard = () => {
 	// Default 7 days
 	const [dateRange, setDateRange] = useState({startDate: moment(new Date()).add({days:-7}), endDate: new Date()});
 
-	const navigate = useNavigate()
 	const snackbar = useSnackbar()
 
 	let allDashboards = _.merge({}, personalDashboards.dashboards)
 
-	if (userDept == 'Administration') {
+	let isAdmin = userDept == 'Administration'
+
+	if (isAdmin) {
 		allDashboards = {...allDashboards, ...adminDashboards.dashboards}
 	}
 
@@ -67,7 +64,7 @@ const Dashboard = () => {
 		const data = {}
 		await Promise.all(Object.keys(activeDash.components ?? {}).map(async c => {
 			const comp = activeDash.components?.[c]
-			if (!customData?.[c] && typeof comp !== 'undefined' && comp.dateUsed)
+			if (typeof comp !== 'undefined' && comp.dateUsed)
 				data[c] = await getCustomData(c, comp.api)
 		}))
 		setCustomData({...customData, ...data})
@@ -138,19 +135,44 @@ const Dashboard = () => {
 		</Helmet>
 		<Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
 			<Grid container spacing={3} sx={{paddingBottom:2}}>
+
 				<Grid item lg={6} sm={6} xl={6}	xs={12} >
-				<Tabs value={activeDash.title} onChange={handleDashChange} centered={false}>
-					<Tab label='Main' value={'Main'}/>
-					{personalDashboards.departments[userDept]?.dashboards?.map(d => <Tab label={d} value={d}/>)}
-					{userDept == 'Administration' && Object.keys(adminDashboards?.dashboards ?? {})?.map(d => <Tab label={d} value={d}/>)}
-				</Tabs>
+					<Tabs value={activeDash.title} onChange={handleDashChange} centered={false}>
+						<Tab label='Main' value={'Main'}/>
+						{personalDashboards.departments[userDept]?.dashboards?.map(d => <Tab label={d} value={d}/>)}
+						{userDept == 'Administration' && Object.keys(adminDashboards?.dashboards ?? {})?.map(d => <Tab label={d} value={d}/>)}
+					</Tabs>
 				</Grid>
-				<Grid item lg={6} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:10}}>
 
+				{/* <Grid item lg={1} sm={1} xl={1}	xs={12}  textAlign='right' sx={{}}>
+				</Grid> */}
+
+				{/* <Grid item lg={3} sm={3} xl={3}	xs={12} alignContent='right' textAlign='right' sx={{}}>
+					{isAdmin && <TextField
+						fullWidth
+						label="Member"
+						id="_members"
+						value={''}
+						select={true}
+						SelectProps={{ native: true }}
+						// onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
+						variant="outlined"
+					>
+						{([{},...(memberRows ?? [])]).filter(m => !m.isDept).map((m) => (
+							<option
+								key={m.userName}
+								value={m._id}
+							>
+								{m.userName}
+							</option>
+						))}
+					</TextField>}
+				</Grid> */}
+
+				<Grid item lg={6} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:10, paddingLeft:0}}>
 					<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
-
-
 				</Grid>
+
 			</Grid>
 			<Container maxWidth={false}>
 				<Grid container spacing={3}>

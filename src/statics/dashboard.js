@@ -9,6 +9,28 @@ const personalDashboards = {
     dashboards: {
         'Business Development': {
             components: {
+                'Calls Data': {
+                    type: 'multicard',
+                    dateUsed: true,
+                    fields: [
+                        {title:'Total'},
+                        {title:'Pending'},
+                        {title:'Today'},
+                        {title:'Future'},
+                    ],
+                    api: '/api/dashboard/sales'
+                },
+                'Meetings Scheduled': {
+                    type: 'multicard',
+                    dateUsed: true,
+                    fields: [
+                        {title:'Total'},
+                        {title:'Pending'},
+                        {title:'Today'},
+                        {title:'Future'},
+                    ],
+                    api: '/api/dashboard/meetings'
+                },
                 'Upcoming Follow Ups': {
                     type: 'list',
                     fields: [
@@ -36,25 +58,27 @@ const adminDashboards = {
     dashboards: {
         'Business Development': {
             components: {
-                'Upcoming Follow Ups': {
-                    type: 'list',
-                    fields: [
-                        {label:'Date', id:'followUpDate'},
-                        {label:'Sales ID', id:'salesID'},
-                        {label:'Promoter', id:'promoterName'},
-                    ],
-                    api: '/api/dashboard/calendar/followups'
-                },
                 'Calls Data': {
                     type: 'multicard',
                     dateUsed: true,
                     fields: [
                         {title:'Total'},
+                        {title:'Pending'},
                         {title:'Today'},
                         {title:'Future'},
-                        {title:'Pending'},
                     ],
                     api: '/api/dashboard/sales'
+                },
+                'Meetings Scheduled': {
+                    type: 'multicard',
+                    dateUsed: true,
+                    fields: [
+                        {title:'Total'},
+                        {title:'Pending'},
+                        {title:'Today'},
+                        {title:'Future'},
+                    ],
+                    api: '/api/dashboard/meetings'
                 },
             }
         },
