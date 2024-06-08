@@ -27,9 +27,6 @@ const Dashboard = () => {
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 
-	// const memberRows = useSelector(selectMembers)
-
-	console
 
 	const userDept = loginState.loginState.department
 

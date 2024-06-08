@@ -15,8 +15,8 @@ const personalDashboards = {
                     fields: [
                         {title:'Total'},
                         {title:'Pending'},
-                        {title:'Today'},
-                        {title:'Future'},
+                        // {title:'Today'},
+                        // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'
                 },
@@ -75,8 +75,8 @@ const adminDashboards = {
                     fields: [
                         {title:'Total'},
                         {title:'Pending'},
-                        {title:'Today'},
-                        {title:'Future'},
+                        // {title:'Today'},
+                        // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'
                 },
