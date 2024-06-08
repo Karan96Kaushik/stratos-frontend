@@ -19,16 +19,15 @@ import { personalDashboards, adminDashboards } from 'src/statics/dashboard';
 import './dashboard.css';
 import MultiDashCard from 'src/components/dashboard/MultiDashCard';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
-import { selectMembers } from 'src/store/reducers/membersSlice';
+// import { useSelector } from 'react-redux';
+// import { selectMembers } from 'src/store/reducers/membersSlice';
 
 const Dashboard = () => {
 	
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 
-	const memberRows = useSelector(selectMembers)
-	const memberNames = memberRows.map(m => m.userName)
+	// const memberRows = useSelector(selectMembers)
 
 	console
 
@@ -39,7 +38,7 @@ const Dashboard = () => {
 	const [customData, setCustomData] = useState({})
 
 	// Default 7 days
-	const [dateRange, setDateRange] = useState({startDate: moment(new Date()).add({days:-7}), endDate: new Date()});
+	const [dateRange, setDateRange] = useState({startDate: moment(new Date()).add({days:-7}).toDate(), endDate: new Date()});
 
 	const snackbar = useSnackbar()
 
