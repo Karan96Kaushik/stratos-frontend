@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -28,6 +28,7 @@ import {
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
 import { useSelector } from 'react-redux';
+import { LoginContext } from 'src/myContext';
 
 const items = [
 	{
@@ -153,7 +154,9 @@ const items = [
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
-	const user = useSelector(selectUser)
+	// const user = useSelector(selectUser)
+	const loginState = useContext(LoginContext)
+	const user = loginState.loginState
 	
 	let unread = user.unread ?? 0
 	if (unread < 0) unread = 0
