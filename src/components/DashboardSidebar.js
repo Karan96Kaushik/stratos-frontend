@@ -198,7 +198,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 				</Typography>
 				<Typography
 					color="textSecondary"
-					variant="body2"
+					variant="body1"
 				>
 					{user.designation}
 				</Typography>
