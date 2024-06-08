@@ -165,7 +165,7 @@ const Dashboard = () => {
 					</TextField>}
 				</Grid> */}
 
-				<Grid item lg={6} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:10, paddingLeft:0}}>
+				<Grid item lg={6} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
 					<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
 				</Grid>
 
