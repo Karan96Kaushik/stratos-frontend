@@ -1,9 +1,9 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import {
-	Button, Box, Divider,
-	Dialog, DialogTitle, Grid,
+	Button,
+	Dialog, DialogTitle,
 	DialogContent, DialogActions,
-    TextField, Autocomplete, TableContainer,
+    TableContainer,
     Table, TableRow, TableCell, TableBody,
     TableFooter, Paper, TableHead
 } from '@material-ui/core';
@@ -11,9 +11,9 @@ import {
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import {authorizedReq} from '../utils/request'
+import { authorizedReq } from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
-import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+// import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -33,7 +33,7 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
 	const loginState = useContext(LoginContext)
 
     const approveMeetingsPermission = loginState?.loginState?.permissions?.page?.includes('Approve Meetings')
-    console.log(event)
+    // console.log(event)
 	const handleClose = () => {
 		setEvent(null);
 	};
@@ -105,6 +105,7 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
     let headers = {
         'meetingDate': 'Date',
         'salesID': 'Sales ID',
+        'promoterName': 'Promoter',
         'exClientID': 'Client',
         'remarks': 'Remarks',
     }

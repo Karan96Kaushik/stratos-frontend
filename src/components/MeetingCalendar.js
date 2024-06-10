@@ -16,7 +16,7 @@ const MyCalendar = (props) => {
   const [editEvent, setEditEvent] = useState(null)
   const [search, setSearch] = useState('')
   let events = props.events ?? []
-  console.log(events)
+  // console.log(events)
 
   if (search.length)
     events = props.events.filter(e => 
