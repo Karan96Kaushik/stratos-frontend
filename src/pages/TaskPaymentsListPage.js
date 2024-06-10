@@ -185,6 +185,7 @@ const CustomerList = () => {
 				{label:"Payment Date", id:"paymentDate", type:"date"},
 				{label:"FollowUp Date", id:"followupDate", type:"date"},
 				{label:"Status", id: "status", options:allStatuses},
+				{label:"Branch", id:"branch", options: ["", "Mumbai", "Pune"]},
 				// {label:"Remarks", id: "remarks"},
 				// {label:"Bill Amount", id:"billAmount", type:"number"},
 				// {label:"GST", id:"gst", type:"number"},
