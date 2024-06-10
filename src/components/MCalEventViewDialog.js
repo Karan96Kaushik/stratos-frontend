@@ -13,6 +13,7 @@ import { Typography } from '@material-ui/core';
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq } from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
+import { useNavigate } from 'react-router-dom';
 // import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen, allEvents, setAllEvents }) {
     const classes = useStyles();
 	const snackbar = useSnackbar()
+	const navigate = useNavigate();
 
     const {loading, setLoading} = useContext(LoadingContext)
 	const loginState = useContext(LoginContext)
@@ -59,6 +61,23 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
             })
             let newEvents = allEvents.filter(e => e.data._id !== event._id)
             setAllEvents(newEvents)
+            handleClose()
+        }
+        catch (err) {
+			snackbar.showMessage(
+				"Error deleting - " + (err?.response?.data ?? err.message ?? err),
+			)
+			console.info(err)
+        }
+        finally {
+			setLoading({...loading, isActive:false})
+        }
+    }
+
+    const handleOpen = async () => {
+        try {
+
+			navigate(event.openlink)
             handleClose()
         }
         catch (err) {
@@ -152,6 +171,9 @@ export default function ViewDialog({ event, setEvent, setEditEvent, setEditOpen,
                 
 				</DialogContent>
 				<DialogActions>
+					{event?.openlink && <Button onClick={handleOpen} color="primary">
+						Show
+					</Button>}
 					{!event?.salesID && <Button onClick={handleDelete} color="primary">
 						Delete
 					</Button>}
