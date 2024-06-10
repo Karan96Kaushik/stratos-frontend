@@ -10,11 +10,28 @@ import {
 	TableHead,
 	TableRow,
 } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
-const renderRow = (data, fields) => {
+const hoverStyle = (pointer) => ({
+	'&:hover': {
+		backgroundColor: '#f5f5f5', // This is the color you want on hover
+		cursor: pointer ? 'pointer' : undefined,
+	  }
+})
+
+const renderRow = (data, fields, navigate, linkpre, linkfield) => {
+
+	const activeLink = (linkpre + data[linkfield])?.length > 0
+
+	const openLink = () => {
+		if (activeLink)
+			navigate(linkpre + data[linkfield])
+		console.debug(linkpre + data[linkfield])
+	}
+
 	return (
 		<>
-			<TableRow >
+			<TableRow sx={activeLink ? hoverStyle : {}} onClick={openLink} >
 				{fields.map((f) => (
 					<TableCell>
 						{data?.[f.id]}
@@ -25,7 +42,11 @@ const renderRow = (data, fields) => {
 	)
 }
 
-const GeneralListCard = ({title, data, fields}) => {
+const GeneralListCard = ({title, data, fields, linkpre, linkfield}) => {
+
+	console.debug(linkfield, linkpre)
+	const navigate = useNavigate();
+
 	return (
 		<Card>
 			<CardHeader title={title} />
@@ -43,7 +64,7 @@ const GeneralListCard = ({title, data, fields}) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{data?.map(d => renderRow(d, fields))}
+						{data?.map(d => renderRow(d, fields, navigate, linkpre, linkfield))}
 					</TableBody>
 				</Table>
 			</Box>

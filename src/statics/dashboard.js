@@ -49,7 +49,9 @@ const personalDashboards = {
                         {label:'Sales ID', id:'salesID'},
                         {label:'Promoter', id:'promoterName'},
                     ],
-                    api: '/api/dashboard/calendar/followups'
+                    api: '/api/dashboard/calendar/followups',
+                    linkpre: '/app/sales/edit/',
+                    linkfield: '_id',
                 },
                 'Upcoming Meetings': {
                     type: 'list',
@@ -58,7 +60,9 @@ const personalDashboards = {
                         {label:'Sales ID', id:'salesID'},
                         {label:'Promoter', id:'promoterName'},
                     ],
-                    api: '/api/dashboard/calendar/meetings'
+                    api: '/api/dashboard/calendar/meetings',
+                    linkpre: '',
+                    linkfield: '',
                 }
             }
         },

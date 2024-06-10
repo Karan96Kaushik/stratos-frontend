@@ -175,7 +175,7 @@ const Dashboard = () => {
 					{Object.keys(activeDash.components ?? {}).map(title => (
 						<>
 						{(activeDash.components[title].type == 'list') && <Grid item lg={6} sm={6} xl={6} xs={12}>
-							<GeneralListCard fields={activeDash.components[title].fields} data={customData?.[title]} title={title} />
+							<GeneralListCard fields={activeDash.components[title].fields} data={customData?.[title]} title={title} linkpre={activeDash.components[title].linkpre} linkfield={activeDash.components[title].linkfield}/>
 						</Grid>}
 						{(activeDash.components[title].type == 'multicard') && <Grid item lg={6} sm={6} xl={6} xs={12}>
 							<MultiDashCard title={title} data={customData?.[title]} fields={activeDash.components[title].fields} />
