@@ -18,7 +18,9 @@ const personalDashboards = {
                         // {title:'Today'},
                         // {title:'Future'},
                     ],
-                    api: '/api/dashboard/sales'
+                    api: '/api/dashboard/sales',
+                    linkpre: '/app/sales/edit/',
+                    linkfield: '_id',
                 },
                 'Follow Ups Scheduled': {
                     type: 'multicard',
@@ -29,7 +31,7 @@ const personalDashboards = {
                         {title:'Today'},
                         {title:'Future'},
                     ],
-                    api: '/api/dashboard/followups'
+                    api: '/api/dashboard/followups',
                 },
                 'Meetings Scheduled': {
                     type: 'multicard',
@@ -40,7 +42,7 @@ const personalDashboards = {
                         {title:'Today'},
                         {title:'Future'},
                     ],
-                    api: '/api/dashboard/meetings'
+                    api: '/api/dashboard/meetings',
                 },
                 'Upcoming Follow Ups': {
                     type: 'list',
@@ -61,8 +63,8 @@ const personalDashboards = {
                         {label:'Promoter', id:'promoterName'},
                     ],
                     api: '/api/dashboard/calendar/meetings',
-                    linkpre: '',
-                    linkfield: '',
+                    linkpre: '/app/sales/edit/',
+                    linkfield: '_id',
                 }
             }
         },

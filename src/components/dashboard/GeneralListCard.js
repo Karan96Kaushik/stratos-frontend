@@ -26,7 +26,6 @@ const renderRow = (data, fields, navigate, linkpre, linkfield) => {
 	const openLink = () => {
 		if (activeLink)
 			navigate(linkpre + data[linkfield])
-		console.debug(linkpre + data[linkfield])
 	}
 
 	return (
