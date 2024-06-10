@@ -221,6 +221,7 @@ const TaskList = (props) => {
 		texts :[
 			{label:"Member Assigned", id: "_membersAssigned", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 			{label:"Member Allocated", id: "_membersAllocated", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
+			{label:"Branch", id:"branch", options: ["", "Mumbai", "Pune"]},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech']},
 		],
 		checkboxes:[
