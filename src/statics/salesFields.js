@@ -22,6 +22,17 @@ const statusOptions = [
     "Hot Lead", 
     "Wrong Number", 
     "Call Back Later", 
+    "Confirmed",
+    "Converted",
+    "Existing Client",
+    "Retainer Client ",
+    "Pricing Issue",
+    "Connected",
+    "Busy",
+    "Irrelevant ",
+    "Follow Up",
+    "Switched Off",
+    "Later Follow Up",
 ]
 
 // Project Location 	Project Plot Area 	Quoted Amount 	RERA Number 	Mobile Number 	Office Number 	Email ID 	Sales Rating (Multiple Option - 1/2/3/4/5)	Sales Source (Whatsapp/ Inbound Calls/ Existing Customer/ Reference/ Outbound Calls/ Website / Enquiries / Others)		Sales Responsibility 	Status (Multiple option - Profile Sent / Quotation Sent / Awaiting response/ Follow up require 	Follow up date 	Remarks 
