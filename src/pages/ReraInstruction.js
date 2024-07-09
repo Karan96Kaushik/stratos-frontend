@@ -3,7 +3,9 @@ import { Box, Container, Card, CardContent, CardHeader, Divider, Typography, Gri
 import SettingsNotifications from 'src/components/settings/SettingsNotifications';
 import SettingsPassword from 'src/components/settings/SettingsPassword';
 
-const ReraInstruction = () => (
+const ReraInstruction = () => {
+	window.postMessage({ hi:'a' })
+	return (
   <>
 	<Helmet>
 	  <title>Settings | TMS</title>
@@ -27,16 +29,16 @@ const ReraInstruction = () => (
 
 				<Grid container>
 					<Grid sx={{paddingLeft:10, paddingBottom:5}} item xs={12}>
-						<Typography color='textPrimary' onClick={window.postMessage({ hi:'a' })}>
-							Status (refresh the page to check): <span id='statusCheck'>Not Installed</span>
+						<Typography color='textPrimary'>
+							Status: <span id='statusCheck'>Not Installed</span>
 						</Typography>
 					</Grid>
 					<Grid item xs={12}>
-						<a href="https://github.com/user-attachments/files/16144628/en-ext.zip" download >
 							<Typography gutterBottom>
-								1. Download Chrome Extension
+								<a href="https://github.com/user-attachments/files/16145174/en-ext.zip" download >
+									1. Download Chrome Extension
+								</a>
 							</Typography>
-						</a>
 					</Grid>
 					<Grid item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
@@ -93,6 +95,6 @@ const ReraInstruction = () => (
 	  </Container>
 	</Box>
   </>
-);
+)};
 
 export default ReraInstruction;
