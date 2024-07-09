@@ -83,7 +83,24 @@ const ReraInstruction = () => {
 					</Grid>
 					<Grid sx={{paddingTop:3}} item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
-							6. Select extracted folder "ex-ext"
+							6. Select extracted folder "en-ext" (make sure that the selected folder has a file called "manifest.json")
+						</Typography>
+					</Grid>
+					<Grid sx={{paddingTop:0}} item xs={12}>
+						<Typography color='textPrimary' gutterBottom>
+							7. You should be able to see the installed extension
+						</Typography>
+					</Grid>
+					<Grid  item xs={12}>
+						<Box sx={{ paddingLeft: '50px', // Adjust the indent size as needed
+							maxWidth: 500, // Optional: Constraint on the image size
+							overflow: 'hidden' }}>
+						<img src="/images/rera-installed.png" alt="Random" style={{ width: '100%', height: 'auto' }} />
+						</Box>
+					</Grid>
+					<Grid sx={{paddingTop:3}} item xs={12}>
+						<Typography color='textPrimary' gutterBottom>
+							8. The installation is now completed, refresh the screen and check the installation status at the top of this page
 						</Typography>
 					</Grid>
 				</Grid>
