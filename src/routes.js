@@ -34,6 +34,7 @@ import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import Calendar from 'src/pages/Calendar';
+import ReraInstruction from './pages/ReraInstruction';
 
 const routes = (isLoggedIn) => [
 	{
@@ -144,6 +145,12 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <PackageAccountsListPage /> },
 					// { path: 'add', element: <PackageAccountsAdd /> },
 					{ path: 'edit/:id', element: <PackagesAdd /> },
+				]
+			},
+			{
+				path: 'rerainstruction',
+				children: [
+					{ path: '/', element: <ReraInstruction /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
