@@ -26,9 +26,9 @@ const ReraInstruction = () => (
 			<CardContent> 
 
 				<Grid container>
-					<Grid sx={{paddingLeft:20, paddingBottom:5}} item xs={12}>
+					<Grid sx={{paddingLeft:10, paddingBottom:5}} item xs={12}>
 						<Typography color='textPrimary' onClick={window.postMessage({ hi:'a' })}>
-							Status Check : <span id='statusCheck'>Not Installed</span>
+							Status (refresh the page to check): <span id='statusCheck'>Not Installed</span>
 						</Typography>
 					</Grid>
 					<Grid item xs={12}>
@@ -57,7 +57,19 @@ const ReraInstruction = () => (
 					</Grid>
 					<Grid sx={{paddingTop:3}} item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
-							4. Select "Load Unpacked" option
+								4. Make sure "Developer Mode" is turned on
+						</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Box sx={{ paddingLeft: '50px', // Adjust the indent size as needed
+							maxWidth: 500, // Optional: Constraint on the image size
+							overflow: 'hidden' }}>
+							<img src="/images/rera-dev.png" alt="Random" style={{ width: '100%', height: 'auto' }} />
+						</Box>
+					</Grid>
+					<Grid sx={{paddingTop:3}} item xs={12}>
+						<Typography color='textPrimary' gutterBottom>
+							5. Select "Load Unpacked" option
 						</Typography>
 					</Grid>
 					<Grid  item xs={12}>
@@ -69,7 +81,7 @@ const ReraInstruction = () => (
 					</Grid>
 					<Grid sx={{paddingTop:3}} item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
-							5. Select extracted folder
+							6. Select extracted folder
 						</Typography>
 					</Grid>
 				</Grid>
