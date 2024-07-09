@@ -81,7 +81,7 @@ const ReraInstruction = () => (
 					</Grid>
 					<Grid sx={{paddingTop:3}} item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
-							6. Select extracted folder
+							6. Select extracted folder "ex-ext"
 						</Typography>
 					</Grid>
 				</Grid>
