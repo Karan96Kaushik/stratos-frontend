@@ -28,7 +28,7 @@ const ReraInstruction = () => {
 			<CardContent> 
 
 				<Grid container>
-					<Grid sx={{paddingLeft:10, paddingBottom:5}} item xs={12}>
+					<Grid sx={{paddingLeft:20, paddingBottom:5}} item xs={12}>
 						<Typography color='textPrimary'>
 							Status: <span id='statusCheck'>Not Installed</span>
 						</Typography>
