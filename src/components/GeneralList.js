@@ -82,7 +82,7 @@ function Row({ row, type, fields, extraFields, additional, defaultFields, disabl
 				</TableCell>)}
 				{/* Mount Checkboxes */}
 				{fieldsShow?.checkboxes.map(field => <TableCell sx={{fontWeight: row.isBold ? 500 : undefined}} align="left">{row[field.id] ? "Y" : "N"}</TableCell>)}
-				{additional?.map(func => (<TableCell onClick={(event) => event.stopPropagation()}>{func(row)}</TableCell>))}
+				{additional?.map(func => func && (<TableCell onClick={(event) => event.stopPropagation()}>{func(row)}</TableCell>))}
 				{/* <TableCell>
 					<Link to={"view/" + row._id}>
 						<IconButton aria-label="expand row" size="small">
@@ -172,7 +172,7 @@ const useTableStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, disableEdit, rowOnclick}) {
+export default function CollapsibleTable({extraFields, fields, defaultFields, data, page, setPage, setRowsPerPage, rowsPerPage, type, sortState, setSortState, additional, additionalNames, disableEdit, rowOnclick}) {
 	const classes = useTableStyles();
 	const {rows} = data;
 	// const [] = useState({id:'createdTime', direction:-1})
@@ -225,7 +225,9 @@ export default function CollapsibleTable({extraFields, fields, defaultFields, da
 						{(fieldsShow?.texts?.length && extraFields.length) ? extraFields.map((field) => (<TableCell className={classes.root} name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.name}</Typography></TableCell>)) : <></>}
 						{fieldsShow?.texts.map(field => <TableCell className={classes.root} name={field.id} onClick={setSort} align="left"><Typography name={field.id} variant="header" color={sortColor(field.id)}>{field.label}</Typography></TableCell>)}
 						{fieldsShow?.checkboxes.map(field => <TableCell className={classes.root} align="left">{field.label}</TableCell>)}
-						<TableCell align="left"></TableCell>
+						{additionalNames?.map(name => <TableCell className={classes.root} align="left">{name}</TableCell>)}
+						{!additionalNames && additional?.map(_ => <TableCell className={classes.root} align="left"></TableCell>)}
+						{!disableEdit && <TableCell className={classes.root} align="left">Edit</TableCell>}
 					</TableRow>
 				</TableHead>
 				<TableBody>

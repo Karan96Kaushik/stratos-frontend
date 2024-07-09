@@ -39,6 +39,7 @@ import Calendar from 'src/pages/Calendar';
 import MeetingCalendar from 'src/pages/MeetingCalendar';
 import CCReceivedList from './pages/CCReceivedList';
 import CCReceivedAddPage from './pages/CCReceivedAddPage';
+import ReraInstruction from './pages/ReraInstruction';
 
 const routes = (isLoggedIn) => [
 	{
@@ -166,6 +167,12 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <PackageAccountsListPage /> },
 					// { path: 'add', element: <PackageAccountsAdd /> },
 					{ path: 'edit/:id', element: <PackagesAdd /> },
+				]
+			},
+			{
+				path: 'rerainstruction',
+				children: [
+					{ path: '/', element: <ReraInstruction /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }

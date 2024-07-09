@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, IconButton, Container, Paper, Tab, Tabs } from '@material-ui/core';
 import ClientListToolbar from 'src/components/clients/ClientListToolbar2';
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoginContext,LoadingContext } from "../myContext"
@@ -15,6 +15,7 @@ import {
 } from "../store/reducers/filtersSlice";
 import { useSelector } from "react-redux";
 import {addBlockers, removeBlockers} from '../utils/jsControls'
+import { Outbound } from '@material-ui/icons';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -152,12 +153,34 @@ const CustomerList = () => {
 		{name:"Client ID", id: "clientID"},
 	]
 
+	const clientFieldsMasked = _.merge({}, clientFields)
+	for (let type in clientFieldsMasked) {
+		clientFieldsMasked[type].texts = clientFieldsMasked[type].texts.filter(f => !['userID', 'password'].includes(f.id))
+	}
+
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={clientFields} otherFields={extraFields} typeField={'clientType'} titleID={"clientID"} />
+			<ViewDialog data={val} fields={clientFieldsMasked} otherFields={extraFields} typeField={'clientType'} titleID={"clientID"} />
 		)
 	}
+
+	let actionNames = ['View']
+
+	let isChrome = !!window.chrome
+
+	if (isChrome) {
+		actionNames.unshift('Open RERA')
+	}
+
+	const renderRERAButton = isChrome && ((val) => {
+		return (
+			val.userID && val.password && 
+			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage({ userID: val.userID, password: val.password }, "*")}>
+				<Outbound />
+			</IconButton>
+		)
+	})
 
 	return (<>
 		<Helmet>
@@ -182,7 +205,8 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							rowsPerPage={rowsPerPage} 
-							additional={[renderViewButton]}
+							additionalNames={actionNames}
+							additional={[renderRERAButton || null, renderViewButton]}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}

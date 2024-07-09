@@ -26,6 +26,7 @@ import {
 	AlertCircle,
 	Archive,
 	Layout,
+	Link as LinkIcon,
 } from 'react-feather';
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
@@ -146,6 +147,11 @@ const items = [
 		href: '/app/payments',
 		icon: DollarSignIcon,
 		title: 'Payments'
+	},
+	{
+		href: '/app/rerainstruction',
+		icon: LinkIcon,
+		title: 'Rera Access'
 	},
 	// {
 	// 	href: '/app/settings',
