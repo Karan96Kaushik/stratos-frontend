@@ -32,7 +32,7 @@ const ReraInstruction = () => (
 						</Typography>
 					</Grid>
 					<Grid item xs={12}>
-						<a href="https://github.com/user-attachments/files/16144464/en-chrome-ext.zip" download >
+						<a href="https://github.com/user-attachments/files/16144628/en-ext.zip" download >
 							<Typography gutterBottom>
 								1. Download Chrome Extension
 							</Typography>
