@@ -14,7 +14,8 @@ import {
 	memberFields, 
 	pagePermissionFields,
 	servicePermissionFields,
-	notificationTypes
+	notificationTypes,
+	systemPermissionFields
 } from '../../statics/memberFields';
 import * as _ from 'lodash';
 import PasswordDialog from '../passwordDialog';
@@ -55,6 +56,7 @@ const MemberAddForm = (props) => {
 			let data = await authorizedReq({route:"/api/members/", data:{_id:memberID}, creds:loginState.loginState, method:"get"})
 			data.pagePermissions = pagePermissionFields.filter(val => data.permissions.page.includes(val))
 			data.servicePermissions = servicePermissionFields.filter(val => data.permissions.service.includes(val))
+			data.systemPermissions = systemPermissionFields.filter(val => data.permissions.system.includes(val))
 			// delete data.files
 			setValues(data)
 		}, [])
@@ -281,6 +283,26 @@ const MemberAddForm = (props) => {
 								{servicePermissionFields.map((name) => (
 									<MenuItem key={name} value={name}>
 										<Checkbox checked={(values?.servicePermissions ?? []).indexOf(name) > -1} />
+										<ListItemText primary={name} />
+									</MenuItem>
+								))}
+							</Select>
+							</FormControl>
+						</Grid>
+						<Grid item md={12} xs={12}>
+							<FormControl fullWidth className={classes.formControl}>	
+							<InputLabel fullWidth id="systemPermissions">System Permissions</InputLabel>
+							<Select multiple fullWidth
+								id="systemPermissions"
+								value={values?.systemPermissions || []}
+								onChange={(e) => setValues({...values, systemPermissions:e.target.value})}
+								input={<Input />}
+								placeholder="System Permissions"
+								renderValue={(selected) => selected.join(', ')}
+								>
+								{systemPermissionFields.map((name) => (
+									<MenuItem key={name} value={name}>
+										<Checkbox checked={(values?.systemPermissions ?? []).indexOf(name) > -1} />
 										<ListItemText primary={name} />
 									</MenuItem>
 								))}

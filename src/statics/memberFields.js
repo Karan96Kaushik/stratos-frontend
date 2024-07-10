@@ -71,6 +71,10 @@ const pagePermissionFields = [
 	"CC Received W",
 ]
 
+const systemPermissionFields = [
+    "View RERA Passwords",
+]
+
 const servicePermissionFields = Object.keys(taskFields)
 
 const notificationTypes = [
@@ -83,5 +87,6 @@ export {
     pagePermissionFields,
     servicePermissionFields,
     memberFields,
-    notificationTypes
+    notificationTypes,
+    systemPermissionFields
 }

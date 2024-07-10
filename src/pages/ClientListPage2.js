@@ -14,7 +14,7 @@ import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
 import { useSelector } from "react-redux";
-import {addBlockers, removeBlockers} from '../utils/jsControls'
+import { addBlockers } from '../utils/jsControls'
 import { Outbound } from '@material-ui/icons';
 
 function useQuery() {
@@ -58,7 +58,7 @@ const CustomerList = () => {
 	const [search, setSearch] = useState({...query, page, rowsPerPage, text:""})
 
 	useEffect(() => {
-		removeBlockers()
+		addBlockers()
 		// if(query.clientType) {
 			loadData()
 		// }
