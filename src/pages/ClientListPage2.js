@@ -16,6 +16,25 @@ import {
 import { useSelector } from "react-redux";
 import { addBlockers } from '../utils/jsControls'
 import { Outbound } from '@material-ui/icons';
+// import CryptoJS from 'crypto'
+
+function decrypt(text, shift=12) {
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+        let char = text.charCodeAt(i);
+        if (char >= 65 && char <= 90) {
+            // Uppercase letters
+            result += String.fromCharCode((char - 65 - shift + 26) % 26 + 65);
+        } else if (char >= 97 && char <= 122) {
+            // Lowercase letters
+            result += String.fromCharCode((char - 97 - shift + 26) % 26 + 97);
+        } else {
+            // Non-alphabetical characters
+            result += text.charAt(i);
+        }
+    }
+    return result;
+}
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -176,7 +195,7 @@ const CustomerList = () => {
 	const renderRERAButton = isChrome && ((val) => {
 		return (
 			val.userID && val.password && 
-			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage({ userID: val.userID, password: val.password }, "*")}>
+			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage(JSON.parse(decrypt(val.u)), "*")}>
 				<Outbound />
 			</IconButton>
 		)
