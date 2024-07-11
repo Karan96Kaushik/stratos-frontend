@@ -173,9 +173,9 @@ const CustomerList = () => {
 	]
 
 	const clientFieldsMasked = _.merge({}, clientFields)
-	for (let type in clientFieldsMasked) {
-		clientFieldsMasked[type].texts = clientFieldsMasked[type].texts.filter(f => !['userID', 'password'].includes(f.id))
-	}
+	// for (let type in clientFieldsMasked) {
+	// 	clientFieldsMasked[type].texts = clientFieldsMasked[type].texts.filter(f => !['userID', 'password'].includes(f.id))
+	// }
 
 	// View button
 	const renderViewButton = (val) => {
