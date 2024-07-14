@@ -174,37 +174,40 @@ const Dashboard = () => {
 					</TextField>}
 				</Grid> */}
 
-				{activeDash.title !== 'Main' && userDept == 'Administration' && 
-					<>
-						<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
-							<TextField
-								fullWidth
-								select='true'
-								SelectProps={{ native: true }}
-								label='Member'
-								type='text'
-								// inputProps={field.type == "file" ? { multiple: true } : {}}
-								// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
-								// required={field.isRequired}
-								id='_memberId'
-								onChange={(e) => {setMember(e.target.value)}}
-								// value={field.id != "files" ? values[field.id] ?? '' : undefined}
-								variant="standard"
-							>
-								{[{_id:'', userName:''}, ...(memberRows ?? [])].map((option) => (
-									<option
-										key={option._id}
-										value={option._id}
-									>
-										{option.userName}
-									</option>
-								))}
-							</TextField>
-						</Grid>
+				{(activeDash.title !== 'Main' && userDept == 'Administration') ? 
+					<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
+						<TextField
+							fullWidth
+							select='true'
+							SelectProps={{ native: true }}
+							label='Member'
+							type='text'
+							// inputProps={field.type == "file" ? { multiple: true } : {}}
+							// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+							// required={field.isRequired}
+							id='_memberId'
+							onChange={(e) => {setMember(e.target.value)}}
+							// value={field.id != "files" ? values[field.id] ?? '' : undefined}
+							variant="standard"
+						>
+							{[{_id:'', userName:''}, ...(memberRows ?? [])].map((option) => (
+								<option
+									key={option._id}
+									value={option._id}
+								>
+									{option.userName}
+								</option>
+							))}
+						</TextField>
+					</Grid> : 
+					<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
+					</Grid>
+					}
+					{activeDash.title !== 'Main' &&
 						<Grid item lg={3} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
 							<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
 						</Grid>
-					</>}
+					}
 
 			</Grid>
 			<Container maxWidth={false}>
