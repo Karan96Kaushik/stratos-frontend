@@ -8,6 +8,8 @@
 yarn.lock
 *.rdb
 
+*.rdb
+
 # testing
 /coverage
 
