@@ -187,7 +187,7 @@ const Dashboard = () => {
 								// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 								// required={field.isRequired}
 								id='_memberId'
-								onChange={(e) => {console.log(e.target.value), setMember(e.target.value)}}
+								onChange={(e) => {setMember(e.target.value)}}
 								// value={field.id != "files" ? values[field.id] ?? '' : undefined}
 								variant="standard"
 							>
