@@ -19,20 +19,23 @@ import { personalDashboards, adminDashboards } from 'src/statics/dashboard';
 import './dashboard.css';
 import MultiDashCard from 'src/components/dashboard/MultiDashCard';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 // import { useSelector } from 'react-redux';
-// import { selectMembers } from 'src/store/reducers/membersSlice';
+import { selectMembers } from 'src/store/reducers/membersSlice';
 
 const Dashboard = () => {
 	
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
 
+	const memberRows = useSelector(selectMembers).filter(m => !m.userName.includes('Department')) //.unshift()
 
 	const userDept = loginState.loginState.department
 
 	const [activeDash, setActiveDash] = useState({title:'Main'})
 	const [data, setData] = useState({type: '', rows:[]})
 	const [customData, setCustomData] = useState({})
+	const [member, setMember] = useState(false)
 
 	// Default 7 days
 	const [dateRange, setDateRange] = useState({startDate: moment(new Date()).add({days:-7}).toDate(), endDate: new Date()});
@@ -64,7 +67,7 @@ const Dashboard = () => {
 				data[c] = await getCustomData(c, comp.api)
 		}))
 		setCustomData({...customData, ...data})
-	}, [dateRange])
+	}, [dateRange, member])
 
 	useEffect(async () => {
 		const data = {}
@@ -79,6 +82,11 @@ const Dashboard = () => {
 
 	const getCustomData = async (title, api) => {
 		try{
+			let params = dateRange
+			if (member) params._memberId = member
+
+			console.debug(">>>>", member)
+
 			let data = await authorizedReq({
 				route: api, 
 				creds: loginState.loginState, 
@@ -132,7 +140,7 @@ const Dashboard = () => {
 		<Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
 			<Grid container spacing={3} sx={{paddingBottom:2}}>
 
-				<Grid item lg={6} sm={6} xl={6}	xs={12} >
+				<Grid item lg={7} sm={7} xl={7}	xs={12} >
 					<Tabs value={activeDash.title} onChange={handleDashChange} centered={false}>
 						<Tab label='Main' value={'Main'}/>
 						{personalDashboards.departments[userDept]?.dashboards?.map(d => <Tab label={d} value={d}/>)}
@@ -165,9 +173,37 @@ const Dashboard = () => {
 					</TextField>}
 				</Grid> */}
 
-				<Grid item lg={6} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
-					<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
-				</Grid>
+				{activeDash.title !== 'Main' && userDept == 'Administration' && 
+					<>
+						<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
+							<TextField
+								fullWidth
+								select='true'
+								SelectProps={{ native: true }}
+								label='Member'
+								type='text'
+								// inputProps={field.type == "file" ? { multiple: true } : {}}
+								// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+								// required={field.isRequired}
+								id='_memberId'
+								onChange={(e) => {setMember(e.target.value)}}
+								// value={field.id != "files" ? values[field.id] ?? '' : undefined}
+								variant="standard"
+							>
+								{[...(memberRows ?? []), {_id:'', userName:''}].map((option) => (
+									<option
+										key={option._id}
+										value={option._id}
+									>
+										{option.userName}
+									</option>
+								))}
+							</TextField>
+						</Grid>
+						<Grid item lg={3} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
+							<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
+						</Grid>
+					</>}
 
 			</Grid>
 			<Container maxWidth={false}>
