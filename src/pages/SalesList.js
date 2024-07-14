@@ -1,13 +1,13 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, Container, Paper, Tab, Tabs, TextField } from '@material-ui/core';
 import SalesListToolbar from 'src/components/sales/SalesListToolbar';
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import {addBlockers, removeBlockers} from '../utils/jsControls'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import salesFields from '../statics/salesFields';
+import salesFields, { statusOptions } from '../statics/salesFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
 import {
@@ -151,7 +151,7 @@ const CustomerList = () => {
         {label:"Members Assigned", id:"membersAssigned"},
         {label:"Promoter Name", id:"promoterName"},
         {label:"Follow Up Date", id:"followUpDate"},
-        {label:"Status", id: "status"},
+        // {label:"Status", id: "status"},
         {label:"Rating", id:"rating"},
     ], checkboxes:[]}
 
@@ -161,6 +161,58 @@ const CustomerList = () => {
 			<ViewDialog data={val} fields={salesFieldsCopy} otherFields={[]} typeField={null}/>
 		)
 	}
+
+	const handleChangeStatus = async ({target}) => {
+		try {
+			await authorizedReq({
+				route: "/api/sales/update", 
+				creds: loginState.loginState, 
+				data:{_id: target.id, status: target.value}, 
+				method: 'post'
+			})
+			setData({
+				...data, 
+				rows: data?.rows?.map(s => (s._id == target.id ? ({...s, status: target.value}) : s))
+			})
+			snackbar.showMessage(
+				"Status updated successfully"
+			)
+		}
+		catch (err) {
+			snackbar.showMessage(
+				err?.response?.data ?? err.message ?? err,
+			)
+		}
+	}
+
+	const renderSelectStatus = (val) => {
+		return (				
+			<TextField
+				fullWidth
+				select={true}
+				SelectProps={{ native: true }}
+				// disabled={isEdit && disabled[field.id]}
+				// label='Status'
+				type='text'
+				// inputProps={field.type == "file" ? { multiple: true } : {}}
+				// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+				id={val._id}
+				// required={field.isRequired}
+				// error={errors[field.id]}
+				onChange={handleChangeStatus}
+				value={val.status}
+				variant="standard"
+			>
+				{(statusOptions ?? []).map((option) => (
+					<option key={option}
+						value={option}>
+						{option}
+					</option>
+				))}
+			</TextField>
+		)
+	}
+
 	// const openSales = (val) => (_e) => {
 	// 	navigate('edit/' + val._id)
 	// }
@@ -187,8 +239,8 @@ const CustomerList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
-							additionalNames={['View']}
-							additional={[renderViewButton]}
+							additionalNames={['Status', 'View']}
+							additional={[renderSelectStatus, renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
