@@ -83,9 +83,10 @@ const Dashboard = () => {
 	const getCustomData = async (title, api) => {
 		try{
 			let params = dateRange
-			if (member) params._memberId = member
-
-			console.debug(">>>>", member)
+			if (member) 
+				params._memberId = member
+			else
+				params._memberId = ''
 
 			let data = await authorizedReq({
 				route: api, 
@@ -186,7 +187,7 @@ const Dashboard = () => {
 								// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 								// required={field.isRequired}
 								id='_memberId'
-								onChange={(e) => {setMember(e.target.value)}}
+								onChange={(e) => {console.log(e.target.value), setMember(e.target.value)}}
 								// value={field.id != "files" ? values[field.id] ?? '' : undefined}
 								variant="standard"
 							>
