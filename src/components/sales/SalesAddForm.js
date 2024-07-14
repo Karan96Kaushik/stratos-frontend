@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import salesFields from '../../statics/salesFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
-import { selectMembers } from 'src/store/reducers/membersSlice';
+// import { selectMembers } from 'src/store/reducers/membersSlice';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))

@@ -190,7 +190,7 @@ const Dashboard = () => {
 								// value={field.id != "files" ? values[field.id] ?? '' : undefined}
 								variant="standard"
 							>
-								{[...(memberRows ?? []), {_id:'', userName:''}].map((option) => (
+								{[{_id:'', userName:''}, ...(memberRows ?? [])].map((option) => (
 									<option
 										key={option._id}
 										value={option._id}
