@@ -164,6 +164,7 @@ const CustomerList = () => {
 
 	const handleChangeStatus = async ({target}) => {
 		try {
+			const newStatus = target.value
 			await authorizedReq({
 				route: "/api/sales/update", 
 				creds: loginState.loginState, 
@@ -172,7 +173,7 @@ const CustomerList = () => {
 			})
 			setData({
 				...data, 
-				rows: data?.rows?.map(s => (s._id == target.id ? ({...s, status: target.value}) : s))
+				rows: data?.rows?.map(s => (s._id == target.id ? ({...s, status: newStatus}) : s))
 			})
 			snackbar.showMessage(
 				"Status updated successfully"
