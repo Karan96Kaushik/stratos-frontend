@@ -4,7 +4,7 @@ import {
 	CardHeader, Divider, Grid, TextField,
 	Checkbox, FormControlLabel, Link, List, ListItem, Typography,
 	Select, FormControl, makeStyles, 
-	InputLabel, Input, MenuItem, ListItemText
+	InputLabel, Input, MenuItem, ListItemText, IconButton
 } from '@material-ui/core';
 import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
@@ -14,6 +14,7 @@ import salesFields from '../../statics/salesFields';
 import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
 // import { selectMembers } from 'src/store/reducers/membersSlice';
+import { Plus, Trash2 } from 'react-feather';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -196,7 +197,29 @@ const SalesAddForm = (props) => {
 
 	};
 
+	const removeItem = (idx) => {
+		values.items.splice(idx,1)
+		setValues({...values, items: values.items})
+	}
+
+	const addItem = () => { 
+		let items = {}
+		if (!values?.items) 
+			items =[{}]
+		else
+			items = [...values.items, {}]
+
+
+		if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from'])) {
+			items.forEach(i => i.particulars = 'Legal Consultation')
+		}
+
+		setValues({...values, items})
+
+	}
+
 	const handleChange = async (event) => {
+		let overrideID
 		let others = {}
 		if (event.target.id == 'files') {
 			// console.log(event.target.files.length)
@@ -251,11 +274,17 @@ const SalesAddForm = (props) => {
 			others.membersAssigned = others.membersAssigned.map(v => v.userName)
 			others.membersAssigned = others.membersAssigned.join(", ")
 		}
+		else if (event.target.id.includes("-$")) {
+			let [id, idx] = event.target.id.split("-$")
+			others.items = values.items
+			others.items[parseInt(idx)][id] = event.target.value
+			overrideID = "none"
+		}
 
 		setValues({
 			...values,
 			...others,
-			[event.target.id ?? event.target.name]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
+			[overrideID ?? event.target.id ?? event.target.name]: event.target.type != 'checkbox' ? event.target.value : event.target.checked
 		});
 
 	};
@@ -375,6 +404,50 @@ const SalesAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+						
+						{(values.items ?? []).map((item, idx) => (
+							<>
+								<Divider style={{width:'100%', padding: '10px'}}  />
+								{salesFieldsCopy?.item?.texts.map((field) => (
+									<Grid item md={6} xs={12}>
+										<TextField
+											fullWidth
+											select={field.options?.length}
+											SelectProps={{ native: true }}
+											label={field.label + " " + (idx+1)}
+											type={field.type ?? 'text'}
+											id={field.id + "-$" + idx}
+											inputProps={field.type == "file" ? { multiple: true } : {}}
+											InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
+											value={field.id != "files" ? values.items[idx][field.id] ?? '' : undefined}
+											// required={field.isRequired}
+											// error={errors[field.id]}
+											onChange={handleChange}
+											variant="outlined"
+										>
+											{(field.options ?? []).map((option) => (
+												<option key={option}
+													value={option}>
+													{option}
+												</option>
+											))}
+										</TextField>
+									</Grid>))}
+									<Grid item md={6} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+									</Grid>
+									<Grid item md={6} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+										<IconButton onClick={() => removeItem(idx)}>
+											<Trash2 color='red' />
+										</IconButton>
+									</Grid>
+							</>
+						))}
+						<Divider style={{width:'100%', padding: '10px'}}  />
+						<Grid item md={12} xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+							<Button variant="outlined" onClick={addItem}>
+								Add Service Item
+							</Button>
+						</Grid>
 
 						
 					</Grid>

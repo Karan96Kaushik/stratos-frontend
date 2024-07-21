@@ -203,7 +203,7 @@ const TaskAddForm = (props) => {
 		setOpen(true)
 	}
 
-	console.debug(values)
+	// console.debug(values)
 
 	const handleDelete = async (password) => {
 		try {

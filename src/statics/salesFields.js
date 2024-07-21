@@ -76,6 +76,17 @@ export default {
         checkboxes:[
         ]
     },
+    item: {
+        texts:[
+            {label:"Service", id:"service", options:services},
+            {label:"Quoted Amount", id:"quotedAmount", type:"number"},
+            {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
+            // {label:"Govt Fees", id:"govtFees", type:"number"},
+            {label:"Note", id:"note"},
+        ],
+        checkboxes:[
+        ]
+    },
 }
 
 export {statusOptions}
