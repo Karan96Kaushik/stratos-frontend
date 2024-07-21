@@ -62,7 +62,7 @@ export default {
 
             {label:"Status", id: "status", options: statusOptions},
             {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
-            {label:"FollowUp Date", id:"followUpDate", type:"date"},
+            {label:"FollowUp Date", id:"followUpDate", type:"datetime-local"},
             {label:"Meeting Date", id:"meetingDate", type:"date"},
             {label:"Quoted Amount", id:"quotedAmount", type:"number"},
             {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},

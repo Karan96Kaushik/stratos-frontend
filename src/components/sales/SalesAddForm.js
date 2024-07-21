@@ -15,6 +15,7 @@ import taskFields from "../../statics/taskFields"
 import PasswordDialog from '../passwordDialog';
 // import { selectMembers } from 'src/store/reducers/membersSlice';
 import { Plus, Trash2 } from 'react-feather';
+import moment from 'moment';
 
 let services = Object.keys(taskFields).map(a => (taskFields[a].name))
 // let services = Object.keys(taskFields).map(a => ([a, taskFields[a].name]))
@@ -134,6 +135,8 @@ const SalesAddForm = (props) => {
 			members = members.find(val => String(val._id) == String(data._memberID))
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
+			if (data.followUpDate)
+				data.followUpDate = moment(data.followUpDate).format('YYYY-MM-DDThh:mm')
 			setValues(data)
 		}
 	}, [])
@@ -150,9 +153,12 @@ const SalesAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			let data = _.merge({}, values)
+			if (data.followUpDate)
+				data.followUpDate = new Date(data.followUpDate)
 			await authorizedReq({
 				route:"/api/sales/" + (!isEdit ? "add" : "update"), 
-				data:values, 
+				data, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
