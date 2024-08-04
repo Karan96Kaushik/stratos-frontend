@@ -370,6 +370,16 @@ const SalesAddForm = (props) => {
 									</ListItem>))}
 							</List>}
 						</Grid>
+
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Scheduled Meetings</Typography>
+
+							{isEdit && values?.meetings?.length && <List>
+								{values?.meetings?.map((m) => (<ListItem>
+										<Typography variant='body2'>{m.meetingDate}</Typography>
+									</ListItem>))}
+							</List>}
+						</Grid>
 						
 						{/* <Grid item md={12} xs={12}>
 							<FormControl fullWidth className={classes.formControl}>	
