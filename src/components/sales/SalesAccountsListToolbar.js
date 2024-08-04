@@ -37,16 +37,16 @@ const CustomerListToolbar = (props) => {
 	const commonFilters = {
 		texts: [
             // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
-            {label:"Assigned Member", id:"membersAssigned", options: memberNames},
-            {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
-            {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
-            {label:"Status", id: "status", options: statusOptions},
-            {label:"OC", id:"oc", options:['', 'Y', 'N']},
+            // {label:"Assigned Member", id:"membersAssigned", options: memberNames},
+            // {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
+            // {label:"Form 4", id:"form4", options:['', 'Y', 'N']},
+            // {label:"Status", id: "status", options: statusOptions},
+            // {label:"OC", id:"oc", options:['', 'Y', 'N']},
 
-            {label:"Certificate Date", id:"certificateDate", type:"date"},
-            {label:"Completion Date", id:"completionDate", type:"date"},
-            {label:"FollowUp Date", id:"followUpDate", type:"date"},
-            {label:"Meeting Date", id:"meetingDate", type:"date"},
+            // {label:"Certificate Date", id:"certificateDate", type:"date"},
+            // {label:"Completion Date", id:"completionDate", type:"date"},
+            // {label:"FollowUp Date", id:"followUpDate", type:"date"},
+            // {label:"Meeting Date", id:"meetingDate", type:"date"},
 
 		],
 		checkboxes: [
@@ -67,9 +67,9 @@ const CustomerListToolbar = (props) => {
 						Add Sales Payment
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
+				{/* <Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
-				</Button>
+				</Button> */}
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>

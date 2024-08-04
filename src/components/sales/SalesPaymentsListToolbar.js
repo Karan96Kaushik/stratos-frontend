@@ -23,7 +23,7 @@ const SalesPaymentsListToolbar = (props) => {
 
 	const commonFilters = {
 		texts: [
-            {label:"Service Type", id:"serviceType", options: services, isRequired:true},
+            // {label:"Service Type", id:"serviceType", options: services, isRequired:true},
 		],
 		checkboxes: [
 		]
@@ -43,9 +43,9 @@ const SalesPaymentsListToolbar = (props) => {
 						Add Payment
 					</Button>
 				</Link>
-				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
+				{/* <Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
-				</Button>
+				</Button> */}
 			</Box>
 			<Box sx={{mt: 1}}>
 				<Card>
@@ -62,7 +62,7 @@ const SalesPaymentsListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-								<Grid item item md={4} xs={6}>
+								<Grid item md={4} xs={6}>
 									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} commonFilters={commonFilters} type={'all'} fields={paymentFields}/>
 								</Grid>
 							</Grid>

@@ -86,7 +86,7 @@ export default function ViewDialog({ data, fields, otherFields, typeField, title
                                     {otherFields && otherFields?.map(field => (!field.isHidden && field.type == "array" && field.type != "boolean") ? (
                                         <TableRow>
                                             <TableCell align="left"><Typography variant="h5">{field.name}</Typography></TableCell>
-                                            <TableCell align="left">{data[field.id].map((v) => (<>{v}<br /></>))}</TableCell>
+                                            <TableCell align="left">{data[field.id]?.map((v) => (<>{v}<br /></>))}</TableCell>
                                         </TableRow>   
                                     ) : <></>)}
                                     {otherFields && otherFields?.map(field => (!field.isHidden && field.type == "boolean") ? (

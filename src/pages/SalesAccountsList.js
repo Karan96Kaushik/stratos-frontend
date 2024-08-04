@@ -149,6 +149,7 @@ const SalesList = () => {
     ]
 
     const otherFields = [
+        {name:"Services", id:"services", type:'array'},
         {name:"Payments", id:"payments", type:'array'},
     ]
 
