@@ -1,22 +1,19 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container, Paper, Tab, Tabs, TextField } from '@material-ui/core';
-import SalesListToolbar from 'src/components/sales/SalesListToolbar';
-import {authorizedReq, authorizedDownload} from '../utils/request'
-import {addBlockers, removeBlockers} from '../utils/jsControls'
+import { Box, Container, Paper, Tab, Tabs } from '@material-ui/core';
+import SalesPaymentsListToolbar from 'src/components/sales/SalesPaymentsListToolbar';
+import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import salesFields, { statusOptions } from '../statics/salesFields';
+import paymentFields from '../statics/paymentFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
 import {
 	selectFilterFor,
 } from "../store/reducers/filtersSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import * as _ from "lodash"
-import { selectUser, updateUser } from 'src/store/reducers/userSlice';
-import { useHistory } from "react-router-dom";
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -36,9 +33,8 @@ const serialize = function(obj) {
 	return str.join("&");
   }
 
-const SalesList = () => {
+const SalesPaymentsList = () => {
 
-	const dispatch = useDispatch()
 	const loginState = useContext(LoginContext)
 	const {loading, setLoading} = useContext(LoadingContext)
     const [data, setData] = useState({type: '', rows:[]})
@@ -47,31 +43,23 @@ const SalesList = () => {
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
-	const filters = useSelector(selectFilterFor("sales"))
-	const user = useSelector(selectUser)
-
-	const salesFieldsCopy = _.merge({}, salesFields)
+	const filters = useSelector(selectFilterFor("payments"))
 
 	const query = useQuery();
 	if(query.rowsPerPage)
 		if(!([25,50,100].includes(query.rowsPerPage)))
 			query.rowsPerPage = 25
-	// if(!query.salesType)
-	// 	query.salesType = 'developer'
 
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
 
-
 	useEffect(() => {
-        addBlockers()
-        // if(query.salesType) {
 		loadData()
-		// }
 	}, [])
 
 	useEffect(async () => {
+		console.log("Page num updated")
 		setSearch({...search, page, rowsPerPage, ...sortState})
 	}, [page, rowsPerPage])
 
@@ -93,22 +81,26 @@ const SalesList = () => {
 	useEffect(async () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-		navigate("/app/sales?" + serialize(queryParams));
+
+		navigate("/app/sales/payments?" + serialize(queryParams));
+		if(search?.text?.length > 2 || search?.text?.length == 0 || !search?.text)
+			goSearch();
+	}, [search])
+
+	const goSearch = () => {
 		loadData()
-	}, [search, user.unread])
+    }
 
 	const loadData = async () => {
 		try{
 			setLoading({...loading, isActive:true})
-			const data = await authorizedReq({
-				route: "/api/sales/search", 
+			const _data = await authorizedReq({
+				route: "/api/sales/payments/search", 
 				creds: loginState.loginState, 
 				data:{...search, filters: {...filters}}, 
 				method: 'post'
 			})
-			if(data.unread !== undefined)
-				dispatch(updateUser({unread:data.unread}))
-			setData({rows:data.sales})
+			setData({rows:_data.payments})
 
 		} catch (err) {
 			snackbar.showMessage(
@@ -119,22 +111,19 @@ const SalesList = () => {
 	}
 
 	const handleChange = (event) => {
-		if (event.target.id == 'salesType'){
-			setData({rows:[]})
-			setPage(1)
-			setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
-		}
+		setData({rows:[]})
+		setPage(1)
+		setSearch({...search, [event.target.id]: event.target.value, type:"", text:""})
 	}
 
 	const handleExport = async (password) => {
 		try {
 			await authorizedDownload({
-				route: "/api/sales/export", 
+				route: "/api/sales/payments/export", 
 				creds: loginState.loginState, 
 				data:{...search, password, filters: {...filters}}, 
-				method: 'post',
-				password
-			}, "salesExport" + ".xlsx")
+				method: 'post'
+			}, "paymentsExport" + ".xlsx")
 		}
 		catch (err) {
 			snackbar.showMessage(
@@ -143,84 +132,34 @@ const SalesList = () => {
 		}
 	}
 	
-    const extraFields = []
+	const extraFields = [
+		{name:"Date", id: "createdTime"},
+		{name:"Payment ID", id: "paymentID"},
+		{name:"Sales ID", id: "salesID"},
+		{name:"Promoter", id: "promoterName"},
+	]
 
-	const defaultFields = {texts:[
-        {label:"Date", id:"createdTime"},
-        {label:"Sales ID", id:"salesID"},
-        {label:"Members Assigned", id:"membersAssigned"},
-        {label:"Promoter Name", id:"promoterName"},
-        {label:"Follow Up Date", id:"followUpDate"},
-        // {label:"Status", id: "status"},
-        {label:"Rating", id:"rating"},
-    ], checkboxes:[]}
+	const defaultFields = {
+		texts:[
+            {label:"Payment Date", id:"paymentDate", type:"date"},
+            // {label:"Invoice ID", id:"invoiceID"},
+            {label:"Received Amount", id:"receivedAmount", type:"number", isRequired:true},
+            // {label:"Mode", id:"mode", options:modeOptions, isRequired:true},
+            // {label:"Remarks", id:"remarks"},
+		],
+		checkboxes:[]
+	}
 
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={salesFieldsCopy} otherFields={[]} typeField={null}/>
+			<ViewDialog data={val} fields={paymentFields} otherFields={extraFields} typeField={null}/>
 		)
 	}
-
-	const handleChangeStatus = async ({target}) => {
-		try {
-			const newStatus = target.value
-			await authorizedReq({
-				route: "/api/sales/update", 
-				creds: loginState.loginState, 
-				data:{_id: target.id, status: target.value}, 
-				method: 'post'
-			})
-			setData({
-				...data, 
-				rows: data?.rows?.map(s => (s._id == target.id ? ({...s, status: newStatus}) : s))
-			})
-			snackbar.showMessage(
-				"Status updated successfully"
-			)
-		}
-		catch (err) {
-			snackbar.showMessage(
-				err?.response?.data ?? err.message ?? err,
-			)
-		}
-	}
-
-	const renderSelectStatus = (val) => {
-		return (				
-			<TextField
-				fullWidth
-				select={true}
-				SelectProps={{ native: true }}
-				// disabled={isEdit && disabled[field.id]}
-				// label='Status'
-				type='text'
-				// inputProps={field.type == "file" ? { multiple: true } : {}}
-				// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
-				id={val._id}
-				// required={field.isRequired}
-				// error={errors[field.id]}
-				onChange={handleChangeStatus}
-				value={val.status}
-				variant="standard"
-			>
-				{(statusOptions ?? []).map((option) => (
-					<option key={option}
-						value={option}>
-						{option}
-					</option>
-				))}
-			</TextField>
-		)
-	}
-
-	// const openSales = (val) => (_e) => {
-	// 	navigate('edit/' + val._id)
-	// }
 
 	return (<>
 		<Helmet>
-			<title>Sales | TMS</title>
+			<title>Sales Payments | TMS</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -228,27 +167,25 @@ const SalesList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<SalesListToolbar loadData={loadData} handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<SalesPaymentsListToolbar handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={goSearch}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
 							extraFields={extraFields} 
-							type={null}//search.salesType} 
-							fields={salesFieldsCopy} 
+							type={null} 
+							fields={paymentFields} 
 							data={data} 
 							search={search} 
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
-							additionalNames={['Status', 'View']}
-							additional={[renderSelectStatus, renderViewButton]}
+							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
 							sortState={sortState}
-							// rowOnclick={openSales}
-							disableEdit={false}
+							// additional={additional}
 						/>				
 					</Paper>
 				</Box>
@@ -257,4 +194,4 @@ const SalesList = () => {
 	</>)
 };
 
-export default SalesList;
+export default SalesPaymentsList;

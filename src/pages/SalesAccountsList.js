@@ -1,13 +1,13 @@
 import {useRef, useEffect, useState, useContext} from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs, TextField } from '@material-ui/core';
-import SalesListToolbar from 'src/components/sales/SalesListToolbar';
+import SalesAccountsListToolbar from 'src/components/sales/SalesAccountsListToolbar';
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import {addBlockers, removeBlockers} from '../utils/jsControls'
 import { LoginContext, LoadingContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import salesFields, { statusOptions } from '../statics/salesFields';
+import salesFields, { statusOptions } from '../statics/salesAccountsFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
 import {
@@ -93,7 +93,7 @@ const SalesList = () => {
 	useEffect(async () => {
 		let queryParams = Object.assign({}, search)
 		delete queryParams.filters
-		navigate("/app/sales?" + serialize(queryParams));
+		navigate("/app/sales/accounts?" + serialize(queryParams));
 		loadData()
 	}, [search, user.unread])
 
@@ -101,7 +101,7 @@ const SalesList = () => {
 		try{
 			setLoading({...loading, isActive:true})
 			const data = await authorizedReq({
-				route: "/api/sales/search", 
+				route: "/api/sales/accounts/search", 
 				creds: loginState.loginState, 
 				data:{...search, filters: {...filters}}, 
 				method: 'post'
@@ -129,7 +129,7 @@ const SalesList = () => {
 	const handleExport = async (password) => {
 		try {
 			await authorizedDownload({
-				route: "/api/sales/export", 
+				route: "/api/sales/accounts/export", 
 				creds: loginState.loginState, 
 				data:{...search, password, filters: {...filters}}, 
 				method: 'post',
@@ -150,9 +150,12 @@ const SalesList = () => {
         {label:"Sales ID", id:"salesID"},
         {label:"Members Assigned", id:"membersAssigned"},
         {label:"Promoter Name", id:"promoterName"},
-        {label:"Follow Up Date", id:"followUpDate"},
+        {label:"Total Amount", id:"confirmedAmount", type:"number"},
+        {label:"Received Amount", id:"receivedAmount", type:"number"},
+        {label:"Balance Amount", id:"balanceAmount", type:"number"},
+        // {label:"Follow Up Date", id:"followUpDate"},
         // {label:"Status", id: "status"},
-        {label:"Rating", id:"rating"},
+        // {label:"Rating", id:"rating"},
     ], checkboxes:[]}
 
 	// View button
@@ -166,7 +169,7 @@ const SalesList = () => {
 		try {
 			const newStatus = target.value
 			await authorizedReq({
-				route: "/api/sales/update", 
+				route: "/api/sales/accounts/update", 
 				creds: loginState.loginState, 
 				data:{_id: target.id, status: target.value}, 
 				method: 'post'
@@ -186,38 +189,6 @@ const SalesList = () => {
 		}
 	}
 
-	const renderSelectStatus = (val) => {
-		return (				
-			<TextField
-				fullWidth
-				select={true}
-				SelectProps={{ native: true }}
-				// disabled={isEdit && disabled[field.id]}
-				// label='Status'
-				type='text'
-				// inputProps={field.type == "file" ? { multiple: true } : {}}
-				// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
-				id={val._id}
-				// required={field.isRequired}
-				// error={errors[field.id]}
-				onChange={handleChangeStatus}
-				value={val.status}
-				variant="standard"
-			>
-				{(statusOptions ?? []).map((option) => (
-					<option key={option}
-						value={option}>
-						{option}
-					</option>
-				))}
-			</TextField>
-		)
-	}
-
-	// const openSales = (val) => (_e) => {
-	// 	navigate('edit/' + val._id)
-	// }
-
 	return (<>
 		<Helmet>
 			<title>Sales | TMS</title>
@@ -228,7 +199,7 @@ const SalesList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<SalesListToolbar loadData={loadData} handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<SalesAccountsListToolbar loadData={loadData} handleExport={handleExport} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList
@@ -240,8 +211,8 @@ const SalesList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
-							additionalNames={['Status', 'View']}
-							additional={[renderSelectStatus, renderViewButton]}
+							additionalNames={['View']}
+							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}

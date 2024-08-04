@@ -11,7 +11,9 @@ import TicketAdd from 'src/pages/TicketAdd';
 import LeadsAdd from 'src/pages/LeadsAdd';
 import LeadsListPage from 'src/pages/LeadsListPage';
 import SalesAdd from 'src/pages/SalesAdd';
+import SalesAccountsAdd from 'src/pages/SalesAccountsAdd';
 import SalesListPage from 'src/pages/SalesList';
+import SalesAccountsListPage from 'src/pages/SalesAccountsList';
 import InvoiceListPage from 'src/pages/InvoiceListPage';
 import InvoiceAdd from 'src/pages/InvoiceAdd';
 import QuotationListPage from 'src/pages/QuotationListPage';
@@ -21,12 +23,12 @@ import TaskPaymentsListPage from 'src/pages/TaskPaymentsListPage';
 import ClientPaymentsListPage from 'src/pages/ClientPaymentsListPage';
 import TaskPaymentsAddPage from 'src/pages/TaskPaymentsAddPage';
 import PaymentsAdd from 'src/pages/PaymentsAdd';
+import SalesPaymentsAdd from 'src/pages/SalesPaymentsAdd';
 import ClientList from 'src/pages/ClientListPage2';
 import ClientAdd from 'src/pages/ClientAdd';
 import PackagesListPage from 'src/pages/PackagesListPage';
 import PackagesAdd from 'src/pages/PackagesAddPage';
 import PackageAccountsListPage from 'src/pages/PackageAccountsListPage';
-// import PackageAccountsAdd from 'src/pages/PackagesAddPage';
 import PackageServicesListPage from 'src/pages/PackageServicesListPage';
 import PackageServicesUpdate from 'src/pages/PackageServicesUpdatePage';
 import Dashboard from 'src/pages/Dashboard';
@@ -40,6 +42,7 @@ import MeetingCalendar from 'src/pages/MeetingCalendar';
 import CCReceivedList from './pages/CCReceivedList';
 import CCReceivedAddPage from './pages/CCReceivedAddPage';
 import ReraInstruction from './pages/ReraInstruction';
+import SalesPaymentsList from './pages/SalesPaymentsListPage';
 
 const routes = (isLoggedIn) => [
 	{
@@ -98,6 +101,22 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <SalesListPage /> },
 					{ path: 'add', element: <SalesAdd /> },
 					{ path: 'edit/:id', element: <SalesAdd /> },
+				]
+			},
+			{
+				path: 'sales/accounts',
+				children: [
+					{ path: '/', element: <SalesAccountsListPage /> },
+					{ path: 'add', element: <SalesAccountsAdd /> },
+					{ path: 'edit/:id', element: <SalesAccountsAdd /> },
+				]
+			},
+			{
+				path: 'sales/payments',
+				children: [
+					{ path: '/', element: <SalesPaymentsList /> },
+					{ path: 'add', element: <SalesPaymentsAdd /> },
+					{ path: 'edit/:id', element: <SalesPaymentsAdd /> },
 				]
 			},
 			{

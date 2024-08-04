@@ -27,6 +27,8 @@ import {
 	Archive,
 	Layout,
 	Link as LinkIcon,
+	Clipboard,
+	PenTool,
 } from 'react-feather';
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
@@ -57,7 +59,7 @@ const items = [
 	},
 	{
 		href: '/app/clientaccounts',
-		icon: DollarSignIcon,
+		icon: PenTool,
 		isSub: true,
 		title: 'Accounts'
 	},
@@ -74,7 +76,7 @@ const items = [
 	},
 	{
 		href: '/app/taskaccounts',
-		icon: DollarSignIcon,
+		icon: PenTool,
 		isSub: true,
 		title: 'Accounts'
 	},
@@ -97,7 +99,7 @@ const items = [
 	},
 	{
 		href: '/app/package/accounts',
-		icon: DollarSignIcon,
+		icon: PenTool,
 		isSub: true,
 		title: 'Accounts'
 	},
@@ -124,9 +126,27 @@ const items = [
 		title: 'Leads'
 	},
 	{
-		href: '/app/sales',
+		href: '#',
 		icon: Send,
 		title: 'Sales'
+	},
+	{
+		href: '/app/sales',
+		icon: File,
+		isSub: true,
+		title: 'Details'
+	},
+	{
+		href: '/app/sales/accounts',
+		icon: PenTool,
+		isSub: true,
+		title: 'Accounts'
+	},
+	{
+		href: '/app/sales/payments',
+		icon: DollarSignIcon,
+		isSub: true,
+		title: 'Payments'
 	},
 	{
 		href: '/app/ccreceived',
