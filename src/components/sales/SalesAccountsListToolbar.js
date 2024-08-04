@@ -87,7 +87,7 @@ const CustomerListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<Filters forView="sales" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["saleType"]} fields={salesFields}/>
+									<Filters forView="salesAccounts" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={props.searchInfo["saleType"]} fields={salesFields}/>
 								</Grid>
 							</Grid>
 						</Box>

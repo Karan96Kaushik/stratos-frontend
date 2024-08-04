@@ -63,7 +63,7 @@ const SalesPaymentsListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<FiltersDialog forView="payments" search={props.searchInfo} setSearch={props.setSearch} commonFilters={commonFilters} type={'all'} fields={paymentFields}/>
+									<FiltersDialog forView="salesPayments" search={props.searchInfo} setSearch={props.setSearch} commonFilters={commonFilters} type={'all'} fields={paymentFields}/>
 								</Grid>
 							</Grid>
 						</Box>
