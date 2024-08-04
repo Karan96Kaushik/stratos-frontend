@@ -90,6 +90,7 @@ const PaymentAddForm = (props) => {
 				setValues({
 					...values, 
 					salesID: res.salesID, 
+					promoterName: res.promoterName, 
 					_salesID: res._id
 				})
 			} catch (err) {

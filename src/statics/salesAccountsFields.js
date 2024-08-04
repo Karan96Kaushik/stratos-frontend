@@ -62,7 +62,7 @@ export default {
             {label:"Completion Date", id:"completionDate", type:"date"},
 
             // {label:"Status", id: "status", options: statusOptions},
-            {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
+            // {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
             // {label:"FollowUp Date", id:"followUpDate", type:"date"},
             // {label:"Meeting Date", id:"meetingDate", type:"date"},
             // {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
@@ -73,6 +73,7 @@ export default {
             // {label:"Members Assigned", id:"membersAssigned", isRequired:true},
             
             {label:"Added By", id:"memberName", isHidden:true},
+            {label:"Payments", id:"payments", isHidden:true, type:'array'},
 
         ],
         checkboxes:[

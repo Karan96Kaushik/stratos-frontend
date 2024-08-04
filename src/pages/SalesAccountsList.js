@@ -145,7 +145,12 @@ const SalesList = () => {
 		}
 	}
 	
-    const extraFields = []
+    const extraFields = [
+    ]
+
+    const otherFields = [
+        {name:"Payments", id:"payments", type:'array'},
+    ]
 
 	const defaultFields = {texts:[
         {label:"Date", id:"createdTime"},
@@ -166,7 +171,7 @@ const SalesList = () => {
 	// View button
 	const renderViewButton = (val) => {
 		return (				
-			<ViewDialog data={val} fields={salesFieldsCopy} otherFields={[]} typeField={null}/>
+			<ViewDialog data={val} fields={salesFieldsCopy} otherFields={otherFields} typeField={null}/>
 		)
 	}
 
