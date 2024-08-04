@@ -5,7 +5,7 @@ import SalesAccountsListToolbar from 'src/components/sales/SalesAccountsListTool
 import {authorizedReq, authorizedDownload} from '../utils/request'
 import {addBlockers, removeBlockers} from '../utils/jsControls'
 import { LoginContext, LoadingContext } from "../myContext"
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate, Link} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import salesFields, { statusOptions } from '../statics/salesAccountsFields';
 import GeneralList from '../components/GeneralList'
@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as _ from "lodash"
 import { selectUser, updateUser } from 'src/store/reducers/userSlice';
 import { useHistory } from "react-router-dom";
+import { IconButton } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -150,7 +152,10 @@ const SalesList = () => {
         {label:"Sales ID", id:"salesID"},
         {label:"Members Assigned", id:"membersAssigned"},
         {label:"Promoter Name", id:"promoterName"},
-        {label:"Total Amount", id:"confirmedAmount", type:"number"},
+        {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
+        {label:"GST", id:"gst", type:"number"},
+        {label:"Govt Fees", id:"govtFees", type:"number"},
+        {label:"Total Amount", id:"totalAmount", type:"number"},
         {label:"Received Amount", id:"receivedAmount", type:"number"},
         {label:"Balance Amount", id:"balanceAmount", type:"number"},
         // {label:"Follow Up Date", id:"followUpDate"},
@@ -188,6 +193,16 @@ const SalesList = () => {
 			)
 		}
 	}
+	// Add payment button
+	const renderAddButton = (val) => {
+		return (				
+			<Link to={`/app/sales/payments/add?salesID=${val.salesID}`}>
+				<IconButton aria-label="expand row" size="small">
+					<Add />
+				</IconButton>
+			</Link>
+		)
+	}
 
 	return (<>
 		<Helmet>
@@ -211,8 +226,8 @@ const SalesList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
-							additionalNames={['View']}
-							additional={[renderViewButton]}
+							additionalNames={['View', '']}
+							additional={[renderViewButton, renderAddButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}

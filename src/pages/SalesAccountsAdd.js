@@ -1,6 +1,6 @@
 import {Helmet} from 'react-helmet';
 import {Box, Container, Grid} from '@material-ui/core';
-import SalesAddForm from 'src/components/sales/SalesAddForm';
+import SalesAccountAddForm from 'src/components/sales/SalesAccountAddForm';
 
 const Account = () => (
 	<>
@@ -16,7 +16,7 @@ const Account = () => (
 				<Grid container
 					spacing={3}>
 					<Grid item lg={8} md={6} xs={12}>
-						<SalesAddForm/>
+						<SalesAccountAddForm/>
 					</Grid>
 				</Grid>
 			</Container>

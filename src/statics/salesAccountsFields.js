@@ -66,6 +66,8 @@ export default {
             // {label:"FollowUp Date", id:"followUpDate", type:"date"},
             // {label:"Meeting Date", id:"meetingDate", type:"date"},
             // {label:"Confirmed Amount", id:"confirmedAmount", type:"number"},
+            {label:"Govt Fees", id:"govtFees", type:'number'}, 
+            {label:"GST", id:"gst", type:'number', isHidden:true}, 
             {label:"Remarks", id:"remarks", isHidden:false, type:'array'}, 
             
             // {label:"Members Assigned", id:"membersAssigned", isRequired:true},
@@ -74,6 +76,7 @@ export default {
 
         ],
         checkboxes:[
+            {label:"Add GST", id:"addGst"}, 
         ]
     },
     item: {

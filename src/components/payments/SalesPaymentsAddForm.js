@@ -82,7 +82,7 @@ const PaymentAddForm = (props) => {
 
 		if(query.salesID) {
 			try {
-				let res = await authorizedReq({ route: "/api/sales/payments/search/add", creds: loginState.loginState, data: {salesID: query.salesID}, method: 'get' })
+				let res = await authorizedReq({ route: "/api/sales/", creds: loginState.loginState, data: {salesID: query.salesID}, method: 'get' })
 				setSalesRows([{salesID:res.salesID, promoterName: res.promoterName, _id: res._id}])
 				setPlaceholder({
 					sales: {salesID:res.salesID, promoterName: res.promoterName, _id: res._id}, 

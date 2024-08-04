@@ -179,6 +179,7 @@ const SalesPaymentsList = () => {
 							handleChange={handleChange} 
 							page={page} 
 							defaultFields={defaultFields} 
+                            additionalNames={['View']}
 							additional={[renderViewButton]}
 							rowsPerPage={rowsPerPage} 
 							setPage={setPage} 
