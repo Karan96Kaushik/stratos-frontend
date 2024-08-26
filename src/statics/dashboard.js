@@ -15,6 +15,8 @@ const personalDashboards = {
                     fields: [
                         {title:'Total Scheduled'},
                         {title:'Pending'},
+                        {title:'Calls Made'},
+                        {title:'Calls Connected'},
                         {title:'Today'},
                         // {title:'Future'},
                     ],
@@ -81,6 +83,8 @@ const adminDashboards = {
                     fields: [
                         {title:'Total Scheduled'},
                         {title:'Pending'},
+                        {title:'Calls Made'},
+                        {title:'Calls Connected'},
                         {title:'Today'},
                         // {title:'Future'},
                     ],
