@@ -9,13 +9,13 @@ const personalDashboards = {
     dashboards: {
         'Business Development': {
             components: {
-                'Calls Scheduled': {
+                'Calls': {
                     type: 'multicard',
                     dateUsed: true,
                     fields: [
-                        {title:'Total'},
+                        {title:'Total Scheduled'},
                         {title:'Pending'},
-                        // {title:'Today'},
+                        {title:'Today'},
                         // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales',
@@ -75,13 +75,13 @@ const adminDashboards = {
     dashboards: {
         'Business Development': {
             components: {
-                'Calls Scheduled': {
+                'Calls': {
                     type: 'multicard',
                     dateUsed: true,
                     fields: [
-                        {title:'Total'},
+                        {title:'Total Scheduled'},
                         {title:'Pending'},
-                        // {title:'Today'},
+                        {title:'Today'},
                         // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'

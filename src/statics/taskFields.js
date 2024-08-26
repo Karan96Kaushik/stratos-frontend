@@ -208,6 +208,7 @@ const taskFields = {
             {label:"Under Section", id:"section", options:["", "Section 6", "Section 7(3)"]},
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
+            {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
@@ -223,6 +224,7 @@ const taskFields = {
         texts:[
             {label:"Correction Details", id:"correctionDetails"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
+            {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFields,
             ...commonTextFieldsEnd,
