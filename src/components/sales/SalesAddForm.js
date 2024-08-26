@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
@@ -50,6 +50,7 @@ const SalesAddForm = (props) => {
 	// const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 
 	const [values, setValues] = useState({});
+	const originalRef = useRef();
 
 	let disabled = {
 		exClientID: true,
@@ -134,6 +135,8 @@ const SalesAddForm = (props) => {
 			members = members.find(val => String(val._id) == String(data._memberID))
 			if (typeof data._membersAssigned == 'string')
 				data._membersAssigned = JSON.parse(data._membersAssigned)
+
+			originalRef.current = data
 			setValues(data)
 		}
 	}, [])
@@ -150,9 +153,18 @@ const SalesAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			let data = {...values}
+			if (originalRef.current) {
+				data = {
+					updateData: data, 
+					originalData: originalRef.current, 
+					member: {userName: loginState.loginState.userName},
+				}
+			}
+
 			await authorizedReq({
 				route:"/api/sales/" + (!isEdit ? "add" : "update"), 
-				data:values, 
+				data:data, 
 				creds:loginState.loginState, 
 				method:"post"
 			})

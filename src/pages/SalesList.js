@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as _ from "lodash"
 import { selectUser, updateUser } from 'src/store/reducers/userSlice';
 import { useHistory } from "react-router-dom";
+import { memberFields } from 'src/statics/memberFields';
 
 function useQuery() {
 	let entries =  new URLSearchParams(useLocation().search);
@@ -164,11 +165,16 @@ const SalesList = () => {
 
 	const handleChangeStatus = async ({target}) => {
 		try {
+			console.debug(loginState.loginState.userName)
 			const newStatus = target.value
 			await authorizedReq({
 				route: "/api/sales/update", 
 				creds: loginState.loginState, 
-				data:{_id: target.id, status: target.value}, 
+				data:{
+					updateData: {_id: target.id, status: target.value}, 
+					originalData: data?.rows?.find(s => s._id == target.id),
+					member: {userName: loginState.loginState.userName},
+				},
 				method: 'post'
 			})
 			setData({
