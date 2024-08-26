@@ -17,7 +17,7 @@ const personalDashboards = {
                         {title:'Pending'},
                         {title:'Calls Made'},
                         {title:'Calls Connected'},
-                        {title:'Today'},
+                        {title:'Calls Made Today'},
                         // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales',
@@ -85,7 +85,7 @@ const adminDashboards = {
                         {title:'Pending'},
                         {title:'Calls Made'},
                         {title:'Calls Connected'},
-                        {title:'Today'},
+                        {title:'Calls Made Today'},
                         // {title:'Future'},
                     ],
                     api: '/api/dashboard/sales'
