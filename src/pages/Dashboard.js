@@ -82,17 +82,20 @@ const Dashboard = () => {
 
 	const getCustomData = async (title, api) => {
 		try{
-			let params = dateRange
+			let params = {...dateRange}
 			if (member) 
 				params._memberId = member
 			else
 				params._memberId = ''
 
+			if (userDept === 'Administration')
+				params.adminDash = true
+
 			let data = await authorizedReq({
 				route: api, 
 				creds: loginState.loginState, 
 				method: 'get',
-				data:dateRange
+				data:params
 			})
 
 			return data
