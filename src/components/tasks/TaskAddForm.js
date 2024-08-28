@@ -75,6 +75,7 @@ const TaskAddForm = (props) => {
 				data._membersAssigned = JSON.parse(data._membersAssigned)
 			if (typeof data._membersAllocated == 'string')
 				data._membersAllocated = JSON.parse(data._membersAllocated)
+			originalRef.current = data
 			setValues(data)
 		}
 	}, [])
@@ -133,13 +134,23 @@ const TaskAddForm = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
+	const originalRef = useRef();
+
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			let data = {...values}
+			if (originalRef.current) {
+				data = {
+					updateData: data, 
+					originalData: originalRef.current, 
+					member: {userName: loginState.loginState.userName},
+				}
+			}
 			setDisabled({...disabled, submit:true})
 			await authorizedReq({
 				route:"/api/tasks/" + (!isEdit ? "add" : "update"), 
-				data:values, 
+				data, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
@@ -430,6 +441,16 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Remarks History</Typography>
+
+							{isEdit && values?.existingRemarks?.length && <List>
+								{values?.existingRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List>}
+						</Grid>
 
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>

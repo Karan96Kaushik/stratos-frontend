@@ -147,7 +147,7 @@ let commonTextFieldsEnd = [
     {label:"Bill Amount", id:"billAmount", type:"number", isHidden:true},
     {label:"GST", id:"gst", type:"number", isHidden:true},
     {label:"Branch", id:"branch", isRequired:true, options: ['', 'Mumbai', 'Pune']},
-    {label:"Remarks", id:"remarks"},
+    {label:"Remarks", id:"remarks", type:'array'},
     {label:"Notes", id:"notes"},
     {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,4.5,5]},
     {label:"Payment Date", id:"paymentDate", type:"date"},
