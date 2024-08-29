@@ -4,17 +4,23 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import MeetingCalDialog from 'src/components/MeetingCalDialog';
 import CalEventViewDialog from 'src/components/MCalEventViewDialog';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { TextField } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
+import PasswordDialog from './passwordDialog';
 
 import "../styles.css";
 
 const MyCalendar = (props) => {
-
   
 	const [open, setOpen] = useState(false)
   const [popup, setPopup] = useState(null)
   const [editEvent, setEditEvent] = useState(null)
   const [search, setSearch] = useState('')
+
+  const [exportOpen, setExportOpen] = React.useState(false)
+
+	const getExport = async () => {
+		setExportOpen(true)
+	}
   let events = props.events ?? []
   // console.log(events)
 
@@ -80,6 +86,10 @@ const MyCalendar = (props) => {
       />
       <br />
       <br />
+      <Button sx={{mx: 1}} variant="contained" onClick={getExport}>
+        Export
+      </Button>
+      <br />
       <MeetingCalDialog 
         setOpen={setOpen} open={open}
         setEvents={props.setEvents} events={events} 
@@ -92,6 +102,7 @@ const MyCalendar = (props) => {
         allEvents={props.events} setAllEvents={props.setEvents} 
         setEditOpen={setOpen}
       />
+		<PasswordDialog protectedFunction={props.handleExport} open={exportOpen} setOpen={setExportOpen} />
     </div>
   );
 }

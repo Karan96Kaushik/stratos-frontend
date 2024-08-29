@@ -31,6 +31,23 @@ const Calendar = () => {
 	const loginState = useContext(LoginContext)
 	const snackbar = useSnackbar()
 
+	const handleExport = async (password) => {
+		try {
+			await authorizedDownload({
+				route: "/api/calendar/export", 
+				creds: loginState.loginState, 
+				data:{password}, 
+				method: 'post',
+				password
+			}, "meetingsExport" + ".xlsx")
+		}
+		catch (err) {
+			snackbar.showMessage(
+				String(err?.response?.data ?? err.message ?? err),
+			)
+		}
+	}
+
     useEffect(async () => {
 		try {
 			setLoading({...loading, isActive:true})
@@ -80,7 +97,7 @@ const Calendar = () => {
 				py: 3
 			}}>
 				<Container maxWidth="xl">
-					<MeetingCalendar setEvents={setEvents} events={events}/>
+					<MeetingCalendar handleExport={handleExport} setEvents={setEvents} events={events}/>
 				</Container>
 			</Box>
 		</>
