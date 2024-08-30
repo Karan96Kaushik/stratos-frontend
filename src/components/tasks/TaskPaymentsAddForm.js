@@ -46,6 +46,8 @@ const TaskAddForm = (props) => {
 			setClientRows([])
 	}, [searchInfo])
 
+	const originalRef = useRef();
+
 	if (location.pathname.includes("edit")) {
 		isEdit = true
 		let taskID = location.pathname.split("/").pop()
@@ -56,7 +58,9 @@ const TaskAddForm = (props) => {
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
 			setType(data.serviceType)
+			originalRef.current = data
 			setValues(data)
+
 		}, [])
 	}
 
@@ -97,9 +101,17 @@ const TaskAddForm = (props) => {
 	const handleSubmit = async () => {
 		try {
 			validateForm()
+			let data = {...values}
+			if (originalRef.current) {
+				data = {
+					updateData: data, 
+					originalData: originalRef.current, 
+					member: {userName: loginState.loginState.userName},
+				}
+			}
 			await authorizedReq({
 				route:"/api/tasks/" + (!isEdit ? "add" : "update"), 
-				data:values, 
+				data:data, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
@@ -301,6 +313,17 @@ const TaskAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Remarks History</Typography>
+
+							{isEdit && values?.existingRemarks?.length && <List>
+								{values?.existingRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List>}
+						</Grid>
+						
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>
