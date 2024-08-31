@@ -528,6 +528,7 @@ const taskFields = {
             {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
             {label:"SRO Authority", id:"sroAuthority", options:sroAuthorities},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1, ...statusSet11]},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFieldsEnd,
         ],
         checkboxes:[

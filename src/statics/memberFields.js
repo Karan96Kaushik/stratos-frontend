@@ -16,7 +16,8 @@ let departments = [
     'Business Development',
     'Human Resource',
     'Marketing',
-    'Legal'
+    'Legal',
+    'EN Advisory',
 ]
 
 const memberFields = {all:{
