@@ -107,8 +107,6 @@ const Dashboard = () => {
 		}
 	}
 
-	console.debug(customData)
-
 	const getData = async () => {
 		try{
 			setLoading({...loading, isActive:true})

@@ -140,6 +140,7 @@ const CustomerList = () => {
 		{name:'Contact No', id:"contactNum"},
 		{name:'Owner Name', id:"owner"},
 		{name:'Owner Contact No', id:"ownerContact"},
+		{name:'RERA Number', id:"reraNumber"},
 		{name:'Completion Date', id:"completionDate"},
 		{name:'Relationship Manager', id:"rmAssigned"},
 		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
