@@ -62,6 +62,7 @@ const statusSet6 = [
     "Uploaded",
     "Certified", 
     "Sent for Queries",
+    "ACC With Queries",
     "Confirmation Received",
 ]
 
