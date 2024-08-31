@@ -1,15 +1,26 @@
 import {
 	Box, Button,
 	Card, CardContent, TextField,
-	InputAdornment, SvgIcon
+	InputAdornment, SvgIcon,
+	Grid
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import { Link } from 'react-router-dom';
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
+import Filters from '../FiltersDialog'
 
 const CustomerListToolbar = (props) => {
 	const [open, setOpen] = React.useState(false)
+
+	const commonFilters = {
+		texts: [
+            {label:"Branch", id:"branch", options:['','Mumbai','Pune']},
+		],
+		checkboxes: [
+		]
+	}
+
 
 	const getExport = async () => {
 		setOpen(true)
@@ -35,7 +46,9 @@ const CustomerListToolbar = (props) => {
 			<Box sx={{ mt: 3 }}>
 				<Card>
 					<CardContent>
-						<Box sx={{ maxWidth: 500 }}>
+						<Grid container>
+						<Grid item md={4} xs={6}>
+						{/* <Box sx={{ maxWidth: 500 }}> */}
 							<TextField
 								fullWidth
 								label="Search"
@@ -44,7 +57,12 @@ const CustomerListToolbar = (props) => {
 								onChange={({target}) => props.setSearch({...props.searchInfo, text:target.value})}
 								variant="standard"
 							/>
-						</Box>
+						{/* </Box> */}
+						</Grid>
+						<Grid item md={4} xs={6}>
+							<Filters forView="members" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={{'all':{texts:[],checkboxes:[]}}}/>
+						</Grid>
+						</Grid>
 					</CardContent>
 				</Card>
 			</Box>

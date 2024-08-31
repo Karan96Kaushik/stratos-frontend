@@ -41,6 +41,7 @@ function Row(props) {
 				<TableCell align="left">{row.email}</TableCell>
 				<TableCell align="left">{row.phone}</TableCell>
 				<TableCell align="left">{row.designation}</TableCell>
+				<TableCell align="left">{row.branch}</TableCell>
 				<TableCell align="left">{row.startDate}</TableCell>
 				<TableCell>
 					{renderViewButton(row)}
@@ -68,6 +69,7 @@ export default function CollapsibleTable({rows}) {
 						<TableCell align="left">Username</TableCell>
 						<TableCell align="left">Mobile</TableCell>
 						<TableCell align="left">Designation</TableCell>
+						<TableCell align="left">Branch</TableCell>
 						<TableCell align="left">Start Date</TableCell>
 						<TableCell align="left"></TableCell>
 					</TableRow>

@@ -83,26 +83,6 @@ const CustomerList = () => {
 		loadData()
 	}, []);
 	
-	const extraFields = [
-		{name:"Date", id: "createdTime"},
-		{name:"Invoice ID", id: "invoiceID"},
-		// {name:"Member ID", id: "memberID"},
-	]
-
-	const defaultFields = {
-		texts:[
-            {label:"Invoice Date", id:"date", type:"date"},
-            {label:"Project Name", id:"projectName", isRequired:true},
-            {label:"Bill To", id:"billTo"},
-            {label:"Type", id:"type", options:["", "Proforma Invoice", "Invoice", "Tax Invoice"], isRequired:true},
-            {label:"Total Amount", id:"totalAmount", type:"number"},
-            {label:"Balance Amount", id:"balanceAmount", type:"number"},
-		],
-		checkboxes:[]
-	}
-
-
-
 	return (<>
 		<Helmet>
 			<title>Members | TMS</title>

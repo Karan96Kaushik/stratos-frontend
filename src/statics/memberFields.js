@@ -30,6 +30,7 @@ const memberFields = {all:{
             {label:"Address", id:"address", isRequired:true},
             {label:"Emergency Contact", id:"emergencyContact", isRequired:true, validation:[validateMobile]},
             {label:"Blood Group", id:"bloodGroup", isRequired:true},
+            {label:"Branch", id:"branch", options:['','Mumbai','Pune']},
             {label:"Start Date", id:"startDate", type:"date", isRequired:true},
             {label:"End Date", id:"endDate", type:"date"},
             {label:"Files", id:"files", type:"file"},
