@@ -8,7 +8,7 @@
 yarn.lock
 *.rdb
 
-*.rdb
+dump.rdb
 
 # testing
 /coverage
