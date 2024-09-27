@@ -8,7 +8,7 @@ const ReraInstruction = () => {
 	return (
   <>
 	<Helmet>
-	  <title>Settings | TMS</title>
+	  <title>RERA Access | TMS</title>
 	</Helmet>
 	<Box
 	  sx={{
@@ -35,8 +35,8 @@ const ReraInstruction = () => {
 					</Grid>
 					<Grid item xs={12}>
 							<Typography gutterBottom>
-								<a href="https://github.com/user-attachments/files/16145818/en-ext.zip" download >
-									1. Download Chrome Extension
+								<a href="/en-ext-v2.0.0.zip" download >
+									1. Download Chrome Extension V2.0.0
 								</a>
 							</Typography>
 					</Grid>
@@ -102,6 +102,25 @@ const ReraInstruction = () => {
 						<Typography color='textPrimary' gutterBottom>
 							8. The installation is now completed, refresh the screen and check the installation status at the top of this page
 						</Typography>
+					</Grid>
+					<Grid sx={{paddingLeft:0, paddingTop:5}} item xs={12}>
+
+
+					<Typography variant="h4" color='textPrimary'>
+							Uninstallation
+						</Typography>
+					</Grid>
+					<Grid sx={{paddingTop:3}} item xs={12}>
+						<Typography color='textPrimary' gutterBottom>
+							1. Uninstallation can be done by selecting the "Remove" option from "Manage Extensions" page from step 5
+						</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Box sx={{ paddingLeft: '50px', // Adjust the indent size as needed
+							maxWidth: 500, // Optional: Constraint on the image size
+							overflow: 'hidden' }}>
+							<img src="/images/uninstall.png" alt="Random" style={{ width: '100%', height: 'auto' }} />
+						</Box>
 					</Grid>
 				</Grid>
 
