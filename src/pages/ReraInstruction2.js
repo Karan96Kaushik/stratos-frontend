@@ -35,8 +35,8 @@ const ReraInstruction = () => {
 					</Grid>
 					<Grid item xs={12}>
 							<Typography gutterBottom>
-								<a href="/en-ext-v1.0.0.zip" download >
-									1. Download Chrome Extension V1.0.0
+								<a href="/en-ext-v2.0.0.zip" download >
+									1. Download Chrome Extension V2.0.0
 								</a>
 							</Typography>
 					</Grid>
