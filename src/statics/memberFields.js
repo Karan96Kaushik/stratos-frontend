@@ -11,6 +11,7 @@ let departments = [
     'Administration', 
     'Compliance', 
     'Registration',
+    'Registration 2',
     'Finance',
     'Client Retention',
     'Business Development',
@@ -18,6 +19,7 @@ let departments = [
     'Marketing',
     'Legal',
     'EN Advisory',
+    'Advisory',
 ]
 
 const memberFields = {all:{
