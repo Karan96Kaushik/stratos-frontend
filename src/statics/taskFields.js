@@ -12,6 +12,12 @@ const statuses = [
 
 // AR PR EX CO
 const statusSet1 = [
+    "Application For Checking",
+    "Application Checked",
+    "Documents Prepared",
+    "Documents Checked",
+    "Documents Sent",
+    "Documents (Signed) Received",
     "Completed", 
     "Desk 1", 
     "Desk 2", 
