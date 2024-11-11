@@ -43,6 +43,7 @@ import CCReceivedList from './pages/CCReceivedList';
 import CCReceivedAddPage from './pages/CCReceivedAddPage';
 import ReraInstruction from './pages/ReraInstruction';
 import SalesPaymentsList from './pages/SalesPaymentsListPage';
+import AdminSettings from './pages/AdminSettings';
 
 const routes = (isLoggedIn) => [
 	{
@@ -192,6 +193,12 @@ const routes = (isLoggedIn) => [
 				path: 'rerainstruction',
 				children: [
 					{ path: '/', element: <ReraInstruction /> },
+				]
+			},
+			{
+				path: 'adminsettings',
+				children: [
+					{ path: '/', element: <AdminSettings /> },
 				]
 			},
 			{ path: '*', element: <Navigate to="/404" /> }
