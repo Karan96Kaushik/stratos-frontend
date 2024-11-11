@@ -29,6 +29,7 @@ import {
 	Link as LinkIcon,
 	Clipboard,
 	PenTool,
+	Settings as SettingsIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
@@ -172,6 +173,11 @@ const items = [
 		href: '/app/rerainstruction',
 		icon: LinkIcon,
 		title: 'Rera Access'
+	},
+	{
+		href: '/app/adminsettings',
+		icon: SettingsIcon,
+		title: 'Admin Settings'
 	},
 	// {
 	// 	href: '/app/settings',

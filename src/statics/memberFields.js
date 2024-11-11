@@ -77,6 +77,8 @@ const pagePermissionFields = [
 
 const systemPermissionFields = [
     "View RERA Passwords",
+    "Update Admin Settings",
+    "Remote Access",
 ]
 
 const servicePermissionFields = Object.keys(taskFields)
