@@ -44,6 +44,15 @@ const MembersAutocomplete = ({ _label, title, memberRows, values, setValues, Dep
                 placeholder="Search and select members"
                 />
             )}
+            filterOptions={(options, { inputValue }) => {
+                const searchTerm = inputValue.toLowerCase();
+                if (searchTerm === "") {
+                    return options.filter(option => option.isDept);
+                }
+                return options.filter(option => 
+                    option.userName.toLowerCase().includes(searchTerm)
+                );
+            }}
             renderOption={(props, option, { selected }) => (
                 <li {...props} style={{paddingLeft: option.isDept ? 0 : 20}}>
                 <Checkbox
