@@ -14,6 +14,8 @@ import taskFields from '../../statics/taskFields';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import * as _ from 'lodash'
 import PasswordDialog from '../passwordDialog';
+import MembersAutocomplete from '../membersAutocomplete';
+// import { Autocomplete } from '@material-ui/lab';
 
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
@@ -316,65 +318,8 @@ const TaskAddForm = (props) => {
 							/>
 						</Grid>
 
+
 						<Grid item md={6} xs={12}>
-							<FormControl fullWidth>	
-								<InputLabel id="_membersAllocated">Allocated Members</InputLabel>
-								<Select 
-									multiple 
-									fullWidth
-									id="_membersAllocated" 
-									value={values?._membersAllocated || []}
-									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAllocated" }})}
-									input={<Input />} 
-									renderValue={(s) => values?.membersAllocated}
-									>
-									{memberRows.map((member) => (
-										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
-											<Checkbox checked={(values?._membersAllocated ?? []).includes(member._id) || (values?._membersAllocated ?? []).includes(member.userName)} />
-											<ListItemText primary={member.userName} />
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</Grid>
-
-						<Grid item md={12} xs={12}>
-							<FormControl fullWidth>	
-								<InputLabel id="_membersAssigned">Assiged Members</InputLabel>
-								<Select 
-									multiple 
-									fullWidth
-									id="_membersAssigned" 
-									value={values?._membersAssigned || []}
-									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAssigned" }})}
-									input={<Input />} 
-									renderValue={(s) => values?.membersAssigned}
-									>
-									{memberRows.map((member) => (
-										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
-											<Checkbox checked={(values?._membersAssigned ?? []).includes(member._id) || (values?._membersAssigned ?? []).includes(member.userName)} />
-											<ListItemText primary={member.userName} />
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</Grid>
-
-						{/* <Grid item md={6} xs={12}>
-							<Autocomplete
-								id="membersAssigned"
-								// multiple
-								options={memberRows}
-								value={memberPlaceholder}
-								getOptionLabel={(row) => row.userName?.length ? row.userName + ` (${row.memberID})` : ''}
-								// onInputChange={handleChangeClient}
-								onChange={(e,value={}) => handleChange({target:{id:"_memberID", value:value?._id, name:value?.userName, memberID:value?.memberID}})}
-								fullWidth
-								renderInput={(params) => <TextField {...params} label="Member Assigned" variant="standard" />}
-							/>
-						</Grid> */}
-
-						<Grid item md={12} xs={12}>
 							<TextField
 								fullWidth
 								label="Select Service"
@@ -400,6 +345,48 @@ const TaskAddForm = (props) => {
 								))}
 							</TextField>
 						</Grid>
+
+
+						<Grid item md={12} xs={12}>
+							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Allocated Members" _label="_membersAllocated" values={values} />
+							{/* <FormControl fullWidth>	
+								<InputLabel id="_membersAllocated">Allocated Members</InputLabel>
+								<Select 
+									multiple 
+									fullWidth
+									id="_membersAllocated" 
+									value={values?._membersAllocated || []}
+									onChange={({target}) => handleChange({target: {value: target.value, id:"_membersAllocated" }})}
+									input={<Input />} 
+									renderValue={(s) => values?.membersAllocated}
+									>
+									{memberRows.map((member) => (
+										<MenuItem key={member.userName} value={member._id ?? member.userName} style={{left: member.isDept ? 0 : 20}}>
+											<Checkbox checked={(values?._membersAllocated ?? []).includes(member._id) || (values?._membersAllocated ?? []).includes(member.userName)} />
+											<ListItemText primary={member.userName} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl> */}
+						</Grid>
+
+						<Grid item md={12} xs={12}>
+							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Assigned Members" _label="_membersAssigned" values={values} DepatmentOnly={true} />
+						</Grid>
+
+						{/* <Grid item md={6} xs={12}>
+							<Autocomplete
+								id="membersAssigned"
+								// multiple
+								options={memberRows}
+								value={memberPlaceholder}
+								getOptionLabel={(row) => row.userName?.length ? row.userName + ` (${row.memberID})` : ''}
+								// onInputChange={handleChangeClient}
+								onChange={(e,value={}) => handleChange({target:{id:"_memberID", value:value?._id, name:value?.userName, memberID:value?.memberID}})}
+								fullWidth
+								renderInput={(params) => <TextField {...params} label="Member Assigned" variant="standard" />}
+							/>
+						</Grid> */}
 
 						{taskFieldsCopy[type]?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
