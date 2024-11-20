@@ -371,7 +371,7 @@ const TaskAddForm = (props) => {
 						</Grid>
 
 						<Grid item md={12} xs={12}>
-							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Assigned Members" _label="_membersAssigned" values={values} DepatmentOnly={true} />
+							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Assigned Members" _label="_membersAssigned" values={values} />
 						</Grid>
 
 						{/* <Grid item md={6} xs={12}>
