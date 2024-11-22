@@ -8,6 +8,7 @@ const modeOptions = [
     "SDC Legal Services", 
     "RERA Easy Services",
     "RERA Easy Consultancy",
+    "RERA Easy Legal Advisors",
     "KC Partners",
     "Waved off",
     "Envision Next LLP",
