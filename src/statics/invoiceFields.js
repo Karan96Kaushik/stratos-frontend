@@ -52,7 +52,7 @@ const invoiceFields = {
             {label:"Invoice Date", id:"date", type:"date"},
             {label:"GST Num", id:"gstNum", options:["", "None", "27AAFFO8457Q1ZB","27AAJFE1796J1ZZ"]},
             {label:"Project Name", id:"projectName", isRequired:true},
-            {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "AAJFE1796J", "CCKPM8294A", "GHWPK7836P", "ABGFR8055D", "CPAPK0273E", "ABAFK3517F"]},
+            {label:"PAN Card No", id:"panNum", options:["", "None", "AAFFO8457Q", "AAJFE1796J", "CCKPM8294A", "GHWPK7836P", "ABGFR8055D", "CPAPK0273E", "ABAFK3517F", "ABJFR9779F", "ABJFR9235N"]},
             // {label:"Particulars", id:"particulars"},
             {label:"Bill To", id:"billTo"},
             {label:"Client Address", id:"clientAddress"},
