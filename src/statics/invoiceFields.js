@@ -34,8 +34,13 @@ const froms = {
     },
     "RERA Easy Legal Advisors": {
         gstNum: '',
-        panNum: ''
-    }
+        panNum: 'ABJFR9779F'
+    },
+    "RERA Easy Agents Services": {
+        gstNum: '',
+        panNum: 'ABJFR9235N'
+    },
+
 }
 
 const invoiceFields = {
