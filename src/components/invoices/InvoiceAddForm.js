@@ -172,6 +172,16 @@ const TaskAddForm = (props) => {
 					panNum: true
 				})
 			}
+
+			else if (froms[event.target.value].panNum) {
+				others = {
+					panNum: froms[event.target.value].panNum
+				}
+				setDisabled({
+					gstNum: false,
+					panNum: true
+				})
+			}
 			// else if (event.target.value == 'Osha Technologies') {
 			else {
 				others = {
