@@ -15,6 +15,8 @@ import PasswordDialog from '../passwordDialog';
 import { Plus, Trash2 } from 'react-feather';
 import ProjectInput from '../ProjectInput';
 
+const fixedParticulrs = ['SDC Legal Services', 'RERA Easy Consultancy', 'RERA Easy Consultancy']
+
 const TaskAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
@@ -104,7 +106,7 @@ const TaskAddForm = (props) => {
 			items = [...values.items, {}]
 
 
-		if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from'])) {
+		if (fixedParticulrs.includes(values['from'])) {
 			items.forEach(i => i.particulars = 'Legal Consultation')
 		}
 
@@ -194,7 +196,7 @@ const TaskAddForm = (props) => {
 				})
 			}
 
-			if (['SDC Legal Services', 'RERA Easy Consultancy', 'RERA Easy Legal Advisors'].includes(event.target.value) && values.items) {
+			if (fixedParticulrs.includes(event.target.value) && values.items) {
 				others.items = values.items
 				others.items.forEach(i => i.particulars = 'Legal Consultation')
 			}	
@@ -316,11 +318,11 @@ const TaskAddForm = (props) => {
 											label={field.label + " " + (idx+1)}
 											type={field.type ?? 'text'}
 											id={field.id + "-$" + idx}
-											disabled={['SDC Legal Services', 'RERA Easy Consultancy'].includes(values['from']) && field.id == 'particulars'}
+											disabled={fixedParticulrs.includes(values['from']) && field.id == 'particulars'}
 											inputProps={field.type == "file" ? { multiple: true } : {}}
 											InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 											value={field.id != "files" ? values.items[idx][field.id] ?? '' : undefined}
-											// required={field.isRequired}
+											required={field.id == 'note' && fixedParticulrs.includes(values['from'])}
 											// error={errors[field.id]}
 											onChange={handleChange}
 											variant="outlined"
