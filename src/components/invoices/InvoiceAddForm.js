@@ -194,7 +194,7 @@ const TaskAddForm = (props) => {
 				})
 			}
 
-			if (['SDC Legal Services', 'RERA Easy Consultancy'].includes(event.target.value) && values.items) {
+			if (['SDC Legal Services', 'RERA Easy Consultancy', 'RERA Easy Legal Advisors'].includes(event.target.value) && values.items) {
 				others.items = values.items
 				others.items.forEach(i => i.particulars = 'Legal Consultation')
 			}	
