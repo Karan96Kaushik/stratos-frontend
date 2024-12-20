@@ -106,7 +106,7 @@ const TaskAddForm = (props) => {
 			items = [...values.items, {}]
 
 
-		if (fixedParticulrs.includes(values['from'])) {
+		if (fixedParticulars.includes(values['from'])) {
 			items.forEach(i => i.particulars = 'Legal Consultation')
 		}
 
