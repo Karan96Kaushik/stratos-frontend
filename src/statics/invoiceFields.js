@@ -24,7 +24,7 @@ const froms = {
         gstNum: 'None',
         panNum: 'GHWPK7836P'
     },
-    "RERA Easy Consultancy": {
+    "REC - Not to Use": {
         gstNum: 'None',
         panNum: 'ABGFR8055D'
     },
