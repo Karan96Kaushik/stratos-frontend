@@ -35,6 +35,7 @@ export default {
             {label:'End Date', id:"endDate", type: 'date'},
             {label:'Description', id:"description", isRequired: true},
             {label:'Contact Person', id:"contactPerson"},
+            {label:'Edit Fees Applicable', id:"editFeesApplicable", options: ['', 'Yes', 'No']},
             {label:'Contact No', id:"contactNum"},
             {label:'Owner Name', id:"owner"},
             {label:'Owner Contact No', id:"ownerContact"},

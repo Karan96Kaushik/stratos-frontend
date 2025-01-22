@@ -164,6 +164,7 @@ const CustomerList = () => {
 				{label:'Start Date', id:"startDate", type: 'date'},
 				{label:'Period Cycle', id:"periodCycle"},
 				{label:'Description', id:"description"},
+				{label:'Edit Fees', id:"editFeesApplicable"},
 				{label:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
 				// {label:'Due Amount', id:"due", type: 'number'},
 				// {label:'Paid Amount', id:"paid", type: 'number'},
