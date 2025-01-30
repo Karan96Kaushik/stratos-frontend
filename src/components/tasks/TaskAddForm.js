@@ -33,6 +33,12 @@ const TaskAddForm = (props) => {
 	const [type, setType] = useState("");
 	const [disabled, setDisabled] = useState({});
 
+
+	if (type == "Project Registration" && values.status == "Certificate Generated") {
+		taskFieldsCopy[type].texts.find(f => f.id == "certNum").isRequired = true
+		taskFieldsCopy[type].texts.find(f => f.id == "registrationDate").isRequired = true
+	}
+
 	const handleChangeClient = (e) => {
 		const target = e?.target
 
