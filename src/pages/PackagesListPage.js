@@ -148,7 +148,8 @@ const CustomerList = () => {
 		// {name:'Cersai Undertaking', id:"cersai"},
 		// {name:'Other Services', id:"other"},
 		{name:'Notes', id:"notes"},
-		{name:'Remarks', id:"remarks"}
+		{name:'Remarks', id:"remarks"},
+		{name:'Form 4 Accepted', id:"form4Accepted", options: ['', 'Yes', 'No']},
 	]
 
 	// Fields to be shown in the main table 

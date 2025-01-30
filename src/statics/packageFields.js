@@ -50,6 +50,7 @@ export default {
             {label:"Payment Rating", id:"rating", type:"number", options: ['',1,2,3,4,4.5,5]},
             {label:'Notes', id:"notes"},
             {label:'Remarks', id:"remarks"},
+            {label:'Form 4 Accepted', id:"form4Accepted", options: ['', 'Yes', 'No']},
         ],
         checkboxes: [
             {label:'Add GST', id:"gstEnabled", type: 'number', isRequired: false},
