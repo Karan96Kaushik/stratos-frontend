@@ -70,6 +70,7 @@ const statusSet6 = [
     "Sent for Queries",
     "ACC With Queries",
     "Confirmation Received",
+    "Certified - Edit Fees Pending",
 ]
 
 const statusSet7 = [
