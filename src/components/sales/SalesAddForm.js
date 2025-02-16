@@ -67,6 +67,7 @@ const SalesAddForm = (props) => {
 		oc: true,
 		certificateDate: true,
 		completionDate: true,
+		purpose: true,
 	}
 
     let isEdit = false;

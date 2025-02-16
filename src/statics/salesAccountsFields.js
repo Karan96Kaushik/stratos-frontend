@@ -60,6 +60,7 @@ export default {
 
             {label:"Certificate Date", id:"certificateDate", type:"date"},
             {label:"Completion Date", id:"completionDate", type:"date"},
+            {label:"Purpose", id:"purpose"},
 
             // {label:"Status", id: "status", options: statusOptions},
             // {label:"Rating", id:"rating", options:['',1,2,3,4,5]},
