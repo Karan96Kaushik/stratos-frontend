@@ -38,6 +38,7 @@ const statusSet2 = [
     "Completed", 
     "Uploaded",
     "Sent for Queries",
+    "Certified - Edit Fees Pending"
 ]
 
 // LT
