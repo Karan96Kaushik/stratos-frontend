@@ -60,6 +60,26 @@ const paymentStatuses = [
     "", "Payment Clear", "Payment Pending", "To Be Updated" 
 ]
 
+const clientSourceOptions = [
+    "",
+    "Repeat",
+    "Reference",
+    "Sales",
+]
+
+const correctionTypeOptions = [
+    "Section 14(2)",
+    "Bank Account",
+    "Cost Estimates",
+    "Project Name",
+    "Project Address",
+    "Building Count",
+    "Completion Date",
+    "Project Type",
+    "Plot Area",
+    "Consent",
+]
+
 // F5 F3
 const statusSet6 = [
     "For Checking",
@@ -198,6 +218,7 @@ const taskFields = {
         texts:[
             ...commonTextFields,
             {label:"Team", id:"team", options:teamOptions, isRequired: true},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Certificate Num", id:"certNum"},
             {label:"Registration Date", id:"registrationDate", type: 'date'},
@@ -221,6 +242,7 @@ const taskFields = {
         name:"Extension",
         texts:[
             {label:"Under Section", id:"section", options:["", "Section 6", "Section 7(3)"]},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
@@ -239,6 +261,7 @@ const taskFields = {
         texts:[
             {label:"Correction Details", id:"correctionDetails"},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFields,
@@ -346,6 +369,7 @@ const taskFields = {
         texts:[
             {label:"Service Requested", id:"serviceReq"},
             {label:"Service Description", id:"serviceDesc"},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Status", id:"status", options:[...statuses, ...statusSet2]},
             ...commonTextFields,
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
@@ -493,6 +517,7 @@ const taskFields = {
         name:"Project Closure",
         texts:[
             {label:"OC Date", id:"ocDate", type:'date'},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
             {label:"Status", id:"status", options:[...statuses, ...statusSet8]},
             ...commonTextFieldsEnd,
@@ -508,6 +533,7 @@ const taskFields = {
     "Change of Promoter": {
         name:"Change of Promoter",
         texts:[
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
             {label:"Status", id:"status", options:[...statuses, ...statusSet7, ...statusSet1]},
             ...commonTextFieldsEnd,
@@ -522,6 +548,7 @@ const taskFields = {
         name:"De-Registration",
         texts:[
             {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
             {label:"Status", id:"status", options:[...statuses, ...statusSet9]},
             ...commonTextFieldsEnd,
@@ -538,6 +565,7 @@ const taskFields = {
             {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
             {label:"Hearing Date", id:"hearingDate", type:'date'},
             {label:"Curr Completion Date", id:"currCompletionDate", type:'date'},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"To Be Extended Date", id:"extensionDate", type:'date'},
             {label:"Date of Submission", id:"dateOfSubmission", type:'date'},
             {label:"SRO Authority", id:"sroAuthority", options:sroAuthorities},
@@ -599,5 +627,5 @@ const legal = [
 
 allStatuses = [...allStatuses]
 
-export {allStatuses, allTasks, legal, technical, teamOptions}
+export {allStatuses, allTasks, legal, technical, teamOptions, clientSourceOptions, correctionTypeOptions}
 export default taskFields

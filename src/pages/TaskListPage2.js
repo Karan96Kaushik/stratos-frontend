@@ -6,7 +6,7 @@ import {authorizedReq, authorizedDownload} from '../utils/request'
 import { LoadingContext, LoginContext } from "../myContext"
 import {useLocation, useNavigate} from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
-import taskFields, { allStatuses, legal, technical } from '../statics/taskFields';
+import taskFields, { allStatuses, legal, technical, clientSourceOptions } from '../statics/taskFields';
 import GeneralList from '../components/GeneralList'
 import ViewDialog from '../components/ViewDialog'
 import { useSelector } from "react-redux";
@@ -222,6 +222,7 @@ const TaskList = (props) => {
 			{label:"Member Assigned", id: "_membersAssigned", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 			{label:"Member Allocated", id: "_membersAllocated", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 			{label:"Branch", id:"branch", options: ["", "Mumbai", "Pune"]},
+			{label:"Client Source", id:"clientSource", options:clientSourceOptions},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech']},
 		],
 		checkboxes:[
