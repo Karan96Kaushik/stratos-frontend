@@ -193,21 +193,19 @@ const SalesList = () => {
 	}
 
 	const renderSelectStatus = (val) => {
+		// Find the current row data to get latest status
+		const currentRow = data.rows.find(row => row._id === val._id);
+
+		console.log(val._id,currentRow)
+		
 		return (				
 			<TextField
 				fullWidth
 				select={true}
 				SelectProps={{ native: true }}
-				// disabled={isEdit && disabled[field.id]}
-				// label='Status'
-				type='text'
-				// inputProps={field.type == "file" ? { multiple: true } : {}}
-				// InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 				id={val._id}
-				// required={field.isRequired}
-				// error={errors[field.id]}
 				onChange={handleChangeStatus}
-				value={val.status}
+				value={currentRow?.status || ""}
 				variant="standard"
 			>
 				{(statusOptions ?? []).map((option) => (
