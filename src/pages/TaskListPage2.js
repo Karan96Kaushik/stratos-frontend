@@ -15,6 +15,7 @@ import {
 } from "../store/reducers/filtersSlice";
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import * as _ from 'lodash';
+import { correctionTypeOptions } from '../statics/taskFields';
 
 function useQuery(url) {
 	const {search} = new URL(url);
@@ -224,6 +225,7 @@ const TaskList = (props) => {
 			{label:"Member Allocated", id: "_membersAllocated", options: ([{},...memberRows]).map(val => val.userName ? val.userName + ` (${val.memberID})` : "")},
 			{label:"Branch", id:"branch", options: ["", "Mumbai", "Pune"]},
 			{label:"Client Source", id:"clientSource", options:clientSourceOptions},
+			{label:"Correction Type", id:"correctionTaskType", options: correctionTypeOptions},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech']},
 		],
 		checkboxes:[

@@ -68,6 +68,7 @@ const clientSourceOptions = [
 ]
 
 const correctionTypeOptions = [
+    "",
     "Section 14(2)",
     "Bank Account",
     "Cost Estimates",
