@@ -137,6 +137,13 @@ const TaskAddForm = (props) => {
 				errorFlag = true
 			}
 		})
+		if(type == "Correction") {
+			if(!values?.correctionTaskType?.length) {
+				errFields.push("Correction Type")
+				foundErrs["correctionTaskType"] = true
+				errorFlag = true
+			}
+		}
 		setErrors(foundErrs)
 		if(errorFlag)
 			throw new Error(errFields.join(", "))
