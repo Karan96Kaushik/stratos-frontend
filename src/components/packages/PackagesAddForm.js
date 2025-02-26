@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import {
 	Box, Button, Card, CardContent,
 	CardHeader, Divider, Grid, TextField,
@@ -45,6 +45,7 @@ const PackageAddForm = (props) => {
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
+	const originalRef = useRef();
 
 	const [clientRows, setClientRows] = useState([{clientID:"", name: "", _id: ""}]);
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
@@ -131,6 +132,8 @@ const PackageAddForm = (props) => {
 		let leadID = location.pathname.split("/").pop()
 		useEffect(async () => {
 			let data = await authorizedReq({route:"/api/packages/", data:{_id:leadID}, creds:loginState.loginState, method:"get"})
+			originalRef.current = data
+
 			setPlaceholder({
 				client: {clientID:data.clientID, name: data.clientName, _id: ""}, 
 			})
@@ -155,10 +158,19 @@ const PackageAddForm = (props) => {
 
 	const handleSubmit = async () => {
 		try {
+			let data = {...values}
+			if (originalRef.current) {
+				data = {
+					updateData: data, 
+					originalData: originalRef.current, 
+					member: {userName: loginState.loginState.userName},
+				}
+			}
+
 			validateForm()
 			await authorizedReq({
 				route:"/api/packages/" + (!isEdit ? "add" : "update"), 
-				data:values, 
+				data:data, 
 				creds:loginState.loginState, 
 				method:"post"
 			})
@@ -369,6 +381,16 @@ const PackageAddForm = (props) => {
 									label={field.label}
 								/>
 							</Grid>))}
+
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Remarks History</Typography>
+
+							{isEdit && values?.existingRemarks?.length && <List>
+								{values?.existingRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List>}
+						</Grid>
 
 						<Grid item md={12} xs={12}>
 							<Typography variant='h4'>Services</Typography>

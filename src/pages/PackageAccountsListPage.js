@@ -151,7 +151,7 @@ const CustomerList = () => {
 		{name:"Payment Date", id:"paymentDate", type:"date"},
 		{name:"FollowUp Date", id:"followupDate", type:"date"},
 		{name:'Notes', id:"notes"},
-		{name:'Remarks', id:"remarks"},
+		{name:'Remarks', id:"remarks", type: 'array'},
 		{name:"Payment History", id:"payments", type:"array"},
 	]
 
