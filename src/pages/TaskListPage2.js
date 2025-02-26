@@ -198,6 +198,7 @@ const TaskList = (props) => {
 	const commonViewFields = [
 		...dashBoardFields,
 		// {name:"Members Allocated", id: "membersAllocated"},
+		{name:"Correction Type", id: "correctionTaskType", type: "array"},
 		{name:"Members Assigned", id: "membersAssigned"},
 		{name:"Added By", id:"addedByName"},
 

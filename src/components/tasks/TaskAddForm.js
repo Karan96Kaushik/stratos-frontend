@@ -10,7 +10,7 @@ import { LoginContext } from "../../myContext"
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { useNavigate } from 'react-router-dom';
-import taskFields from '../../statics/taskFields';
+import taskFields, { correctionTypeOptions } from '../../statics/taskFields';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import * as _ from 'lodash'
 import PasswordDialog from '../passwordDialog';
@@ -421,6 +421,28 @@ const TaskAddForm = (props) => {
 									))}
 								</TextField>
 							</Grid>))}
+						
+							{type == "Correction" && <Grid item md={6} xs={12}>
+								<FormControl fullWidth>	
+									<InputLabel id="correctionTaskType">Correction Type</InputLabel>
+									<Select 
+										multiple 
+										fullWidth
+										id="correctionTaskType" 
+										value={values?.correctionTaskType || []}
+										onChange={({target}) => handleChange({target: {value: target.value, id:"correctionTaskType" }})}
+										input={<Input />} 
+										renderValue={(s) => values?.correctionTaskType?.join(", ")}
+										>
+										{correctionTypeOptions.map((option) => (
+											<MenuItem key={option} value={option}>
+												<Checkbox checked={(values?.correctionTaskType ?? []).includes(option)} />
+												<ListItemText primary={option} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Grid>}
 
 						{taskFieldsCopy[type]?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -438,11 +460,11 @@ const TaskAddForm = (props) => {
 						<Grid item md={6} xs={12}>
 							<Typography variant="h5">Remarks History</Typography>
 
-							{isEdit && values?.existingRemarks?.length && <List>
+							{(isEdit && values?.existingRemarks?.length) ? <List>
 								{values?.existingRemarks?.map((remarks) => (<ListItem>
 										<Typography variant='body2'>{remarks}</Typography>
 									</ListItem>))}
-							</List>}
+							</List> : <Typography variant='body2'>N/A</Typography>}
 						</Grid>
 
 						<Grid item md={6} xs={12}>
