@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 import FiltersDialog from '../FiltersDialog';
 import PasswordDialog from '../passwordDialog';
 import React from 'react';
-import packageFields from 'src/statics/packageFields';
+import packageFields, {clientSourceOptions} from 'src/statics/packageFields';
 
 const PackagesListToolbar = (props) => {
 
@@ -19,6 +19,7 @@ const PackagesListToolbar = (props) => {
 	const commonFilters = {
 		texts: [
 			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions},
 			...(props?.commonFilters?.texts ?? [])
 			// ...props.fields?.texts
 		],

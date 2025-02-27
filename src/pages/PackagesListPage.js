@@ -144,6 +144,7 @@ const CustomerList = () => {
 		{name:'Completion Date', id:"completionDate"},
 		{name:'Relationship Manager', id:"rmAssigned"},
 		{name:'Payment Cycle', id:"paymentCycle", options: ['', 'Half Yearly']},
+		{name:'Client Source', id:"clientSource"},
 		// {name:'Due Amount', id:"due", type: 'number'},
 		// {name:'Cersai Undertaking', id:"cersai"},
 		// {name:'Other Services', id:"other"},
