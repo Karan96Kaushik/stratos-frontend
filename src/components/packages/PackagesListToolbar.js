@@ -64,7 +64,7 @@ const PackagesListToolbar = (props) => {
 										variant="standard"
 									/>
 								</Grid>
-								<Grid item item md={4} xs={6}>
+								<Grid item md={4} xs={6}>
 									<FiltersDialog forView="packages" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={packageFields}/>
 								</Grid>
 							</Grid>
