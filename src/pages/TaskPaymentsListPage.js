@@ -165,6 +165,7 @@ const CustomerList = () => {
 		{name:"Status", id: "status", options:allStatuses},
 		{name:"Promoter", id: "promoter"},
     	{name:"Remarks", id:"remarks", type:'array'},
+		{name:"Payment Remarks", id:"paymentRemarks", type:'array'},
 		// {name:"Remarks", id: "remarks", },
 		{name:"Bill Amount", id:"billAmount", type:"number"},
 		{name:"GST", id:"gst", type:"number"},

@@ -473,6 +473,16 @@ const TaskAddForm = (props) => {
 									</ListItem>))}
 							</List> : <Typography variant='body2'>N/A</Typography>}
 						</Grid>
+						
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Payment Remarks History</Typography>
+
+							{(isEdit && values?.existingPaymentRemarks?.length) ? <List>
+								{values?.existingPaymentRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List> : <Typography variant='body2'>N/A</Typography>}
+						</Grid>
 
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>

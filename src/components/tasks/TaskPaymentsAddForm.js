@@ -317,13 +317,22 @@ const TaskAddForm = (props) => {
 						<Grid item md={6} xs={12}>
 							<Typography variant="h5">Remarks History</Typography>
 
-							{isEdit && values?.existingRemarks?.length && <List>
+							{isEdit && values?.existingRemarks?.length ? <List>
 								{values?.existingRemarks?.map((remarks) => (<ListItem>
 										<Typography variant='body2'>{remarks}</Typography>
 									</ListItem>))}
-							</List>}
+							</List> : <Typography variant='body2'>N/A</Typography>}
 						</Grid>
 						
+						<Grid item md={6} xs={12}>
+							<Typography variant="h5">Payment Remarks History</Typography>
+
+							{isEdit && values?.existingPaymentRemarks?.length ? <List>
+								{values?.existingPaymentRemarks?.map((remarks) => (<ListItem>
+										<Typography variant='body2'>{remarks}</Typography>
+									</ListItem>))}
+							</List> : <Typography variant='body2'>N/A</Typography>}
+						</Grid>
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
 									{values?.files?.map((file) => (<ListItem>
