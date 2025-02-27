@@ -17,6 +17,13 @@ const yearlyServices = [
     'Form 5'
 ]
 
+const clientSourceOptions = [
+    "",
+    "Repeat",
+    "Reference",
+    "Sales",
+]
+
 const otherServices = [
     'Consultation',
     'Proof Reading',
@@ -43,6 +50,7 @@ export default {
             {label:'Payment Cycle', id:"paymentCycle", options: ['', 'Yearly', 'Half Yearly', 'Quarterly', 'Monthly', 'Lumpsum'], isRequired: true},
             {label:"Payment Date", id:"paymentDate", type:"date"},
             {label:"FollowUp Date", id:"followupDate", type:"date"},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             // {label:'Due Amount', id:"due", type: 'number'},
             // {label:'Received Amount', id:"receivedAmount", type: 'number', isRequired: true},
             // {label:'Other Services', id:"other"},
