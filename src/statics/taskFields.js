@@ -60,6 +60,24 @@ const paymentStatuses = [
     "", "Payment Clear", "Payment Pending", "To Be Updated" 
 ]
 
+const statusSet12 = [
+    "New Task",
+    "In Progress",
+    "On Hold",
+    "Awaiting Documents From Client",
+    "Awaiting Accounts Confirmation",
+    "Completed",
+    "Mail Sent",
+    "Profile Unlocked",
+    "MahaRERA Queries",
+    "Profile Updated",
+    "Project Closed",
+    "Extension Received",
+    "Bank A/c Changed",
+    "Submitted for Approval",
+    "Order Received",
+]
+
 const clientSourceOptions = [
     "",
     "Repeat",
@@ -501,6 +519,22 @@ const taskFields = {
             ...commonCheckboxFields
         ]
     },
+    "Removal from Abeyance": {
+        name:"Removal from Abeyance",
+        texts:[
+            {label:"Date of Submission", id:"dateOfSubmission", type:"date"},
+            {label: "Abeyance Type", id:"abeyanceType", options:["", "Lapsed Project", "Duplicate Bank Account", "QPR Abeyance"]},
+            {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+            {label:"Status", id:"status", options:[...statusSet12]},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            ...commonTextFieldsEnd,
+        ],
+        checkboxes:[
+            {label:"With Consents", id:"withConsents"},
+            {label:"Without Consents", id:"withoutConsents"},
+            ...commonCheckboxFields
+        ]
+    },
     "Drafting of Documents": {
         name:"Drafting of Documents",
         texts:[
@@ -624,6 +658,7 @@ const legal = [
     "Legal Notice",
     "Registration",
     "Drafting of Documents",
+    "Removal from Abeyance",
     "Others - Legal"
 ]
 
