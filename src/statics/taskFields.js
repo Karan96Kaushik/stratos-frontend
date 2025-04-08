@@ -8,6 +8,7 @@ const statuses = [
     "Awaiting Accounts Confirmation",
     "Uploaded with Errors",
     "Verified",
+    "Certified - OT Task Pending",
 ] 
 
 // AR PR EX CO
@@ -76,6 +77,7 @@ const statusSet12 = [
     "Bank A/c Changed",
     "Submitted for Approval",
     "Order Received",
+    "Certified - OT Task Pending",
 ]
 
 const clientSourceOptions = [
@@ -213,7 +215,7 @@ let commonCheckboxFields = [
     {label:"Remove From Accounts", id:"removeFromAccounts"},
 ]
 
-let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5])
+let allStatuses = new Set([...statuses, ...statusSet1, ...statusSet2, ...statusSet3, ...statusSet4, ...statusSet5, ...statusSet6, ...statusSet7, ...statusSet8, ...statusSet9, ...statusSet10, ...statusSet11, ...statusSet12])
 
 //4. Fields - In services (form 1,2,3,5,2A, Updation , other technical) - In status , add last option as uploaded
 
