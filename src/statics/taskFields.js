@@ -386,6 +386,24 @@ const taskFields = {
             ...commonCheckboxFields
         ]
     },
+
+    "Removal from Abeyance": {
+        name:"Removal from Abeyance",
+        texts:[
+            {label:"Date of Submission", id:"dateOfSubmission", type:"date"},
+            {label: "Abeyance Type", id:"abeyanceType", options:["", "Lapsed Project", "Duplicate Bank Account", "QPR Abeyance"]},
+            {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
+            {label:"Status", id:"status", options:[...statusSet12]},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            ...commonTextFieldsEnd,
+        ],
+        checkboxes:[
+            {label:"With Consents", id:"withConsents"},
+            {label:"Without Consents", id:"withoutConsents"},
+            ...commonCheckboxFields
+        ]
+    },
+
     "Others - Tech": {
         name:"Others - Tech",
         texts:[
@@ -521,22 +539,6 @@ const taskFields = {
             ...commonCheckboxFields
         ]
     },
-    "Removal from Abeyance": {
-        name:"Removal from Abeyance",
-        texts:[
-            {label:"Date of Submission", id:"dateOfSubmission", type:"date"},
-            {label: "Abeyance Type", id:"abeyanceType", options:["", "Lapsed Project", "Duplicate Bank Account", "QPR Abeyance"]},
-            {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
-            {label:"Status", id:"status", options:[...statusSet12]},
-            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
-            ...commonTextFieldsEnd,
-        ],
-        checkboxes:[
-            {label:"With Consents", id:"withConsents"},
-            {label:"Without Consents", id:"withoutConsents"},
-            ...commonCheckboxFields
-        ]
-    },
     "Drafting of Documents": {
         name:"Drafting of Documents",
         texts:[
@@ -649,6 +651,7 @@ const technical =  [
     "Project Closure",
     "De-Registration",
     "Order No 40",
+    "Removal from Abeyance",
     "Others - Tech",
 ]
 
@@ -660,7 +663,6 @@ const legal = [
     "Legal Notice",
     "Registration",
     "Drafting of Documents",
-    "Removal from Abeyance",
     "Others - Legal"
 ]
 
