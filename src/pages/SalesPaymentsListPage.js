@@ -159,7 +159,7 @@ const SalesPaymentsList = () => {
 
 	return (<>
 		<Helmet>
-			<title>Sales Payments | TMS</title>
+			<title>Sales Payments | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

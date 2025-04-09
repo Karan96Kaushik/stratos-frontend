@@ -5,7 +5,7 @@ import TaskAddForm from 'src/components/tasks/TaskAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Task | TMS</title>
+			<title>Add Task | CRM</title>
 		</Helmet>
 		<Box sx={
 			{

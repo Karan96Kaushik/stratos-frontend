@@ -5,7 +5,7 @@ import InvoiceAddForm from 'src/components/invoices/InvoiceAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Invoice | TMS</title>
+			<title>Add Invoice | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

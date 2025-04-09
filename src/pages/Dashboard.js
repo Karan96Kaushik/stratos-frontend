@@ -137,7 +137,7 @@ const Dashboard = () => {
 
 	return (<>
 		<Helmet>
-			<title>Dashboard | TMS</title>
+			<title>Dashboard | CRM</title>
 		</Helmet>
 		<Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
 			<Grid container spacing={3} sx={{paddingBottom:2}}>

@@ -212,7 +212,7 @@ const SalesList = () => {
 
 	return (<>
 		<Helmet>
-			<title>Sales | TMS</title>
+			<title>Sales | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

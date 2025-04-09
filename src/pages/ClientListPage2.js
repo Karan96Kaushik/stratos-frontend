@@ -203,7 +203,7 @@ const CustomerList = () => {
 
 	return (<>
 		<Helmet>
-			<title>Clients | TMS</title>
+			<title>Clients | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

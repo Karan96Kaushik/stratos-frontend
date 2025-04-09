@@ -172,7 +172,7 @@ const CustomerList = () => {
 
 	return (<>
 		<Helmet>
-			<title>Tickets | TMS</title>
+			<title>Tickets | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

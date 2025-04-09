@@ -88,7 +88,7 @@ const AdminSettings = () => {
   return (
     <>
       <Helmet>
-        <title>Admin Settings | TMS</title>
+        <title>Admin Settings | CRM</title>
       </Helmet>
       <Box
         sx={{

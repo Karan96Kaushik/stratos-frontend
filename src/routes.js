@@ -44,6 +44,8 @@ import CCReceivedAddPage from './pages/CCReceivedAddPage';
 import ReraInstruction from './pages/ReraInstruction';
 import SalesPaymentsList from './pages/SalesPaymentsListPage';
 import AdminSettings from './pages/AdminSettings';
+import ProcurementListPage from './pages/ProcurementListPage';
+import ProcurementAddPage from './pages/ProcurementAdd';
 
 const routes = (isLoggedIn) => [
 	{
@@ -189,6 +191,17 @@ const routes = (isLoggedIn) => [
 					{ path: 'edit/:id', element: <PackagesAdd /> },
 				]
 			},
+			{
+				path: 'procurement',
+				children: [
+					{ path: '/', element: <ProcurementListPage /> },
+					{ path: 'add', element: <ProcurementAddPage /> },
+					{ path: 'edit/:id', element: <ProcurementAddPage /> },
+					{ path: 'manage/:id', element: <ProcurementAddPage /> },
+					{ path: 'pending-approvals', element: <ProcurementListPage /> },
+				]
+			},
+
 			{
 				path: 'rerainstruction',
 				children: [

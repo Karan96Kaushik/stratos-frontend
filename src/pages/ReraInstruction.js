@@ -8,7 +8,7 @@ const ReraInstruction = () => {
 	return (
   <>
 	<Helmet>
-	  <title>RERA Access | TMS</title>
+	  <title>RERA Access | CRM</title>
 	</Helmet>
 	<Box
 	  sx={{

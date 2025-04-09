@@ -168,7 +168,7 @@ const CCReceivedList = () => {
 
 	return (<>
 		<Helmet>
-			<title>CC Received | TMS</title>
+			<title>CC Received | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

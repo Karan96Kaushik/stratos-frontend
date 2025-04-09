@@ -41,7 +41,7 @@ const CustomerList = () => {
 	
 	return (<>
 		<Helmet>
-			<title>Customers | TMS</title>
+			<title>Customers | CRM</title>
 		</Helmet>
 		<Box
 			sx={{

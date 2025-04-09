@@ -5,7 +5,7 @@ import PackagesAddForm from 'src/components/packages/PackagesAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Package | TMS</title>
+			<title>Add Package | CRM</title>
 		</Helmet>
 		<Box sx={
 			{

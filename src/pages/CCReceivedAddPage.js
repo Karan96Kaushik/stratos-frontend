@@ -5,7 +5,7 @@ import CCReceivedAddForm from 'src/components/ccreceived/CCReceivedAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add CC Received | TMS</title>
+			<title>Add CC Received | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

@@ -178,7 +178,7 @@ const CustomerList = () => {
 	}
 	return (<>
 		<Helmet>
-			<title>Quotations | TMS</title>
+			<title>Quotations | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

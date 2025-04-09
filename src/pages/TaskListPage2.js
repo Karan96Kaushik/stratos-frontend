@@ -250,7 +250,7 @@ const TaskList = (props) => {
 
 	return (<>
 		<Helmet>
-			<title>Tasks | TMS</title>
+			<title>Tasks | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

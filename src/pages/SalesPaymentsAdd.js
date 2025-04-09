@@ -5,7 +5,7 @@ import SalesPaymentsAddForm from 'src/components/payments/SalesPaymentsAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Sales Payment | TMS</title>
+			<title>Add Sales Payment | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

@@ -105,6 +105,23 @@ const items = [
 		title: 'Accounts'
 	},
 	{
+		href: '#',
+		icon: PackageIcon,
+		title: 'Procurements'
+	},
+	{
+		href: '/app/procurement',
+		icon: File,
+		isSub: true,
+		title: 'Details'
+	},
+	{
+		href: '/app/procurement/pending-approvals',
+		icon: CheckSquareIcon,
+		isSub: true,
+		title: 'Approvals'
+	},
+	{
 		href: '/app/calendar',
 		icon: Calendar,
 		// isSub: true,

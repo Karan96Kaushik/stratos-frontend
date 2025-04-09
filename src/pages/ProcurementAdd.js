@@ -1,11 +1,11 @@
 import {Helmet} from 'react-helmet';
 import {Box, Container, Grid} from '@material-ui/core';
-import PaymentsAddForm from 'src/components/payments/PaymentsAddForm';
+import ProcurementAddForm from 'src/components/procurements/ProcurementAddForm';
 
-const Account = () => (
+const ProcurementAdd = () => (
 	<>
 		<Helmet>
-			<title>Add Payment | CRM</title>
+			<title>Add Procurement | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',
@@ -16,7 +16,7 @@ const Account = () => (
 				<Grid container
 					spacing={3}>
 					<Grid item lg={8} md={6} xs={12}>
-						<PaymentsAddForm/>
+						<ProcurementAddForm/>
 					</Grid>
 				</Grid>
 			</Container>
@@ -24,4 +24,4 @@ const Account = () => (
 	</>
 );
 
-export default Account;
+export default ProcurementAdd;

@@ -10,7 +10,7 @@ const TicketAdd = () => {
 	return (
 	<>
 		<Helmet>
-			<title>Ticket | TMS</title>
+			<title>Ticket | CRM</title>
 		</Helmet>
 		<Box sx={
 			{

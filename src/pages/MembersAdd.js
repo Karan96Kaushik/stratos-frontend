@@ -5,7 +5,7 @@ import MemberAddForm from 'src/components/members/MemberAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Member | TMS</title>
+			<title>Add Member | CRM</title>
 		</Helmet>
 		<Box sx={
 			{

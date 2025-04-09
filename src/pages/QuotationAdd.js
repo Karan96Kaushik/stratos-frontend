@@ -5,7 +5,7 @@ import QuotationAddForm from 'src/components/quotations/QuotationAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Quotation | TMS</title>
+			<title>Add Quotation | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

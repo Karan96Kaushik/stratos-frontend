@@ -5,7 +5,7 @@ import SalesAccountAddForm from 'src/components/sales/SalesAccountAddForm';
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Sales Lead | TMS</title>
+			<title>Add Sales Lead | CRM</title>
 		</Helmet>
 		<Box sx={{
 				backgroundColor: 'background.default',

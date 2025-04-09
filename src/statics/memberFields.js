@@ -73,12 +73,16 @@ const pagePermissionFields = [
 	"Approve Meetings",
 	"CC Received R",
 	"CC Received W",
+	"Procurements R",
+	"Procurements W",
 ]
 
 const systemPermissionFields = [
     "View RERA Passwords",
     "Update Admin Settings",
     "Remote Access",
+    "Approve Procurements",
+    "Manage Procurements",
 ]
 
 const servicePermissionFields = Object.keys(taskFields)

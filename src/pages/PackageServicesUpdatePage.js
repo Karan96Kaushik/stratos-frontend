@@ -5,7 +5,7 @@ import PackageServicesUpdateForm from 'src/components/packages/PackageServicesUp
 const Account = () => (
 	<>
 		<Helmet>
-			<title>Add Package | TMS</title>
+			<title>Add Package | CRM</title>
 		</Helmet>
 		<Box sx={
 			{
