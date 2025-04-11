@@ -62,6 +62,7 @@ const paymentStatuses = [
 ]
 
 const statusSet12 = [
+    "",
     "New Task",
     "In Progress",
     "On Hold",

@@ -14,6 +14,7 @@ import PasswordDialog from '../passwordDialog';
 import MembersAutocomplete from '../membersAutocomplete';
 import { useSelector } from 'react-redux';
 import { selectMembers } from '../../store/reducers/membersSlice';
+import * as _ from 'lodash';
 
 const ProcurementAddForm = (props) => {
 	const navigate = useNavigate();
@@ -22,26 +23,93 @@ const ProcurementAddForm = (props) => {
 	const memberRows = useSelector(selectMembers)
 	const originalRef = useRef();
 
-	const [values, setValues] = useState({});
+	const disabledFields = []
+
+	const _procurementFields = _.cloneDeep(procurementFields)
+
+	const [values, setValues] = useState({status: "New Procurement"});
 	const [type, setType] = useState("");
 	
     let isEdit = false;
 	let isManage = false;
+	let isAccounts = false;
 
 	if (location.pathname.includes("edit") || location.pathname.includes("manage")) {
 		isEdit = true
 		if (location.pathname.includes("manage")) {
-		isManage = true
+			isManage = true
+		}
+		if (location.pathname.includes("accounts")) {
+			isAccounts = true
 		}
 		let procurementID = location.pathname.split("/").pop()
-		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/procurements/", data:{_id:procurementID}, creds:loginState.loginState, method:"get"})
-			originalRef.current = data;
-			setType(data.procurementType)
-			setValues(data)
+		useEffect(() => {
+			const fetchData = async () => {
+				try {
+					let data = await authorizedReq({route:"/api/procurements/", data:{_id:procurementID}, creds:loginState.loginState, method:"get"})
+					originalRef.current = data;
+					setType(data.procurementType)
+					setValues(data)
+				} catch (err) {
+					console.error(err)
+					snackbar.showMessage(
+						(err?.response?.data ?? err.message ?? err),
+					)
+				}
+			}
+			fetchData()
 		}, [])
 	}
 
+	useEffect(() => {
+		if (values._approvers?.length && !originalRef.current?._approvers?.length) {
+			setValues({...values, status: "Pending Approval"})
+			snackbar.showMessage("Status set to Pending Approval")
+		}
+	}, [values._approvers])
+
+
+	useEffect(() => {
+		if (values.paidAmount && values.paymentReference && (!originalRef.current?.paidAmount || !originalRef.current?.paymentReference)) {
+			setValues({...values, status: "Completed"})
+			snackbar.showMessage("Status set to Completed and procurement will be locked after saving")
+		}
+	}, [values.paidAmount, values.paymentReference])
+
+	if (isAccounts) {
+		_procurementFields['all'].texts.filter(field => field.disableIn?.includes("accounts")).map(field => {
+			disabledFields.push(field.id)
+		})
+		_procurementFields['all'].checkboxes.filter(field => field.disableIn?.includes("accounts")).map(field => {
+			disabledFields.push(field.id)
+		})
+	}
+	else if (isManage) {
+		_procurementFields['all'].texts.filter(field => field.disableIn?.includes("manage")).map(field => {
+			disabledFields.push(field.id)
+		})
+		_procurementFields['all'].checkboxes.filter(field => field.disableIn?.includes("manage")).map(field => {
+			disabledFields.push(field.id)
+		})
+	}
+	else {
+		_procurementFields['all'].texts.filter(field => field.disableIn?.includes("request")).map(field => {
+			disabledFields.push(field.id)
+		})
+		_procurementFields['all'].checkboxes.filter(field => field.disableIn?.includes("request")).map(field => {
+			disabledFields.push(field.id)
+		})
+	}
+
+	if (values.isLocked) {
+		_procurementFields['all'].texts.filter(field => !["assetTaggingCode"].includes(field.id)).map(field => {
+			disabledFields.push(field.id)
+		})
+		_procurementFields['all'].checkboxes.map(field => {
+			disabledFields.push(field.id)
+		})
+	}
+	
 	const [errors, setErrors] = useState({});
 	const validateForm = () => {
 		let errFields = []
@@ -50,7 +118,7 @@ const ProcurementAddForm = (props) => {
 
 		if(!Object.keys(values).length)
 			throw new Error("Incomplete Form")
-		procurementFields['all'].texts.map(field => {
+		_procurementFields['all'].texts.map(field => {
 			let isInvalid = false
 
 			if(field.isRequired && !values[field.id])
@@ -72,8 +140,6 @@ const ProcurementAddForm = (props) => {
 		if(errorFlag)
 			throw new Error(errFields.join(", "))
 	}
-
-    console.debug('values', values)
 
 	const handleSubmit = async () => {
 		try {
@@ -146,7 +212,7 @@ const ProcurementAddForm = (props) => {
 			let allFiles = []
 			let len = (event.target.files.length)
 			let filesClone = Object.assign(Object.create(Object.getPrototypeOf(event.target.files)), event.target.files)
-			console.log(filesClone)
+			// console.log(filesClone)
 			for (let i=0; i < len; i++)
 				allFiles.push(filesClone[i])
 
@@ -217,7 +283,7 @@ const ProcurementAddForm = (props) => {
 							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Approvers" _label="_approvers" values={values} DepatmentOnly={false} />
 						</Grid>}
 
-						{procurementFields['all']?.texts.map((field) => (
+						{_procurementFields['all']?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
 								<TextField
 									fullWidth
@@ -226,7 +292,8 @@ const ProcurementAddForm = (props) => {
 									label={field.label}
 									type={field.type ?? 'text'}
 									// inputProps={{ multiple: true }}
-									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file") ? true : undefined }}
+									disabled={disabledFields.includes(field.id)}
+									InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || field.id == "status") ? true : undefined }}
 									id={field.id}
 									required={field.isRequired}
 									error={errors[field.id]}
@@ -243,7 +310,7 @@ const ProcurementAddForm = (props) => {
 								</TextField>
 							</Grid>))}
 
-						{procurementFields['all']?.checkboxes.map((field) => (
+						{_procurementFields['all']?.checkboxes.map((field) => (
 							<Grid item md={6} xs={12}>
 								<FormControlLabel
 									control={<Checkbox
@@ -251,6 +318,7 @@ const ProcurementAddForm = (props) => {
 										onChange={handleChange}
 										id={field.id}
 										color="primary"
+										disabled={disabledFields.includes(field.id)}
 									/>}
 									label={field.label}
 								/>

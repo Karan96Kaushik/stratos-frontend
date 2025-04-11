@@ -19,6 +19,7 @@ import {
 	// FileText,
 	DollarSign,
 	Package,
+    ShoppingBag,
 	// CheckCircle,
 	// ShoppingBag,
 	// User,
@@ -57,6 +58,8 @@ const NotificationList = ({notifications}) => {
         'packageaccounts': <DollarSign/>,
         'payment': <DollarSign/>,
         'tickets': <AlertCircle/>,
+        'procurement': <ShoppingBag/>,
+        'procurementapproval': <ShoppingBag/>,
     }
 
     const typeRoute = {
@@ -66,6 +69,7 @@ const NotificationList = ({notifications}) => {
         'package': 'packages',
         'packageaccounts': 'package/accounts',
         'payment': 'payments',
+        'procurementapproval': 'procurement/pending-approvals',
     }
 
 	return (
@@ -77,7 +81,7 @@ const NotificationList = ({notifications}) => {
                 <TableRow
                     // key={'ABCDEF' + notif.type}
                     hover
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
                     onClick={() => handleClick(notif)}>
                     <TableCell component="th" scope="row">
                         {typeIcons[notif.type]}

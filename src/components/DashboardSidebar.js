@@ -29,7 +29,8 @@ import {
 	Link as LinkIcon,
 	Clipboard,
 	PenTool,
-	Settings as SettingsIcon
+	Settings as SettingsIcon,
+	ShoppingBag as ShoppingBagIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 import { selectUser } from 'src/store/reducers/userSlice';
@@ -106,7 +107,7 @@ const items = [
 	},
 	{
 		href: '#',
-		icon: PackageIcon,
+		icon: ShoppingBagIcon,
 		title: 'Procurements'
 	},
 	{
@@ -120,6 +121,12 @@ const items = [
 		icon: CheckSquareIcon,
 		isSub: true,
 		title: 'Approvals'
+	},
+	{
+		href: '/app/procurement/accounts',
+		icon: PenTool,
+		isSub: true,
+		title: 'Accounts'
 	},
 	{
 		href: '/app/calendar',

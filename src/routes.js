@@ -197,8 +197,10 @@ const routes = (isLoggedIn) => [
 					{ path: '/', element: <ProcurementListPage /> },
 					{ path: 'add', element: <ProcurementAddPage /> },
 					{ path: 'edit/:id', element: <ProcurementAddPage /> },
+					{ path: 'editaccounts/:id', element: <ProcurementAddPage /> },
 					{ path: 'manage/:id', element: <ProcurementAddPage /> },
 					{ path: 'pending-approvals', element: <ProcurementListPage /> },
+					{ path: 'accounts', element: <ProcurementListPage /> },
 				]
 			},
 

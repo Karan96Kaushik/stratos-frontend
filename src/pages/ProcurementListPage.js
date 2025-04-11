@@ -14,7 +14,7 @@ import {
 import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
-import { ManageAccountsRounded, CheckCircleRounded, EditRounded, Check } from '@material-ui/icons';
+import { AccountTree, CheckCircleRounded, EditRounded, Check } from '@material-ui/icons';
 
 function useQuery(url) {
 	const {search} = new URL(url);
@@ -50,6 +50,7 @@ const ProcurementList = () => {
 
     const pathName = useLocation().pathname
     const isPendingApprovals = useLocation().pathname.includes("pending-approvals")
+    const isAccounts = useLocation().pathname.includes("accounts")
 
 	const query = useQuery(window.location.href);
 	if(query.rowsPerPage)
@@ -115,7 +116,7 @@ const ProcurementList = () => {
 			const _data = await authorizedReq({
 				route: "/api/procurements/search", 
 				creds: loginState.loginState, 
-				data:{...searchCopy, details:true, isPendingApprovals}, 
+				data:{...searchCopy, details:true, isPendingApprovals, isAccounts}, 
 				method: 'post'
 			})
 			setData({rows:_data})
@@ -152,6 +153,8 @@ const ProcurementList = () => {
         {name:'Total', id:"total"},
         {name:'Status', id:"status"},
         {name:'Payment Type', id:"paymentType"},
+        {name:'Paid Amount', id:"paidAmount"},
+        {name:'Payment Reference', id:"paymentReference"},
         {name:'Remarks', id:"existingRemarks", type:"array"},
         {name:'Asset Tagging Code', id:"assetTaggingCode"},
         {name:'Tat', id:"tat"},
@@ -212,14 +215,14 @@ const ProcurementList = () => {
 		return (				
 			<Link to={`/app/procurement/manage/${val._id}`}>
 				<IconButton aria-label="expand row" size="small">
-					<ManageAccountsRounded />
+					<AccountTree />
 				</IconButton>
 			</Link>
 		)
 	}
     const renderApproveButton = (val) => {
-        if (!val._approvers.includes(loginState.loginState._id) || val.approvedBy.includes(loginState.loginState._id)) {
-            return <CheckCircleRounded style={{color: "green-300"}} />
+        if (!val._approvers?.includes(loginState.loginState._id) || val.approvedBy?.includes(loginState.loginState._id)) {
+            return <CheckCircleRounded style={{color: "#00AA00"}} />
         }
         return (
             <IconButton aria-label="expand row" size="small" onClick={() => handleApprove(val._id)}>
@@ -227,12 +230,14 @@ const ProcurementList = () => {
             </IconButton>
         )
     }
+
+    const editRoute = isAccounts ? `/app/procurement/editaccounts/` : `/app/procurement/edit/`
     const renderEditButton = (val) => {
-        if (val.addedBy == loginState.loginState._id && !loginState.loginState.permissions.page.includes("Procurements W")) {
+        if (val.addedBy !== loginState.loginState._id && !loginState.loginState.permissions.page.includes("Procurements W") && !isAccounts) {
             return null
         }
         return (
-            <IconButton aria-label="expand row" size="small" onClick={() => navigate(`/app/procurement/edit/${val._id}`)}>
+            <IconButton aria-label="expand row" size="small" onClick={() => navigate(editRoute + val._id)}>
                 <EditRounded />
             </IconButton>
         )
@@ -272,7 +277,7 @@ const ProcurementList = () => {
         actions.push(renderApproveButton)
         actionNames.push("Approve")
     }
-    if (loginState.loginState.permissions.system.includes("Manage Procurements")) {
+    if (loginState.loginState.permissions.system.includes("Manage Procurements") && !isAccounts) {
         actions.push(renderManageButton)
         actionNames.push("Manage")
     }

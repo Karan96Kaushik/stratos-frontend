@@ -75,6 +75,7 @@ const pagePermissionFields = [
 	"CC Received W",
 	"Procurements R",
 	"Procurements W",
+	"Procurements Accounts",
 ]
 
 const systemPermissionFields = [

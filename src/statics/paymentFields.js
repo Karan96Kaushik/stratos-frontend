@@ -26,3 +26,5 @@ export default {
         checkboxes: []
     }
 }
+
+export { modeOptions }
