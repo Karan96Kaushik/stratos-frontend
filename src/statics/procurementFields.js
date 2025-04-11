@@ -24,7 +24,7 @@ export default {
             {label:'Vendor Code', id:"vendorCode", disableIn: ['accounts']},
             {label:'Vendor Type', id:"vendorType", disableIn: ['accounts']},
             {label:'Product Details', id:"productDetails", disableIn: ['accounts']},
-            {label:'Bill No', id:"billNo", isRequired: true, disableIn: ['accounts']},
+            {label:'Bill No', id:"billNo", disableIn: ['accounts']},
             {label:'Amount', id:"amount", type: 'number', isRequired: true, disableIn: ['accounts']},
             {label:'GST Amount', id:"gstamount", type: 'number', disableIn: ['accounts']},
             {label:'TDS Amount', id:"tdsamount", type: 'number'},
