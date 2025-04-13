@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	TextField, Button,
 	Dialog, DialogTitle, Grid,
@@ -14,6 +14,7 @@ import {
 } from "../store/reducers/filtersSlice";
 
 export default function FiltersDialog({ search, setSearch, fields, type, commonFilters, forView }) {
+	
 	const filters = useSelector(selectFilterFor(forView))
 
 	const [values, setValues] = React.useState(filters)
@@ -21,6 +22,10 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 	let isEdit = false
 
 	const dispatch = useDispatch()
+
+	useEffect(() => {
+		setValues(filters)
+	}, [forView, filters])
 
 	const handleApply = async () => {
 		try {

@@ -1,10 +1,10 @@
-import {useRef, useEffect, useState, useContext} from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container, Paper, Tab, Tabs, IconButton } from '@material-ui/core';
 import ProcurementListToolbar from 'src/components/procurements/ProcurementListToolbar';
 import { authorizedDownload, authorizedReq} from '../utils/request'
 import { LoginContext, LoadingContext } from "../myContext"
-import {useLocation, useNavigate, Link} from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useSnackbar } from 'material-ui-snackbar-provider'
 import GeneralList from '../components/GeneralList'
 import ViewDialog from 'src/components/ViewDialog';
@@ -15,6 +15,7 @@ import { selectMembers } from 'src/store/reducers/membersSlice';
 import { useSelector } from "react-redux";
 import * as _ from "lodash"
 import { AccountTree, CheckCircleRounded, EditRounded, Check } from '@material-ui/icons';
+import { statusOptions } from 'src/statics/procurementFields';
 
 function useQuery(url) {
 	const {search} = new URL(url);
@@ -45,12 +46,14 @@ const ProcurementList = () => {
 	const snackbar = useSnackbar()
 	const [sortState, setSortState] = useState({sortID:'createdTime', sortDir:-1})
 
-	const filters = useSelector(selectFilterFor("procurementsApprovals"))
 	const memberRows = useSelector(selectMembers)
 
     const pathName = useLocation().pathname
     const isPendingApprovals = useLocation().pathname.includes("pending-approvals")
     const isAccounts = useLocation().pathname.includes("accounts")
+
+	const filterName = isAccounts ? "procurementsAccounts" : isPendingApprovals ? "procurementsApprovals" : "procurements"
+	const filters = useSelector(selectFilterFor(filterName))
 
 	const query = useQuery(window.location.href);
 	if(query.rowsPerPage)
@@ -195,6 +198,7 @@ const ProcurementList = () => {
 	const commonFilters = {
 		texts :[
 			{label:"Added By", id: "addedBy"},
+			// {label:"Status", id: "status", options:statusOptions},
 		],
 		checkboxes:[
 			{label:"Include Archived", id:"archived"},
@@ -319,7 +323,7 @@ const ProcurementList = () => {
 				py: 3
 			}}>
 			<Container maxWidth={false}>
-				<ProcurementListToolbar handleExport={handleExport} fields={defaultFields} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
+				<ProcurementListToolbar forView={filterName} handleExport={handleExport} fields={defaultFields} commonFilters={commonFilters} searchInfo={search} setSearch={setSearch} handleChange={handleChange} goSearch={loadData}/>
 				<Box sx={{ pt: 3 }}>
 					<Paper square>
 						<GeneralList

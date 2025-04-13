@@ -18,13 +18,13 @@ const ProcurementsListToolbar = (props) => {
 	
 	const commonFilters = {
 		texts: [
-			{label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
+			// {label:"Balance", id: "balanceStatus", options:["", "Nil", "Pending"]},
 			...(props?.commonFilters?.texts ?? [])
 			// ...props.fields?.texts
 		],
 		checkboxes: [
-			{label:"Form 5", id: "Form 5"},
-			{label:"Include Archived", id:"archived"},
+			// {label:"Form 5", id: "Form 5"},
+			// {label:"Include Archived", id:"archived"},
 			{label:"Only Archived", id: "onlyarchived"},
 		]
 	}
@@ -64,7 +64,7 @@ const ProcurementsListToolbar = (props) => {
 									/>
 								</Grid>
 								<Grid item md={4} xs={6}>
-									<FiltersDialog forView="procurements" commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={procurementFields}/>
+									<FiltersDialog forView={props.forView || "procurements"} commonFilters={commonFilters} search={props.searchInfo} setSearch={props.setSearch} type={'all'} fields={procurementFields}/>
 								</Grid>
 							</Grid>
 						</Box>
