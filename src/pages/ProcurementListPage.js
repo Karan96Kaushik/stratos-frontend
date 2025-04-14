@@ -141,6 +141,7 @@ const ProcurementList = () => {
 	// Fields in view details pop up
 	const otherFields = [
         {name:'Date', id:"createdTime"},
+        {name:'Bill Date', id:"billDate"},
         {name:'Procurement ID', id:"procurementID"},
         {name:'Requested By', id:"addedByName"},
         {name:'Approved By', id:"approvedByName", type:"array"},
@@ -169,6 +170,7 @@ const ProcurementList = () => {
 			texts:[
 				{label:'Date', id:"createdTime"},
 				{label:'Procurement ID', id:"procurementID"},
+				{label:'Bill Date', id:"billDate"},
 				{label:'Requested By', id:"addedByName"},
 				{label:'Approved By', id:"approvedByName", type:"array"},
 				// {label:'Last Approver Date', id:"lastApproverDate"},
