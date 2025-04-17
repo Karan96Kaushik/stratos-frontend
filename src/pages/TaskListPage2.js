@@ -202,7 +202,7 @@ const TaskList = (props) => {
 		{name:"Correction Type", id: "correctionTaskType", type: "array"},
 		{name:"Members Assigned", id: "membersAssigned"},
 		{name:"Added By", id:"addedByName"},
-
+		{name:"Ready For Submission", id:"readyForSubmission"},
 	]
 
 	const defaultFields = {

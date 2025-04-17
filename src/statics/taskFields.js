@@ -1,3 +1,55 @@
+const letterOptions1 = [
+    "",
+    "Pending",
+    "Received",
+    "Error",
+]
+
+const letterOptions2 = [
+    "",
+    "Pending",
+    "Received",
+    "Error",
+    "Consents not Sufficent",
+]
+
+const letterOptions3 = [
+    "",
+    "Pending",
+    "Received",
+    "Promoter Sign Pending",
+    "Error",
+]
+
+const letterOptions4 = [
+    "",
+    "Red",
+    "Yellow",
+    "Green",
+]
+
+const consentLetters = [
+    {label:"Extension Application", id:"letterExtensionApplication", options:letterOptions1},
+    {label:"Form E", id:"letterFormE", options:letterOptions1},
+    {label:"Consent Letter", id:"letterConsent", options:letterOptions1},
+    {label:"Form B", id:"letterFormB", options:letterOptions1},
+    {label:"Disclosure of Inventory", id:"letterDisclosureOfInventory", options:letterOptions1},
+    {label:"Format D", id:"letterFormatD", options:letterOptions1},
+    {label:"Form 1", id:"letterForm1", options:letterOptions3},
+    {label:"Form 2", id:"letterForm2", options:letterOptions3},
+    {label:"Form 3", id:"letterForm3", options:letterOptions3},
+    {label:"Form 2A", id:"letterForm2A", options:letterOptions3},
+    {label:"Form 5", id:"letterForm5", options:letterOptions3},
+    {label:"CERSAI", id:"letterCersai", options:letterOptions1},
+    {label:"Format A", id:"letterFormatA", options:letterOptions4},
+    {label:"Annexure A", id:"letterAnnexureA", options:letterOptions1},
+    {label:"Declaration", id:"letterDeclaration", options:letterOptions1},
+    {label:"PERT", id:"letterPert", options:letterOptions1},
+    {label:"No Complaints", id:"letterNoComplaints", options:letterOptions1},
+    {label:"Affidavit - Allottees", id:"letterAffidavitAllottees", options:letterOptions1},
+    {label:"Submission", id:"letterSubmission", options:letterOptions4},
+]
+
 
 const statuses = [
     "", 
@@ -269,6 +321,7 @@ const taskFields = {
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
             {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
+            ...consentLetters,
             ...commonTextFields,
             {label:"Status", id:"status", options:[...statuses, ...statusSet1]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
@@ -612,6 +665,7 @@ const taskFields = {
             {label:"SRO Authority", id:"sroAuthority", options:sroAuthorities},
             {label:"Status", id:"status", options:[...statuses, ...statusSet1, ...statusSet11]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            ...consentLetters,
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
