@@ -31,7 +31,7 @@ const letterOptions4 = [
 const consentLetters = [
     {label:"Extension Application", id:"letterExtensionApplication", options:letterOptions1},
     {label:"Form E", id:"letterFormE", options:letterOptions1},
-    {label:"Consent Letter", id:"letterConsent", options:letterOptions1},
+    {label:"Consent Letter", id:"letterConsent", options:letterOptions2},
     {label:"Form B", id:"letterFormB", options:letterOptions1},
     {label:"Disclosure of Inventory", id:"letterDisclosureOfInventory", options:letterOptions1},
     {label:"Format D", id:"letterFormatD", options:letterOptions1},
@@ -41,7 +41,7 @@ const consentLetters = [
     {label:"Form 2A", id:"letterForm2A", options:letterOptions3},
     {label:"Form 5", id:"letterForm5", options:letterOptions3},
     {label:"CERSAI", id:"letterCersai", options:letterOptions1},
-    {label:"Format A", id:"letterFormatA", options:letterOptions4},
+    {label:"Format A", id:"letterFormatA", options:letterOptions1},
     {label:"Annexure A", id:"letterAnnexureA", options:letterOptions1},
     {label:"Declaration", id:"letterDeclaration", options:letterOptions1},
     {label:"PERT", id:"letterPert", options:letterOptions1},
