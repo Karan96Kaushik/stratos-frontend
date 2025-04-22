@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import * as _ from "lodash"
 import { AccountTree, CheckCircleRounded, EditRounded, Check } from '@material-ui/icons';
 import { statusOptions } from 'src/statics/procurementFields';
+import ApprovalDialog from 'src/components/procurements/ApprovalDialog';
 
 function useQuery(url) {
 	const {search} = new URL(url);
@@ -63,6 +64,9 @@ const ProcurementList = () => {
 	const [page, setPage] = useState(parseInt(query.page) || 1);
 	const [rowsPerPage, setRowsPerPage] = useState(query.rowsPerPage ?? 25);
 	const [search, setSearch] = useState({...query, page, rowsPerPage, ...sortState})
+
+	const [approvalDialogOpen, setApprovalDialogOpen] = useState(false);
+	const [selectedProcurement, setSelectedProcurement] = useState(null);
 
 	useEffect(() => {
 		loadData()
@@ -231,7 +235,7 @@ const ProcurementList = () => {
             return <CheckCircleRounded style={{color: "#00AA00"}} />
         }
         return (
-            <IconButton aria-label="expand row" size="small" onClick={() => handleApprove(val._id)}>
+            <IconButton aria-label="expand row" size="small" onClick={() => handleApproveClick(val)}>
                 <Check />
             </IconButton>
         )
@@ -249,16 +253,18 @@ const ProcurementList = () => {
         )
     }
 
-    const handleApprove = async (id) => {
+    const handleApprove = async (approvalData) => {
         try {
-            if (!window.confirm("Are you sure you want to approve this procurement?")) {
-                return
-            }
             setLoading({...loading, isActive:true})
             await authorizedReq({
                 route: "/api/procurements/approve",
                 creds: loginState.loginState,
-                data: {_id: id},
+                data: {
+                    _id: approvalData.procurementId,
+                    paymentType: approvalData.paymentType,
+                    approvedAmount: approvalData.amount,
+                    remarks: approvalData.remarks
+                },
                 method: 'post'
             })
             setLoading({...loading, isActive:false})
@@ -269,6 +275,16 @@ const ProcurementList = () => {
                 err?.response?.data ?? err.message ?? err,
             )
         }
+    }
+
+    const handleApproveClick = (procurement) => {
+        setSelectedProcurement(procurement);
+        setApprovalDialogOpen(true);
+    }
+
+    const handleDialogClose = () => {
+        setApprovalDialogOpen(false);
+        setSelectedProcurement(null);
     }
 
     const actionNames = [
@@ -349,6 +365,12 @@ const ProcurementList = () => {
 					</Paper>
 				</Box>
 			</Container>
+			<ApprovalDialog
+				open={approvalDialogOpen}
+				onClose={handleDialogClose}
+				onApprove={handleApprove}
+				procurement={selectedProcurement}
+			/>
 		</Box>
 	</>)
 };

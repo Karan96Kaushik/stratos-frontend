@@ -46,6 +46,7 @@ import SalesPaymentsList from './pages/SalesPaymentsListPage';
 import AdminSettings from './pages/AdminSettings';
 import ProcurementListPage from './pages/ProcurementListPage';
 import ProcurementAddPage from './pages/ProcurementAdd';
+import VendorAddPage from './pages/VendorAdd';
 
 const routes = (isLoggedIn) => [
 	{
@@ -203,7 +204,13 @@ const routes = (isLoggedIn) => [
 					{ path: 'accounts', element: <ProcurementListPage /> },
 				]
 			},
-
+			{
+				path: 'vendor',
+				children: [
+					{ path: 'add', element: <VendorAddPage /> },
+					{ path: 'edit/:id', element: <VendorAddPage /> },
+				]
+			},
 			{
 				path: 'rerainstruction',
 				children: [

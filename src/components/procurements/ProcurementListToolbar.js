@@ -43,6 +43,11 @@ const ProcurementsListToolbar = (props) => {
 						Add Procurement
 					</Button>
 				</Link>
+				<Link to="/app/vendor/add">
+					<Button sx={{mx: 1}} variant="contained">
+						Add Vendor
+					</Button>
+				</Link>
 				<Button sx={{mx: 1}} variant="contained" onClick={getExport}>
 					Export
 				</Button>

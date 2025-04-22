@@ -29,10 +29,12 @@ const ProcurementAddForm = (props) => {
 
 	const [values, setValues] = useState({status: "New Procurement"});
 	const [type, setType] = useState("");
-	
+	const [vendors, setVendors] = useState([]);
+
     let isEdit = false;
 	let isManage = false;
 	let isAccounts = false;
+	let procurementID = null;
 
 	if (location.pathname.includes("edit") || location.pathname.includes("manage")) {
 		isEdit = true
@@ -42,24 +44,42 @@ const ProcurementAddForm = (props) => {
 		if (location.pathname.includes("accounts")) {
 			isAccounts = true
 		}
-		let procurementID = location.pathname.split("/").pop()
-		useEffect(() => {
-			const fetchData = async () => {
-				try {
-					let data = await authorizedReq({route:"/api/procurements/", data:{_id:procurementID}, creds:loginState.loginState, method:"get"})
-					originalRef.current = data;
-					setType(data.procurementType)
-					setValues(data)
-				} catch (err) {
-					console.error(err)
-					snackbar.showMessage(
-						(err?.response?.data ?? err.message ?? err),
-					)
-				}
-			}
-			fetchData()
-		}, [])
+		procurementID = location.pathname.split("/").pop()
 	}
+
+	useEffect(() => {
+		const fetchVendors = async () => {
+			try {
+				let data = await authorizedReq({route:"/api/procurements/vendor/list", data:{}, creds:loginState.loginState, method:"get"})
+				originalRef.current = data;
+				setVendors(data)
+			} catch (err) {
+				console.error(err)
+				snackbar.showMessage(
+					(err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
+		fetchVendors()
+
+		if (!isEdit)
+			return
+
+		const fetchData = async () => {
+			try {
+				let data = await authorizedReq({route:"/api/procurements/", data:{_id:procurementID}, creds:loginState.loginState, method:"get"})
+				originalRef.current = data;
+				setType(data.procurementType)
+				setValues(data)
+			} catch (err) {
+				console.error(err)
+				snackbar.showMessage(
+					(err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
+		fetchData()
+	}, [])
 
 	useEffect(() => {
 		if (values._approvers?.length && !originalRef.current?._approvers?.length) {
@@ -67,6 +87,12 @@ const ProcurementAddForm = (props) => {
 			snackbar.showMessage("Status set to Pending Approval")
 		}
 	}, [values._approvers])
+
+	useEffect(() => {
+		if (values.vendorID) {
+			setValues({...values, vendorCode: vendors.find(v => v._id == values.vendorID)?.vendorCode})
+		}
+	}, [values.vendorID])
 
 
 	useEffect(() => {
@@ -193,7 +219,7 @@ const ProcurementAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully deleted procurement!`,
 			)
-			navigate('/app/procurement');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -282,6 +308,32 @@ const ProcurementAddForm = (props) => {
 						{isManage && <Grid item md={6} xs={12}>
 							<MembersAutocomplete memberRows={memberRows} setValues={setValues} title="Approvers" _label="_approvers" values={values} DepatmentOnly={false} />
 						</Grid>}
+
+						<Grid item md={6} xs={12}>
+							<TextField
+								fullWidth
+								select={true}
+								SelectProps={{ native: true }}
+								label="Vendor"
+								type='text'
+								// inputProps={{ multiple: true }}
+								disabled={disabledFields.includes("vendorID")}
+								InputLabelProps={{ shrink: true }}
+								id="vendorID"
+								required={true}
+								error={errors["vendorID"]}
+								onChange={handleChange}
+								value={values.vendorID ?? ''}
+								variant="outlined"
+							>
+								{(vendors ?? []).map((option) => (
+									<option key={option.vendorID}
+										value={option.vendorID}>
+										{option.vendorName}
+									</option>
+								))}
+							</TextField>
+						</Grid>
 
 						{_procurementFields['all']?.texts.map((field) => (
 							<Grid item md={6} xs={12}>

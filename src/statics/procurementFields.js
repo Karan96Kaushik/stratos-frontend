@@ -1,4 +1,5 @@
 import { modeOptions } from './paymentFields'
+
 const statusOptions = [
     "",
     "New Procurement",
@@ -9,10 +10,36 @@ const statusOptions = [
     "Completed",
 ]
 
+
+const groupOptions = [
+    "",
+    "Office Stationeries",
+    "Fees",
+    "IT",
+    "Office Keeping",
+    "Human Resource",
+    "Other",
+]
+
+export const vendorFields = {
+    texts: [
+        {label:'Vendor Name', id:"vendorName"},
+        {label:'Vendor Code', id:"vendorCode"},
+        // {label:'Vendor Type', id:"vendorType"},
+        {label:'Vendor Group', id:"vendorGroup", options: groupOptions},
+
+    ], checkboxes:[
+        // {label:"Archived", id:"archived"},
+    ]
+}
+
 export default {
     all: {
         texts: [
             {label:'Vendor Name', id:"vendorName", disableIn: ['accounts']},
+            
+            {label:'Vendor Code', id:"vendorCode", disableIn: ['accounts', 'request']},
+            {label:'Vendor Group', id:"vendorGroup", disableIn: ['accounts', 'request']},
             
             {label:'Bill Date', id:"billDate", type:"date", disableIn: ['accounts', 'request']},
             // {label:'Sr No.', id:"srNo", disableIn: ['accounts']},
@@ -22,8 +49,6 @@ export default {
             // {label:'Procurement Requisition By', id:"procurementRequisitionBy"},
             // {label:'Procurement Approved By', id:"procurementApprovedBy"},
             // {label:'Last Approver Date', id:"lastApproverDate"},
-            {label:'Vendor Code', id:"vendorCode", disableIn: ['accounts', 'request']},
-            {label:'Vendor Type', id:"vendorType", disableIn: ['accounts', 'request']},
             {label:'Product Details', id:"productDetails", disableIn: ['accounts', 'request']},
             {label:'Bill No', id:"billNo", disableIn: ['accounts', 'request']},
             {label:'Amount', id:"amount", type: 'number', disableIn: ['accounts', 'request']},
