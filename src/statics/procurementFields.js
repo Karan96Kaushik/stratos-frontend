@@ -63,7 +63,7 @@ export default {
             {label:'Payment Reference', id:"paymentReference", disableIn: ['request', 'manage']},
             {label:'Payment Mode', id:"paymentMode", options: modeOptions, disableIn: ['request', 'manage']},
             // {label:'Payment Month', id:"paymentMonth", },
-            // {label:'Payment Date', id:"paymentDate", type:"date"},
+            {label:'Payment Date', id:"paymentDate", type:"date"},
             {label:'Asset Tagging Code', id:"assetTaggingCode", disableIn: ['request', 'manage']},
             // {label:'Tat', id:"tat", disableIn: ['request', 'manage']},
             {label:'Files', id:"files", type: 'file'},
