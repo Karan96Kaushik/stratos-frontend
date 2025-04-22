@@ -12,7 +12,9 @@ import {
     TextField,
     Typography,
     Box,
-    Grid
+    Grid,
+    List,
+    ListItem
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ApprovalDialog({ open, onClose, onApprove, procurement }) {
     const classes = useStyles();
-    const [paymentType, setPaymentType] = useState('full');
+    const [paymentType, setPaymentType] = useState('Full');
     const [amount, setAmount] = useState('');
     const [remarks, setRemarks] = useState('');
 
@@ -62,8 +64,8 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
 
     const handlePaymentTypeChange = (event) => {
         setPaymentType(event.target.value);
-        // Reset amount when switching to full payment
-        if (event.target.value === 'full') {
+        // Reset amount when switching to Full payment
+        if (event.target.value === 'Full') {
             setAmount('');
         }
     };
@@ -120,7 +122,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                             onChange={handlePaymentTypeChange}
                         >
                             <FormControlLabel
-                                value="full"
+                                value="Full"
                                 control={<Radio />}
                                 label="Full Payment"
                             />

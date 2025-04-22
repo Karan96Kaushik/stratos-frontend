@@ -40,7 +40,7 @@ export default {
             
             {label:'Vendor Code', id:"vendorCode", disableIn: ['accounts', 'request']},
             {label:'Vendor Group', id:"vendorGroup", disableIn: ['accounts', 'request']},
-            
+
             {label:'Bill Date', id:"billDate", type:"date", disableIn: ['accounts', 'request']},
             // {label:'Sr No.', id:"srNo", disableIn: ['accounts']},
             // {label:'Date', id:"date", type:"date"},
@@ -56,11 +56,12 @@ export default {
             {label:'TDS Amount', id:"tdsamount", type: 'number', disableIn: ['accounts', 'request']},
             // {label:'Total', id:"total", type: 'number'},
             {label:'Status', id:"status", options: statusOptions, disableIn: ['request']},
+            {label:'Payment Type', id:"paymentType", options: ['','Full', 'Part'], disableIn: ['request', 'manage']},
+            {label:'Approved Amount', id:"approvedAmount", type: 'number', disableIn: ['request', 'manage']},
+            {label:'Remarks', id:"remarks"},
             {label:'Paid Amount', id:"paidAmount", type: 'number', disableIn: ['request', 'manage']},
-            {label:'Payment Type', id:"paymentType", disableIn: ['request', 'manage']},
             {label:'Payment Reference', id:"paymentReference", disableIn: ['request', 'manage']},
             {label:'Payment Mode', id:"paymentMode", options: modeOptions, disableIn: ['request', 'manage']},
-            {label:'Remarks', id:"remarks"},
             // {label:'Payment Month', id:"paymentMonth", },
             // {label:'Payment Date', id:"paymentDate", type:"date"},
             {label:'Asset Tagging Code', id:"assetTaggingCode", disableIn: ['request', 'manage']},

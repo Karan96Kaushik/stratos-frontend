@@ -161,6 +161,7 @@ const ProcurementList = () => {
         {name:'Total', id:"total"},
         {name:'Status', id:"status"},
         {name:'Payment Type', id:"paymentType"},
+		{name:'Approved Amount', id:"approvedAmount"},
         {name:'Paid Amount', id:"paidAmount"},
         {name:'Payment Reference', id:"paymentReference"},
         {name:'Remarks', id:"existingRemarks", type:"array"},

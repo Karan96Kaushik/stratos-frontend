@@ -29,6 +29,8 @@ const ProcurementAddForm = (props) => {
 
 	if (values.vendorID && values.vendorID !== "other") {
 		disabledFields.push("vendorName")
+		disabledFields.push("vendorCode")
+		disabledFields.push("vendorGroup")
 	}
 
 	const _procurementFields = _.cloneDeep(procurementFields)
@@ -56,7 +58,6 @@ const ProcurementAddForm = (props) => {
 		const fetchVendors = async () => {
 			try {
 				let data = await authorizedReq({route:"/api/procurements/vendor/list", data:{}, creds:loginState.loginState, method:"get"})
-				originalRef.current = data;
 				setVendors(data)
 			} catch (err) {
 				console.error(err)
@@ -113,10 +114,6 @@ const ProcurementAddForm = (props) => {
 	if (isAccounts) {
 		_procurementFields['all'].texts.filter(field => field.disableIn?.includes("accounts")).map(field => {
 			disabledFields.push(field.id)
-
-			if (values.vendorID) {
-				di
-			}
 		})
 		_procurementFields['all'].checkboxes.filter(field => field.disableIn?.includes("accounts")).map(field => {
 			disabledFields.push(field.id)
