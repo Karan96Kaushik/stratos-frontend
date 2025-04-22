@@ -89,8 +89,11 @@ const ProcurementAddForm = (props) => {
 	}, [values._approvers])
 
 	useEffect(() => {
+		console.log('values.vendorID', values.vendorID)
 		if (values.vendorID) {
-			setValues({...values, vendorCode: vendors.find(v => v._id == values.vendorID)?.vendorCode})
+			const vendor = vendors.find(v => v.vendorID == values.vendorID)
+			console.log('vendor', vendor)
+			setValues({...values, vendorCode: vendor?.vendorCode, vendorName: vendor?.vendorName, vendorGroup: vendor?.vendorGroup})
 		}
 	}, [values.vendorID])
 
