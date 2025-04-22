@@ -25,6 +25,10 @@ const ProcurementAddForm = (props) => {
 
 	const disabledFields = []
 
+	if (values.vendorID && values.vendorID !== "other") {
+		disabledFields.push("vendorName")
+	}
+
 	const _procurementFields = _.cloneDeep(procurementFields)
 
 	const [values, setValues] = useState({status: "New Procurement"});
@@ -108,6 +112,10 @@ const ProcurementAddForm = (props) => {
 	if (isAccounts) {
 		_procurementFields['all'].texts.filter(field => field.disableIn?.includes("accounts")).map(field => {
 			disabledFields.push(field.id)
+
+			if (values.vendorID) {
+				di
+			}
 		})
 		_procurementFields['all'].checkboxes.filter(field => field.disableIn?.includes("accounts")).map(field => {
 			disabledFields.push(field.id)
