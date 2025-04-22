@@ -25,13 +25,14 @@ const ProcurementAddForm = (props) => {
 
 	const disabledFields = []
 
+	const [values, setValues] = useState({status: "New Procurement"});
+
 	if (values.vendorID && values.vendorID !== "other") {
 		disabledFields.push("vendorName")
 	}
 
 	const _procurementFields = _.cloneDeep(procurementFields)
 
-	const [values, setValues] = useState({status: "New Procurement"});
 	const [type, setType] = useState("");
 	const [vendors, setVendors] = useState([]);
 
