@@ -27,6 +27,10 @@ export const vendorFields = {
         {label:'Vendor Code', id:"vendorCode"},
         // {label:'Vendor Type', id:"vendorType"},
         {label:'Vendor Group', id:"vendorGroup", options: groupOptions},
+        {label:'Vendor GST', id:"vendorGst"},
+        {label:'Vendor PAN', id:"vendorPan"},
+        {label:'Vendor Bank Account', id:"vendorBankAccount"},
+        {label:'Vendor Legal Entity Name', id:"vendorLegalEntityName"},
 
     ], checkboxes:[
         // {label:"Archived", id:"archived"},
