@@ -32,7 +32,7 @@ const Dashboard = () => {
 
 	const userDept = loginState.loginState.department
 
-	const [activeDash, setActiveDash] = useState({title:'Main'})
+	const [activeDash, setActiveDash] = useState({title:'Home'})
 	const [data, setData] = useState({type: '', rows:[]})
 	const [customData, setCustomData] = useState({})
 	const [member, setMember] = useState(false)
@@ -144,7 +144,7 @@ const Dashboard = () => {
 
 				<Grid item lg={7} sm={7} xl={7}	xs={12} >
 					<Tabs value={activeDash.title} onChange={handleDashChange} centered={false}>
-						<Tab label='Main' value={'Main'}/>
+						<Tab label='Home' value={'Home'}/>
 						{personalDashboards.departments[userDept]?.dashboards?.map(d => <Tab label={d} value={d}/>)}
 						{userDept == 'Administration' && Object.keys(adminDashboards?.dashboards ?? {})?.map(d => <Tab label={d} value={d}/>)}
 					</Tabs>
@@ -175,7 +175,7 @@ const Dashboard = () => {
 					</TextField>}
 				</Grid> */}
 
-				{(activeDash.title !== 'Main' && userDept == 'Administration') ? 
+				{(activeDash.title !== 'Home' && userDept == 'Administration') ? 
 					<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
 						<TextField
 							fullWidth
@@ -204,7 +204,7 @@ const Dashboard = () => {
 					<Grid item lg={2} sm={7} xl={7}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
 					</Grid>
 					}
-					{activeDash.title !== 'Main' &&
+					{activeDash.title !== 'Home' &&
 						<Grid item lg={3} sm={6} xl={6}	xs={12}  textAlign='right' sx={{paddingRight:3, paddingLeft:0}}>
 							<DatePicker setDateRange={setDateRange} dateRange={dateRange} />
 						</Grid>
@@ -226,7 +226,7 @@ const Dashboard = () => {
 						{/* <Grid item lg={6} sm={6} xl={6}	xs={12}>
 							 <Budget />
 						</Grid> */}
-					{activeDash.title == 'Main' && <>
+					{activeDash.title == 'Home' && <>
 						<Grid item lg={3} sm={6} xl={3}	xs={12}>
 							<DashCard 
 								title={"ASSIGNED TASKS"} 
