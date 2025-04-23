@@ -5,11 +5,16 @@ const personalDashboards = {
                 'Business Development',
             ]
         },
-        // 'Compliance': {
-        //     dashboards: [
-        //         'Ready for Submission',
-        //     ]
-        // },
+        'Compliance': {
+            dashboards: [
+                'Ready for Submission',
+            ]
+        },
+        'Operations': {
+            dashboards: [
+                'Ready for Submission',
+            ]
+        },
     },
     dashboards: {
         'Business Development': {
