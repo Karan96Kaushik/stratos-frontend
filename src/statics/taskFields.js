@@ -176,11 +176,17 @@ const statusSet7 = [
 
 // PC
 const statusSet8 = [
+    "Desk 1",
+    "Desk 2",
+    "Desk 3",
+    "Desk 4",
+    "Under Scrutiny",
+    "Post Facto Date Pending",
+    "Certificate Generated",
     "Form 4 Submitted",
     "Form 4 Accepted",
     "Form 4 Rejected",
     "OC Submitted",
-    "Under Scrutiny",
     "OC Accepted",
     "Completed", 
     "Uploaded",
