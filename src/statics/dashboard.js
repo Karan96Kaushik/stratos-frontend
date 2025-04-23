@@ -7,12 +7,17 @@ const personalDashboards = {
         },
         'Compliance': {
             dashboards: [
-                'Ready for Submission',
+                'Extension',
             ]
         },
         'Operations': {
             dashboards: [
-                'Ready for Submission',
+                'Extension',
+            ]
+        },
+        'Administration': {
+            dashboards: [
+                'Extension',
             ]
         },
     },
@@ -80,7 +85,7 @@ const personalDashboards = {
                 }
             }
         },
-        'Ready for Submission': {
+        'Extension': {
             components: {
                 'Ready for Submission': {
                     type: 'list',
