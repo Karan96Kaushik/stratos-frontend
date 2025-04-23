@@ -4,7 +4,12 @@ const personalDashboards = {
             dashboards: [
                 'Business Development',
             ]
-        }
+        },
+        // 'Compliance': {
+        //     dashboards: [
+        //         'Ready for Submission',
+        //     ]
+        // },
     },
     dashboards: {
         'Business Development': {
@@ -70,6 +75,33 @@ const personalDashboards = {
                 }
             }
         },
+        'Ready for Submission': {
+            components: {
+                'Ready for Submission': {
+                    type: 'list',
+                    fields: [
+                        {label:'Task ID', id:'taskID'},
+                        {label:'Client', id:'clientName'},
+                        {label:'Members Allocated', id:'membersAllocated'},
+                        {label:'Type', id:'serviceType'},
+                        {label:'Promoter', id:'promoter'},
+                    ],
+                    api: '/api/dashboard/ready-for-submission'
+                },
+                'Ready for Submission (Promoter Sign Pending)': {
+                    type: 'list',
+                    fields: [
+                        {label:'Task ID', id:'taskID'},
+                        {label:'Client', id:'clientName'},
+                        {label:'Members Allocated', id:'membersAllocated'},
+                        {label:'Type', id:'serviceType'},
+                        {label:'Promoter', id:'promoter'},
+                    ],
+                    api: '/api/dashboard/ready-for-submission?pending=true'
+                },
+            }
+        },
+
     }
 }
 

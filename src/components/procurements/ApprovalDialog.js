@@ -127,14 +127,14 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                                 label="Full Payment"
                             />
                             <FormControlLabel
-                                value="part"
+                                value="Part"
                                 control={<Radio />}
                                 label="Part Payment"
                             />
                         </RadioGroup>
                     </FormControl>
 
-                    {paymentType === 'part' && (
+                    {paymentType === 'Part' && (
                         <TextField
                             className={classes.amountField}
                             label="Amount"
