@@ -179,6 +179,9 @@ const statusSet8 = [
     "Form 4 Submitted",
     "Form 4 Accepted",
     "Form 4 Rejected",
+    "OC Submitted",
+    "Under Scrutiny",
+    "OC Accepted",
     "Completed", 
     "Uploaded",
 ]
@@ -316,7 +319,7 @@ const taskFields = {
     "Extension": {
         name:"Extension",
         texts:[
-            {label:"Under Section", id:"section", options:["", "Section 6", "Section 7(3)"]},
+            {label:"Under Section", id:"section", options:["", "Section 6", "Section 7(3)", "Post-Facto"]},
             {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Curr Completion Date", id:"currCompletionDate", type:"date"},
             {label:"To Be Extended Date", id:"extenstionDate", type:"date"},
@@ -449,6 +452,7 @@ const taskFields = {
             {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
             {label:"Status", id:"status", options:[...statusSet12]},
             {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
+            {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
@@ -614,6 +618,7 @@ const taskFields = {
             {label:"Client Source", id:"clientSource", options:clientSourceOptions, isRequired:true},
             {label:"Priority", id:"priority", options:["", "High", "Medium", "Low"]},
             {label:"Status", id:"status", options:[...statuses, ...statusSet8]},
+            {label:"Government Fees", id:"govtFees", type:"number", isHidden:true},
             ...commonTextFieldsEnd,
         ],
         checkboxes:[
