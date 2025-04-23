@@ -31,6 +31,7 @@ export const vendorFields = {
         {label:'Vendor PAN', id:"vendorPan"},
         {label:'Vendor Bank Account', id:"vendorBankAccount"},
         {label:'Vendor Legal Entity Name', id:"vendorLegalEntityName"},
+        {label:'Notes', id:"notes"},
 
     ], checkboxes:[
         // {label:"Archived", id:"archived"},
