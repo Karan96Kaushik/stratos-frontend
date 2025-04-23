@@ -41,14 +41,16 @@ const VendorAddForm = (props) => {
 	const snackbar = useSnackbar()
 	const loginState = useContext(LoginContext)
 	const classes = useStyles();
+
+	const [vendors, setVendors] = useState([])
 	
 	const [memberRows, setMemberRows] = useState([{userName:"", memberID:"", _id:""}]);
 	// const [memberPlaceholder, setMemberPlaceholder] = useState({userName:"", memberID:"", _id:""});
 
 	const [values, setValues] = useState({});
 	const [type, setType] = useState("");
-	
-    let isEdit = false;
+	const [isEdit, setIsEdit] = useState(false);
+	const [selectedVendorId, setSelectedVendorId] = useState("");
 
 	const [errors, setErrors] = useState({});
 	const validateForm = () => {
@@ -122,15 +124,20 @@ const VendorAddForm = (props) => {
 		}
 	}, [])
 
-	if (location.pathname.includes("edit")) {
-		isEdit = true
-		let vendorID = location.pathname.split("/").pop()
-		useEffect(async () => {
-			let data = await authorizedReq({route:"/api/procurements/vendor/list", data:{_id:vendorID}, creds:loginState.loginState, method:"get"})
-			setType(data.vendorType)
-			setValues(data)
-		}, [])
-	}
+	useEffect(() => {
+		const fetchVendors = async () => {
+			try {
+				let data = await authorizedReq({route:"/api/procurements/vendor/list", data:{}, creds:loginState.loginState, method:"get"})
+				setVendors(data)
+			} catch (err) {
+				console.error(err)
+				snackbar.showMessage(
+					(err?.response?.data ?? err.message ?? err),
+				)
+			}
+		}
+		fetchVendors()
+	}, [])
 
 	const handleSubmit = async () => {
 		try {
@@ -144,7 +151,7 @@ const VendorAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully ${!isEdit ? "added" : "updated"} vendor!`,
 			)
-			navigate('/app/procurements');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -162,10 +169,9 @@ const VendorAddForm = (props) => {
 	const handleDelete = async (password) => {
 
 		try {
-			let taskID = location.pathname.split("/").pop()
 			await authorizedReq({
-				route:"/api/procurements/vendor", 
-				data:{_id:taskID, password}, 
+				route:"/api/procurements/vendor/delete", 
+				data:{_id:values._id}, 
 				creds:loginState.loginState, 
 				method:"delete"
 			})
@@ -259,6 +265,32 @@ const VendorAddForm = (props) => {
 		}, fileName.split("/")[1])
 	}
 
+	const handleVendorSelect = async (event) => {
+		const vendorId = event.target.value;
+		setSelectedVendorId(vendorId);
+		
+		if (vendorId) {
+			setIsEdit(true);
+			try {
+				let data = vendors.find(v => v._id == vendorId)
+
+				console.log("data vendor selecr", data)
+
+				setType(data.vendorType);
+				setValues(data);
+			} catch (err) {
+				snackbar.showMessage(
+					"Error loading vendor details - " + (err?.response?.data ?? err.message ?? err),
+				);
+				console.error(err);
+			}
+		} else {
+			setIsEdit(false);
+			setValues({});
+			setType("");
+		}
+	};
+
 	return (
 		<form {...props} autoComplete="off" noValidate >
 			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
@@ -270,6 +302,7 @@ const VendorAddForm = (props) => {
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
+
 
 						{vendorFields?.texts.map((field) => (
 							<Grid item md={6} xs={12}>
@@ -332,6 +365,32 @@ const VendorAddForm = (props) => {
 								/>
 							</Grid>))}
 
+							<Grid item md={12} xs={12}>
+							<FormControl fullWidth>
+								<InputLabel>Select Existing Vendor</InputLabel>
+								<Select
+									value={selectedVendorId}
+									onChange={handleVendorSelect}
+									label="Select Existing Vendor to edit"
+								>
+									<MenuItem value="">
+										<em>None</em>
+									</MenuItem>
+									{vendors.map((vendor) => (
+										<MenuItem key={vendor._id} value={vendor._id}>
+											{vendor.name || vendor.vendorName}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
+
+						{isEdit && <Grid item md={12} xs={12}>	
+							<Typography variant="caption">
+								Note: This will only affect new procurements. Vendor details in existing procurements will not be affected.
+							</Typography>
+						</Grid>}
+
 						
 						<Grid item md={6} xs={12}>
 							{isEdit && values?.files && <List>
@@ -348,8 +407,9 @@ const VendorAddForm = (props) => {
 				<Divider />
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
 					<Button color="primary" variant="contained" onClick={handleSubmit}>
-						Save details
+						{isEdit ? "Update Vendor" : "Create Vendor"}
 					</Button>
+					<></>
 					{
 						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
 							Delete entry
