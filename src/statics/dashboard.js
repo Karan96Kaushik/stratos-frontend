@@ -96,7 +96,9 @@ const personalDashboards = {
                         {label:'Type', id:'serviceType'},
                         {label:'Promoter', id:'promoter'},
                     ],
-                    api: '/api/dashboard/ready-for-submission'
+                    api: '/api/dashboard/ready-for-submission',
+                    linkpre: '/app/tasks?text=',
+                    linkfield: 'taskID',
                 },
                 'Ready for Submission (Promoter Sign Pending)': {
                     type: 'list',
@@ -107,7 +109,9 @@ const personalDashboards = {
                         {label:'Type', id:'serviceType'},
                         {label:'Promoter', id:'promoter'},
                     ],
-                    api: '/api/dashboard/ready-for-submission?pending=true'
+                    api: '/api/dashboard/ready-for-submission?pending=true',
+                    linkpre: '/app/tasks?text=',
+                    linkfield: 'taskID',
                 },
             }
         },
