@@ -166,9 +166,11 @@ const VendorAddForm = (props) => {
 		setOpen(true)
 	}
 
-	const handleDelete = async (password) => {
+	const handleDelete = async () => {
 
 		try {
+			if (!values._id)
+				throw new Error("Vendor ID not found")
 			await authorizedReq({
 				route:"/api/procurements/vendor/delete", 
 				data:{_id:values._id}, 
@@ -178,7 +180,7 @@ const VendorAddForm = (props) => {
 			snackbar.showMessage(
 				`Successfully deleted vendor!`,
 			)
-			navigate('/app/procurements');
+			navigate(-1);
 		} catch (err) {
 			snackbar.showMessage(
 				(err?.response?.data ?? err.message ?? err),
@@ -293,7 +295,7 @@ const VendorAddForm = (props) => {
 
 	return (
 		<form {...props} autoComplete="off" noValidate >
-			<PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} />
+			{/* <PasswordDialog protectedFunction={handleDelete} open={open} setOpen={setOpen} /> */}
 			<Card>
 				<CardHeader
 					title={!isEdit ? "New Vendor" : "Edit Vendor"}
@@ -411,8 +413,8 @@ const VendorAddForm = (props) => {
 					</Button>
 					<></>
 					{
-						isEdit && (<Button color="error" variant="contained" onClick={tryDelete}>
-							Delete entry
+						isEdit && (<Button color="error" variant="contained" onClick={handleDelete}>
+							Delete Vendor
 						</Button>)
 					}
 				</Box>
