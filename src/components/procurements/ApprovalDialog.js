@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     Button,
     Dialog,
@@ -14,9 +14,22 @@ import {
     Box,
     Grid,
     List,
-    ListItem
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    IconButton,
+    Paper,
+    Divider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+    Description as DocumentIcon,
+    PictureAsPdf as PdfIcon,
+    Image as ImageIcon,
+    GetApp as DownloadIcon
+} from '@material-ui/icons';
+import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
+import { LoginContext } from "../../myContext"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,18 +51,168 @@ const useStyles = makeStyles((theme) => ({
     },
     infoItem: {
         marginBottom: theme.spacing(1),
+    },
+    fileList: {
+        marginTop: theme.spacing(2),
+        maxHeight: 200,
+        overflow: 'auto',
+    },
+    fileViewer: {
+        marginTop: theme.spacing(2),
+        padding: theme.spacing(2),
+        minHeight: 300,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    fileIcon: {
+        marginRight: theme.spacing(1),
+    },
+    fileActions: {
+        marginLeft: 'auto',
+    },
+    imagePreview: {
+        maxWidth: '100%',
+        maxHeight: 400,
+    },
+    pdfViewer: {
+        width: '100%',
+        height: '500px',
+        border: 'none'
     }
 }));
+
+const FileViewer = ({ fileUrl, onClose }) => {
+    const classes = useStyles();
+    const fileType = fileUrl ? fileUrl.split('.').pop().toLowerCase() : '';
+    const loginState = useContext(LoginContext);
+    const [previewUrl, setPreviewUrl] = useState(null);
+
+    useEffect(() => {
+        if (fileUrl) {
+            authorizedReq({
+                route: "/api/files",
+                data: { fileName: fileUrl },
+                creds: loginState.loginState,
+                method: "post"
+            }).then(response => {
+                // Create a blob URL from the response
+                // const blob = new Blob([response], { type: `application/${fileType}` });
+                // const url = URL.createObjectURL(blob);
+                const url = response.file
+                setPreviewUrl(url);
+            }).catch(error => {
+                console.error('Error loading file:', error);
+            });
+        }
+
+        // Cleanup blob URL when component unmounts
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [fileUrl, loginState.loginState]);
+
+    const handleFileAction = (action) => {
+        const fileName = fileUrl;
+        authorizedDownloadLink({
+            route: "/api/files",
+            data: { fileName },
+            creds: loginState.loginState,
+            method: "post"
+        }, fileName.split("/")[1]);
+    };
+
+    const renderFileContent = () => {
+        if (!previewUrl) {
+            return (
+                <Box textAlign="center">
+                    <Typography variant="body1">Loading preview...</Typography>
+                </Box>
+            );
+        }
+
+        switch (fileType) {
+            case 'pdf':
+                return (
+                    <Box>
+                        <iframe
+                            src={previewUrl}
+                            className={classes.pdfViewer}
+                            title="PDF Viewer"
+                        />
+                        <Box mt={2} display="flex" justifyContent="center">
+                            {/* <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleFileAction('download')}
+                                startIcon={<DownloadIcon />}
+                            >
+                                Download PDF
+                            </Button> */}
+                        </Box>
+                    </Box>
+                );
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return (
+                    <Box>
+                        <img
+                            src={previewUrl}
+                            alt="Preview"
+                            className={classes.imagePreview}
+                        />
+                        <Box mt={2} display="flex" justifyContent="center">
+                            {/* <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleFileAction('download')}
+                                startIcon={<DownloadIcon />}
+                            >
+                                Download Image
+                            </Button> */}
+                        </Box>
+                    </Box>
+                );
+            default:
+                return (
+                    <Box textAlign="center">
+                        <Typography variant="body1" gutterBottom>
+                            Preview not available
+                        </Typography>
+                        {/* <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleFileAction('download')}
+                            startIcon={<DownloadIcon />}
+                        >
+                            Download File
+                        </Button> */}
+                    </Box>
+                );
+        }
+    };
+
+    return (
+        <Paper className={classes.fileViewer}>
+            {renderFileContent()}
+        </Paper>
+    );
+};
 
 export default function ApprovalDialog({ open, onClose, onApprove, procurement }) {
     const classes = useStyles();
     const [paymentType, setPaymentType] = useState('Full');
     const [amount, setAmount] = useState('');
     const [remarks, setRemarks] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
+    const loginState = useContext(LoginContext);
 
     useEffect(() => {
         if (procurement) {
-            // If there's existing payment information, set it
             if (procurement.paymentType) {
                 setPaymentType(procurement.paymentType);
             }
@@ -64,8 +227,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
 
     const handlePaymentTypeChange = (event) => {
         setPaymentType(event.target.value);
-        // Reset amount when switching to Full payment
-        if (event.target.value === 'Full') {
+        if (event.target.value === 'part') {
             setAmount('');
         }
     };
@@ -88,8 +250,40 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
         onClose();
     };
 
+    const getFileIcon = (fileName) => {
+        const extension = fileName.split('.').pop().toLowerCase();
+        switch (extension) {
+            case 'pdf':
+                return <PdfIcon className={classes.fileIcon} />;
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return <ImageIcon className={classes.fileIcon} />;
+            default:
+                return <DocumentIcon className={classes.fileIcon} />;
+        }
+    };
+
+    const handleFileClick = (file) => {
+        if (selectedFile === file) {
+            setSelectedFile(null);
+        } else {
+            setSelectedFile(file);
+        }
+    };
+
+    const handleFileDownload = (file) => {
+        authorizedDownloadLink({
+            route: "/api/files",
+            data: { fileName: file },
+            creds: loginState.loginState,
+            method: "post"
+        }, file.split("/")[1]);
+    };
+
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
             <DialogTitle>Approve Procurement</DialogTitle>
             <DialogContent>
                 <Box className={classes.root}>
@@ -151,18 +345,58 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                         />
                     )}
 
+                    <Divider style={{ margin: '20px 0' }} />
+
+                    {procurement?.files?.length > 0 && (
+                        <>
+                            <Typography variant="h6" gutterBottom>
+                                Attached Files
+                            </Typography>
+                            <List className={classes.fileList}>
+                                {procurement.files.map((file, index) => (
+                                    <ListItem 
+                                        key={index} 
+                                        button 
+                                        onClick={() => handleFileClick(file)}
+                                    >
+                                        {getFileIcon(file)}
+                                        <ListItemText primary={file.split('/').pop()} />
+                                        <div className={classes.fileActions}>
+                                            <IconButton
+                                                size="small"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleFileDownload(file);
+                                                }}
+                                            >
+                                                <DownloadIcon />
+                                            </IconButton>
+                                        </div>
+                                    </ListItem>
+                                ))}
+                            </List>
+
+                            {selectedFile && (
+                                <FileViewer
+                                    fileUrl={selectedFile}
+                                    onClose={() => setSelectedFile(null)}
+                                />
+                            )}
+                        </>
+                    )}
 
                     <Grid item md={6} xs={12}>
                         <Typography variant="h5">Remarks History</Typography>
-
-                        {procurement?.existingRemarks?.length && <List>
-                            {procurement?.existingRemarks?.map((remarks) => (<ListItem>
-                                    <Typography variant='body2'>{remarks}</Typography>
-                                </ListItem>))}
-                        </List>}
+                        {procurement?.existingRemarks?.length && (
+                            <List>
+                                {procurement?.existingRemarks?.map((remark, index) => (
+                                    <ListItem key={index}>
+                                        <Typography variant='body2'>{remark}</Typography>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        )}
                     </Grid>
-
-                    
 
                     <TextField
                         className={classes.remarksField}
