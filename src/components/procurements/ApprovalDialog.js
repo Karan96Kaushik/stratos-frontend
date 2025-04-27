@@ -96,11 +96,15 @@ const FileViewer = ({ fileUrl, onClose }) => {
                 creds: loginState.loginState,
                 method: "post"
             }).then(response => {
-                // Create a blob URL from the response
-                // const blob = new Blob([response], { type: `application/${fileType}` });
-                // const url = URL.createObjectURL(blob);
-                const url = response.file
-                setPreviewUrl(url);
+                if (fileType === 'pdf') {
+                    // For PDFs, create a blob with the correct MIME type
+                    const blob = new Blob([response], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+                    setPreviewUrl(url);
+                } else {
+                    // For other files, use the direct URL
+                    setPreviewUrl(response.file);
+                }
             }).catch(error => {
                 console.error('Error loading file:', error);
             });
@@ -138,20 +142,11 @@ const FileViewer = ({ fileUrl, onClose }) => {
                 return (
                     <Box>
                         <iframe
-                            src={previewUrl}
+                            src={`${previewUrl}#toolbar=0`}
                             className={classes.pdfViewer}
                             title="PDF Viewer"
+                            type="application/pdf"
                         />
-                        <Box mt={2} display="flex" justifyContent="center">
-                            {/* <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => handleFileAction('download')}
-                                startIcon={<DownloadIcon />}
-                            >
-                                Download PDF
-                            </Button> */}
-                        </Box>
                     </Box>
                 );
             case 'jpg':
@@ -165,16 +160,6 @@ const FileViewer = ({ fileUrl, onClose }) => {
                             alt="Preview"
                             className={classes.imagePreview}
                         />
-                        <Box mt={2} display="flex" justifyContent="center">
-                            {/* <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => handleFileAction('download')}
-                                startIcon={<DownloadIcon />}
-                            >
-                                Download Image
-                            </Button> */}
-                        </Box>
                     </Box>
                 );
             default:
@@ -183,14 +168,6 @@ const FileViewer = ({ fileUrl, onClose }) => {
                         <Typography variant="body1" gutterBottom>
                             Preview not available
                         </Typography>
-                        {/* <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleFileAction('download')}
-                            startIcon={<DownloadIcon />}
-                        >
-                            Download File
-                        </Button> */}
                     </Box>
                 );
         }
@@ -210,6 +187,8 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
     const [remarks, setRemarks] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const loginState = useContext(LoginContext);
+
+    const isAlreadyApproved = procurement?.approvedBy?.includes(loginState.loginState._id)
 
     useEffect(() => {
         if (procurement) {
@@ -319,11 +298,13 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                                 value="Full"
                                 control={<Radio />}
                                 label="Full Payment"
+                                disabled={isAlreadyApproved}
                             />
                             <FormControlLabel
                                 value="Part"
                                 control={<Radio />}
                                 label="Part Payment"
+                                disabled={isAlreadyApproved}
                             />
                         </RadioGroup>
                     </FormControl>
@@ -334,6 +315,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                             label="Amount"
                             type="number"
                             value={amount}
+                            disabled={isAlreadyApproved}
                             onChange={handleAmountChange}
                             fullWidth
                             required
@@ -405,6 +387,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                         rows={4}
                         value={remarks}
                         onChange={handleRemarksChange}
+                        disabled={isAlreadyApproved}
                         variant="outlined"
                         fullWidth
                         placeholder="Add any additional remarks about the approval"
@@ -415,14 +398,21 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                 <Button onClick={onClose} color="primary">
                     Cancel
                 </Button>
-                <Button 
+                {!isAlreadyApproved ? <Button 
                     onClick={handleApprove} 
                     color="primary" 
                     variant="contained"
                     disabled={paymentType === 'part' && (!amount || parseFloat(amount) > (procurement?.total || 0))}
                 >
                     Approve
-                </Button>
+                </Button> : <Button 
+                    onClick={handleApprove} 
+                    color="primary" 
+                    variant="contained"
+                    disabled={true}
+                >
+                    Approved
+                </Button>}
             </DialogActions>
         </Dialog>
     );

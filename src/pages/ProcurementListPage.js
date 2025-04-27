@@ -234,10 +234,13 @@ const ProcurementList = () => {
 	}
     const renderApproveButton = (val) => {
         if (!val._approvers?.includes(loginState.loginState._id) || val.approvedBy?.includes(loginState.loginState._id)) {
-            return <CheckCircleRounded style={{color: "#00AA00"}} />
+            return <IconButton aria-label="expand row" size="small" onClick={() => handleApproveClick(val, true)}>
+				<CheckCircleRounded style={{color: "#00AA00"}} />
+				{/* <Check /> */}
+			</IconButton>
         }
         return (
-            <IconButton aria-label="expand row" size="small" onClick={() => handleApproveClick(val)}>
+            <IconButton aria-label="expand row" size="small" onClick={() => handleApproveClick(val, false)}>
                 <Check />
             </IconButton>
         )
@@ -279,7 +282,7 @@ const ProcurementList = () => {
         }
     }
 
-    const handleApproveClick = (procurement) => {
+    const handleApproveClick = (procurement, isApproved) => {
         setSelectedProcurement(procurement);
         setApprovalDialogOpen(true);
     }
