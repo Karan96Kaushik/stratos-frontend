@@ -46,6 +46,21 @@ const TaskAddForm = (props) => {
 			throw new Error(errFields.join(", "))
 	}
 
+	if (fixedParticulars.includes(values['from'])) {
+		invoiceFields.item.texts.forEach(field => {
+			if (field.id == 'particulars') {
+				field.options = ['', 'Legal Consultation', 'Govt Fees']
+			}
+		})
+	}
+	else {
+		invoiceFields.item.texts.forEach(field => {
+			if (field.id == 'particulars') {
+				field.options = undefined
+			}
+		})
+	}
+
 	if (location.pathname.includes("edit")) {
 		isEdit = true
 		let invoiceID = location.pathname.split("/").pop()
@@ -106,9 +121,9 @@ const TaskAddForm = (props) => {
 			items = [...values.items, {}]
 
 
-		if (fixedParticulars.includes(values['from'])) {
-			items.forEach(i => i.particulars = 'Legal Consultation')
-		}
+		// if (fixedParticulars.includes(values['from'])) {
+		// 	items.forEach(i => i.particulars = 'Legal Consultation')
+		// }
 
 		setValues({...values, items})
 
@@ -196,10 +211,10 @@ const TaskAddForm = (props) => {
 				})
 			}
 
-			if (fixedParticulars.includes(event.target.value) && values.items) {
-				others.items = values.items
-				others.items.forEach(i => i.particulars = 'Legal Consultation')
-			}	
+			// if (fixedParticulars.includes(event.target.value) && values.items) {
+			// 	others.items = values.items
+			// 	others.items.forEach(i => i.particulars = 'Legal Consultation')
+			// }
 		}
 
 		setValues({
@@ -318,7 +333,7 @@ const TaskAddForm = (props) => {
 											label={field.label + " " + (idx+1)}
 											type={field.type ?? 'text'}
 											id={field.id + "-$" + idx}
-											disabled={fixedParticulars.includes(values['from']) && field.id == 'particulars'}
+											// disabled={fixedParticulars.includes(values['from']) && field.id == 'particulars'}
 											inputProps={field.type == "file" ? { multiple: true } : {}}
 											InputLabelProps={{ shrink: (field.type == "date" || field.type == "file" || isEdit) ? true : undefined }}
 											value={field.id != "files" ? values.items[idx][field.id] ?? '' : undefined}
