@@ -51,11 +51,7 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 
 	};
 
-	console.log("filters", filters)
-	console.log("values", values)
-
 	const handleChange = (e) => {
-		console.log("e target", e.target.id, e.target.value, e.target.checked, e.target.name, e.target.type)
 		let change = { [e.target.id]: e.target.type != 'checkbox' ? e.target.value : e.target.checked }
 
 		let eSplit = (e.target.id ?? e.target.name).split("-")
@@ -67,8 +63,6 @@ export default function FiltersDialog({ search, setSearch, fields, type, commonF
 			change[eSplit[0]][parseInt(eSplit[1])] = e.target.value ?? e.target.checked
 			delete change[e.target.id]
 		}
-
-		console.log("change", 'for', forView, 'change', change, 'values', values)
 
 		setValues({
 			...values,
