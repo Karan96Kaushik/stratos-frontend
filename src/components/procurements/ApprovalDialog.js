@@ -30,6 +30,7 @@ import {
 } from '@material-ui/icons';
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { LoginContext } from "../../myContext"
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FileViewer = ({ fileUrl, onClose }) => {
+const FileViewer = ({ fileUrl, onClose, procurement }) => {
     const classes = useStyles();
     const fileType = fileUrl ? fileUrl.split('.').pop().toLowerCase() : '';
     const loginState = useContext(LoginContext);
@@ -96,27 +97,20 @@ const FileViewer = ({ fileUrl, onClose }) => {
                 creds: loginState.loginState,
                 method: "post"
             }).then(response => {
-                if (fileType === 'pdf') {
-                    // For PDFs, create a blob with the correct MIME type
-                    const blob = new Blob([response], { type: 'application/pdf' });
-                    const url = URL.createObjectURL(blob);
-                    setPreviewUrl(url);
-                } else {
-                    // For other files, use the direct URL
-                    setPreviewUrl(response.file);
-                }
+                // response.file is an S3 URL, set it directly for all file types
+                setPreviewUrl(response.file);
             }).catch(error => {
                 console.error('Error loading file:', error);
             });
         }
-
-        // Cleanup blob URL when component unmounts
-        return () => {
-            if (previewUrl) {
-                URL.revokeObjectURL(previewUrl);
-            }
-        };
+    
+        // No need to revoke object URLs since we're not creating any
+        return () => {};
     }, [fileUrl, loginState.loginState]);
+
+    useEffect(() => {
+        setPreviewUrl(null)
+    }, [procurement?.procurementID]);
 
     const handleFileAction = (action) => {
         const fileName = fileUrl;
@@ -131,7 +125,7 @@ const FileViewer = ({ fileUrl, onClose }) => {
     const renderFileContent = () => {
         if (!previewUrl) {
             return (
-                <Box textAlign="center">
+                <Box textAlign="center" width="100%">
                     <Typography variant="body1">Loading preview...</Typography>
                 </Box>
             );
@@ -139,14 +133,28 @@ const FileViewer = ({ fileUrl, onClose }) => {
 
         switch (fileType) {
             case 'pdf':
+                // Use Google's PDF Viewer as a proxy to prevent download
+                const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(previewUrl)}&embedded=true`;
                 return (
-                    <Box>
+                    <Box width="100%">
                         <iframe
-                            src={`${previewUrl}#toolbar=0`}
+                            src={googleViewerUrl}
                             className={classes.pdfViewer}
-                            title="PDF Viewer"
-                            type="application/pdf"
+                            title="PDF Viewer" 
+                            style={{ border: 'none' }}
+                            width="100%"
                         />
+                        {/* <Box mt={2} textAlign="center">
+                            <Button 
+                                color="primary"
+                                variant="contained"
+                                size="small"
+                                onClick={() => handleFileAction('download')}
+                                startIcon={<DownloadIcon />}
+                            >
+                                Download PDF
+                            </Button>
+                        </Box> */}
                     </Box>
                 );
             case 'jpg':
@@ -154,7 +162,7 @@ const FileViewer = ({ fileUrl, onClose }) => {
             case 'png':
             case 'gif':
                 return (
-                    <Box>
+                    <Box width="100%">
                         <img
                             src={previewUrl}
                             alt="Preview"
@@ -362,6 +370,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                                 <FileViewer
                                     fileUrl={selectedFile}
                                     onClose={() => setSelectedFile(null)}
+                                    procurement={procurement}
                                 />
                             )}
                         </>
