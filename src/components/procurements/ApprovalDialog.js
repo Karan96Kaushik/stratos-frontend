@@ -110,6 +110,10 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
 
     useEffect(() => {
         setPreviewUrl(null)
+        setSelectedFile(null)
+        setPaymentType(null)
+        setAmount(null)
+        setRemarks(null)
     }, [procurement?.procurementID]);
 
     const handleFileAction = (action) => {
