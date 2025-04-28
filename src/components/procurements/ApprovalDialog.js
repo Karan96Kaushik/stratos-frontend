@@ -188,7 +188,7 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
     );
 };
 
-export default function ApprovalDialog({ open, onClose, onApprove, procurement }) {
+export default function ApprovalDialog({ open, onClose, onApprove, onReject, procurement }) {
     const classes = useStyles();
     const [paymentType, setPaymentType] = useState('Full');
     const [amount, setAmount] = useState('');
@@ -197,6 +197,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
     const loginState = useContext(LoginContext);
 
     const isAlreadyApproved = procurement?.approvedBy?.includes(loginState.loginState._id)
+    const isAlreadyRejected = procurement?.rejectedBy?.includes(loginState.loginState._id)
 
     useEffect(() => {
         if (procurement) {
@@ -206,9 +207,9 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
             if (procurement.approvedAmount) {
                 setAmount(procurement.approvedAmount.toString());
             }
-            if (procurement.remarks) {
-                setRemarks(procurement.remarks);
-            }
+            // if (procurement.remarks) {
+            //     setRemarks(procurement.remarks);
+            // }
         }
     }, [procurement]);
 
@@ -232,6 +233,14 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
             procurementId: procurement._id,
             paymentType,
             amount: paymentType === 'part' ? parseFloat(amount) : null,
+            remarks
+        });
+        onClose();
+    };
+
+    const handleReject = () => {
+        onReject({
+            procurementId: procurement._id,
             remarks
         });
         onClose();
@@ -306,13 +315,13 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                                 value="Full"
                                 control={<Radio />}
                                 label="Full Payment"
-                                disabled={isAlreadyApproved}
+                                disabled={isAlreadyApproved || isAlreadyRejected}
                             />
                             <FormControlLabel
                                 value="Part"
                                 control={<Radio />}
                                 label="Part Payment"
-                                disabled={isAlreadyApproved}
+                                disabled={isAlreadyApproved || isAlreadyRejected}
                             />
                         </RadioGroup>
                     </FormControl>
@@ -323,7 +332,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                             label="Amount"
                             type="number"
                             value={amount}
-                            disabled={isAlreadyApproved}
+                            disabled={isAlreadyApproved || isAlreadyRejected}
                             onChange={handleAmountChange}
                             fullWidth
                             required
@@ -396,7 +405,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                         rows={4}
                         value={remarks}
                         onChange={handleRemarksChange}
-                        disabled={isAlreadyApproved}
+                        disabled={isAlreadyApproved || isAlreadyRejected}
                         variant="outlined"
                         fullWidth
                         placeholder="Add any additional remarks about the approval"
@@ -404,24 +413,47 @@ export default function ApprovalDialog({ open, onClose, onApprove, procurement }
                 </Box>
             </DialogContent>
             <DialogActions>
+
+
+            {(!isAlreadyApproved && !isAlreadyRejected) ? <Button 
+                    onClick={handleReject} 
+                    color="secondary" 
+                    variant="contained"
+                    disabled={paymentType === 'part' && (!amount || parseFloat(amount) > (procurement?.total || 0))}
+                >
+                    Reject
+                </Button> : <Button 
+                    onClick={handleReject} 
+                    color="primary" 
+                    variant="contained"
+                    disabled={true}
+                >
+                    {isAlreadyRejected ? "Rejected" : "Reject"}
+                </Button>}
+
+
                 <Button onClick={onClose} color="primary">
                     Cancel
                 </Button>
-                {!isAlreadyApproved ? <Button 
+
+
+                {(!isAlreadyApproved && !isAlreadyRejected) ? <Button 
                     onClick={handleApprove} 
-                    color="primary" 
+                    style={{backgroundColor: "green", color: "white"}} 
                     variant="contained"
                     disabled={paymentType === 'part' && (!amount || parseFloat(amount) > (procurement?.total || 0))}
                 >
                     Approve
                 </Button> : <Button 
                     onClick={handleApprove} 
-                    color="primary" 
+                    color="primary"
                     variant="contained"
                     disabled={true}
                 >
-                    Approved
+                    {isAlreadyApproved ? "Approved" : "Approve"}
                 </Button>}
+
+                
             </DialogActions>
         </Dialog>
     );

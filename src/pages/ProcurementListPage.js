@@ -149,6 +149,7 @@ const ProcurementList = () => {
         {name:'Procurement ID', id:"procurementID"},
         {name:'Requested By', id:"addedByName"},
         {name:'Approved By', id:"approvedByName", type:"array"},
+		{name:'Rejected By', id:"rejectedByName", type:"array"},
         {name:'Last Approver Date', id:"lastApproverDate"},
         {name:'Vendor Name', id:"vendorName"},
         {name:'Vendor Code', id:"vendorCode"},
@@ -282,6 +283,27 @@ const ProcurementList = () => {
         }
     }
 
+	const handleReject = async ({procurementId, remarks}) => {
+		try {
+			setLoading({...loading, isActive:true})
+			await authorizedReq({
+				route: "/api/procurements/reject",
+				creds: loginState.loginState,
+				data: {
+					_id: procurementId,
+					remarks: remarks
+				},
+				method: 'post'
+			})
+		} catch (err) {
+			snackbar.showMessage(
+				err?.response?.data ?? err.message ?? err,
+			)
+		}
+		setLoading({...loading, isActive:false})
+		loadData()
+	}
+
     const handleApproveClick = (procurement, isApproved) => {
         setSelectedProcurement(procurement);
         setApprovalDialogOpen(true);
@@ -374,6 +396,7 @@ const ProcurementList = () => {
 				open={approvalDialogOpen}
 				onClose={handleDialogClose}
 				onApprove={handleApprove}
+				onReject={handleReject}
 				procurement={selectedProcurement}
 			/>
 		</Box>
