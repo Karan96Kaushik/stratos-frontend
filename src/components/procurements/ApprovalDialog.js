@@ -110,9 +110,6 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
 
     useEffect(() => {
         setPreviewUrl(null)
-        setPaymentType(null)
-        setAmount(null)
-        setRemarks(null)
     }, [procurement?.procurementID]);
 
     const handleFileAction = (action) => {
@@ -203,18 +200,26 @@ export default function ApprovalDialog({ open, onClose, onApprove, onReject, pro
     const isAlreadyRejected = procurement?.rejectedBy?.includes(loginState.loginState._id)
 
     useEffect(() => {
+
         if (procurement) {
+
             if (procurement.paymentType) {
                 setPaymentType(procurement.paymentType);
             }
+            else {
+                setPaymentType(null)
+            }
             if (procurement.approvedAmount) {
                 setAmount(procurement.approvedAmount.toString());
+            }
+            else {
+                setAmount(null)
             }
             // if (procurement.remarks) {
             //     setRemarks(procurement.remarks);
             // }
         }
-    }, [procurement]);
+    }, [procurement?.procurementID]);
 
     const handlePaymentTypeChange = (event) => {
         setPaymentType(event.target.value);
