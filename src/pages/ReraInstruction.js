@@ -40,11 +40,6 @@ const ReraInstruction = () => {
 								</a>
 							</Typography>
 
-							<Typography gutterBottom>
-								<a href="/en-ext-v1.0.0.zip" download >
-									1. Download Chrome Extension V1.0.0 (Deprecated)
-								</a>
-							</Typography>
 					</Grid>
 					<Grid item xs={12}>
 						<Typography color='textPrimary' gutterBottom>
@@ -130,6 +125,20 @@ const ReraInstruction = () => {
 					</Grid>
 				</Grid>
 
+				<Grid container>
+					<Grid item xs={12}>
+						<Typography variant="h4" color='textPrimary'>
+							Past Versions
+						</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Typography gutterBottom>
+								<a href="/en-ext-v1.0.0.zip" download >
+									1. Download Chrome Extension V1.0.0 (Deprecated)
+								</a>
+							</Typography>
+						</Grid>
+				</Grid>
 
 
 			</CardContent>
