@@ -240,9 +240,9 @@ const ProcurementAddForm = (props) => {
 
 	const handleChange = async (event) => {
 		let others = {}
-		if (event.target.id == 'files') {
+		if (event.target.id == 'files' || event.target.id == 'billFiles') {
 			// console.log(event.target.files.length)
-			others = {docs:[]}
+			others = {docs: values.docs ?? [], billDocs: values.billDocs ?? []}
 
 			let allFiles = []
 			let len = (event.target.files.length)
@@ -272,7 +272,11 @@ const ProcurementAddForm = (props) => {
 				fileData = await fileData
 				// console.log(file.name, others.docs.length, len, i)
 	
-				others.docs.push({name:file.name, data:fileData})
+				if (event.target.id == 'files') {
+					others.docs.push({name:file.name, data:fileData})
+				} else if (event.target.id == 'billFiles') {
+					others.billDocs.push({name:file.name, data:fileData})
+				}
 			}
 			// event.target.files = allFiles
 			// console.log(event.target.files, allFiles)
@@ -359,7 +363,8 @@ const ProcurementAddForm = (props) => {
 									required={field.isRequired}
 									error={errors[field.id]}
 									onChange={handleChange}
-									value={field.id != "files" ? values[field.id] ?? '' : undefined}
+									value={(field.id != "files" && field.id != "billFiles") ? values[field.id] ?? '' : undefined}
+									inputProps={{ accept: field.fileTypes?.join(", ") }}
 									variant="outlined"
 								>
 									{(field.options ?? []).map((option) => (

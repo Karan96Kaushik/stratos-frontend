@@ -31,6 +31,7 @@ import {
 import { authorizedReq, authorizedDownloadLink } from '../../utils/request'
 import { LoginContext } from "../../myContext"
 import axios from 'axios';
+import { useSnackbar } from 'material-ui-snackbar-provider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -190,11 +191,12 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
 
 export default function ApprovalDialog({ open, onClose, onApprove, onReject, procurement }) {
     const classes = useStyles();
-    const [paymentType, setPaymentType] = useState('Full');
+    const [paymentType, setPaymentType] = useState(null);
     const [amount, setAmount] = useState('');
     const [remarks, setRemarks] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const loginState = useContext(LoginContext);
+    const snackbar = useSnackbar();
 
     const isAlreadyApproved = procurement?.approvedBy?.includes(loginState.loginState._id)
     const isAlreadyRejected = procurement?.rejectedBy?.includes(loginState.loginState._id)
@@ -237,6 +239,10 @@ export default function ApprovalDialog({ open, onClose, onApprove, onReject, pro
     };
 
     const handleApprove = () => {
+        if (!paymentType) {
+            snackbar.showMessage("Please select a payment type")
+            return
+        }
         onApprove({
             procurementId: procurement._id,
             paymentType,

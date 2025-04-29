@@ -71,6 +71,7 @@ export default {
             {label:'Payment Date', id:"paymentDate", type:"date"},
             {label:'Asset Tagging Code', id:"assetTaggingCode", disableIn: ['request', 'manage']},
             // {label:'Tat', id:"tat", disableIn: ['request', 'manage']},
+            {label:'Bills', id:"billFiles", type: 'file', fileTypes: ['.pdf', '.jpg', '.jpeg', '.png']},
             {label:'Files', id:"files", type: 'file'},
         ],
         checkboxes: [
