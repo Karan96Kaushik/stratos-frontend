@@ -84,6 +84,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const getBlobData = (fileUrl) => {
+    return fetch(fileUrl)
+        .then(response => response.blob())
+        .then(blob => URL.createObjectURL(blob))
+        .catch(error => {
+            console.error('Error loading file:', error);
+            return null;
+        });
+};
+
 const FileViewer = ({ fileUrl, onClose, procurement }) => {
     const classes = useStyles();
     const fileType = fileUrl ? fileUrl.split('.').pop().toLowerCase() : '';
@@ -131,18 +141,36 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
                 </Box>
             );
         }
+        
+        let pdfUrl = `${'https://understandingpatientdata.org.uk/sites/default/files/2017-07/Identifiability%20briefing%205%20April.pdf'}`
+        let pdfUrl3 = encodeURIComponent(`https://tms0001.s3.ap-south-1.amazonaws.com/PREQ0668/332_145_WEBFLEET.connect%201.67.1.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASMOAX6HUJBI63YQL%2F20250513%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20250513T142516Z&X-Amz-Expires=300&X-Amz-Signature=8d18335aabcce3a53cf84a2d93e3215258fcc060f20153c9a3a908d21bd8c1bf&X-Amz-SignedHeaders=host`)
+
+        let isChrome = !!window.chrome
+
 
         switch (fileType) {
             case 'pdf':
-                return (
-                    <embed src={previewUrl} type="application/pdf" width="100%" height="500px" />
-                    // <Box width="100%">
-                    //     <AdobePDFViewer 
-                    //         fileUrl={previewUrl} 
-                    //         fileName={fileUrl.split('/').pop()}
-                    //     />
-                    // </Box>
-                );
+                return !isChrome ? (
+                    <object
+                        data={previewUrl}
+                        type="application/pdf"
+                        width="100%"
+                        height="500px"
+                        style={{
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        }}
+                    >
+                    </object>) : (
+                    <embed
+                        // src={`${'https://understandingpatientdata.org.uk/sites/default/files/2017-07/Identifiability%20briefing%205%20April.pdf'}`}
+                        src={`${previewUrl}`}
+                        width="100%"
+                        height="500px"
+                        type="application/pdf"
+                        alt="PDF Preview"
+                    />
+                )
             case 'jpg':
             case 'jpeg':
             case 'png':
