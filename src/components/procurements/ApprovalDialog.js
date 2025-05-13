@@ -315,13 +315,13 @@ export default function ApprovalDialog({ open, onClose, onApprove, onReject, pro
                             onChange={handlePaymentTypeChange}
                         >
                             <FormControlLabel
-                                value="Full"
+                                value="full"
                                 control={<Radio />}
                                 label="Full Payment"
                                 disabled={isAlreadyApproved || isAlreadyRejected}
                             />
                             <FormControlLabel
-                                value="Part"
+                                value="part"
                                 control={<Radio />}
                                 label="Part Payment"
                                 disabled={isAlreadyApproved || isAlreadyRejected}
@@ -329,7 +329,7 @@ export default function ApprovalDialog({ open, onClose, onApprove, onReject, pro
                         </RadioGroup>
                     </FormControl>
 
-                    {paymentType === 'Part' && (
+                    {paymentType === 'part' && (
                         <TextField
                             className={classes.amountField}
                             label="Amount"
