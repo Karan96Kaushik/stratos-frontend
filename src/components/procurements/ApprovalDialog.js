@@ -134,8 +134,10 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
 
         switch (fileType) {
             case 'pdf':
-                // Use Google's PDF Viewer as a proxy to prevent download
-                const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(previewUrl)}&embedded=true`;
+                // view s3 signed pdf url
+                const viewerUrl = `/pdfjs/web/viewer.html?file=${encodeURIComponent(previewUrl)}`;
+                const googleViewerUrl = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(previewUrl)}`;
+
                 return (
                     <Box width="100%">
                         <iframe
@@ -205,18 +207,22 @@ export default function ApprovalDialog({ open, onClose, onApprove, onReject, pro
 
         if (procurement) {
 
-            if (procurement.paymentType) {
-                setPaymentType(procurement.paymentType);
-            }
-            else {
-                setPaymentType(null)
-            }
-            if (procurement.approvedAmount) {
-                setAmount(procurement.approvedAmount.toString());
-            }
-            else {
-                setAmount(null)
-            }
+            setRemarks('')
+            setPaymentType(null)
+            setAmount(null)
+
+            // if (procurement.paymentType) {
+            //     setPaymentType(procurement.paymentType);
+            // }
+            // else {
+            //     setPaymentType(null)
+            // }
+            // if (procurement.approvedAmount) {
+            //     setAmount(procurement.approvedAmount.toString());
+            // }
+            // else {
+            //     setAmount(null)
+            // }
             // if (procurement.remarks) {
             //     setRemarks(procurement.remarks);
             // }
