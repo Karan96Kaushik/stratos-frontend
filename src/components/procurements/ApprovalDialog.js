@@ -134,31 +134,14 @@ const FileViewer = ({ fileUrl, onClose, procurement }) => {
 
         switch (fileType) {
             case 'pdf':
-                // view s3 signed pdf url
-                const viewerUrl = `/pdfjs/web/viewer.html?file=${encodeURIComponent(previewUrl)}`;
-                const googleViewerUrl = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(previewUrl)}`;
-
                 return (
-                    <Box width="100%">
-                        <iframe
-                            src={googleViewerUrl}
-                            className={classes.pdfViewer}
-                            title="PDF Viewer" 
-                            style={{ border: 'none' }}
-                            width="100%"
-                        />
-                        {/* <Box mt={2} textAlign="center">
-                            <Button 
-                                color="primary"
-                                variant="contained"
-                                size="small"
-                                onClick={() => handleFileAction('download')}
-                                startIcon={<DownloadIcon />}
-                            >
-                                Download PDF
-                            </Button>
-                        </Box> */}
-                    </Box>
+                    <embed src={previewUrl} type="application/pdf" width="100%" height="500px" />
+                    // <Box width="100%">
+                    //     <AdobePDFViewer 
+                    //         fileUrl={previewUrl} 
+                    //         fileName={fileUrl.split('/').pop()}
+                    //     />
+                    // </Box>
                 );
             case 'jpg':
             case 'jpeg':
