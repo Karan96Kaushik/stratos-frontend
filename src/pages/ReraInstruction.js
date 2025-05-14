@@ -142,6 +142,7 @@ const ReraInstruction = () => {
 							</Typography>
 
 					</Grid>
+					
 					<Grid item xs={12}>
 						<Typography gutterBottom>
 								<a href="/en-ext-v1.0.0.zip" download >
