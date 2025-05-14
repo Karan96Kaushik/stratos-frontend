@@ -189,13 +189,23 @@ const CustomerList = () => {
 	let isChrome = !!window.chrome
 
 	if (isChrome) {
+		actionNames.unshift('Open V2')
 		actionNames.unshift('Open RERA')
 	}
 
 	const renderRERAButton = isChrome && ((val) => {
 		return (
 			val.userID && val.password && 
-			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage(JSON.parse(decrypt(val.u)), "*")}>
+			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage({...JSON.parse(decrypt(val.u)), version: 'v1'}, "*")}>
+				<Outbound />
+			</IconButton>
+		)
+	})
+
+	const renderRERAButtonV2 = isChrome && ((val) => {
+		return (
+			val.userID && val.password && 
+			<IconButton aria-label="expand row" size="small" onClick={()=>window.postMessage({...JSON.parse(decrypt(val.u)), version: 'v2'}, "*")}>
 				<Outbound />
 			</IconButton>
 		)
@@ -225,7 +235,7 @@ const CustomerList = () => {
 							page={page} 
 							rowsPerPage={rowsPerPage} 
 							additionalNames={actionNames}
-							additional={[renderRERAButton || null, renderViewButton]}
+							additional={[renderRERAButton || null, renderRERAButtonV2 || null, renderViewButton]}
 							setPage={setPage} 
 							setRowsPerPage={setRowsPerPage}
 							setSortState={setSortState}
