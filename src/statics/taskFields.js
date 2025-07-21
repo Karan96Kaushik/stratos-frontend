@@ -450,6 +450,23 @@ const taskFields = {
         ]
     },
 
+    "Migration/Withdrawal Update": {
+        name:"Migration/Withdrawal Update",
+        texts:[
+            {label:"CA Assigned", id:"ca", options:caOptions},
+            {label:"As On Date", id:"asOnDate", type:"date", isRequired:true},
+            {label:"Date of Certification", id:"dateOfCert", type:"date"},
+            {label:"Status", id:"status", options:[...statuses, ...statusSet6]},
+            {label:"Confirmation Date", id:"confirmationDate", type: 'date'},
+            {label:"Department", id:"department", options:['', 'Package', 'Registration', 'Others - Tech'], isRequired:true},
+            ...commonTextFields,
+            ...commonTextFieldsEnd,
+        ],
+        checkboxes:[
+            ...commonCheckboxFields
+        ]
+    },
+
     "Removal from Abeyance": {
         name:"Removal from Abeyance",
         texts:[
@@ -718,6 +735,7 @@ const technical =  [
     "De-Registration",
     "Order No 40",
     "Removal from Abeyance",
+    "Migration/Withdrawal Update",
     "Others - Tech",
 ]
 
