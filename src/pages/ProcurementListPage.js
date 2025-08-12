@@ -172,6 +172,7 @@ const ProcurementList = () => {
         
 	]
 
+	
 	// Fields to be shown in the main table 
 	const defaultFields = {
 			texts:[
