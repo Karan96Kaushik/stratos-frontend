@@ -16,6 +16,9 @@ import { useSelector } from 'react-redux';
 import { selectMembers } from '../../store/reducers/membersSlice';
 import * as _ from 'lodash';
 
+// Fields that are unlocked even when procurement is completed
+const UNLOCKED_FIELDS = ["assetTaggingCode", "files"]
+
 const ProcurementAddForm = (props) => {
 	const navigate = useNavigate();
 	const snackbar = useSnackbar()
@@ -137,7 +140,7 @@ const ProcurementAddForm = (props) => {
 	}
 
 	if (values.isLocked) {
-		_procurementFields['all'].texts.filter(field => !["assetTaggingCode"].includes(field.id)).map(field => {
+		_procurementFields['all'].texts.filter(field => !UNLOCKED_FIELDS.includes(field.id)).map(field => {
 			disabledFields.push(field.id)
 		})
 		_procurementFields['all'].checkboxes.map(field => {

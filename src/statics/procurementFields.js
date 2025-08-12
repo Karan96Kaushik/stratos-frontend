@@ -58,7 +58,7 @@ export default {
             {label:'Bill No', id:"billNo", disableIn: ['accounts', 'request']},
             {label:'Amount', id:"amount", type: 'number', disableIn: ['accounts', 'request']},
             {label:'GST Amount', id:"gstamount", type: 'number', disableIn: ['accounts', 'request']},
-            {label:'TDS Amount', id:"tdsamount", type: 'number', disableIn: ['accounts', 'request']},
+            {label:'TDS Amount', id:"tdsamount", type: 'number', disableIn: ['request']},
             // {label:'Total', id:"total", type: 'number'},
             {label:'Status', id:"status", options: statusOptions, disableIn: ['request']},
             {label:'Payment Type', id:"paymentType", options: ['','Full', 'Part'], disableIn: ['request', 'manage']},
