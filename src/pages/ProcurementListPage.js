@@ -172,7 +172,7 @@ const ProcurementList = () => {
         
 	]
 
-	
+
 	// Fields to be shown in the main table 
 	const defaultFields = {
 			texts:[
@@ -190,6 +190,7 @@ const ProcurementList = () => {
                 // {label:'Amount', id:"amount"},
                 // {label:'GST Amount', id:"gstamount"},
                 // {label:'TDS Amount', id:"tdsamount"},
+                {label:'GST Total', id:"gsttotal"},
                 {label:'Total', id:"total"},
                 {label:'Status', id:"status"},
                 // {label:'Payment Type', id:"paymentType"},
