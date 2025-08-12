@@ -99,5 +99,6 @@ export {
     servicePermissionFields,
     memberFields,
     notificationTypes,
-    systemPermissionFields
+    systemPermissionFields,
+    departments
 }

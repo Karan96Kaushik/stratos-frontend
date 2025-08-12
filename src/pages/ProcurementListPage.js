@@ -178,6 +178,7 @@ const ProcurementList = () => {
 			texts:[
 				{label:'Date', id:"createdTime"},
 				// {label:'Procurement ID', id:"procurementID"},
+				{label:'Department', id:"department"},
 				{label:'Bill Date', id:"billDate"},
 				{label:'Requested By', id:"addedByName"},
 				{label:'Approved By', id:"approvedByName", type:"array"},
