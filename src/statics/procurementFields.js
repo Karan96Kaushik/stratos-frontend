@@ -1,5 +1,4 @@
 import { modeOptions } from './paymentFields'
-import { departments } from './memberFields'
 
 const statusOptions = [
     "",
@@ -42,7 +41,6 @@ export const vendorFields = {
 export default {
     all: {
         texts: [
-            {label:'Department', id:"department", options: departments, disableIn: ['accounts']},
             {label:'Vendor Name', id:"vendorName", disableIn: ['accounts']},
             
             {label:'Vendor Code', id:"vendorCode", disableIn: ['accounts', 'request']},
