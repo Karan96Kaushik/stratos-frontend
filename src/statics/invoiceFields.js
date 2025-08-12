@@ -32,7 +32,8 @@ const froms = {
         gstNum: 'None',
         panNum: 'ABAFK3517F'
     },
-    "RERA Easy Legal Advisors": {
+    // "RERA Easy Legal Advisors": {
+    "RELA - Not to Use": {
         gstNum: '',
         panNum: 'ABJFR9779F'
     },
