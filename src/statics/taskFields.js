@@ -56,6 +56,7 @@ const statuses = [
     "New Task", 
     "In Progress", 
     "On Hold", 
+    "Changes",
     "Awaiting Documents from client", 
     "Awaiting Accounts Confirmation",
     "Uploaded with Errors",
